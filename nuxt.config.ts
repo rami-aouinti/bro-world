@@ -66,6 +66,14 @@ export default defineNuxtConfig({
       clientId: '',
       clientSecret: '',
     },
+    google: {
+      clientId: '',
+      clientSecret: '',
+    },
+    facebook: {
+      clientId: '',
+      clientSecret: '',
+    },
     session: {
       name: 'nuxt-session',
       password: '',
