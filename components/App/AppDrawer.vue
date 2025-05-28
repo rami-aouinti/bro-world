@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import AppDrawerItem from "~/components/App/AppDrawerItem.vue";
+
 const router = useRouter()
 const routes = router.getRoutes().filter((r) => r.path.lastIndexOf('/') === 0)
 const drawerState = useState('drawer', () => true)
@@ -16,6 +18,7 @@ const rail = computed(() => !drawerState.value && !mobile.value)
 routes.sort((a, b) => (a.meta?.drawerIndex ?? 99) - (b.meta?.drawerIndex ?? 98))
 
 drawerState.value = lgAndUp.value && width.value !== 1280
+const currentYear = new Date().getFullYear();
 </script>
 
 <template>
@@ -27,7 +30,11 @@ drawerState.value = lgAndUp.value && width.value !== 1280
   >
     <template #prepend>
       <v-list>
-        <v-list-item class="pa-1">
+        <v-list-item
+          class="pa-1"
+          :to="{ path: '/home' }"
+          link
+        >
           <template #prepend>
             <v-icon
               icon="custom:vitify-nuxt"
@@ -40,9 +47,10 @@ drawerState.value = lgAndUp.value && width.value !== 1280
             class="text-h5 font-weight-bold"
             style="line-height: 2rem"
           >
-            Vitify <span class="text-primary">Admin</span>
+            Bro <span class="text-primary">World</span>
           </v-list-item-title>
         </v-list-item>
+
       </v-list>
     </template>
     <v-list nav density="compact">
@@ -52,19 +60,12 @@ drawerState.value = lgAndUp.value && width.value !== 1280
     <template #append>
       <v-list-item class="drawer-footer px-0 d-flex flex-column justify-center">
         <div class="text-caption pt-6 pt-md-0 text-center text-no-wrap">
-          &copy; Copyright 2023
+          &copy; {{ currentYear }} Copyright
           <a
-            href="https://github.com/kingyue737"
+            href="https://github.com/rami-aouinti"
             class="font-weight-bold text-primary"
             target="_blank"
-            >Yue JIN</a
-          >
-          <span> & </span>
-          <a
-            href="https://www.nustarnuclear.com/"
-            class="font-weight-bold text-primary"
-            target="_blank"
-            >NuStar</a
+            >Rami Aouinti</a
           >
         </div>
       </v-list-item>

@@ -2,6 +2,7 @@ import type { IconProps } from 'vuetify'
 import { Icon } from '#components'
 import { useStorage } from '@vueuse/core'
 import { aliases } from 'vuetify/iconsets/mdi'
+import '@/assets/styles/material-dashboard.scss'
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook('vuetify:configuration', ({ vuetifyOptions }) => {
