@@ -41,7 +41,7 @@
           <button
             :disabled="loading"
             type="submit"
-            class="btn btn-outline-primary bg-default rounded-xl text-decoration-none font-weight-bold text-uppercase py-2 px-6 me-2 mt-6 mb-2 w-100"
+            class="btn btn-outline-primary bg-primary rounded-xl text-decoration-none font-weight-bold text-uppercase py-2 px-6 me-2 mt-6 mb-2 w-100"
           >
             <v-progress-circular
               v-if="loading"

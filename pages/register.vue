@@ -21,21 +21,16 @@
         elevation="12"
         max-width="calc(100% - 32px)"
         rounded="lg"
+        color="primary"
       >
-        <div class="mt-8 py-2">
+        <div class="mt-9 py-3">
           <div class="text-h4 font-weight-bold d-flex justify-center">
-            <v-icon
-              icon="custom:world-logo"
-              size="large"
-              class="drawer-header-icon text-white"
-              color="primary"
-            />
+            Bro World
           </div>
         </div>
         <v-row>
           <v-col cols="3" class="ms-auto d-flex justify-center">
             <v-btn
-              color="default"
               variant="text"
               href="/api/auth/facebook"
               icon
@@ -44,12 +39,12 @@
             </v-btn>
           </v-col>
           <v-col cols="3" class="d-flex justify-center">
-            <v-btn color="default" variant="text" href="/api/auth/github" icon>
+            <v-btn variant="text" href="/api/auth/github" icon>
               <v-icon>mdi-github-circle</v-icon>
             </v-btn>
           </v-col>
           <v-col cols="3" class="me-auto d-flex justify-center">
-            <v-btn color="default" variant="text" href="/api/auth/google" icon>
+            <v-btn variant="text" href="/api/auth/google" icon>
               <v-icon>mdi-google</v-icon>
             </v-btn>
           </v-col>
