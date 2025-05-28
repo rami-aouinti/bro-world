@@ -58,8 +58,8 @@ const { loggedIn, clear, user } = useUserSession()
         <v-list-item
           v-if="!loggedIn"
           title="Login"
-          prepend-icon="mdi-github"
-          href="/api/auth/github"
+          prepend-icon="mdi-login"
+          href="/login"
         />
         <v-list-item
           v-else
