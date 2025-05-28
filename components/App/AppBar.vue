@@ -47,7 +47,7 @@ const { loggedIn, clear, user } = useUserSession()
             <v-btn icon v-bind="mergeProps(menu, tooltip)" class="ml-1">
               <v-icon v-if="!loggedIn" icon="mdi-account-circle" size="36" />
               <v-avatar v-else color="primary" size="36">
-                <v-img :src="user?.avatar_url" />
+                <v-img :src="user?.avatar_url ?? user?.avatar" />
               </v-avatar>
             </v-btn>
           </template>
