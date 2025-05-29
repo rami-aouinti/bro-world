@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-const { loggedIn, user, fetch: refreshSession } = useUserSession()
+const { user, fetch: refreshSession } = useUserSession()
 
 import { ref } from 'vue'
 const username = ref('')
