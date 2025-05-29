@@ -13,6 +13,12 @@ useHead({
   titleTemplate: (t) => (t ? `${t} | Bro World` : 'Bro World'),
   htmlAttrs: { lang: 'en' },
   link: [{ rel: 'icon', href: '/earth_favicon.ico' }],
+  meta: [
+    {
+      name: 'google-site-verification',
+      content: 'TMfvcd4kWDKIVfrwdD3GFq6J9itPdd0ipFJdxO_yMro',
+    },
+  ],
   script: [
     {
       src: 'https://speed-insights.vercel.app/script.js',
@@ -23,7 +29,7 @@ useHead({
 })
 useSeoMeta({
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
-  description: 'Vuetify 3 + Nuxt 3, Opinionated Admin Starter Template',
+  description: 'Bro World System',
   ogImage: '/social-image.png',
   twitterImage: '/social-image.png',
   twitterCard: 'summary_large_image',
