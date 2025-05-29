@@ -15,7 +15,9 @@ const headers: DataTableHeader[] = [
   { title: 'Actions', key: 'actions' },
 ]
 
-const { data: people } = await useFetch('/api/people')
+const { data: people } = await useFetch('/api/admin/user/users')
+
+console.log(people)
 
 const { loggedIn } = useUserSession()
 watch(loggedIn, () => {
