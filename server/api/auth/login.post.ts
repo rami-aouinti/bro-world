@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
   const response = await axios.post(
-    'https://bro-world-system.de/api/v1/auth/get_token',
+    'https://bro-world.org/api/v1/auth/get_token',
     {
       username: body.username,
       password: body.password,
@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token
 
   const userResponse = await axios.get(
-    'https://bro-world-system.de/api/v1/profile',
+    'https://bro-world.org/api/v1/profile',
   )
 
   const user = userResponse.data
@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
       email: user.email,
       avatar: user.avatar,
       token: user.token,
-      roles: user.roles,
+      roles: user.roles
     }
   })
 
