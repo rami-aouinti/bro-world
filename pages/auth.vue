@@ -7,17 +7,15 @@ definePageMeta({
 })
 
 const headers: DataTableHeader[] = [
-  { title: 'ID', key: 'id' },
-  { title: 'Name', key: 'name' },
-  { title: 'Title', key: 'title' },
+  { title: 'Name', key: 'username' },
+  { title: 'FirstName', key: 'firstName' },
+  { title: 'LastName', key: 'lastName' },
   { title: 'Email', key: 'email' },
-  { title: 'Role', key: 'role' },
+  { title: 'Language', key: 'language' },
   { title: 'Actions', key: 'actions' },
 ]
 
-const { data: people } = await useFetch('/api/admin/user/users')
-
-console.log(people)
+const { data: users } = await useFetch('/api/admin/user/users')
 
 const { loggedIn } = useUserSession()
 watch(loggedIn, () => {
@@ -33,13 +31,10 @@ watch(loggedIn, () => {
       <v-col>
         <v-card>
           <v-data-table
-            :items="people || undefined"
+            :items="users || undefined"
             :headers="headers"
             show-select
           >
-            <template #item.role="{ item }">
-              <v-chip>{{ item.role }}</v-chip>
-            </template>
             <template #item.actions>
               <v-defaults-provider
                 :defaults="{
