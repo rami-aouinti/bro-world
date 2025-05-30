@@ -1,11 +1,14 @@
+import axios from 'axios'
+
 export default defineEventHandler(async (event) => {
   const method = event.node.req.method
 
   if (method === 'GET') {
-    return [
-      { id: "1", title: "Post 1", content: "Hello World!", authorId: 1 },
-      { id: "2", title: "Post 2", content: "Nuxt 3 is awesome!", authorId: 2 }
-    ]
+    const response = await axios.get(
+      'https://blog.bro-world.org/public/post',
+    )
+
+    return response.data
   }
 
   if (method === 'POST') {
