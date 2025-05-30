@@ -13,7 +13,7 @@ const { loggedIn } = useUserSession()
     <hr class="horizontal dark mt-1 mb-5" />
     <div v-for="comment in post.comments" class="d-flex mt-3">
       <div class="flex-shrink-0">
-        <UserAvatar :user="comment.user"></UserAvatar>
+        <UserAvatar :user="comment.user" size="32"></UserAvatar>
       </div>
       <div class="flex-grow-1 ms-4">
         <h5

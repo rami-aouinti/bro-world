@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import UserAvatar from "~/components/App/UserAvatar.vue";
+
 definePageMeta({
   title: 'Profile',
   middleware: ['auth'],
@@ -162,13 +164,7 @@ const { user, pending } = useUserSession()
           <div class="px-5">
             <v-row>
               <v-col cols="auto">
-                <v-avatar
-                  width="74"
-                  height="74"
-                  class="border border-default shadow rounded-circle"
-                >
-                  <v-img :src="user?.avatar" />
-                </v-avatar>
+                <UserAvatar :user="user"></UserAvatar>
               </v-col>
               <v-col cols="auto" class="my-auto">
                 <div class="h-100">
@@ -297,6 +293,9 @@ const { user, pending } = useUserSession()
                   >
                   <v-icon color="#0e456d" icon="mdi-instagram"
                     ></v-icon
+                  >
+                  <v-icon icon="mdi-google"
+                  ></v-icon
                   >
                 </div>
               </v-list-item>

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import UserAvatar from "~/components/App/UserAvatar.vue";
+const { user } = useUserSession()
 const comment = ref('')
 const sendComment = () => {
   if (comment.value.trim()) {
@@ -12,9 +14,7 @@ const sendComment = () => {
 <template>
   <div class="d-flex mt-6">
     <div class="flex-shrink-0">
-      <v-avatar>
-        <v-img src="@/assets/img/team-4.jpg"/>
-      </v-avatar>
+      <UserAvatar :user="user" size="32"></UserAvatar>
     </div>
     <div class="flex-grow-1 ms-4">
       <v-textarea
