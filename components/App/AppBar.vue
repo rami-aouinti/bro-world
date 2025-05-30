@@ -35,6 +35,25 @@ router.afterEach(() => {
   canGoBack.value = window.navigation.canGoBack
 })
 const { isFullscreen, toggle: toggleFullscreen } = useFullscreen()
+const loggedUser = ref([
+  {
+    icon: "mdi-face",
+    path: "/profile",
+    title: "Profile",
+  },
+  {
+    icon: "mdi-account-settings-variant",
+    path: "/setting",
+    title: "Setting",
+  }
+])
+const notLoggedUser = ref([
+  {
+    icon: "mdi-login",
+    path: "/login",
+    title: "Login",
+  },
+])
 </script>
 
 <template>
@@ -73,7 +92,14 @@ const { isFullscreen, toggle: toggleFullscreen } = useFullscreen()
         @click="toggleFullscreen()"
       />
     </v-defaults-provider>
-    <v-menu location="bottom">
+    <v-menu
+      location="bottom"
+      transition="slide-y-transition"
+      offset-y
+      offset-x
+      min-width="300"
+      max-width="300"
+    >
       <template #activator="{ props: menu }">
         <v-tooltip location="bottom">
           <template #activator="{ props: tooltip }">
@@ -87,19 +113,79 @@ const { isFullscreen, toggle: toggleFullscreen } = useFullscreen()
           <span>{{ loggedIn ? user!.login : 'User' }}</span>
         </v-tooltip>
       </template>
-      <v-list>
+      <v-list class="pa-1" v-if="loggedIn">
         <v-list-item
-          v-if="!loggedIn"
-          title="Login"
-          prepend-icon="mdi-login"
-          href="/login"
-        />
+          v-for="(item, i) in loggedUser"
+          :prepend-icon="item.icon"
+          :href="item.path"
+          :key="i"
+          class="
+                list-item-hover-active
+                d-flex
+                align-items-center
+                border-radius-md
+              "
+        >
+          <v-list-item-title
+            class="text-body-2 ls-0 text-typo font-weight-600 mb-0"
+          >
+            <v-row>
+              <v-col>
+                <h6
+                  class="text-sm font-weight-normal ms-2 text-typo"
+                >
+                  {{ item.title }}
+                </h6>
+              </v-col>
+            </v-row>
+          </v-list-item-title>
+        </v-list-item>
         <v-list-item
-          v-else
-          title="Logout"
           prepend-icon="mdi-logout"
           @click="clear"
-        />
+        >
+          <v-list-item-title
+            class="text-body-2 ls-0 text-typo font-weight-600 mb-0"
+          >
+            <v-row>
+              <v-col>
+                <h6
+                  class="text-sm font-weight-normal ms-2 text-typo"
+                >
+                  Logout
+                </h6>
+              </v-col>
+            </v-row>
+          </v-list-item-title>
+        </v-list-item>
+      </v-list>
+      <v-list class="pa-1" v-else>
+        <v-list-item
+          v-for="(item, i) in notLoggedUser"
+          :prepend-icon="item.icon"
+          :href="item.path"
+          :key="i"
+          class="
+                list-item-hover-active
+                d-flex
+                align-items-center
+                border-radius-md
+              "
+        >
+          <v-list-item-title
+            class="text-body-2 ls-0 text-typo font-weight-600 mb-0"
+          >
+            <v-row>
+              <v-col>
+                <h6
+                  class="text-sm font-weight-normal ms-2 text-typo"
+                >
+                  {{ item.title }}
+                </h6>
+              </v-col>
+            </v-row>
+          </v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-menu>
   </v-app-bar>

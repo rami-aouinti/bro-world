@@ -3,8 +3,10 @@
 import BaseDataTable from "~/components/Admin/BaseDataTable.vue";
 
 definePageMeta({
-  title: 'Auth',
-  middleware: 'auth',
+  icon: 'mdi-security',
+  title: 'Administration',
+  middleware: 'admin',
+  requiredRoles: ['ROLE_ADMIN'],
 })
 
 const headers: (
@@ -35,7 +37,11 @@ watch(loggedIn, () => {
   <v-container fluid>
     <v-row>
       <v-col>
-        <BaseDataTable label="List of Users" api-path="/api/admin/user/users" :headers="headers"/>
+        <BaseDataTable
+          label="List of Users"
+          api-path="/api/admin/user/users"
+          :headers="headers"
+        />
       </v-col>
     </v-row>
   </v-container>

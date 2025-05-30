@@ -2,7 +2,20 @@
 import AppDrawerItem from "~/components/App/AppDrawerItem.vue";
 
 const router = useRouter()
-const routes = router.getRoutes().filter((r) => r.path.lastIndexOf('/') === 0)
+const { user } = useUserSession()
+
+const routes = router.getRoutes().filter((r) => {
+  const isTopLevel = r.path.lastIndexOf('/') === 0
+
+  if (r.meta?.requiredRoles) {
+    const required = r.meta.requiredRoles
+    if (!user.value?.roles?.some((role: string) => required.includes(role))) {
+      return false
+    }
+  }
+
+  return isTopLevel
+})
 const drawerState = useState('drawer', () => true)
 
 const { mobile, lgAndUp, width } = useDisplay()
