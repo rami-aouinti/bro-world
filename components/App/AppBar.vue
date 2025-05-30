@@ -94,7 +94,7 @@ const getInitials = (user) => {
       :defaults="{ VBtn: { rounded: 0, class: 'px-5', size: 'x-small' } }"
     >
       <v-btn
-        v-tooltip="`${isFullscreen ? 'Full Screen' : ''}`"
+        v-tooltip="`${isFullscreen ? 'Full Screen' : 'Minimize'}`"
         style="height: 31px; padding-top: 2px"
         large
         :icon="isFullscreen ? 'ph:corners-in' : 'ph:corners-out'"
@@ -113,8 +113,8 @@ const getInitials = (user) => {
         <v-tooltip location="bottom">
           <template #activator="{ props: tooltip }">
             <v-btn icon v-bind="mergeProps(menu, tooltip)" class="ml-1">
-              <v-icon v-if="!loggedIn" icon="mdi-account-circle" size="36" />
-              <UserAvatar :user="user" size="36" color="primary"></UserAvatar>
+              <v-icon v-if="!loggedIn" icon="mdi-account-circle" size="32" />
+              <UserAvatar v-else :user="user" size="32" color="primary"></UserAvatar>
             </v-btn>
           </template>
           <span>{{ loggedIn ? user!.login : 'User' }}</span>

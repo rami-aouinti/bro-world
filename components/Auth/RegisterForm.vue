@@ -15,25 +15,29 @@
           />
           <v-text-field
             v-model="password"
+            :type="showPassword ? 'text' : 'password'"
             label="Password"
             placeholder="Password"
             variant="outlined"
             required
             dense
             class="font-size-input input-style"
-            type="password"
             :disabled="loading"
+            :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+            @click:append-inner="togglePassword"
           />
           <v-text-field
             v-model="repeatPassword"
+            :type="showRepeatPassword ? 'text' : 'password'"
             label="Password"
-            placeholder="Repeat Password"
+            placeholder="Password"
             variant="outlined"
             required
             dense
             class="font-size-input input-style"
-            type="password"
             :disabled="loading"
+            :append-inner-icon="showRepeatPassword ? 'mdi-eye-off' : 'mdi-eye'"
+            @click:append-inner="toggleRepeatPassword"
           />
           <p v-if="error" class="mt-4 text-red d-flex justify-center">
             {{ error }}
@@ -74,7 +78,17 @@ const password = ref('')
 const repeatPassword = ref('')
 const loading = ref(false)
 const error = ref('')
+const showPassword = ref(false)
 
+const togglePassword = () => {
+  showPassword.value = !showPassword.value
+}
+
+const showRepeatPassword = ref(false)
+
+const toggleRepeatPassword = () => {
+  showRepeatPassword.value = !showRepeatPassword.value
+}
 async function handleSubmit() {
   loading.value = true
 

@@ -15,14 +15,16 @@
           />
           <v-text-field
             v-model="password"
+            :type="showPassword ? 'text' : 'password'"
             label="Password"
             placeholder="Password"
             variant="outlined"
             required
             dense
             class="font-size-input input-style"
-            type="password"
             :disabled="loading"
+            :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+            @click:append-inner="togglePassword"
           />
           <p v-if="error" class="mt-4 text-red d-flex justify-center">
             {{ error }}
@@ -62,6 +64,11 @@ const username = ref('')
 const password = ref('')
 const loading = ref(false)
 const error = ref('')
+const showPassword = ref(false)
+
+const togglePassword = () => {
+  showPassword.value = !showPassword.value
+}
 
 async function handleSubmit() {
   loading.value = true
