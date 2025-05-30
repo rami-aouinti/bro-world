@@ -22,6 +22,19 @@ const isDark = computed({
   },
 })
 const { loggedIn, clear, user } = useUserSession()
+
+function back() {
+  window.history.back()
+}
+function refresh() {
+  window.location.reload()
+}
+const router = useRouter()
+const canGoBack = ref(false)
+router.afterEach(() => {
+  canGoBack.value = window.navigation.canGoBack
+})
+const { isFullscreen, toggle: toggleFullscreen } = useFullscreen()
 </script>
 
 <template>
@@ -29,6 +42,15 @@ const { loggedIn, clear, user } = useUserSession()
     <v-app-bar-nav-icon @click="drawer = !drawer" />
     <v-breadcrumbs :items="breadcrumbs" />
     <v-spacer />
+    <div class="d-none d-sm-flex align-center">
+      <v-btn
+        v-tooltip="{ text: 'Go Back' }"
+        :disabled="!canGoBack"
+        icon="ph:arrow-left"
+        @click="back()"
+      />
+      <v-btn icon="ph:arrow-clockwise" @click="refresh()" />
+    </div>
     <div id="app-bar" />
     <v-switch
       v-model="isDark"
@@ -40,6 +62,17 @@ const { loggedIn, clear, user } = useUserSession()
       true-icon="mdi-weather-night"
       class="opacity-80"
     />
+    <v-defaults-provider
+      :defaults="{ VBtn: { rounded: 0, class: 'px-5', size: 'x-small' } }"
+    >
+      <v-btn
+        v-tooltip="`${isFullscreen ? 'Full Screen' : ''}`"
+        style="height: 31px; padding-top: 2px"
+        large
+        :icon="isFullscreen ? 'ph:corners-in' : 'ph:corners-out'"
+        @click="toggleFullscreen()"
+      />
+    </v-defaults-provider>
     <v-menu location="bottom">
       <template #activator="{ props: menu }">
         <v-tooltip location="bottom">
