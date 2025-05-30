@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@pinia/nuxt',
+    '@nuxtjs/i18n',
     '@vueuse/nuxt',
     'vuetify-nuxt-module',
     'nuxt-auth-utils',
@@ -18,6 +19,49 @@ export default defineNuxtConfig({
   typescript: { shim: false, strict: true },
   vue: { propsDestructure: true },
   vueuse: { ssrHandlers: true },
+  i18n: {
+    lazy: true,
+    langDir: 'locales/',
+    defaultLocale: 'en',
+    strategy: 'prefix_except_default',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      alwaysRedirect: true,
+      fallbackLocale: 'en',
+    },
+    locales: [
+      {
+        code: 'en',
+        name: 'English',
+        iso: 'en-US',
+        icon: 'fi-us us',
+        file: 'en.json',
+      },
+      {
+        code: 'de',
+        name: 'Deutsch',
+        iso: 'de-DE',
+        icon: 'fi-de de',
+        file: 'de.json',
+      },
+      {
+        code: 'fr',
+        name: 'Frensh',
+        iso: 'fr-FR',
+        icon: 'fi-fr fr',
+        file: 'fr.json',
+      },
+      {
+        code: 'ar',
+        name: 'Arabic',
+        iso: 'tn-TN',
+        icon: 'fi-tn tn',
+        file: 'ar.json',
+      }
+    ],
+    baseUrl: 'https://bro-world-space.com'
+  },
   vuetify: {
     moduleOptions: {
       ssrClientHints: {

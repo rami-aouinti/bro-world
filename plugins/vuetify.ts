@@ -3,6 +3,7 @@ import { Icon } from '#components'
 import { useStorage } from '@vueuse/core'
 import { aliases } from 'vuetify/iconsets/mdi'
 import '@/assets/styles/material-dashboard.scss'
+import "flag-icons";
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook('vuetify:configuration', ({ vuetifyOptions }) => {

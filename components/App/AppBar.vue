@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { mergeProps } from 'vue'
+import Language from "~/components/App/AppBar/Language.vue";
 
 const theme = useTheme()
 const drawer = useState('drawer')
@@ -188,5 +189,6 @@ const notLoggedUser = ref([
         </v-list-item>
       </v-list>
     </v-menu>
+    <Language></Language>
   </v-app-bar>
 </template>

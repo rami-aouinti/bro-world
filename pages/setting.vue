@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  title: 'Profile',
+  title: 'Setting',
   middleware: ['auth'],
 })
 
@@ -138,7 +138,7 @@ const conversations = ref([
     avatar: 'https://randomuser.me/api/portraits/men/85.jpg',
   },
 ])
-const { user, pending } = useUserSession()
+const { user } = useUserSession()
 </script>
 <template>
   <v-container
@@ -146,19 +146,7 @@ const { user, pending } = useUserSession()
   >
     <v-row>
       <v-col lg="12">
-        <div
-          v-if="pending"
-          class="d-flex justify-center align-center"
-          style="height: 25vh"
-        >
-          <v-progress-circular
-            :size="120"
-            :width="10"
-            color="primary"
-            indeterminate
-          />
-        </div>
-        <v-card v-else rounded="xl" class="py-4">
+        <v-card rounded="xl" class="py-4">
           <div class="px-5">
             <v-row>
               <v-col cols="auto">
