@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { user, pending } = useUserSession()
 </script>
 
 <template>
@@ -14,7 +15,7 @@
   <v-col cols="auto" class="my-auto">
     <div class="h-100">
       <h5 class="text-left mb-1 text-h5 text-typo font-weight-bold">
-        Richard Devis
+        {{ user?.firstName }} {{ user?.lastName }}
       </h5>
       <p class="text-left mb-0 font-weight-light text-body text-sm">
         CEO / Co-Founder

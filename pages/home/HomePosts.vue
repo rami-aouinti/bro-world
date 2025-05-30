@@ -6,7 +6,7 @@ defineProps<{
     { id: string;
       title: string;
       content: string ,
-      author: {
+      user: {
         id: string,
         username: string,
         avatar: string
@@ -18,9 +18,9 @@ defineProps<{
 
 <template>
   <div class="py-3">
-    <v-card rounded="xl">
-      <AuthorPost :author="post.author" :date="post.date"></AuthorPost>
-      <Post :title="post.title" :content="post.content"></Post>
+    <v-card rounded="xl" class="mx-3">
+      <AuthorPost :author="post.user" :date="post.publishedAt"></AuthorPost>
+      <Post :post="post"></Post>
     </v-card>
   </div>
 </template>

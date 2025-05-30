@@ -1,9 +1,14 @@
 <script setup lang="ts">
+import UserAvatar from "~/components/App/UserAvatar.vue";
+import RelativeTime from "~/components/App/RelativeTime.vue";
+
 defineProps<{
   author:
     {
       id: string,
       username: string,
+      firstName: string,
+      lastName: string,
       avatar: string
     },
   date: string
@@ -14,20 +19,15 @@ defineProps<{
   <div class="border-bottom d-flex align-center px-4 py-4">
     <div class="d-flex align-center">
       <a href="javascript:" class="text-decoration-none">
-        <v-avatar size="48" class="rounded-circle">
-          <v-img
-            src="@/assets/img/team-4.jpg"
-            alt="profile-image"
-          />
-        </v-avatar>
+        <UserAvatar :user="author" color="primary" size="48"></UserAvatar>
       </a>
       <div class="mx-4">
         <a
           href="javascript:"
           class="text-dark font-weight-600 text-sm text-decoration-none"
-        >John Snow</a
+        >{{ author.firstName }} {{ author.lastName }}</a
         >
-        <small class="d-block text-muted">3 days ago</small>
+        <RelativeTime :date="date"></RelativeTime>
       </div>
     </div>
     <div class="text-end ms-auto">

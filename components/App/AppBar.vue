@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { mergeProps } from 'vue'
 import Language from "~/components/App/AppBar/Language.vue";
+import UserAvatar from "~/components/App/UserAvatar.vue";
 
 const theme = useTheme()
 const drawer = useState('drawer')
@@ -55,6 +56,13 @@ const notLoggedUser = ref([
     title: "Login",
   },
 ])
+
+const getInitials = (user) => {
+  if (!user) return '';
+  const first = user.firstName?.[0] || '';
+  const last = user.lastName?.[0] || '';
+  return (first + last).toUpperCase();
+};
 </script>
 
 <template>
@@ -106,9 +114,7 @@ const notLoggedUser = ref([
           <template #activator="{ props: tooltip }">
             <v-btn icon v-bind="mergeProps(menu, tooltip)" class="ml-1">
               <v-icon v-if="!loggedIn" icon="mdi-account-circle" size="36" />
-              <v-avatar v-else color="primary" size="36">
-                <v-img :src="user?.avatar_url ?? user?.picture" />
-              </v-avatar>
+              <UserAvatar :user="user" size="36" color="primary"></UserAvatar>
             </v-btn>
           </template>
           <span>{{ loggedIn ? user!.login : 'User' }}</span>

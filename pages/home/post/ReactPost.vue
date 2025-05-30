@@ -1,4 +1,7 @@
 <script setup lang="ts">
+defineProps<{
+  post: []
+}>();
 </script>
 
 <template>

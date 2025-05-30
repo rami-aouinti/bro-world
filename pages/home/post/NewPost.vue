@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-const notificationStore = useNotificationStore()
+import UserAvatar from "~/components/App/UserAvatar.vue";
 const dialog = ref(false)
 const loading = ref(false)
 
@@ -11,8 +11,12 @@ const load = () => {
 
 const isSubmitting = ref(false);
 const postContent = ref('')
-const username = 'John'
-
+const { user } = useUserSession()
+const getInitials = (user) => {
+  const first = user?.firstName?.[0] || '';
+  const last = user?.lastName?.[0] || '';
+  return (first + last).toUpperCase();
+};
 const publishPost = async () => {
   if (!postContent.value) {
     Notify.warning("Veuillez remplir tous les champs !");
@@ -40,19 +44,14 @@ const publishPost = async () => {
 
 <template>
   <div>
-    <v-card rounded="xl">
+    <v-card rounded="xl" class="mx-3">
       <v-card-text>
         <div
           class="d-flex align-center flex-wrap"
           style="max-width: 100%"
         >
           <a href="javascript:" class="mx-2 text-decoration-none">
-            <v-avatar size="40" class="rounded-circle">
-              <v-img
-                src="@/assets/img/team-4.jpg"
-                alt="profile-image"
-              />
-            </v-avatar>
+            <UserAvatar :user="user" size="40" color="primary"></UserAvatar>
           </a>
           <v-btn
             class="flex-grow-1 px-3 py-2 font-weight-bold justify-start"
@@ -60,7 +59,7 @@ const publishPost = async () => {
             variant="tonal"
             @click="dialog = true"
           >
-            <span>Hello {{ username }}, new post?</span>
+            <span>Hello {{ user.firstName }} {{ user.lastName }}, new post?</span>
           </v-btn>
         </div>
       </v-card-text>

@@ -51,7 +51,7 @@ const stories = [
 <template>
   <v-row>
     <v-col cols="12">
-      <v-card rounded="xl" class="overflow-scroll">
+      <v-card rounded="xl" class="overflow-scroll mx-3">
         <div class="py-4 d-flex">
           <v-col lg="1" md="2" sm="3" cols="4" class="text-center">
             <v-avatar size="58" class="shadow-sm">
