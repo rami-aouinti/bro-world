@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { mergeProps } from 'vue'
-const { loggedIn} = useUserSession()
 const dropdown = [
   {
     icon: 'mdi-email',
@@ -22,7 +21,7 @@ const dropdown = [
       <v-tooltip location="bottom">
         <template #activator="{ props: tooltip }">
           <v-btn icon v-bind="mergeProps(menu, tooltip)" class="ml-1">
-            <v-icon v-if="loggedIn" icon="mdi-bell" size="30" />
+            <v-icon icon="mdi-bell" size="30" />
           </v-btn>
         </template>
         <span>Notification</span>

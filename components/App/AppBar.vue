@@ -6,7 +6,7 @@ import Navigation from "~/components/App/AppBar/Navigation.vue";
 import Switch from "~/components/App/AppBar/Switch.vue";
 import Notification from "~/components/App/AppBar/Notification.vue";
 import Messenger from "~/components/App/AppBar/Messenger.vue";
-
+const { loggedIn} = useUserSession()
 
 const drawer = useState('drawer')
 const route = useRoute()
@@ -31,8 +31,8 @@ const breadcrumbs = computed(() => {
     <Screen></Screen>
     <div id="app-bar" />
     <Switch></Switch>
-    <Notification></Notification>
-    <Messenger></Messenger>
+    <Notification v-if="loggedIn"></Notification>
+    <Messenger v-if="loggedIn"></Messenger>
     <User></User>
     <Language></Language>
   </v-app-bar>

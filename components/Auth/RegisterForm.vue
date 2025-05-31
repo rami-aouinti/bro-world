@@ -54,14 +54,14 @@
             />
             <span v-else>Sign Up</span>
           </button>
-          <p class="text-sm text-body mt-2 mb-0 d-flex justify-center">
-            Or
+          <p class="text-sm text-body mt-3 mb-0 d-flex justify-center">
+            You have an account?
             <NuxtLink
               to="/login"
-              class="text-dark text-default-none font-weight-bolder px-2"
+              class="text-dark text-decoration-none font-weight-bolder px-1"
             >
-              Sign In</NuxtLink
-            >
+              Sign In
+            </NuxtLink>
           </p>
         </div>
       </form>
