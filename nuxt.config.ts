@@ -121,6 +121,14 @@ export default defineNuxtConfig({
     session: {
       name: 'nuxt-session',
       password: '',
+      cookie: {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+        path: '/',
+        maxAge: 60 * 60 * 24 * 365,
+        domain: 'bro-world-space.com',
+      },
     },
   },
   compatibilityDate: '2024-08-05',
