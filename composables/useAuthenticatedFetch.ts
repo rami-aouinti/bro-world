@@ -1,9 +1,9 @@
 import axios from 'axios'
 import {useAuthStore} from '@/stores/useAuthStore'
 
-export function useAuthenticatedAxios() {
+export async function useAuthenticatedAxios() {
   const auth = useAuthStore()
-  const token = auth.getToken
+  const token = await auth.getToken
 
   return axios.create({
     baseURL: '/',

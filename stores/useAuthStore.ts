@@ -16,7 +16,6 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null as User | null,
     token: '' as string,
-    isInitialized: false,
   }),
 
   getters: {
