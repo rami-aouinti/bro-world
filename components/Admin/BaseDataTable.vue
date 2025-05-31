@@ -13,7 +13,9 @@ const props = defineProps<{
 }>()
 
 const search = ref('')
-const { data: items, pending, error, refresh } = useFetch(() => props.apiPath)
+const { data: items, pending, error, refresh } = useFetch(() => props.apiPath, {
+  credentials: 'include',
+})
 
 const handleDelete = async (id: string | number) => {
   await $fetch(`${props.apiPath}/${id}`, { method: 'DELETE' })
