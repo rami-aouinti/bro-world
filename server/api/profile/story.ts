@@ -5,7 +5,7 @@ import FormData from 'form-data'
 import { useAuthenticatedAxios } from '~/composables/useAuthenticatedFetch'
 
 export default defineEventHandler(async (event) => {
-  const axiosAuth = useAuthenticatedAxios()
+  const axiosAuth = await useAuthenticatedAxios()
   const form = formidable({ multiples: false })
 
   const [fields, files] = await new Promise((resolve, reject) => {

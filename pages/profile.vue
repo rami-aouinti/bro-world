@@ -160,7 +160,7 @@ const { user, pending } = useUserSession()
             indeterminate
           />
         </div>
-        <v-card v-else rounded="xl" class="py-4">
+        <v-card v-else rounded="xl" class="py-4" variant="text">
           <div class="px-5">
             <v-row>
               <v-col cols="auto">
@@ -183,7 +183,7 @@ const { user, pending } = useUserSession()
     </v-row>
     <v-row>
       <v-col lg="4" md="4" cols="12" class="position-relative">
-        <v-card rounded="xl" class="h-60">
+        <v-card rounded="xl" class="h-60" variant="text">
           <div class="px-4 pt-4">
             <h6 class="mb-0 text-h6 text-typo">Platform Settings</h6>
           </div>
@@ -192,7 +192,7 @@ const { user, pending } = useUserSession()
             <h6 class="text-uppercase text-body text-xs font-weight-bolder">
               Account
             </h6>
-            <v-list>
+            <v-list class="bg-transparent" elevation="0">
               <v-list-item
                 v-for="setting in accountSettings"
                 :key="setting.text"
@@ -217,7 +217,7 @@ const { user, pending } = useUserSession()
             >
               Application
             </h6>
-            <v-list>
+            <v-list class="bg-transparent" elevation="0">
               <v-list-item
                 v-for="setting in applicationSettings"
                 :key="setting.text"
@@ -241,7 +241,7 @@ const { user, pending } = useUserSession()
       </v-col>
 
       <v-col lg="4" md="4" cols="12" class="position-relative">
-        <v-card rounded="xl" class="h-100">
+        <v-card rounded="xl" class="h-100" variant="text">
           <div class="px-4 pt-4">
             <h6 class="mb-0 text-h6 text-typo">Profile Information</h6>
           </div>
@@ -251,7 +251,7 @@ const { user, pending } = useUserSession()
               Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer
               is no...
             </p>
-            <v-list>
+            <v-list class="bg-transparent" elevation="0">
               <v-list-item class="px-0 border-radius-sm">
                 <div class="text-body text-sm">
                   <strong class="text-dark">Full Name:</strong>
@@ -305,13 +305,13 @@ const { user, pending } = useUserSession()
       </v-col>
 
       <v-col lg="4" md="4" cols="12" class="position-relative">
-        <v-card rounded="xl" class="h-100">
+        <v-card rounded="xl" class="h-100" variant="text">
           <div class="px-4 pt-4">
             <h6 class="mb-0 text-h6 text-typo">Conversations</h6>
           </div>
           <hr class="horizontal dark mt-2 mb-1" />
           <div class="px-4 py-4">
-            <v-list>
+            <v-list class="bg-transparent" elevation="0">
               <v-list-item-group class="border-radius-sm">
                 <v-list-item
                   v-for="conversation in conversations"
@@ -364,7 +364,7 @@ const { user, pending } = useUserSession()
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-card rounded="xl">
+        <v-card rounded="xl" variant="text">
           <div class="px-4 pt-4">
             <h6 class="mb-1 text-typo text-h6 font-weight-bold">Projects</h6>
             <p class="text-sm text-body">Architects design houses</p>
@@ -372,7 +372,7 @@ const { user, pending } = useUserSession()
           <div class="px-4 py-4">
             <v-row>
               <v-col v-for="card in cards" :key="card.title" lg="6" md="6">
-                <v-card>
+                <v-card variant="text">
                   <div class="position-relative">
                     <a class="d-block shadow-xl border-radius-xl">
                       <v-img

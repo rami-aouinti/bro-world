@@ -2,7 +2,7 @@ import { defineEventHandler } from 'h3'
 import { useAuthenticatedAxios } from '~/composables/useAuthenticatedFetch'
 
 export default defineEventHandler(async (event) => {
-  const axiosAuth = useAuthenticatedAxios()
+  const axiosAuth = await useAuthenticatedAxios()
 
   const method = event.node.req.method
 

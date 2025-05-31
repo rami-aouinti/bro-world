@@ -2,7 +2,7 @@ import { defineEventHandler } from 'h3'
 import { useAuthenticatedAxios } from '~/composables/useAuthenticatedFetch'
 
 export default defineEventHandler(async (event) => {
-  const axiosAuth = useAuthenticatedAxios()
+  const axiosAuth = await useAuthenticatedAxios()
   try {
     const response = await axiosAuth.get('https://bro-world.org/api/v1/user')
 

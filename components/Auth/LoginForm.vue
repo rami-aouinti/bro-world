@@ -95,9 +95,9 @@ async function handleSubmit() {
   }
 
   if (data.value) {
-    auth.setToken(data.value.token)
-    auth.setUser(data.value)
-    await refreshSession() // si tu en as besoin
+    await auth.setToken(data.value.token)
+    await auth.setUser(data.value)
+    await refreshSession()
     await navigateTo('/')
   }
 }

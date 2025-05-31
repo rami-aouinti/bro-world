@@ -117,7 +117,7 @@ const notLoggedUser = ref([
       <v-list-item
         v-for="(item, i) in notLoggedUser"
         :prepend-icon="item.icon"
-        :href="item.path"
+        :to="item.path"
         :key="i"
         class="
                 list-item-hover-active
