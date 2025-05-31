@@ -3,8 +3,7 @@ import axios from 'axios'
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event)
-
-  if (!session || !session.user || !session.user.token) {
+  if (!session || !session.user) {
     throw createError({
       statusCode: 401,
       message: 'Unauthorized',
