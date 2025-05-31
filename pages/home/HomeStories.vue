@@ -37,6 +37,7 @@ async function handleFileUpload(file: File) {
     const response = await useFetch('/api/profile/story', {
       method: 'POST',
       body: formData,
+      credentials: 'include',
     })
 
     const data = response.data.value
