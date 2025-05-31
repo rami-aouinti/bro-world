@@ -58,6 +58,9 @@
 
 <script setup lang="ts">
 const { user, fetch: refreshSession } = useUserSession()
+import { useAuthStore } from '@/stores/useAuthStore'
+
+const auth = useAuthStore()
 
 import { ref } from 'vue'
 const username = ref('')
@@ -78,18 +81,25 @@ async function handleSubmit() {
     return
   }
 
-  await useFetch('/api/auth/login', {
+  const { data, error } = await useFetch('/api/auth/login', {
     method: 'POST',
     body: {
       username: username.value,
       password: password.value,
     },
   })
-    .then(async () => {
-      await refreshSession()
-      await navigateTo('/')
-    })
-    .catch(() => alert('Bad credentials'))
+
+  if (error.value) {
+    alert('Bad credentials')
+    return
+  }
+
+  if (data.value) {
+    auth.setToken(data.value.token)
+    auth.setUser(data.value)
+    await refreshSession() // si tu en as besoin
+    await navigateTo('/')
+  }
 }
 </script>
 <style>

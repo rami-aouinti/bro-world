@@ -34,6 +34,7 @@ useSeoMeta({
   twitterImage: '/social-image.png',
   twitterCard: 'summary_large_image',
 })
+
 </script>
 
 <template>

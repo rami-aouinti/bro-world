@@ -19,7 +19,6 @@ export default defineEventHandler(async (event) => {
   )
 
   const user = userResponse.data
-  user.token = response.data.token
 
   await setUserSession(event, {
     user: {
@@ -30,13 +29,9 @@ export default defineEventHandler(async (event) => {
       lastName: user.lastName,
       email: user.email,
       avatar: user.avatar,
-      token: user.token,
       roles: user.roles
     }
   })
-
-  return {
-    message: 'ok',
-    user,
-  }
+  user.token = response.data.token
+  return user
 })

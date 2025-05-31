@@ -2,10 +2,10 @@ import { defineEventHandler, createError } from 'h3'
 import formidable from 'formidable'
 import fs from 'fs'
 import FormData from 'form-data'
-import axios from 'axios'
-import { requireUserSessionSafe } from '~/utils/requireUserSessionSafe'
+import { useAuthenticatedAxios } from '~/composables/useAuthenticatedFetch'
 
 export default defineEventHandler(async (event) => {
+  const axiosAuth = useAuthenticatedAxios()
   const form = formidable({ multiples: false })
 
   const [fields, files] = await new Promise((resolve, reject) => {
@@ -21,23 +21,12 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'No file uploaded' })
   }
 
-  const session = await requireUserSessionSafe(event)
-  const token = session?.user?.token
-
-  if (!token) {
-    throw createError({ statusCode: 401, message: 'Unauthorized' })
-  }
 
   const formData = new FormData()
   formData.append('file', fs.createReadStream(file.filepath), file.originalFilename)
 
   try {
-    const response = await axios.post('https://bro-world.org/api/v1/story', formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        ...formData.getHeaders(),
-      },
-    })
+    const response = await axiosAuth.post('https://bro-world.org/api/v1/story', formData)
 
     return response.data
 
