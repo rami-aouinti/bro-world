@@ -13,7 +13,9 @@ const currentUsername = ref('')
 
 async function loadStories() {
   try {
-    const response = await useFetch('/api/profile/stories')
+    const response = await useFetch('/api/profile/stories', {
+      credentials: 'include',
+    })
     stories.value = response.data.value || []
   } catch (e) {
     console.error('Failed to load stories', e)
