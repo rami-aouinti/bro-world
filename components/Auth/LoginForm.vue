@@ -86,9 +86,7 @@ async function handleSubmit() {
     },
   })
     .then(async () => {
-      // Refresh the session on client-side and redirect to the home page
       await refreshSession()
-      Notify.success('Success logged !')
       await navigateTo('/')
     })
     .catch(() => alert('Bad credentials'))

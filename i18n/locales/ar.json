@@ -5,5 +5,67 @@
   "FleetManagement": "Fleet Management",
   "DigitalMarketing": "التسويق الرقمي",
   "DigitalMarketingDescription": "مجموعة من الأشخاص المسؤولين بشكل جماعي عن كل العمل اللازم لإنتاج أصول عاملة ومعتمدة.",
-  "AddStory": "أضف قصة"
+  "AddStory": "أضف قصة",
+  "$vuetify": {
+    "badge": "شارة",
+    "close": "إغلاق",
+    "dataIterator": {
+      "noResultsText": "لم يتم العثور على نتائج مطابقة",
+      "loadingText": "جارٍ تحميل العناصر..."
+    },
+    "dataTable": {
+      "itemsPerPageText": "الصفوف لكل صفحة:",
+      "ariaLabel": {
+        "sortDescending": "مرتب تنازليًا.",
+        "sortAscending": "مرتب تصاعديًا.",
+        "sortNone": "غير مرتب.",
+        "activateNone": "اضغط لإلغاء الترتيب.",
+        "activateDescending": "اضغط للترتيب تنازليًا.",
+        "activateAscending": "اضغط للترتيب تصاعديًا."
+      },
+      "sortBy": "ترتيب حسب"
+    },
+    "dataFooter": {
+      "itemsPerPageText": "العناصر في كل صفحة:",
+      "itemsPerPageAll": "الكل",
+      "nextPage": "الصفحة التالية",
+      "prevPage": "الصفحة السابقة",
+      "firstPage": "الصفحة الأولى",
+      "lastPage": "الصفحة الأخيرة",
+      "pageText": "{0}-{1} من {2}"
+    },
+    "datePicker": {
+      "itemsSelected": "تم اختيار {0}",
+      "nextMonthAriaLabel": "الشهر التالي",
+      "nextYearAriaLabel": "السنة التالية",
+      "prevMonthAriaLabel": "الشهر السابق",
+      "prevYearAriaLabel": "السنة السابقة"
+    },
+    "noDataText": "لا توجد بيانات",
+    "carousel": {
+      "prev": "العنصر السابق",
+      "next": "العنصر التالي",
+      "ariaLabel": {
+        "delimiter": "الشريحة {0} من {1}"
+      }
+    },
+    "loading": "جارٍ التحميل...",
+    "fileInput": {
+      "counter": "{0} ملفات",
+      "counterSize": "{0} ملفات (بإجمالي {1})"
+    },
+    "timePicker": {
+      "am": "ص",
+      "pm": "م"
+    },
+    "pagination": {
+      "ariaLabel": {
+        "root": "ترقيم الصفحات",
+        "next": "الصفحة التالية",
+        "previous": "الصفحة السابقة",
+        "page": "انتقل إلى الصفحة {0}",
+        "currentPage": "الصفحة الحالية، صفحة {0}"
+      }
+    }
+  }
 }

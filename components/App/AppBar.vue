@@ -56,13 +56,6 @@ const notLoggedUser = ref([
     title: "Login",
   },
 ])
-
-const getInitials = (user) => {
-  if (!user) return '';
-  const first = user.firstName?.[0] || '';
-  const last = user.lastName?.[0] || '';
-  return (first + last).toUpperCase();
-};
 </script>
 
 <template>
