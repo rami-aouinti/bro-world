@@ -3,6 +3,7 @@ import formidable from 'formidable'
 import fs from 'fs'
 import FormData from 'form-data'
 import axios from 'axios'
+import { requireUserSessionSafe } from '~/utils/requireUserSessionSafe'
 
 export default defineEventHandler(async (event) => {
   const form = formidable({ multiples: false })
@@ -20,7 +21,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'No file uploaded' })
   }
 
-  const session = await requireUserSession(event)
+  const session = await requireUserSessionSafe(event)
   const token = session?.user?.token
 
   if (!token) {

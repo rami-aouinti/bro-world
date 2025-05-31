@@ -1,21 +1,9 @@
 import { defineEventHandler } from 'h3'
 import axios from 'axios'
-
-async function waitForSession(event, maxWait = 3000, interval = 100) {
-  const start = Date.now()
-  let session = await requireUserSession(event)
-
-  while ((!session || !session.user?.token) && (Date.now() - start < maxWait)) {
-    await new Promise(resolve => setTimeout(resolve, interval))
-    session = await requireUserSession(event)
-  }
-
-  return session
-}
-
+import { requireUserSessionSafe } from '~/utils/requireUserSessionSafe'
 
 export default defineEventHandler(async (event) => {
-  const session = await waitForSession(event)
+  const session = await requireUserSessionSafe(event)
 
   if (!session || !session.user || !session.user.token) {
     throw createError({
