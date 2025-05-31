@@ -5,7 +5,7 @@ export async function useAuthenticatedAxios() {
   const auth = useAuthStore()
   const token = await auth.getToken
 
-  return axios.create({
+  return await axios.create({
     baseURL: '/',
     headers: token
       ? {
