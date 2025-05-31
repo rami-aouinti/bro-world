@@ -44,7 +44,7 @@ const publishPost = async () => {
 
 <template>
   <div>
-    <v-card rounded="xl" class="mx-3">
+    <v-card rounded="xl" class="mx-3" variant="text">
       <v-card-text>
         <div
           class="d-flex align-center flex-wrap"

@@ -18,7 +18,7 @@ defineProps<{
 
 <template>
   <div class="py-3">
-    <v-card rounded="xl" class="mx-3">
+    <v-card rounded="xl" class="mx-3" variant="text">
       <AuthorPost :author="post.user" :date="post.publishedAt"></AuthorPost>
       <Post :post="post"></Post>
     </v-card>

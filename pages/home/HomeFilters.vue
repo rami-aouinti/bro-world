@@ -129,7 +129,7 @@ const topics = [
 </script>
 
 <template>
-  <v-card rounded="xl" class="mb-6">
+  <v-card rounded="xl" class="mb-6" variant="text">
     <div class="pa-4">
       <div class="text-h6">What are you into?</div>
 
@@ -162,7 +162,7 @@ const topics = [
     </div>
   </v-card>
 
-  <v-card v-for="card in cards" :key="card.title" class="mb-6">
+  <v-card v-for="card in cards" :key="card.title" class="mb-6" variant="text">
     <div class="px-4 py-4">
       <v-row class="align-center">
         <v-col cols="9">
@@ -299,7 +299,7 @@ const topics = [
     </div>
   </v-card>
 
-  <v-card v-for="(card, i) in brands" :key="i" class="mb-6">
+  <v-card v-for="(card, i) in brands" :key="i" class="mb-6" variant="text">
     <div class="px-4 py-4">
       <div class="d-flex">
         <v-avatar>

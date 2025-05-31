@@ -48,7 +48,7 @@ const headersWithActions = computed(() => [
       indeterminate
     />
   </div>
-  <v-card v-else>
+  <v-card v-else variant="text">
     <client-only>
       <teleport to="#app-bar">
         <v-text-field
