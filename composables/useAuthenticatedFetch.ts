@@ -5,7 +5,11 @@ export async function useAuthenticatedAxios() {
   const auth = useAuthStore()
   const token = await auth.getToken
 
-  return await axios.create({
+  if (!token) {
+    throw new Error('Missing token: user is not authenticated')
+  }
+
+  return axios.create({
     baseURL: '/',
     headers: token
       ? {
