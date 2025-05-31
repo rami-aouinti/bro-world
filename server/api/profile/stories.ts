@@ -1,3 +1,4 @@
+import { defineEventHandler } from 'h3'
 import axios from 'axios'
 import { requireUserSessionSafe } from '~/utils/requireUserSessionSafe'
 
