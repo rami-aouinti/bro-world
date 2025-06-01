@@ -15,9 +15,16 @@ export default defineEventHandler(async (event) => {
 
     return response.data
   } catch (err: any) {
-    throw createError({
-      statusCode: err.response?.status || 500,
-      message: err.response?.data?.message || 'Failed to load profile',
-    })
+    if (err.response?.status === 401) {
+      try {
+        const retryResponse = await axiosAuth.get(`https://blog.bro-world.org/public/post/${slug}`)
+        return retryResponse.data
+      } catch (retryErr: any) {
+        throw createError({
+          statusCode: retryErr.response?.status || 500,
+          message: retryErr.response?.data?.message || 'Failed to load user after retry',
+        })
+      }
+    }
   }
 })

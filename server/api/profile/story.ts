@@ -30,10 +30,17 @@ export default defineEventHandler(async (event) => {
 
     return response.data
 
-  } catch (error) {
-    throw createError({
-      statusCode: error.response?.status || 500,
-      message: error.response?.data?.message || 'Erreur lors de l\'envoi de la story',
-    })
+  } catch (err: any) {
+    if (err.response?.status === 401) {
+      try {
+        const retryResponse = await axiosAuth.post('https://bro-world.org/api/v1/story', formData)
+        return retryResponse.data
+      } catch (retryErr: any) {
+        throw createError({
+          statusCode: retryErr.response?.status || 500,
+          message: retryErr.response?.data?.message || 'Failed to load user after retry',
+        })
+      }
+    }
   }
 })
