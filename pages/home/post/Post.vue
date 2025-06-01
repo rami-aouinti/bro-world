@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <div class="px-4 py-4">
-    <NuxtLink :to="`/home/post/${post.slug}`" class="text-decoration-none">
+    <NuxtLink :to="`/post/${post.slug}`" class="text-decoration-none">
       <p class="text-left mb-6 text-body font-weight-light">
         {{ post.title }}
       </p>

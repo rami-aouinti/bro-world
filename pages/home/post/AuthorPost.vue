@@ -43,7 +43,7 @@ async function toggleUnFollow(authorId: string) {
 }
 
 onMounted(async () => {
-  await checkFollowStatus(props.author.id)
+  await checkFollowStatus(props.author?.id)
 })
 </script>
 
@@ -54,11 +54,12 @@ onMounted(async () => {
         <UserAvatar :user="author" color="primary" size="48"></UserAvatar>
       </a>
       <div class="mx-4">
-        <a
-          :href="author.username"
+        <NuxtLink
+          :to="`/${author?.username}`"
           class="text-dark font-weight-600 text-sm text-decoration-none"
-        >{{ author.firstName }} {{ author.lastName }}</a
         >
+          {{ author?.firstName }} {{ author?.lastName }}
+        </NuxtLink>
         <RelativeTime :date="date"></RelativeTime>
       </div>
     </div>
@@ -68,7 +69,7 @@ onMounted(async () => {
         variant="text"
         size="small"
         class="text-primary"
-        @click="toggleFollow(author.id)"
+        @click="toggleFollow(author?.id)"
       >
         <v-icon>mdi-account-plus</v-icon>
       </v-btn>
@@ -79,7 +80,7 @@ onMounted(async () => {
         variant="text"
         size="small"
         class="text-primary"
-        @click="toggleUnFollow(author.id)"
+        @click="toggleUnFollow(author?.id)"
       >
         <v-icon>mdi-account-minus</v-icon>
       </v-btn>
