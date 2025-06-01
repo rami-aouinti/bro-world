@@ -331,7 +331,7 @@ const topics = [
       </div>
       <hr class="horizontal dark my-4" />
       <div class="d-flex">
-        <v-btn :elevation="24" class="font-weight-bolder mb-0" x-small>
+        <v-btn variant="text" class="font-weight-bolder mb-0" x-small>
           Join
         </v-btn>
         <span class="avatar-group d-flex ms-auto">

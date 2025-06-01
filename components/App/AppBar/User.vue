@@ -4,11 +4,6 @@ import UserAvatar from "~/components/App/UserAvatar.vue";
 const { loggedIn, clear, user } = useUserSession()
 const loggedUser = ref([
   {
-    icon: "mdi-face",
-    path: "/profile",
-    title: "Profile",
-  },
-  {
     icon: "mdi-account-settings-variant",
     path: "/setting",
     title: "Setting",
@@ -68,9 +63,27 @@ const notLoggedUser = ref([
     </template>
     <v-list class="pa-1" v-if="loggedIn">
       <v-list-item
+        prepend-icon="mdi-face"
+        :to="user.name"
+      >
+        <v-list-item-title
+          class="text-body-2 ls-0 text-typo font-weight-600 mb-0"
+        >
+          <v-row>
+            <v-col>
+              <h6
+                class="text-sm font-weight-normal ms-2 text-typo"
+              >
+                Profile
+              </h6>
+            </v-col>
+          </v-row>
+        </v-list-item-title>
+      </v-list-item>
+      <v-list-item
         v-for="(item, i) in loggedUser"
         :prepend-icon="item.icon"
-        :href="item.path"
+        :to="item.path"
         :key="i"
         class="
                 list-item-hover-active

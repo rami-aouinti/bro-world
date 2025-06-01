@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { truncate } from '~/utils/stringUtils'
 
 const stories = ref<any[]>([])
 
@@ -91,7 +92,7 @@ function openStoryViewer(userStories: any) {
               <v-icon class="material-icons-round">mdi-plus</v-icon>
             </v-avatar>
             <p class="mb-0 text-sm text-body font-weight-light mt-2">
-              {{ $t('AddStory') }}
+              {{ truncate($t('AddStory'), 9) }}
             </p>
           </v-col>
 
@@ -103,19 +104,21 @@ function openStoryViewer(userStories: any) {
             sm="3"
             cols="4"
             class="text-center"
-            @click="openStoryViewer(userStories)"
-            style="cursor: pointer"
           >
-            <v-avatar size="58" class="border border-primary px-1 py-1">
+            <v-avatar
+              @click="openStoryViewer(userStories)"
+              style="cursor: pointer" size="58" class="border border-primary px-1 py-1">
               <v-img
                 :src="userStories.stories[0]?.mediaPath"
                 width="50"
                 height="50"
               />
             </v-avatar>
-            <p class="mb-0 text-sm text-body font-weight-light mt-2">
-              {{ userStories.username }}
-            </p>
+            <NuxtLink :to="`/${userStories.username}`" class="text-decoration-none">
+              <p class="mb-0 text-sm text-body font-weight-light mt-2">
+                {{ truncate(userStories.username, 9) }}
+              </p>
+            </NuxtLink>
           </v-col>
         </div>
 
