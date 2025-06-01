@@ -83,9 +83,8 @@ definePageMeta({
 
               <!-- Switch visibilité -->
               <v-col
-                cols="12"
-                md="auto"
-                class="d-flex align-center justify-end mt-3 mt-md-0"
+                cols="auto"
+                class="ms-auto d-flex align-center justify-end"
               >
                 <p v-if="switche" class="mb-0 text-body text-xs me-2">
                   Switch to invisible
