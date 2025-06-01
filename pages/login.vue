@@ -28,31 +28,8 @@
             Bro World
           </div>
         </div>
-
-        <v-row>
-          <v-col cols="3" class="ms-auto d-flex justify-center">
-            <v-btn
-              variant="text"
-              href="/api/auth/facebook"
-              icon
-            >
-              <v-icon>mdi-facebook</v-icon>
-            </v-btn>
-          </v-col>
-          <v-col cols="3" class="d-flex justify-center">
-            <v-btn variant="text" href="/api/auth/github" icon>
-              <v-icon>mdi-github-circle</v-icon>
-            </v-btn>
-          </v-col>
-          <v-col cols="3" class="me-auto d-flex justify-center">
-            <v-btn variant="text" href="/api/auth/google" icon>
-              <v-icon>mdi-google</v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
+        <Social></Social>
       </v-sheet>
-
-      <v-divider />
       <LoginForm />
     </v-card>
   </div>
@@ -60,6 +37,7 @@
 
 <script setup lang="ts">
 import LoginForm from '~/components/Auth/LoginForm.vue'
+import Social from "~/components/Auth/Social.vue";
 
 definePageMeta({
   title: 'login',

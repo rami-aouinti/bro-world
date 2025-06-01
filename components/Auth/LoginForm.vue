@@ -1,26 +1,21 @@
 <template>
-  <v-container>
+  <v-container style="margin-top: -70px;">
     <v-card-text class="text-medium-emphasis pa-1">
-      <form class="max-w-xxl w-full mx-auto" @submit.prevent="handleSubmit">
+      <form class="mx-auto" @submit.prevent="handleSubmit">
         <div class="card-padding">
           <v-text-field
             v-model="username"
             label="Username or Email"
-            placeholder="Username or Email"
-            variant="outlined"
             required
-            dense
             class="font-size-input input-style"
+            append-inner-icon='mdi-face'
             :disabled="loading"
           />
           <v-text-field
             v-model="password"
             :type="showPassword ? 'text' : 'password'"
             label="Password"
-            placeholder="Password"
-            variant="outlined"
             required
-            dense
             class="font-size-input input-style"
             :disabled="loading"
             :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
@@ -45,7 +40,7 @@
             Don't have an account?
             <NuxtLink
               to="/register"
-              class="text-dark text-decoration-none font-weight-bolder px-1"
+              class="text-primary text-decoration-none font-weight-bolder px-1"
             >
               Sign Up
             </NuxtLink>
@@ -104,7 +99,7 @@ async function handleSubmit() {
 </script>
 <style>
 .v-sheet--offset {
-  top: -62px;
+  top: -44px;
   position: relative;
 }
 </style>
