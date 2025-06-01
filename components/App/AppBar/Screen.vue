@@ -2,7 +2,7 @@
 const { isFullscreen, toggle: toggleFullscreen } = useFullscreen()
 </script>
 <template>
-  <div class="d-none d-md-block">
+  <div class="d-none">
     <v-defaults-provider
       :defaults="{ VBtn: { rounded: 0, class: 'px-5' } }"
     >
