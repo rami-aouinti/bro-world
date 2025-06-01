@@ -69,17 +69,17 @@ definePageMeta({
               </v-col>
               <v-col cols="auto" class="my-auto">
                 <div class="h-100">
-                  <h5 class="mb-1 text-h5 text-typo font-weight-bold">
-                    {{ profile?.firstName ? profile?.firstName : 'Not provided' }} {{ profile?.lastName ? profile?.lastName : 'Not provided' }}
-                  </h5>
+                  <h6 class="mb-1 text-h6 text-typo font-weight-bold">
+                    {{ profile?.firstName ? profile?.firstName : '' }} {{ profile?.lastName ? profile?.lastName : '' }}
+                  </h6>
                   <p class="mb-0 font-weight-light text-body text-sm">
-                    {{ profile?.title ? profile?.title : 'Not provided' }}
+                    {{ profile?.title ? profile?.title : '' }}
                   </p>
                 </div>
               </v-col>
               <v-col
                 lg="4"
-                md="6"
+                md="4"
                 class="my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3"
               >
                 <div class="d-flex align-center">

@@ -121,9 +121,9 @@ definePageMeta({
 
               <v-col cols="auto" class="my-auto">
                 <div class="h-100">
-                  <h5 class="mb-1 text-h5 text-typo font-weight-bold">
+                  <h6 class="mb-1 text-h6 text-typo font-weight-bold">
                     {{ profile?.firstName }} {{ profile?.lastName }}
-                  </h5>
+                  </h6>
                   <p class="mb-0 font-weight-light text-body text-sm">
                     {{ profile?.type }}
                   </p>
