@@ -16,7 +16,7 @@ const routes = router.getRoutes().filter((r) => {
 
   return isTopLevel
 })
-const drawerState = useState('drawer', () => true)
+const drawerState = useState('drawer', () => false)
 
 const { mobile, lgAndUp, width } = useDisplay()
 const drawer = computed({
@@ -30,7 +30,6 @@ const drawer = computed({
 const rail = computed(() => !drawerState.value && !mobile.value)
 routes.sort((a, b) => (a.meta?.drawerIndex ?? 99) - (b.meta?.drawerIndex ?? 98))
 
-drawerState.value = lgAndUp.value && width.value !== 1280
 const currentYear = new Date().getFullYear();
 </script>
 
