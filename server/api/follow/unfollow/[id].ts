@@ -7,11 +7,27 @@ export default defineEventHandler(async (event) => {
   if (!followedId) {
     throw createError({ statusCode: 400, message: 'Invalid request' })
   }
-
+  try {
   await axiosAuth.delete(
     `https://bro-world.org/api/v1/unfollow/` + followedId,
     { }
   )
 
   return { success: true }
+  } catch (err: any) {
+    if (err.response?.status === 401) {
+      try {
+        await axiosAuth.delete(
+          `https://bro-world.org/api/v1/unfollow/` + followedId,
+          { }
+        )
+        return { success: true }
+      } catch (retryErr: any) {
+        throw createError({
+          statusCode: retryErr.response?.status || 500,
+          message: retryErr.response?.data?.message || 'Failed to load user after retry',
+        })
+      }
+    }
+  }
 })

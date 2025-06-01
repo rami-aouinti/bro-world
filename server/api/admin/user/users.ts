@@ -7,10 +7,17 @@ export default defineEventHandler(async (event) => {
     const response = await axiosAuth.get('https://bro-world.org/api/v1/user')
 
     return response.data
-  } catch (error: any) {
-    throw createError({
-      statusCode: error.response?.status || 500,
-      message: error.response?.data?.message || 'Failed to fetch users',
-    })
+  } catch (err: any) {
+    if (err.response?.status === 401) {
+      try {
+        const retryResponse = await axiosAuth.get(`https://bro-world.org/api/v1/user`)
+        return retryResponse.data
+      } catch (retryErr: any) {
+        throw createError({
+          statusCode: retryErr.response?.status || 500,
+          message: retryErr.response?.data?.message || 'Failed to load user after retry',
+        })
+      }
+    }
   }
 })
