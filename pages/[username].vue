@@ -89,7 +89,6 @@ const conversations = ref([
   },
 ])
 definePageMeta({
-  title: 'profile',
   layout: 'default',
   description: 'Profile page',
   breadcrumb: 'disabled',
