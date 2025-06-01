@@ -8,7 +8,7 @@ provide(
 const route = useRoute()
 const runtimeConfig = useRuntimeConfig()
 
-const baseUrl = runtimeConfig.public.siteUrl || 'https://www.bro-world.com'
+const baseUrl = runtimeConfig.public.siteUrl || 'https://bro-world-space.com'
 const canonicalUrl = computed(() => baseUrl + route.fullPath)
 
 const title = computed(() => {
