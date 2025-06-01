@@ -62,46 +62,43 @@ definePageMeta({
           class="py-4"
           variant="text"
         >
-          <div class="px-2">
-            <v-row>
+          <div class="px-5">
+            <v-row align="center" class="pa-0 ma-0">
+              <!-- Avatar -->
               <v-col cols="auto">
-                <UserAvatar :user="profile"></UserAvatar>
+                <UserAvatar :user="profile" />
               </v-col>
-              <v-col cols="auto" class="my-auto">
-                <div class="h-100">
+
+              <!-- Nom et titre -->
+              <v-col cols="auto">
+                <div>
                   <h6 class="mb-1 text-h6 text-typo font-weight-bold">
-                    {{ profile?.firstName ? profile?.firstName : '' }} {{ profile?.lastName ? profile?.lastName : '' }}
+                    {{ profile?.firstName || '' }} {{ profile?.lastName || '' }}
                   </h6>
                   <p class="mb-0 font-weight-light text-body text-sm">
-                    {{ profile?.title ? profile?.title : '' }}
+                    {{ profile?.title || '' }}
                   </p>
                 </div>
               </v-col>
+
+              <!-- Switch visibilité -->
               <v-col
-                lg="4"
-                md="4"
-                class="my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3"
+                cols="12"
+                md="auto"
+                class="d-flex align-center justify-end mt-3 mt-md-0"
               >
-                <div class="d-flex align-center">
-                  <p
-                    v-if="switche === true"
-                    class="mb-0 text-body text-xs ms-auto"
-                  >
-                    Switch to invisible
-                  </p>
-                  <p
-                    v-if="switche === false"
-                    class="mb-0 text-body text-xs ms-auto"
-                  >
-                    Switch to visible
-                  </p>
-                  <v-switch
-                    v-model="switche"
-                    :ripple="false"
-                    class="mt-0 pt-0 ms-3 switch"
-                    hide-details
-                  />
-                </div>
+                <p v-if="switche" class="mb-0 text-body text-xs me-2">
+                  Switch to invisible
+                </p>
+                <p v-else class="mb-0 text-body text-xs me-2">
+                  Switch to visible
+                </p>
+                <v-switch
+                  v-model="switche"
+                  :ripple="false"
+                  class="mt-0 pt-0 switch"
+                  hide-details
+                />
               </v-col>
             </v-row>
           </div>

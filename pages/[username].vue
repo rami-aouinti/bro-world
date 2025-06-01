@@ -114,13 +114,15 @@ definePageMeta({
         </div>
         <v-card v-else rounded="xl" class="py-4" variant="text">
           <div class="px-5">
-            <v-row>
+            <v-row align="center" class="pa-0 ma-0">
+              <!-- Avatar -->
               <v-col cols="auto">
                 <UserAvatar :user="profile" />
               </v-col>
 
-              <v-col cols="auto" class="my-auto">
-                <div class="h-100">
+              <!-- Nom et Type -->
+              <v-col cols="auto">
+                <div>
                   <h6 class="mb-1 text-h6 text-typo font-weight-bold">
                     {{ profile?.firstName }} {{ profile?.lastName }}
                   </h6>
@@ -130,7 +132,8 @@ definePageMeta({
                 </div>
               </v-col>
 
-              <v-col class="text-end">
+              <!-- Boutons Follow / Inbox -->
+              <v-col cols="auto" class="ml-auto">
                 <v-btn
                   v-if="!isOwnProfile"
                   variant="outlined"
@@ -139,10 +142,8 @@ definePageMeta({
                   to="/inbox"
                 >
                   <v-icon>mdi-message</v-icon>
-
                 </v-btn>
 
-                <!-- Bouton Unfollow -->
                 <v-btn
                   v-if="!isOwnProfile && isFollowing"
                   variant="outlined"
@@ -150,10 +151,8 @@ definePageMeta({
                   @click="toggleUnFollow"
                 >
                   <v-icon>mdi-account-minus</v-icon>
-
                 </v-btn>
 
-                <!-- Bouton Follow -->
                 <v-btn
                   v-if="!isOwnProfile && !isFollowing"
                   variant="outlined"
@@ -161,7 +160,6 @@ definePageMeta({
                   @click="toggleFollow"
                 >
                   <v-icon>mdi-account-plus</v-icon>
-
                 </v-btn>
               </v-col>
             </v-row>
