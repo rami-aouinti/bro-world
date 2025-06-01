@@ -18,18 +18,20 @@ const items = computed(() =>
 </script>
 
 <template>
-  <v-container class="d-none d-md-block">
-    <v-row>
-      <v-col>
-        <v-card v-for="item in items" :key="item.title" class="mb-1">
-          <v-list-item
-            v-bind="item"
-            append-icon="mdi-chevron-right"
-            :ripple="false"
-            class="py-4"
-          />
-        </v-card>
-      </v-col>
-    </v-row>
+  <v-container>
+    <div class="d-none d-md-block">
+      <v-row>
+        <v-col>
+          <v-card v-for="item in items" :key="item.title" class="mb-1">
+            <v-list-item
+              v-bind="item"
+              append-icon="mdi-chevron-right"
+              :ripple="false"
+              class="py-4"
+            />
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
   </v-container>
 </template>
