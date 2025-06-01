@@ -5,33 +5,17 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
   const response = await axios.post(
-    'https://bro-world.org/api/v1/auth/get_token',
+    'https://bro-world.org/api/v1/auth/login',
     {
       username: body.username,
       password: body.password,
     },
   )
 
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token
+  const user = response.data.profile
+  const token = response.data.token
 
-  const userResponse = await axios.get(
-    'https://bro-world.org/api/v1/profile',
-  )
-
-  const user = userResponse.data
-
-  await setUserSession(event, {
-    user: {
-      id: user.id,
-      name: user.username,
-      username: user.username,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      avatar: user.avatar,
-      roles: user.roles
-    }
-  })
-  user.token = response.data.token
+  await setUserSession(event, { user })
+  user.token = token
   return user
 })
