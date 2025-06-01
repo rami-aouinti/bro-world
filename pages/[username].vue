@@ -92,7 +92,6 @@ definePageMeta({
   title: 'profile',
   layout: 'default',
   description: 'Profile page',
-  middleware: 'guest',
   breadcrumb: 'disabled',
 })
 </script>
