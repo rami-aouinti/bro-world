@@ -51,15 +51,10 @@ const notLoggedUser = ref([
     width="200"
   >
     <template #activator="{ props: menu }">
-      <v-tooltip location="bottom">
-        <template #activator="{ props: tooltip }">
-          <v-btn icon v-bind="mergeProps(menu, tooltip)" class="ml-1">
-            <v-icon v-if="!loggedIn" icon="mdi-account-circle" size="32" />
-            <UserAvatar v-else :user="user" size="32" color="primary"></UserAvatar>
-          </v-btn>
-        </template>
-        <span>{{ loggedIn ? user!.login : 'User' }}</span>
-      </v-tooltip>
+      <v-btn icon v-bind="mergeProps(menu)" class="ml-1">
+        <v-icon v-if="!loggedIn" icon="mdi-account-circle" size="32" />
+        <UserAvatar v-else :user="user" size="32" color="primary"></UserAvatar>
+      </v-btn>
     </template>
     <v-list class="pa-1" v-if="loggedIn">
       <v-list-item

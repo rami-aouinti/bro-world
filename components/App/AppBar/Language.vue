@@ -22,14 +22,9 @@ const changeLanguage = async (code) => {
 <template>
   <v-menu location="bottom">
     <template #activator="{ props: menu }">
-      <v-tooltip location="bottom">
-        <template #activator="{ props: tooltip }">
-          <v-btn icon v-bind="mergeProps(menu, tooltip)" class="ml-1">
-            <span style="font-size: 20px" :class="`fi ${currentLanguage.icon}`"></span>
-          </v-btn>
-        </template>
-        <span>{{ currentLanguage.name }}</span>
-      </v-tooltip>
+      <v-btn icon v-bind="mergeProps(menu)" class="ml-1">
+        <span style="font-size: 20px" :class="`fi ${currentLanguage.icon}`"></span>
+      </v-btn>
     </template>
 
     <v-list>

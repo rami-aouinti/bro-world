@@ -21,14 +21,9 @@ const lastMessages = [
 <template>
   <v-menu location="bottom">
     <template #activator="{ props: menu }">
-      <v-tooltip location="bottom">
-        <template #activator="{ props: tooltip }">
-          <v-btn icon v-bind="mergeProps(menu, tooltip)" class="ml-1">
-            <v-icon icon="mdi-message" size="30" />
-          </v-btn>
-        </template>
-        <span>Inbox</span>
-      </v-tooltip>
+      <v-btn icon v-bind="mergeProps(menu)" class="ml-1">
+        <v-icon icon="mdi-message" size="30" />
+      </v-btn>
     </template>
     <v-list class="pa-3">
       <v-list-item

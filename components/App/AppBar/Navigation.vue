@@ -16,7 +16,6 @@ router.afterEach(() => {
 <template>
   <div class="d-none d-sm-flex align-center">
     <v-btn
-      v-tooltip="{ text: 'Go Back' }"
       :disabled="!canGoBack"
       icon="ph:arrow-left"
       @click="back()"
