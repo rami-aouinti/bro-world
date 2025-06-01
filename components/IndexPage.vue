@@ -18,7 +18,7 @@ const items = computed(() =>
 </script>
 
 <template>
-  <v-container>
+  <v-container class="d-none d-md-block">
     <v-row>
       <v-col>
         <v-card v-for="item in items" :key="item.title" class="mb-1">
