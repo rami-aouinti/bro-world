@@ -122,6 +122,9 @@ export default defineNuxtConfig({
       name: 'nuxt-session',
       password: '',
     },
+    public: {
+      siteUrl: 'https://bro-world-space.com',
+    },
   },
   compatibilityDate: '2024-08-05',
 })

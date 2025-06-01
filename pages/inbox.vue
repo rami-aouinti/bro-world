@@ -71,6 +71,11 @@ const chats = [
     message: 'Charlie is Typing...',
   },
 ]
+definePageMeta({
+  title: 'inbox',
+  layout: 'default',
+  middleware: 'auth',
+})
 </script>
 
 <template>

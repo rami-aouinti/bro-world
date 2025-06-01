@@ -60,6 +60,7 @@
 import RegisterForm from '~/components/Auth/RegisterForm.vue'
 
 definePageMeta({
+  title: 'register',
   layout: 'auth',
   middleware: 'guest',
 })

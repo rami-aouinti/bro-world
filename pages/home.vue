@@ -6,6 +6,7 @@ import NewPost from "~/pages/home/post/NewPost.vue";
 const { loggedIn } = useUserSession()
 const { data: posts, pending, error } = useFetch('/api/posts')
 definePageMeta({
+  title: 'home',
   layout: 'default',
 })
 

@@ -88,7 +88,12 @@ const conversations = ref([
     avatar: 'https://randomuser.me/api/portraits/men/85.jpg',
   },
 ])
-
+definePageMeta({
+  title: 'profile',
+  layout: 'default',
+  description: 'Profile page',
+  middleware: 'guest',
+})
 </script>
 <template>
   <v-container
