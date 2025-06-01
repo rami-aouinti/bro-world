@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@pinia/nuxt',
+    '@nuxtjs/sitemap',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
     'vuetify-nuxt-module',
@@ -14,6 +15,11 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/test-utils/module',
   ],
+  sitemap: {
+    siteUrl: 'https://bro-world-space.com',
+    trailingSlash: false,
+    gzip: true,
+  },
   css: ['~/assets/styles/index.css'],
   experimental: { typedPages: true },
   typescript: { shim: false, strict: true },
