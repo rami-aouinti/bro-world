@@ -16,7 +16,7 @@ const title = computed(() => {
 })
 
 const description = computed(() => {
-  return route.meta?.description || route.matched[0]?.meta?.description || 'Bienvenue sur Bro World, votre plateforme communautaire unique.'
+  return route.meta?.description || route.matched[0]?.meta?.description || 'Welcome to Bro World — your unique community platform.'
 })
 
 useHead({
