@@ -56,10 +56,6 @@ onMounted(async () => {
   await loadProfile()
 })
 
-definePageMeta({
-  middleware: ['auth'],
-})
-
 const accountSettings = ref([
   { text: 'Email me when someone follows me', switchState: true },
   { text: 'Email me when someone answers on my post', switchState: false },
