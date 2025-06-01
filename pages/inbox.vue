@@ -75,6 +75,7 @@ definePageMeta({
   title: 'inbox',
   layout: 'default',
   middleware: 'auth',
+  breadcrumb: 'disabled',
 })
 </script>
 

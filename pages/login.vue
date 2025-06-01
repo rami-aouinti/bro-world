@@ -65,5 +65,6 @@ definePageMeta({
   title: 'login',
   layout: 'auth',
   middleware: 'guest',
+  breadcrumb: 'disabled',
 })
 </script>

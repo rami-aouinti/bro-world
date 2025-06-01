@@ -8,6 +8,7 @@ const { data: posts, pending, error } = useFetch('/api/posts')
 definePageMeta({
   title: 'home',
   layout: 'default',
+  breadcrumb: 'disabled',
 })
 
 </script>

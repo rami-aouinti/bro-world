@@ -93,6 +93,7 @@ definePageMeta({
   layout: 'default',
   description: 'Profile page',
   middleware: 'guest',
+  breadcrumb: 'disabled',
 })
 </script>
 <template>

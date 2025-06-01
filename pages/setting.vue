@@ -34,6 +34,7 @@ definePageMeta({
   title: 'setting',
   layout: 'default',
   middleware: 'auth',
+  breadcrumb: 'disabled',
 })
 </script>
 

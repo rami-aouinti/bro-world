@@ -7,6 +7,7 @@ definePageMeta({
   title: 'Administration',
   middleware: 'admin',
   requiredRoles: ['ROLE_ADMIN'],
+  breadcrumb: 'disabled',
 })
 
 const headers: (
