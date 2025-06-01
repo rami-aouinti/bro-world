@@ -16,9 +16,11 @@ const props = defineProps<{
 const isFollowing = ref<boolean | null>(null)
 
 async function checkFollowStatus(authorId: string) {
-  const { data, error } = await useFetch(`/api/follow/status/${authorId}`)
-  if (!error.value) {
-    isFollowing.value = data.value
+  if (authorId) {
+    const { data, error } = await useFetch(`/api/follow/status/${authorId}`)
+    if (!error.value) {
+      isFollowing.value = data.value
+    }
   }
 }
 
@@ -41,6 +43,10 @@ async function toggleUnFollow(authorId: string) {
     isFollowing.value = true
   }
 }
+
+watch(props.author?.id, () => {
+  checkFollowStatus(props.author?.id)
+}, { immediate: true })
 
 onMounted(async () => {
   await checkFollowStatus(props.author?.id)
