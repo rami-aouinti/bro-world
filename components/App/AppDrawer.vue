@@ -49,7 +49,7 @@ const currentYear = new Date().getFullYear();
         >
           <template #prepend>
             <v-icon
-              icon="custom:vitify-nuxt"
+              icon="custom:world-logo"
               size="x-large"
               class="drawer-header-icon"
               color="primary"

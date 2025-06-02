@@ -4,7 +4,6 @@ import { useAuthStore } from '@/stores/useAuthStore'
 export async function useAuthenticatedAxios(): Promise<typeof axios> {
   const auth = useAuthStore()
 
-  // Retry loop : attendre jusqu'à 1s (10 x 100ms)
   let retries = 10
   let token = auth.getToken
 
