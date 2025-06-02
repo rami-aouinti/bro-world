@@ -5,11 +5,7 @@ export default defineOAuthGoogleEventHandler({
 
     const userGoogleResponse = await axios.post(
       'https://bro-world.org/api/v1/user/google/verify',
-      {
-        id: user.id,
-        email: user.email,
-        avatar_url: user.picture,
-      },
+      user,
     )
     const userGoogle = userGoogleResponse.data
 
