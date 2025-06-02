@@ -1,6 +1,6 @@
 <template>
   <v-avatar :color="color" :size="size">
-    <v-img :src="user?.avatar_url ?? user?.picture">
+    <v-img :src="user?.avatar_url ?? user?.avatar">
       <span class="text-h6 white--text">
           {{ getInitials(user) }}
       </span>
