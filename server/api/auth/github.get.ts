@@ -5,7 +5,11 @@ export default defineOAuthGitHubEventHandler({
 
     const userGithubResponse = await axios.post(
       'https://bro-world.org/api/v1/user/github/verify',
-      user,
+      {
+        id: user.id,
+        email: user.email,
+        avatar_url: user.avatar_url,
+      }
     )
     const userGithub = userGithubResponse.data
 
