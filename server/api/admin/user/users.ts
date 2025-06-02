@@ -1,5 +1,6 @@
 import { defineEventHandler } from 'h3'
 import { useAuthenticatedAxios } from '~/composables/useAuthenticatedFetch'
+import axios from "axios";
 
 export default defineEventHandler(async (event) => {
   let session = await requireUserSession(event)
@@ -21,13 +22,13 @@ export default defineEventHandler(async (event) => {
     Authorization: `Bearer ${token}`
   }
   try {
-    const response = await axiosAuth.get('https://bro-world.org/api/v1/user', {headers})
+    const response = await axios.get('https://bro-world.org/api/v1/user', {headers})
 
     return response.data
   } catch (err: any) {
     if (err.response?.status === 401) {
       try {
-        const retryResponse = await axiosAuth.get(`https://bro-world.org/api/v1/user`, {headers})
+        const retryResponse = await axios.get(`https://bro-world.org/api/v1/user`, {headers})
         return retryResponse.data
       } catch (retryErr: any) {
         throw createError({
