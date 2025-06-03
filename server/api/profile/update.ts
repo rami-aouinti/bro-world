@@ -1,39 +1,53 @@
 import { defineEventHandler, createError } from 'h3'
-import formidable from 'formidable'
-import fs from 'fs'
+import axios from "axios";
 import FormData from 'form-data'
-import { useAuthenticatedAxios } from '~/composables/useAuthenticatedFetch'
 
 export default defineEventHandler(async (event) => {
-  const axiosAuth = await useAuthenticatedAxios()
-  const form = formidable({ multiples: false })
-
-  const [fields, files] = await new Promise((resolve, reject) => {
-    form.parse(event.node.req, (err, fields, files) => {
-      if (err) reject(err)
-      else resolve([fields, files])
-    })
-  })
-
-  const file = Array.isArray(files.file) ? files.file[0] : files.file
-
-  if (!file) {
-    throw createError({ statusCode: 400, message: 'No file uploaded' })
+  const formData = await readMultipartFormData(event);
+   if (!formData || formData.length === 0) {
+    throw new Error("No form data received");
   }
 
+  const axiosFormData = new FormData();
 
-  const formData = new FormData()
-  formData.append('file', fs.createReadStream(file.filepath), file.originalFilename)
+
+  formData.forEach(({ name, data, filename, type }) => {
+    if (filename) {
+      axiosFormData.append(name, new Blob([data], { type }), filename);
+    } else {
+      axiosFormData.append(name, data);
+    }
+  });
+
+  let session = await requireUserSession(event)
+  let token = session.user.token
+  let retries = 10
+
+  while ((!token || token.trim() === '') && retries > 0) {
+    await new Promise(resolve => setTimeout(resolve, 100))
+    session = await requireUserSession(event)
+    token = session.user.token
+    retries--
+  }
+
+  if (!token) {
+    throw createError({ statusCode: 400, message: 'Missing token after retry' })
+  }
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "multipart/form-data",
+  }
 
   try {
-    const response = await axiosAuth.post('https://bro-world.org/api/v1/story', formData)
+    const response = await axios.post('https://bro-world.org/api/v1/profile/update', axiosFormData, {headers})
 
     return response.data
 
   } catch (error) {
     throw createError({
       statusCode: error.response?.status || 500,
-      message: error.response?.data?.message || 'Erreur lors de l\'envoi de la story',
+      message: error.response?.data?.message || 'Failed to update',
     })
   }
 })

@@ -127,7 +127,9 @@ definePageMeta({
                     {{ profile?.firstName }} {{ profile?.lastName }}
                   </h6>
                   <p class="mb-0 font-weight-light text-body text-sm">
-                    {{ profile?.type }}
+                    {{
+                      profile?.profile?.title
+                    }}
                   </p>
                 </div>
               </v-col>
@@ -234,8 +236,9 @@ definePageMeta({
           <hr class="horizontal dark mt-2 mb-1" />
           <div class="px-4 py-4">
             <p class="text-sm font-weight-light text-body">
-              Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer
-              is no...
+              {{
+                profile?.profile?.description
+              }}
             </p>
             <v-list class="bg-transparent" elevation="0">
               <v-list-item class="px-0 border-radius-sm">
