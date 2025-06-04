@@ -16,7 +16,7 @@ onMounted(() => {
 
 <template>
   <v-container fluid>
-    <UserStatusBanner />
+    <UserStatusBanner v-if="loggedIn" />
     <HomeStories v-if="loggedIn" />
 
     <v-row>

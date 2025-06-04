@@ -13,6 +13,7 @@ const page = ref(1)
 const hasMore = ref(true)
 const isLoading = ref(false)
 const pending = ref(true)
+
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 const loadMore = async () => {
@@ -21,10 +22,13 @@ const loadMore = async () => {
 
   try {
     await delay(100)
-    const { data, error } = await useFetch(`${props.fetchUrl}?page=${page.value}&limit=${props.limit || 5}`, {
-      key: `${props.fetchUrl}-page-${page.value}`,
-      server: false,
-    })
+    const { data, error } = await useFetch(
+      `${props.fetchUrl}?page=${page.value}&limit=${props.limit || 5}`,
+      {
+        key: `${props.fetchUrl}-page-${page.value}`,
+        server: false,
+      }
+    )
 
     if (data.value) {
       const result = data.value || []
@@ -65,7 +69,7 @@ defineExpose({ items, isLoading, hasMore, loadMore })
 
   <slot :items="items" :isLoading="isLoading" :hasMore="hasMore && !pending" />
 
-  <div class="d-flex justify-center mt-4" v-if="hasMore">
+  <div class="d-flex justify-center mt-4" v-if="hasMore && !pending">
     <v-btn color="primary" :loading="isLoading" @click="loadMore">
       Load more
     </v-btn>

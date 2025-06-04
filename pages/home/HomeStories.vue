@@ -30,6 +30,15 @@ function triggerFileInput() {
   if (input) input.click()
 }
 
+function openStoryViewer(userStories: any) {
+  currentUsername.value = userStories.username
+  currentUserStories.value = userStories.stories
+  storyViewerVisible.value = true
+}
+
+const uploadSuccess = ref(false)
+const uploadError = ref(false)
+
 async function handleFileUpload(file: File) {
   const formData = new FormData()
   formData.append('file', file)
@@ -61,31 +70,37 @@ async function handleFileUpload(file: File) {
           stories: [newStory],
         })
       }
+
+      uploadSuccess.value = true
     }
   } catch (e) {
     console.error('Upload error', e)
+    uploadError.value = true
   }
-}
-
-function openStoryViewer(userStories: any) {
-  currentUsername.value = userStories.username
-  currentUserStories.value = userStories.stories
-  storyViewerVisible.value = true
 }
 </script>
 
 <template>
   <v-row>
     <v-col cols="12">
-      <v-card rounded="xl" class="overflow-scroll mx-3" variant="text">
+      <v-card
+        rounded="xl"
+        class="overflow-x-auto mx-3 min-h-stories"
+        variant="text"
+      >
         <div class="py-4 d-flex">
+          <!-- Add Story Button -->
           <v-col
             lg="1"
             md="2"
             sm="3"
             cols="4"
             class="text-center"
+            role="button"
+            tabindex="0"
+            aria-label="Add a story"
             @click="triggerFileInput"
+            @keydown.enter="triggerFileInput"
             style="cursor: pointer"
           >
             <v-avatar size="58" class="shadow-sm">
@@ -96,6 +111,7 @@ function openStoryViewer(userStories: any) {
             </p>
           </v-col>
 
+          <!-- User Stories -->
           <v-col
             v-for="userStories in stories"
             :key="userStories.userId"
@@ -107,11 +123,18 @@ function openStoryViewer(userStories: any) {
           >
             <v-avatar
               @click="openStoryViewer(userStories)"
-              style="cursor: pointer" size="58" class="border border-primary px-1 py-1">
+              role="button"
+              tabindex="0"
+              aria-label="Open story"
+              style="cursor: pointer"
+              size="58"
+              class="border border-primary px-1 py-1"
+            >
               <v-img
                 :src="userStories.stories[0]?.mediaPath"
                 width="50"
                 height="50"
+                cover
               />
             </v-avatar>
             <NuxtLink :to="`/${userStories.username}`" class="text-decoration-none">
@@ -122,6 +145,7 @@ function openStoryViewer(userStories: any) {
           </v-col>
         </div>
 
+        <!-- Hidden File Input -->
         <v-file-input
           ref="fileInput"
           v-model="newStory"
@@ -130,13 +154,14 @@ function openStoryViewer(userStories: any) {
           required
           accept="image/*"
           show-size
-          style="display: none"
+          v-show="false"
           @update:modelValue="handleFileUpload"
         />
       </v-card>
     </v-col>
   </v-row>
 
+  <!-- Story Viewer -->
   <v-dialog v-model="storyViewerVisible" max-width="600">
     <v-card>
       <v-carousel height="500" hide-delimiter-background show-arrows>
@@ -146,11 +171,21 @@ function openStoryViewer(userStories: any) {
         >
           <v-img
             :src="story.mediaPath"
-            class="h-100"
+            width="100%"
+            height="500"
             cover
           />
         </v-carousel-item>
       </v-carousel>
     </v-card>
   </v-dialog>
+
+  <!-- Upload Feedback -->
+  <v-snackbar v-model="uploadSuccess" color="success" timeout="3000">
+    Story uploaded successfully!
+  </v-snackbar>
+  <v-snackbar v-model="uploadError" color="error" timeout="3000">
+    Failed to upload story.
+  </v-snackbar>
 </template>
+
