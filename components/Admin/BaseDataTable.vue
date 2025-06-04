@@ -18,17 +18,17 @@ const { data: items, pending, error, refresh } = useFetch(() => props.apiPath, {
 })
 
 const handleDelete = async (id: string | number) => {
-  await $fetch(`${props.apiPath}/${id}`, { method: 'DELETE' })
+  await useFetch(`${props.apiPath}/${id}`, { method: 'DELETE' })
   refresh()
 }
 
 const handleShow = async (id: string | number) => {
-  const res = await $fetch(`${props.apiPath}/${id}`)
+  const res = await useFetch(`${props.apiPath}/${id}`)
   console.log('Show:', res)
 }
 
 const handleEdit = async (id: string | number) => {
-  const res = await $fetch(`${props.apiPath}/${id}`)
+  const res = await useFetch(`${props.apiPath}/${id}`)
   console.log('Edit:', res)
 }
 const headersWithActions = computed(() => [

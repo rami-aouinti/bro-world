@@ -12,7 +12,7 @@ const username = route.params.username
 
 const loadProfile = async () => {
   pending.value = true
-  const { data } = await $fetch(`/api/profile/${username}`)
+  const { data } = await useFetch(`/api/profile/${username}`)
   if (data.value) {
 
     profile.value = data.value

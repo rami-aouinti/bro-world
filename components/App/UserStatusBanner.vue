@@ -42,7 +42,7 @@ const error = ref(false)
 
 async function requestActivation() {
   try {
-    await $fetch(`/api/users/${user.value.id}/request-activation`, {
+    await useFetch(`/api/users/${user.value.id}/request-activation`, {
       method: 'POST',
     })
     success.value = true

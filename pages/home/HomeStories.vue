@@ -14,7 +14,7 @@ const currentUsername = ref('')
 
 async function loadStories() {
   try {
-    const response = await $fetch('/api/profile/stories', {
+    const response = await useFetch('/api/profile/stories', {
       credentials: 'include',
     })
     stories.value = response.data.value || []
@@ -44,7 +44,7 @@ async function handleFileUpload(file: File) {
   formData.append('file', file)
 
   try {
-    const response = await $fetch('/api/profile/story', {
+    const response = await useFetch('/api/profile/story', {
       method: 'POST',
       body: formData,
       credentials: 'include',
