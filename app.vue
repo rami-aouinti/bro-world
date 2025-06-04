@@ -70,7 +70,7 @@ useSeoMeta({
   themeColor: '#091b2d',
 
   robots: 'index, follow',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
 })
 </script>
 
