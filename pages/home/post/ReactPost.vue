@@ -41,13 +41,13 @@ defineProps<{
       <div class="d-flex align-center">
         <div class="d-flex align-center ms-auto">
           <v-avatar size="24" class="border border-white ms-n2">
-            <NuxtImg width="24" height="24" src="/img/team-5.jpg" alt="Avatar" />
+            <NuxtImg preset="optimized" width="24" height="24" src="/img/team-5.jpg" alt="Avatar" />
           </v-avatar>
           <v-avatar size="24" class="border border-white ms-n2">
-            <NuxtImg width="24" height="24" src="/img/team-2.jpg" alt="Avatar" />
+            <NuxtImg preset="optimized" width="24" height="24" src="/img/team-2.jpg" alt="Avatar" />
           </v-avatar>
           <v-avatar size="24" class="border border-white ms-n2">
-            <NuxtImg width="24" height="24" src="/img/team-1.jpg" alt="Avatar" />
+            <NuxtImg preset="optimized" width="24" height="24" src="/img/team-1.jpg" alt="Avatar" />
           </v-avatar>
         </div>
         <small class="ps-2 font-weight-bold text-body text-sm">

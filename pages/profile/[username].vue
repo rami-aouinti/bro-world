@@ -320,6 +320,7 @@ definePageMeta({
                           width="48" height="48"
                           :src="conversation.avatar"
                           alt="Avatar"
+                          preset="optimized"
                           class="border-radius-lg"
                         />
                       </v-avatar>
