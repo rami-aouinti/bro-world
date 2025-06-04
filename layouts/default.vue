@@ -7,6 +7,7 @@
     </v-main>
     <AppFooter />
     <Analytics />
+    <SpeedInsights/>
   </v-app>
 </template>
 <script setup lang="ts">
@@ -14,6 +15,7 @@ import AppFooter from '~/components/App/AppFooter.vue'
 import AppDrawer from '~/components/App/AppDrawer.vue'
 import AppBar from '~/components/App/AppBar.vue'
 import { Analytics } from '@vercel/analytics/vue';
+import { SpeedInsights } from "@vercel/speed-insights/nuxt"
 </script>
 <style scoped>
 /* replace padding with margin to limit scrollbar in v-main */
