@@ -112,8 +112,8 @@ const cards = [
   <v-card v-for="(card, i) in brands" :key="i" class="mb-6 min-h-section" variant="text">
     <div class="px-4 py-4">
       <div class="d-flex">
-        <v-avatar size="40">
-          <NuxtImg :alt="card.title"  :src="card.img" width="40" height="40" />
+        <v-avatar height="40" width="40">
+          <NuxtImg :alt="card.title"  :src="card.img" width="40" layout="intrinsic" />
         </v-avatar>
         <v-row class="align-center">
           <v-col cols="9">
