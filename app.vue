@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { THEME_KEY } from 'vuetify'
 const theme = useTheme()
-provide(THEME_KEY, computed(() => (theme.current.value.dark ? 'dark' : undefined)))
-
+provide(
+  THEME_KEY,
+  computed(() => (theme.current.value.dark ? 'dark' : undefined)),
+)
 const route = useRoute()
 const runtimeConfig = useRuntimeConfig()
 
