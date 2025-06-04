@@ -99,7 +99,7 @@ const cards = [
           <v-tooltip v-for="(avatar, i) in card.avatars" :key="i" bottom color="#212529">
             <template #activator="{ props }">
               <v-avatar v-bind="props" size="24" class="border border-white ms-n3">
-                <img :src="avatar" alt="Avatar" width="24" height="24" />
+                <NuxtImg :src="avatar" alt="Avatar" width="24" height="24" />
               </v-avatar>
             </template>
             <span>Member</span>
@@ -113,7 +113,7 @@ const cards = [
     <div class="px-4 py-4">
       <div class="d-flex">
         <v-avatar size="40">
-          <NuxtImg :src="card.img" width="40" height="40" />
+          <NuxtImg :alt="card.title"  :src="card.img" width="40" height="40" />
         </v-avatar>
         <v-row class="align-center">
           <v-col cols="9">
@@ -137,7 +137,7 @@ const cards = [
           <v-tooltip v-for="(avatar, j) in card.avatars" :key="j" bottom color="#212529" class="py-1">
             <template #activator="{ props }">
               <v-avatar v-bind="props" size="24" class="border border-white ms-n3">
-                <img :src="avatar" alt="Avatar" width="24" height="24" />
+                <NuxtImg :src="avatar" alt="Avatar" width="24" height="24" />
               </v-avatar>
             </template>
             <span>Member</span>
