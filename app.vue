@@ -18,6 +18,10 @@ const description = computed(() => {
   return route.meta?.description || route.matched[0]?.meta?.description || 'Welcome to Bro World — your unique community platform.'
 })
 
+const keywords = computed(() => {
+  return route.meta?.description || route.matched[0]?.meta?.description || 'social, Bro world, Community'
+})
+
 useHead({
   title,
   titleTemplate: (t) => (t ? `${t} | Bro World` : 'Bro World'),
@@ -26,7 +30,6 @@ useHead({
     { rel: 'icon', href: '/earth_favicon.ico' },
     { rel: 'canonical', href: canonicalUrl.value },
 
-    // Multilingue
     { rel: 'alternate', hrefLang: 'en', href: baseUrl + '/en' },
     { rel: 'alternate', hrefLang: 'de', href: baseUrl + '/de' },
     { rel: 'alternate', hrefLang: 'fr', href: baseUrl + '/fr' },
@@ -63,8 +66,9 @@ useSeoMeta({
   twitterDescription: description,
   twitterImage: '/social-img.png',
   twitterCard: 'summary_large_image',
-
+  keywords: keywords,
   themeColor: '#091b2d',
+
   robots: 'index, follow',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
 })
