@@ -17,6 +17,10 @@ export default defineNuxtConfig({
     '@nuxt/image'
   ],
 
+  plugins: [
+    '~/plugins/vuetify-i18n.ts',
+  ],
+
   sitemap: {
     siteUrl: 'https://bro-world-space.com',
     trailingSlash: false,

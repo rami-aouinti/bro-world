@@ -171,6 +171,7 @@ async function handleSubmit() {
       repeatPassword: repeatPassword.value,
     },
   })
+
   if (data) {
     Notify.success('Success logged !')
     router.push('/login')
