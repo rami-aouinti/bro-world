@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-const file = ref<File | null>(null)
 const { user } = await useUserSession()
 const pending = ref(false)
 const gender = ["Female", "Male"];
@@ -30,27 +29,24 @@ const userData = ref({
   skills: [],
 });
 
-
-
-
 const loadProfile = async () => {
   pending.value = true
   if (user.value.username) {
     const { data } = await useFetch(`/api/profile/${user.value.username}`)
     if (data.value) {
       userData.value = {
-        title: data.value?.profile.title || '',
-        description: data.value?.profile.description || '',
+        title: data.value?.profile?.title || '',
+        description: data.value?.profile?.description || '',
         firstName: data.value?.firstName || '',
         lastName: data.value?.lastName || '',
-        gender: data.value?.profile.gender || '',
+        gender: data.value?.profile?.gender || '',
         birthMonth: data.value?.birthMonth || '',
         birthDay: data.value?.birthDay || '',
         birthYear: data.value?.birthYear || '',
         email: data.value?.email || '',
         confirmEmail: data.value?.email || '',
         location: data.value?.location || '',
-        phone: data.value?.profile.phone || '',
+        phone: data.value?.profile?.phone || '',
         language: data.value?.language || '',
         skills: [],
       };
@@ -67,7 +63,6 @@ const saveProfile = async () => {
   formData.append('description', userData?.value.description);
   formData.append('gender', userData?.value.gender);
   formData.append('phone', userData?.value.phone);
-  formData.append('file', file)
 
   try {
     const response = await useFetch('/api/profile/update', {
@@ -121,76 +116,65 @@ onMounted(async () => {
     <div class="px-6 pb-6 pt-0">
       <v-form ref="formRef">
         <v-row>
-          <v-col cols="6">
-            <v-file-upload
-              icon="mdi-upload"
-              v-model="file"
-              title="Upload Your avatar"
-              density="compact"
-              variant="compact"
-              show-size
-              clearable
-            >
-            </v-file-upload>
+          <v-col cols="12" md="3">
+            <v-text-field variant="outlined" v-model="userData.title" label="Title" />
           </v-col>
-          <v-col cols="6">
-            <v-row>
-              <v-col cols="12">
-                <v-text-field variant="outlined" v-model="userData.title" label="Title" />
-              </v-col>
-              <v-col cols="12">
-                <v-text-field variant="outlined" v-model="userData.description" label="Description" />
-              </v-col>
-            </v-row>
+          <v-col cols="12" md="3">
+            <v-text-field variant="outlined" v-model="userData.description" label="Description" />
           </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="6">
+          <v-col cols="12" md="3">
             <v-text-field variant="outlined" v-model="userData.firstName" label="First Name" />
           </v-col>
-          <v-col cols="6">
+          <v-col cols="12" md="3">
             <v-text-field variant="outlined" v-model="userData.lastName" label="Last Name" />
           </v-col>
         </v-row>
         <v-row>
-          <v-col sm="4" cols="12">
+          <v-col cols="12" sm="4">
             <v-select variant="outlined" v-model="userData.gender" :items="gender" label="Gender" />
           </v-col>
-          <v-col sm="8">
-            <v-row>
-              <v-col cols="5">
-                <v-select variant="outlined" v-model="userData.birthMonth" :items="months" label="Month" />
-              </v-col>
-              <v-col cols="3">
-                <v-select variant="outlined" v-model="userData.birthDay" :items="days" label="Day" />
-              </v-col>
-              <v-col cols="4">
-                <v-select variant="outlined" v-model="userData.birthYear" :items="years" label="Year" />
-              </v-col>
-            </v-row>
+          <v-col cols="12" sm="8">
+            <v-date-input
+              label="Date of birth"
+              prepend-icon=""
+              variant="outlined"
+              persistent-placeholder
+            ></v-date-input>
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="6">
+          <v-col cols="12" md="6">
             <v-text-field variant="outlined" v-model="userData.email" label="Email" />
           </v-col>
-          <v-col cols="6">
+          <v-col cols="12" md="6">
             <v-text-field variant="outlined" v-model="userData.confirmEmail" label="Confirmation Email" />
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="6">
+          <v-col cols="12" md="3">
+            <v-text-field label="Address" variant="outlined"></v-text-field>
+          </v-col>
+          <v-col cols="12" md="3">
+            <v-text-field label="City" variant="outlined"></v-text-field>
+          </v-col>
+          <v-col cols="12" md="3">
+            <v-text-field label="State" variant="outlined"></v-text-field>
+          </v-col>
+          <v-col cols="12" md="3">
+            <v-text-field label="Zip code" variant="outlined"></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
             <v-text-field variant="outlined" v-model="userData.location" label="Your Location" />
           </v-col>
-          <v-col cols="6">
+          <v-col cols="12" md="6">
             <v-text-field variant="outlined" v-model="userData.phone" label="Phone Number" />
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="6">
+          <v-col cols="12" md="6">
             <v-select variant="outlined" v-model="userData.language" :items="languages" label="Language" />
           </v-col>
-          <v-col cols="6">
+          <v-col cols="12" md="6">
             <v-select variant="outlined" v-model="userData.skills" :items="skills" label="Skills" multiple chips />
           </v-col>
         </v-row>

@@ -1,45 +1,33 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, defineEmits } from 'vue'
 import UserAvatar from "~/components/App/UserAvatar.vue";
+import BaseDialog from "~/components/BaseDialog.vue";
 const dialog = ref(false)
 const loading = ref(false)
+const files = ref<File[]>([]);
+
+const emit = defineEmits(["post-created"]);
 
 const load = () => {
   loading.value = true
   setTimeout(() => (loading.value = false), 3000)
 }
 
-const isSubmitting = ref(false);
+const showDialog = ref(false);
 const postContent = ref('')
-const { user } = useUserSession()
-const getInitials = (user) => {
-  const first = user?.firstName?.[0] || '';
-  const last = user?.lastName?.[0] || '';
-  return (first + last).toUpperCase();
+const handleSuccess = (data) => {
+  postContent.value = '';
+  Notify.success('Post created !')
+  emit("post-created", data);
+  console.log("Success:", data);
 };
-const publishPost = async () => {
-  if (!postContent.value) {
-    Notify.warning("Veuillez remplir tous les champs !");
-    return;
-  }
 
-  isSubmitting.value = true;
-  dialog.value = true
-  try {
-    await useFetch("/api/posts", {
-      method: "POST",
-      body: {title: postContent.value},
-    });
+const handleError = (error) => {
+  Notify.error('Post failed !')
+  console.error("Failed:", error);
+};
 
-    Notify.success("Post ajouté avec succès !");
-    postContent.value = "";
-  } catch (error) {
-    Notify.error("Erreur lors de l'ajout du post !");
-  } finally {
-    isSubmitting.value = false;
-    dialog.value = false
-  }
-}
+const { user } = useUserSession()
 </script>
 
 <template>
@@ -101,28 +89,38 @@ const publishPost = async () => {
     </v-card>
 
     <!-- Modal (Dialog) -->
-    <v-dialog v-model="dialog" max-width="500px">
-      <v-card>
-        <v-card-title class="text-h5 font-weight-bold">
-          Create a new post
-        </v-card-title>
-
+    <BaseDialog
+      v-model="dialog"
+      title="New Post"
+      color="primary"
+      :closeButton="[
+      { text: 'Cancel', color: 'grey', action: (showDialog = false) }
+    ]"
+      :saveButton="[
+      { text: 'Save', color: 'primary', action: '/api/posts/post/posts' }
+    ]"
+      :files="files"
+      :forms="postContent"
+      @success="handleSuccess"
+      @error="handleError"
+    >
+      <v-card rounded="xl">
         <v-card-text>
-          <v-textarea
-            v-model="postContent"
-            label="What's on your mind?"
-            variant="outlined"
-            auto-grow
-          />
-        </v-card-text>
-
-        <v-card-actions class="d-flex justify-end">
-          <v-btn color="grey" variant="text" @click="dialog = false"
-          >Cancel</v-btn
+          <v-text-field v-model="postContent" label="Post Title" variant="outlined" rounded outlined required />
+          <v-file-upload
+            icon="mdi-upload"
+            v-model="files"
+            title="Upload avatar"
+            multiple
+            density="compact"
+            variant="compact"
+            show-size
+            clearable
           >
-          <v-btn color="primary" :disabled="isSubmitting" @click="publishPost">Publish</v-btn>
-        </v-card-actions>
+          </v-file-upload>
+          <small class="text-grey">* This doesn't actually save.</small>
+        </v-card-text>
       </v-card>
-    </v-dialog>
+    </BaseDialog>
   </div>
 </template>

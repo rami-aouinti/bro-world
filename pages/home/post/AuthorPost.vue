@@ -61,7 +61,7 @@ onMounted(async () => {
       </a>
       <div class="mx-4">
         <NuxtLink
-          :to="`/${author?.username}`"
+          :to="`/profile/${author?.username}`"
           class="text-dark font-weight-600 text-sm text-decoration-none"
         >
           {{ author?.firstName }} {{ author?.lastName }}

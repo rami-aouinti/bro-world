@@ -53,6 +53,7 @@ watch(username, () => {
 }, { immediate: true })
 
 onMounted(async () => {
+  window.scrollTo({ top: 0 })
   await loadProfile()
 })
 

@@ -18,6 +18,8 @@ export default defineOAuthGitHubEventHandler({
         lastName: userGithub.profile.lastName,
         email: userGithub.profile.email,
         avatar: userGithub.profile?.avatar_url,
+        enabled: userGithub.enabled,
+        profile: userGithub?.profile,
         token: userGithub.token,
         roles: userGithub.profile.roles,
       }

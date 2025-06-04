@@ -17,6 +17,8 @@ export default defineOAuthGoogleEventHandler({
         firstName: userGoogle.profile.firstName,
         lastName: userGoogle.profile.lastName,
         email: userGoogle.profile.email,
+        enabled: userGoogle.enabled,
+        profile: userGoogle?.profile,
         avatar: userGoogle.profile?.picture,
         token: userGoogle.token,
         roles: userGoogle.profile.roles,

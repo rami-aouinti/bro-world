@@ -1,6 +1,18 @@
 <script setup lang="ts">
 import AppDrawerItem from "~/components/App/AppDrawerItem.vue";
 
+const drawerState = useState('drawer', () => false)
+
+const { mobile, lgAndUp, width } = useDisplay()
+const drawer = computed({
+  get() {
+    return drawerState.value || !mobile.value
+  },
+  set(val: boolean) {
+    drawerState.value = val
+  },
+})
+const rail = computed(() => !drawerState.value && !mobile.value)
 const router = useRouter()
 const { user } = useUserSession()
 
@@ -16,18 +28,6 @@ const routes = router.getRoutes().filter((r) => {
 
   return isTopLevel
 })
-const drawerState = useState('drawer', () => false)
-
-const { mobile, lgAndUp, width } = useDisplay()
-const drawer = computed({
-  get() {
-    return drawerState.value || !mobile.value
-  },
-  set(val: boolean) {
-    drawerState.value = val
-  },
-})
-const rail = computed(() => !drawerState.value && !mobile.value)
 routes.sort((a, b) => (a.meta?.drawerIndex ?? 99) - (b.meta?.drawerIndex ?? 98))
 
 const currentYear = new Date().getFullYear();

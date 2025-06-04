@@ -59,7 +59,7 @@ const notLoggedUser = ref([
     <v-list class="pa-1" v-if="loggedIn">
       <v-list-item
         prepend-icon="mdi-face"
-        :to="user.name"
+        to="/profile"
       >
         <v-list-item-title
           class="text-body-2 ls-0 text-typo font-weight-600 mb-0"

@@ -12,11 +12,7 @@ export default defineEventHandler(async (event) => {
 
 
   formData.forEach(({ name, data, filename, type }) => {
-    if (filename) {
-      axiosFormData.append(name, new Blob([data], { type }), filename);
-    } else {
-      axiosFormData.append(name, data);
-    }
+    axiosFormData.append(name, data);
   });
 
   let session = await requireUserSession(event)
@@ -36,13 +32,25 @@ export default defineEventHandler(async (event) => {
 
   const headers = {
     Authorization: `Bearer ${token}`,
-    "Content-Type": "multipart/form-data",
   }
 
   try {
     const response = await axios.post('https://bro-world.org/api/v1/profile/update', axiosFormData, {headers})
 
+    const user = response.data
+
+    await setUserSession(event, {
+      user: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        enabled: user.enabled,
+        profile: user?.profile,
+        roles: user.roles,
+      }
+    })
     return response.data
+
+
 
   } catch (error) {
     throw createError({

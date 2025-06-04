@@ -71,6 +71,11 @@ const chats = [
     message: 'Charlie is Typing...',
   },
 ]
+
+onMounted(() => {
+  window.scrollTo({ top: 0 })
+})
+
 definePageMeta({
   title: 'inbox',
   layout: 'default',

@@ -1,47 +1,53 @@
 <script setup lang="ts">
-import HomeStories from "~/pages/home/HomeStories.vue";
-import HomePosts from "~/pages/home/HomePosts.vue";
-import HomeFilters from "~/pages/home/HomeFilters.vue";
-import NewPost from "~/pages/home/post/NewPost.vue";
-const { loggedIn } = useUserSession()
-const { data: posts, pending, error } = useFetch('/api/posts')
-definePageMeta({
-  title: 'home',
-  layout: 'default',
-  breadcrumb: 'disabled',
-})
+import InfiniteList from '~/components/Blog/InfiniteList.vue'
+import { usePostStore } from '~/stores/usePostStore'
+import UserStatusBanner from '~/components/App/UserStatusBanner.vue'
+import HomeStories from '~/pages/home/HomeStories.vue'
+import NewPost from '~/pages/home/post/NewPost.vue'
+import HomePosts from '~/pages/home/HomePosts.vue'
+import HomeFilters from '~/pages/home/HomeFilters.vue'
 
+const { loggedIn } = useUserSession()
+const postStore = usePostStore()
+onMounted(() => {
+  window.scrollTo({ top: 0 })
+})
 </script>
 
 <template>
   <v-container fluid>
-    <HomeStories v-if="loggedIn"></HomeStories>
+    <UserStatusBanner />
+    <HomeStories v-if="loggedIn" />
+
     <v-row>
-      <v-col lg="8" cols="12">
-        <NewPost v-if="loggedIn"></NewPost>
-        <div
-          v-if="pending"
-          class="d-flex justify-center align-center"
-          style="height: 25vh"
+      <v-col cols="12" lg="8">
+        <NewPost v-if="loggedIn" />
+
+        <InfiniteList
+          v-if="!postStore.loaded"
+          fetch-url="/api/posts"
+          :limit="5"
+          @loaded="postStore.setPosts"
         >
-          <v-progress-circular
-            :size="120"
-            :width="10"
-            color="primary"
-            indeterminate
-          />
-        </div>
-        <div v-else>
-          <div v-for="post in posts" :key="post.id">
-            <HomePosts :post="post"></HomePosts>
+          <template #default="{ items }">
+            <div v-for="post in items" :key="post.id">
+              <HomePosts :post="post" />
+            </div>
+          </template>
+        </InfiniteList>
+
+        <div v-else-if="postStore.posts.length">
+          <div v-for="post in postStore.posts" :key="post.id">
+            <HomePosts :post="post" />
           </div>
         </div>
-        <v-alert v-if="error" type="error" class="ma-4">
-          An error occurred while loading posts.
+        <v-alert v-else type="warning" class="mt-4">
+          No Posts
         </v-alert>
       </v-col>
-      <v-col lg="4" cols="12">
-        <HomeFilters></HomeFilters>
+
+      <v-col cols="12" lg="4">
+        <HomeFilters />
       </v-col>
     </v-row>
   </v-container>

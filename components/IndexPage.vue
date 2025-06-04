@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const route = useRoute()
-
 const items = computed(() =>
   route.matched
     .filter((v) => v.path === route.path)[0]
