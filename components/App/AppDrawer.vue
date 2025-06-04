@@ -49,7 +49,7 @@ const currentYear = new Date().getFullYear();
           link
           aria-label="Go to the Bro World homepage"
           icon
-          title="Open navigation menu"
+          title=""
         >
           <template #prepend>
             <v-icon
