@@ -72,10 +72,6 @@ const chats = [
   },
 ]
 
-onMounted(() => {
-  window.scrollTo({ top: 0 })
-})
-
 definePageMeta({
   title: 'inbox',
   layout: 'default',

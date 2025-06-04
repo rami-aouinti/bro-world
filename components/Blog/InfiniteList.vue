@@ -21,7 +21,7 @@ const loadMore = async () => {
   isLoading.value = true
 
   try {
-    await delay(100)
+    await delay(4)
 
     const response = await fetch(`${props.fetchUrl}?page=${page.value}&limit=${props.limit || 5}`)
     const result = await response.json()

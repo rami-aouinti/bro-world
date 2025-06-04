@@ -9,9 +9,6 @@ import HomeFilters from '~/pages/home/HomeFilters.vue'
 
 const { loggedIn } = useUserSession()
 const postStore = usePostStore()
-onMounted(() => {
-  window.scrollTo({ top: 0 })
-})
 </script>
 
 <template>
