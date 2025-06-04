@@ -8,6 +8,7 @@
   "AddStory": "Story hinzufügen",
   "$vuetify": {
     "badge": "Abzeichen",
+    "open": "Öffnen",
     "close": "Schließen",
     "dataIterator": {
       "noResultsText": "Keine passenden Einträge gefunden",

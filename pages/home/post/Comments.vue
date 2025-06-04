@@ -3,7 +3,10 @@ import NewComment from "~/pages/home/post/NewComment.vue";
 import ReactComment from "~/pages/home/post/ReactComment.vue";
 import UserAvatar from "~/components/App/UserAvatar.vue";
 defineProps<{
-  post: []
+  post: {
+    type: Object,
+    required: true,
+  },
 }>();
 const { loggedIn } = useUserSession()
 </script>

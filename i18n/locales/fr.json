@@ -8,6 +8,7 @@
   "AddStory": "Ajouter un story",
   "$vuetify": {
     "badge": "Badge",
+    "open": "Ouvrir",
     "close": "Fermer",
     "dataIterator": {
       "noResultsText": "Aucun résultat trouvé",

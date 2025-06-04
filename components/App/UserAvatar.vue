@@ -1,7 +1,8 @@
 <template>
   <v-avatar :color="color" :size="size">
-    <v-img v-if="user?.profile?.photo" :src="user?.profile?.photo ?? user?.avatar">
-    </v-img>
+    <NuxtImg
+      :width="size" :height="size" v-if="user?.profile?.photo" :src="user?.profile?.photo ?? user?.avatar">
+      ></NuxtImg>
     <v-img v-else>
       <span class="text-h6 white--text">
           {{ getInitials(user) }}

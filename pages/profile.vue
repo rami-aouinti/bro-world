@@ -91,7 +91,8 @@ definePageMeta({
                   size="50"
                   class="rounded-circle"
                 >
-                  <v-img :src="avatarUrl" alt="Avatar" />
+                  <NuxtImg
+                    width="50" height="50" :src="avatarUrl" alt="Avatar" />
                 </v-avatar>
               </v-col>
 
@@ -264,7 +265,8 @@ definePageMeta({
                         height="48"
                         class="shadow border-radius-lg me-4"
                       >
-                        <v-img
+                        <NuxtImg
+                          width="48" height="48"
                           :src="conversation.avatar"
                           alt="Avatar"
                           class="border-radius-lg"

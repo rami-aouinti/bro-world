@@ -13,7 +13,7 @@
     <div class="px-6 pb-6 pt-4">
       <div class="d-flex align-center">
         <v-avatar width="48" height="48" class="border-radius-lg me-4">
-          <img src="@/assets/img/small-logos/logo-slack.svg" alt="Avatar" />
+          <img src="/img/small-logos/logo-slack.svg" alt="Avatar" />
         </v-avatar>
         <div>
           <h5 class="mb-0 text-typo text-h5 font-weight-bold">Slack</h5>
@@ -85,7 +85,7 @@
       <hr class="horizontal dark mb-4" />
       <div class="d-flex align-center">
         <v-avatar width="48" height="48" class="border-radius-lg me-4">
-          <img src="@/assets/img/small-logos/logo-spotify.svg" alt="Avatar" />
+          <img src="/img/small-logos/logo-spotify.svg" alt="Avatar" />
         </v-avatar>
         <div>
           <h5 class="mb-0 text-typo text-h5 font-weight-bold">Spotify</h5>
@@ -109,7 +109,7 @@
       <hr class="horizontal dark my-4" />
       <div class="d-flex align-center">
         <v-avatar width="48" height="48" class="border-radius-lg me-4">
-          <img src="@/assets/img/small-logos/logo-atlassian.svg" alt="Avatar" />
+          <img src="/img/small-logos/logo-atlassian.svg" alt="Avatar" />
         </v-avatar>
         <div>
           <h5 class="mb-0 text-typo text-h5 font-weight-bold">Atlassian</h5>
@@ -133,7 +133,7 @@
       <hr class="horizontal dark my-4" />
       <div class="d-flex align-center">
         <v-avatar width="48" height="48" class="border-radius-lg me-4">
-          <img src="@/assets/img/small-logos/logo-asana.svg" alt="Avatar" />
+          <img src="/img/small-logos/logo-asana.svg" alt="Avatar" />
         </v-avatar>
         <div>
           <h5 class="mb-0 text-typo text-h5 font-weight-bold">Asana</h5>

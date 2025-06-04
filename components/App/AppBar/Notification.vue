@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { mergeProps } from 'vue'
+
 const dropdown = [
   {
     icon: 'mdi-email',
@@ -15,34 +16,31 @@ const dropdown = [
   },
 ]
 </script>
+
 <template>
   <v-menu location="bottom">
     <template #activator="{ props: menu }">
       <v-btn
-        aria-label="notification"
+        icon
         title="Notification"
-        icon v-bind="mergeProps(menu)" class="ml-1">
-        <v-icon icon="mdi-bell" size="30" />
+        aria-label="notification"
+        v-bind="mergeProps(menu)"
+        class="ml-1"
+      >
+        <v-icon size="30">mdi-bell</v-icon>
       </v-btn>
     </template>
-    <v-list class="pa-3">
+
+    <v-list class="pa-2">
       <v-list-item
         v-for="(item, i) in dropdown"
         :key="i"
-        class="pa-4 list-item-hover-active d-flex align-items-center py-1 my-1 border-radius-md"
+        class="py-2 px-3 d-flex align-center list-item-hover-active border-radius-md"
       >
-        <v-row class="d-flex align-center">
-          <v-col cols="2">
-            <v-icon class="material-icons-round text-body" size="20">{{
-                item.icon
-              }}</v-icon>
-          </v-col>
-          <v-col cols="10">
-            <h6 class="text-sm font-weight-normal ms-2 text-typo">
-              {{ item.title }}
-            </h6>
-          </v-col>
-        </v-row>
+        <v-icon size="20" class="me-3 text-body">{{ item.icon }}</v-icon>
+        <span class="text-sm font-weight-normal text-typo">
+          {{ item.title }}
+        </span>
       </v-list-item>
     </v-list>
   </v-menu>

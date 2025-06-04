@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import Comments from "~/pages/home/post/Comments.vue";
 import ReactPost from "~/pages/home/post/ReactPost.vue";
-defineProps<{
-  post: []
-}>();
+
+defineProps({
+  post: {
+    type: Object,
+    required: true,
+  },
+})
 </script>
 
 <template>
@@ -13,9 +17,11 @@ defineProps<{
         {{ post.title }}
       </p>
     </NuxtLink>
-    <v-img
+    <NuxtImg
       :alt="`image-${post.slug}`"
       src="https://images.unsplash.com/photo-1578271887552-5ac3a72752bc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80"
+      layout="responsive"
+      style="width: 100%; height: auto"
       class="border-radius-lg shadow-lg"
     />
     <ReactPost :post="post"></ReactPost>

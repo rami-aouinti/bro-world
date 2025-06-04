@@ -8,6 +8,7 @@
   "AddStory": "أضف قصة",
   "$vuetify": {
     "badge": "شارة",
+    "open": "فتح",
     "close": "إغلاق",
     "dataIterator": {
       "noResultsText": "لم يتم العثور على نتائج مطابقة",

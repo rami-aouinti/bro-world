@@ -1,6 +1,9 @@
 <script setup lang="ts">
 defineProps<{
-  post: []
+  post: {
+    type: Object,
+    required: true,
+  },
 }>();
 </script>
 
@@ -36,20 +39,20 @@ defineProps<{
     </v-col>
     <v-col sm="6">
       <div class="d-flex align-center">
-        <div class="d-flex align-items-center ms-auto">
+        <div class="d-flex align-center ms-auto">
           <v-avatar size="24" class="border border-white ms-n2">
-            <v-img src="@/assets/img/team-5.jpg" alt="Avatar" />
+            <NuxtImg width="24" height="24" src="/img/team-5.jpg" alt="Avatar" />
           </v-avatar>
           <v-avatar size="24" class="border border-white ms-n2">
-            <v-img src="@/assets/img/team-2.jpg" alt="Avatar" />
+            <NuxtImg width="24" height="24" src="/img/team-2.jpg" alt="Avatar" />
           </v-avatar>
           <v-avatar size="24" class="border border-white ms-n2">
-            <v-img src="@/assets/img/team-1.jpg" alt="Avatar" />
+            <NuxtImg width="24" height="24" src="/img/team-1.jpg" alt="Avatar" />
           </v-avatar>
         </div>
-        <small class="ps-2 font-weight-bold text-body text-sm"
-        >and 30+ more</small
-        >
+        <small class="ps-2 font-weight-bold text-body text-sm">
+          and 30+ more
+        </small>
       </div>
     </v-col>
   </v-row>

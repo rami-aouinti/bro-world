@@ -107,7 +107,8 @@ definePageMeta({
                     size="50"
                     class="rounded-circle"
                   >
-                    <v-img :src="avatarUrl" alt="Avatar" />
+                    <NuxtImg
+                      width="50" height="50" :src="avatarUrl" alt="Avatar" />
                   </v-avatar>
 
                   <v-btn

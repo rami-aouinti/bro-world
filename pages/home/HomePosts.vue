@@ -1,19 +1,13 @@
 <script setup lang="ts">
 import AuthorPost from "~/pages/home/post/AuthorPost.vue";
 import Post from "~/pages/home/post/Post.vue";
-defineProps<{
-  post:
-    { id: string;
-      title: string;
-      content: string ,
-      user: {
-        id: string,
-        username: string,
-        avatar: string
-      },
-      date: string
-    }
-}>();
+
+defineProps({
+  post: {
+    type: Object,
+    required: true,
+  },
+})
 </script>
 
 <template>

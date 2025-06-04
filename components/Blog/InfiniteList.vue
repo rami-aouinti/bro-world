@@ -22,32 +22,20 @@ const loadMore = async () => {
 
   try {
     await delay(100)
-    const { data, error } = await useFetch(
-      `${props.fetchUrl}?page=${page.value}&limit=${props.limit || 5}`,
-      {
-        key: `${props.fetchUrl}-page-${page.value}`,
-        server: false,
-      }
-    )
 
-    if (data.value) {
-      const result = data.value || []
-      if (result.length) {
-        items.value.push(...result)
-        emit('loaded', items.value)
-      }
+    const response = await fetch(`${props.fetchUrl}?page=${page.value}&limit=${props.limit || 5}`)
+    const result = await response.json()
 
-      if (result.length === 0) {
-        hasMore.value = false
-      } else {
-        page.value++
-      }
+    if (result && result.length) {
+      items.value.push(...result)
+      emit('loaded', items.value)
+      page.value++
     } else {
-      console.error(error.value)
       hasMore.value = false
     }
+
   } catch (err) {
-    console.error('Unexpected error in loadMore:', err)
+    console.error('Fetch error:', err)
     hasMore.value = false
   }
 

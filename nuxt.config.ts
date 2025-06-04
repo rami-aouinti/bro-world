@@ -1,4 +1,5 @@
 import { aliases } from 'vuetify/iconsets/mdi'
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -12,6 +13,7 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
     'nuxt-echarts',
     '@nuxt/icon',
+    '@nuxt/image',
     '@nuxt/eslint',
     '@nuxt/test-utils/module',
   ],
@@ -94,6 +96,15 @@ export default defineNuxtConfig({
       },
     ],
   },
+  image: {
+    dir: 'public',
+    domains: [],
+    ipx: {
+      dir: 'public',
+      allowFiles: true,
+      domains: [],
+    }
+  },
   echarts: {
     charts: ['LineChart', 'BarChart', 'PieChart', 'RadarChart'],
     renderer: 'svg',
@@ -109,6 +120,7 @@ export default defineNuxtConfig({
     ],
   },
   vite: {
+    plugins: [cssInjectedByJsPlugin()],
     build: { sourcemap: false },
   },
   runtimeConfig: {

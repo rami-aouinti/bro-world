@@ -36,7 +36,8 @@ onMounted(async () => {
         <p class="text-left mb-6 text-body font-weight-light">
           {{ post.title }}
         </p>
-        <v-img
+        <NuxtImg
+          width="200" height="200"
           src="https://images.unsplash.com/photo-1578271887552-5ac3a72752bc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80"
           class="border-radius-lg shadow-lg"
         />

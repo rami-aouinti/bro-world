@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const avatar1 = new URL('@/assets/img/team-1.jpg', import.meta.url).href
-const logoSlack = new URL('@/assets/img/small-logos/logo-slack.svg', import.meta.url).href
-const logoInvision = new URL('@/assets/img/small-logos/logo-invision.svg', import.meta.url).href
+const avatar1 = '/img/team-1.jpg'
+const logoSlack = '/img/small-logos/logo-slack.svg'
+const logoInvision = '/img/small-logos/logo-invision.svg'
 
 const brands = [
   {
@@ -25,16 +25,14 @@ const brands = [
 const cards = [
   {
     title: 'Digital Marketing',
-    description:
-      'A group of people who collectively are responsible for all of the work necessary to produce working, validated assets.',
+    description: 'A group of people who collectively are responsible for all of the work necessary to produce working, validated assets.',
     industry: 'Marketing Team',
     rating: 'partial',
     avatars: [avatar1, avatar1, avatar1, avatar1],
   },
   {
     title: 'Design',
-    description:
-      "Because it's about motivating the doers. Because I’m here to follow my dreams and inspire other people to follow their dreams, too.",
+    description: "Because it's about motivating the doers. Because I’m here to follow my dreams and inspire other people to follow their dreams, too.",
     industry: 'Design Team',
     rating: 'full',
     avatars: [avatar1, avatar1, avatar1, avatar1],
@@ -51,8 +49,8 @@ const cards = [
         </v-col>
         <v-col cols="3" class="text-end">
           <v-menu transition="slide-y-transition" offset-y offset-x min-width="150">
-            <template #activator="{ on, attrs }">
-              <v-btn icon :ripple="false" v-bind="attrs" small v-on="on">
+            <template #activator="{ props }">
+              <v-btn icon :ripple="false" v-bind="props" small>
                 <v-icon size="16">mdi-dots-vertical</v-icon>
               </v-btn>
             </template>
@@ -99,8 +97,8 @@ const cards = [
         <p class="mb-0 font-weight-light text-body">Members:</p>
         <span class="avatar-group d-flex ms-auto">
           <v-tooltip v-for="(avatar, i) in card.avatars" :key="i" bottom color="#212529">
-            <template #activator="{ on, attrs }">
-              <v-avatar v-bind="attrs" size="24" class="border border-white ms-n3" v-on="on">
+            <template #activator="{ props }">
+              <v-avatar v-bind="props" size="24" class="border border-white ms-n3">
                 <img :src="avatar" alt="Avatar" width="24" height="24" />
               </v-avatar>
             </template>
@@ -115,7 +113,7 @@ const cards = [
     <div class="px-4 py-4">
       <div class="d-flex">
         <v-avatar size="40">
-          <v-img :src="card.img" width="40" height="40" />
+          <NuxtImg :src="card.img" width="40" height="40" />
         </v-avatar>
         <v-row class="align-center">
           <v-col cols="9">
@@ -137,8 +135,8 @@ const cards = [
         <v-btn variant="text" class="font-weight-bolder mb-0" x-small>Join</v-btn>
         <span class="avatar-group d-flex ms-auto">
           <v-tooltip v-for="(avatar, j) in card.avatars" :key="j" bottom color="#212529" class="py-1">
-            <template #activator="{ on, attrs }">
-              <v-avatar v-bind="attrs" size="24" class="border border-white ms-n3" v-on="on">
+            <template #activator="{ props }">
+              <v-avatar v-bind="props" size="24" class="border border-white ms-n3">
                 <img :src="avatar" alt="Avatar" width="24" height="24" />
               </v-avatar>
             </template>

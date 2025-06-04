@@ -2,30 +2,30 @@
 
 const messages = [
   {
-    image: '@/assets/img/team-2.jpg',
+    image: '/img/team-2.jpg',
     name: 'Charlie Watson',
     message: 'Typing...',
   },
   {
-    image: '@/assets/img/team-1.jpg',
+    image: '/img/team-1.jpg',
     name: 'Jana Doe',
     time: '1 hour ago',
     message: 'Computer users and program...',
   },
   {
-    image: '@/assets/img/team-3.jpg',
+    image: '/img/team-3.jpg',
     name: 'Mila Skylar',
     time: '24 min ago',
     message: 'You can subscribe to receive wee...',
   },
   {
-    image: '@/assets/img/team-5.jpg',
+    image: '/img/team-5.jpg',
     name: 'Sofia Scarlett',
     time: '7 hours ago',
     message: 'It’s an effective resource rega...',
   },
   {
-    image: '@/assets/img/team-4.jpg',
+    image: '/img/team-4.jpg',
     name: 'Tom Klein',
     time: '1 day ago',
     message: 'Be sure to check it out if your dev...',
@@ -160,7 +160,7 @@ definePageMeta({
                   <v-col md="10">
                     <div class="d-flex align-items-center">
                       <v-avatar size="48">
-                        <img src="@/assets/img/team-2.jpg" alt="Avatar" />
+                        <img src="/img/team-2.jpg" alt="Avatar" />
                       </v-avatar>
                       <div class="ms-3">
                         <h6 class="mb-0 text-h6 d-block">
@@ -339,7 +339,8 @@ definePageMeta({
                       {{ chat.message }}
                     </p>
                     <div v-if="chat.image" class="w-100 position-relative">
-                      <v-img
+                      <NuxtImg
+                        max-height="200"
                         class="img-fluid mb-2 border-radius-lg"
                         :src="chat.image"
                         max-width="200"

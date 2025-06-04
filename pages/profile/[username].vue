@@ -316,7 +316,8 @@ definePageMeta({
                         height="48"
                         class="shadow border-radius-lg me-4"
                       >
-                        <v-img
+                        <NuxtImg
+                          width="48" height="48"
                           :src="conversation.avatar"
                           alt="Avatar"
                           class="border-radius-lg"
