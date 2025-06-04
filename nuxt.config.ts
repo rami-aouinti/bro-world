@@ -141,6 +141,12 @@ export default defineNuxtConfig({
     ],
     build: {
       sourcemap: false,
+      optimizeCSS: true,
+      splitChunks: {
+        layouts: true,
+        pages: true,
+        commons: true
+      }
     },
   },
 
