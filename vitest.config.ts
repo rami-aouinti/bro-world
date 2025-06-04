@@ -1,11 +1,19 @@
-import { defineVitestConfig } from '@nuxt/test-utils/config'
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import compression from 'vite-plugin-compression'
 
-export default defineVitestConfig({
-  test: {
-    environmentOptions: { nuxt: { dotenv: { fileName: '.env' } } },
-    onConsoleLog(log) {
-      if (log.includes('Generated an empty chunk')) return false
-      if (log.includes('<Suspense> is an experimental feature')) return false
-    },
+export default defineConfig({
+  plugins: [
+    vue(),
+    compression({
+      algorithm: 'gzip',
+      ext: '.gz',
+      threshold: 10240,
+      deleteOriginFile: false,
+    }),
+  ],
+
+  build: {
+    chunkSizeWarningLimit: 1000,
   },
 })

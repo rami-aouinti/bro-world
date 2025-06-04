@@ -1,9 +1,10 @@
 import { aliases } from 'vuetify/iconsets/mdi'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
+import compression from 'vite-plugin-compression'
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/sitemap',
@@ -13,27 +14,41 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
     'nuxt-echarts',
     '@nuxt/icon',
-    '@nuxt/image',
-    '@nuxt/eslint',
-    '@nuxt/test-utils/module',
+    '@nuxt/image'
   ],
+
   sitemap: {
     siteUrl: 'https://bro-world-space.com',
     trailingSlash: false,
     gzip: true,
   },
+
   sourcemap: {
     server: true,
     client: true,
   },
+
   css: ['~/assets/styles/index.css'],
+
   experimental: {
     typedPages: true,
-    componentIslands: true,
+    componentIslands: false,
+    payloadExtraction: true,
   },
-  typescript: { shim: false, strict: true },
-  vue: { propsDestructure: true },
-  vueuse: { ssrHandlers: true },
+
+  typescript: {
+    shim: false,
+    strict: true,
+  },
+
+  vue: {
+    propsDestructure: true,
+  },
+
+  vueuse: {
+    ssrHandlers: true,
+  },
+
   i18n: {
     lazy: true,
     langDir: 'locales/',
@@ -46,37 +61,14 @@ export default defineNuxtConfig({
       fallbackLocale: 'en',
     },
     locales: [
-      {
-        code: 'en',
-        name: 'English',
-        iso: 'en-US',
-        icon: 'fi-us us',
-        file: 'en.json',
-      },
-      {
-        code: 'de',
-        name: 'Deutsch',
-        iso: 'de-DE',
-        icon: 'fi-de de',
-        file: 'de.json',
-      },
-      {
-        code: 'fr',
-        name: 'Frensh',
-        iso: 'fr-FR',
-        icon: 'fi-fr fr',
-        file: 'fr.json',
-      },
-      {
-        code: 'ar',
-        name: 'Arabic',
-        iso: 'tn-TN',
-        icon: 'fi-tn tn',
-        file: 'ar.json',
-      }
+      { code: 'en', name: 'English', iso: 'en-US', icon: 'fi-us us', file: 'en.json' },
+      { code: 'de', name: 'Deutsch', iso: 'de-DE', icon: 'fi-de de', file: 'de.json' },
+      { code: 'fr', name: 'Frensh', iso: 'fr-FR', icon: 'fi-fr fr', file: 'fr.json' },
+      { code: 'ar', name: 'Arabic', iso: 'tn-TN', icon: 'fi-tn tn', file: 'ar.json' },
     ],
     baseUrl: 'https://bro-world-space.com'
   },
+
   vuetify: {
     moduleOptions: {
       ssrClientHints: {
@@ -87,14 +79,11 @@ export default defineNuxtConfig({
       },
     },
   },
+
   icon: {
     clientBundle: {
-      icons: Object.values(aliases).map((v) =>
-        (v as string).replace(/^mdi-/, 'mdi:'),
-      ),
+      icons: Object.values(aliases).map((v) => (v as string).replace(/^mdi-/, 'mdi:')),
       scan: true,
-      // scan all components in the project and include icons
-      // scan: true,
     },
     customCollections: [
       {
@@ -103,22 +92,33 @@ export default defineNuxtConfig({
       },
     ],
   },
+
   image: {
     dir: 'public',
-    domains: [],
+    domains: ['images.unsplash.com'],
     screens: {
       sm: 320,
       md: 640,
       lg: 1024,
       xl: 1280,
     },
-    quality: 75,
+    quality: 80,
     ipx: {
       dir: 'public',
       allowFiles: true,
       domains: [],
-    }
+    },
+    presets: {
+      lcp: {
+        modifiers: {
+          format: 'webp',
+          width: 1600,
+          quality: 80,
+        },
+      },
+    },
   },
+
   echarts: {
     charts: ['LineChart', 'BarChart', 'PieChart', 'RadarChart'],
     renderer: 'svg',
@@ -133,10 +133,17 @@ export default defineNuxtConfig({
       'VisualMapComponent',
     ],
   },
+
   vite: {
-    plugins: [cssInjectedByJsPlugin()],
-    build: { sourcemap: false },
+    plugins: [
+      cssInjectedByJsPlugin(),
+      compression({ algorithm: 'brotliCompress' }),
+    ],
+    build: {
+      sourcemap: false,
+    },
   },
+
   runtimeConfig: {
     github: {
       clientId: '',
@@ -158,5 +165,6 @@ export default defineNuxtConfig({
       siteUrl: 'https://bro-world-space.com',
     },
   },
+
   compatibilityDate: '2024-08-05',
 })
