@@ -23,6 +23,7 @@ const loadMore = async () => {
     const result = await response.json()
 
     if (result && result.length) {
+      pending.value = false
       items.value.push(...result)
       emit('loaded', items.value)
       page.value++
