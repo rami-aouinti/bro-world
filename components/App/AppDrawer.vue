@@ -1,37 +1,28 @@
 <script setup lang="ts">
 import AppDrawerItem from "~/components/App/AppDrawerItem.vue";
 
-const drawerState = useState('drawer', () => false);
-const { mobile, lgAndUp, width } = useDisplay();
-
+const drawerState = useState('drawer', () => false)
+const { mobile } = useDisplay()
 const drawer = computed({
-  get() {
-    return drawerState.value || !mobile.value;
-  },
-  set(val: boolean) {
-    drawerState.value = val;
-  },
-});
-
-const rail = computed(() => !drawerState.value && !mobile.value);
-const router = useRouter();
-const { user } = useUserSession();
+  get: () => drawerState.value || !mobile.value,
+  set: (val: boolean) => (drawerState.value = val),
+})
+const rail = computed(() => !drawerState.value && !mobile.value)
+const router = useRouter()
+const { user } = useUserSession()
 
 const routes = router.getRoutes().filter((r) => {
-  const isTopLevel = r.path.lastIndexOf('/') === 0;
-
+  const isTopLevel = r.path.lastIndexOf('/') === 0
   if (r.meta?.requiredRoles) {
-    const required = r.meta.requiredRoles;
+    const required = r.meta.requiredRoles
     if (!user.value?.roles?.some((role: string) => required.includes(role))) {
-      return false;
+      return false
     }
   }
-
-  return isTopLevel;
-});
-
-routes.sort((a, b) => (a.meta?.drawerIndex ?? 99) - (b.meta?.drawerIndex ?? 98));
-const currentYear = new Date().getFullYear();
+  return isTopLevel
+})
+routes.sort((a, b) => (a.meta?.drawerIndex ?? 99) - (b.meta?.drawerIndex ?? 98))
+const currentYear = new Date().getFullYear()
 </script>
 
 <template>
@@ -40,16 +31,16 @@ const currentYear = new Date().getFullYear();
     :expand-on-hover="rail"
     :rail="rail"
     floating
+    role="navigation"
+    aria-label="Main Navigation Drawer"
   >
     <template #prepend>
-      <v-list role="navigation" aria-label="Navigation">
+      <v-list role="navigation" aria-label="Brand Navigation">
         <v-list-item
           class="pa-1"
           :to="{ path: '/home' }"
           link
-          aria-label="Go to the Bro World homepage"
-          icon
-          title=""
+          aria-label="Go to homepage"
         >
           <template #prepend>
             <v-icon
@@ -70,7 +61,7 @@ const currentYear = new Date().getFullYear();
       </v-list>
     </template>
 
-    <v-list nav density="default">
+    <v-list nav density="default" role="list" aria-label="Main Menu Links">
       <AppDrawerItem
         v-for="route in routes"
         :key="route.name"
@@ -89,6 +80,8 @@ const currentYear = new Date().getFullYear();
             href="https://github.com/rami-aouinti"
             class="font-weight-bold text-primary"
             target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit Rami Aouinti's GitHub profile"
           >
             Rami Aouinti
           </a>
@@ -97,7 +90,6 @@ const currentYear = new Date().getFullYear();
     </template>
   </v-navigation-drawer>
 </template>
-
 
 <style scoped>
 .v-navigation-drawer {
@@ -170,4 +162,3 @@ const currentYear = new Date().getFullYear();
   }
 }
 </style>
-

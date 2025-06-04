@@ -50,23 +50,30 @@ const cards = [
         <v-col cols="3" class="text-end">
           <v-menu transition="slide-y-transition" offset-y offset-x min-width="150">
             <template #activator="{ props }">
-              <v-btn variant="text" icon :ripple="false" v-bind="props" small>
+              <v-btn
+                variant="text"
+                icon
+                :ripple="false"
+                v-bind="props"
+                small
+                aria-label="Open card menu"
+              >
                 <v-icon size="16">mdi-dots-vertical</v-icon>
               </v-btn>
             </template>
-            <v-list class="pa-2">
+            <v-list class="pa-2" aria-label="Team actions">
               <v-list-item class="list-item-hover-active border-radius-md">
-                <v-list-item-title class="text-body-2 ls-0 text-body font-weight-600 py-2">Edit Team</v-list-item-title>
+                <v-list-item-title>Edit Team</v-list-item-title>
               </v-list-item>
               <v-list-item class="list-item-hover-active border-radius-md">
-                <v-list-item-title class="text-body-2 ls-0 text-body font-weight-600 py-2">Add Member</v-list-item-title>
+                <v-list-item-title>Add Member</v-list-item-title>
               </v-list-item>
               <v-list-item class="list-item-hover-active border-radius-md">
-                <v-list-item-title class="text-body-2 ls-0 text-body font-weight-600 py-2">See Details</v-list-item-title>
+                <v-list-item-title>See Details</v-list-item-title>
               </v-list-item>
               <hr class="horizontal dark my-2" />
               <v-list-item class="list-item-hover-active border-radius-md">
-                <v-list-item-title class="text-danger ls-0 font-weight-600 mb-0">Remove Team</v-list-item-title>
+                <v-list-item-title class="text-danger">Remove Team</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -76,14 +83,21 @@ const cards = [
       <hr class="horizontal dark my-4" />
       <div class="d-flex">
         <p class="mb-0 font-weight-light text-body">Industry:</p>
-        <v-btn variant="text" small :ripple="false" class="border-radius-md font-weight-bolder px-3 py-3 badge-font-size ms-auto text-body" color="#e4e8ed">
+        <v-btn
+          variant="text"
+          small
+          :ripple="false"
+          class="border-radius-md font-weight-bolder px-3 py-3 badge-font-size ms-auto text-body"
+          color="#e4e8ed"
+          aria-label="Industry badge"
+        >
           {{ card.industry }}
         </v-btn>
       </div>
       <hr class="horizontal dark my-4" />
       <div class="d-flex">
         <p class="mb-0 font-weight-light text-body">Rating:</p>
-        <div class="rating ms-auto">
+        <div class="rating ms-auto" role="img" aria-label="Team rating">
           <v-icon size="16">mdi-star</v-icon>
           <v-icon size="16">mdi-star</v-icon>
           <v-icon size="16">mdi-star</v-icon>
@@ -103,14 +117,13 @@ const cards = [
                 width="24"
                 height="24"
                 class="border border-white ms-n3"
-                :aria-label="`Member ${i + 1}`"
+                :aria-labelledby="`tooltip-${card.title}-${i}`"
               >
                 <NuxtImg :src="avatar" :alt="`Avatar of member ${i + 1}`" width="24" height="24" />
               </v-avatar>
             </template>
-            <span :id="`tooltip-${i}`">Member {{ i + 1 }}</span>
+            <span :id="`tooltip-${card.title}-${i}`">Member {{ i + 1 }}</span>
           </v-tooltip>
-
         </span>
       </div>
     </div>
@@ -120,7 +133,7 @@ const cards = [
     <div class="px-4 py-4">
       <div class="d-flex">
         <v-avatar height="40" width="40">
-          <NuxtImg :alt="card.title"  :src="card.img" width="40" layout="intrinsic" />
+          <NuxtImg :alt="card.title" :src="card.img" width="40" height="40" />
         </v-avatar>
         <v-row class="align-center">
           <v-col cols="9">
@@ -139,15 +152,21 @@ const cards = [
       </div>
       <hr class="horizontal dark my-4" />
       <div class="d-flex">
-        <v-btn variant="text" class="font-weight-bolder mb-0" x-small>Join</v-btn>
+        <v-btn variant="text" class="font-weight-bolder mb-0" x-small aria-label="Join meeting">Join</v-btn>
         <span class="avatar-group d-flex ms-auto">
-          <v-tooltip v-for="(avatar, j) in card.avatars" :key="j" bottom color="#212529" class="py-1">
+          <v-tooltip v-for="(avatar, j) in card.avatars" :key="j" bottom color="#212529">
             <template #activator="{ props }">
-              <v-avatar v-bind="props" width="24" height="24" class="border border-white ms-n3">
-                <NuxtImg :src="avatar" alt="Avatar" width="24" height="24" />
+              <v-avatar
+                v-bind="props"
+                width="24"
+                height="24"
+                class="border border-white ms-n3"
+                :aria-label="`Member ${j + 1}`"
+              >
+                <NuxtImg :src="avatar" :alt="`Avatar of member ${j + 1}`" width="24" height="24" />
               </v-avatar>
             </template>
-            <span>Member</span>
+            <span>Member {{ j + 1 }}</span>
           </v-tooltip>
         </span>
       </div>
