@@ -1,5 +1,4 @@
 import { defineEventHandler, createError } from 'h3'
-import { useAuthenticatedAxios } from '~/composables/useAuthenticatedFetch'
 import axios from "axios";
 
 export default defineEventHandler(async (event) => {

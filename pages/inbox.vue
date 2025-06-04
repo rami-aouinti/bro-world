@@ -111,8 +111,8 @@ definePageMeta({
               v-if="i == 0"
               class="d-flex pa-4 bg-gradient-primary border-radius-xl"
             >
-              <v-avatar size="48">
-                <img :src="message.image" alt="Avatar" />
+              <v-avatar width="48" height="48">
+                <NuxtImg width="48" height="48" :src="message.image" alt="Avatar" />
               </v-avatar>
               <div class="ms-3">
                 <h6 class="text-h6 mb-0">{{ message.name }}</h6>
@@ -124,8 +124,8 @@ definePageMeta({
               </div>
             </div>
             <div v-else class="d-flex pa-4">
-              <v-avatar size="48">
-                <img :src="message.image" alt="Avatar" />
+              <v-avatar width="48" height="48">
+                <NuxtImg width="48" height="48" :src="message.image" alt="Avatar" />
               </v-avatar>
               <div class="ms-3">
                 <h6 class="text-h6 text-typo mb-0">{{ message.name }}</h6>
@@ -155,8 +155,8 @@ definePageMeta({
                 <v-row>
                   <v-col md="10">
                     <div class="d-flex align-items-center">
-                      <v-avatar size="48">
-                        <img src="/img/team-2.jpg" alt="Avatar" />
+                      <v-avatar width="48" height="48">
+                        <NuxtImg width="48" height="48" src="/img/team-2.jpg" alt="Avatar" />
                       </v-avatar>
                       <div class="ms-3">
                         <h6 class="mb-0 text-h6 d-block">

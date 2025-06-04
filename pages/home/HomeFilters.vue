@@ -4,39 +4,9 @@ const logoSlack = '/img/small-logos/logo-slack.svg'
 const logoInvision = '/img/small-logos/logo-invision.svg'
 
 const brands = [
-  {
-    img: logoSlack,
-    title: 'Slack Meet',
-    hour: '11:00 AM',
-    id: '902-128-281',
-    description: 'You have an upcoming meet for Marketing Planning',
-    avatars: [avatar1, avatar1, avatar1, avatar1],
-  },
-  {
-    img: logoInvision,
-    title: 'Invision',
-    hour: '4:50 PM',
-    id: '111-968-981',
-    description: 'You have an upcoming video call for Soft Design at 5:00 PM.',
-    avatars: [avatar1, avatar1, avatar1, avatar1],
-  },
 ]
 
 const cards = [
-  {
-    title: 'Digital Marketing',
-    description: 'A group of people who collectively are responsible for all of the work necessary to produce working, validated assets.',
-    industry: 'Marketing Team',
-    rating: 'partial',
-    avatars: [avatar1, avatar1, avatar1, avatar1],
-  },
-  {
-    title: 'Design',
-    description: "Because it's about motivating the doers. Because I’m here to follow my dreams and inspire other people to follow their dreams, too.",
-    industry: 'Design Team',
-    rating: 'full',
-    avatars: [avatar1, avatar1, avatar1, avatar1],
-  },
 ]
 </script>
 

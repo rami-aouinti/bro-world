@@ -130,7 +130,8 @@ async function handleFileUpload(file: File) {
               size="58"
               class="border border-primary px-1 py-1"
             >
-              <v-img
+              <NuxtImg
+                :alt="`story-${userStories.username}`"
                 :src="userStories.stories[0]?.mediaPath"
                 width="50"
                 height="50"
@@ -169,7 +170,7 @@ async function handleFileUpload(file: File) {
           v-for="(story, index) in currentUserStories"
           :key="index"
         >
-          <v-img
+          <NuxtImg
             :alt="index"
             :src="story.mediaPath"
             width="100%"
