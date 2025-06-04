@@ -13,10 +13,14 @@ const props = defineProps<{
   date: string
 }>()
 
+const { user } = useUserSession()
+const router = useRouter()
+const route = useRoute()
+
 const isFollowing = ref<boolean | null>(null)
 
 async function checkFollowStatus(authorId: string) {
-  if (authorId) {
+  if (user.value && authorId) {
     const { data, error } = await useFetch(`/api/follow/status/${authorId}`)
     if (!error.value) {
       isFollowing.value = data.value
@@ -24,7 +28,20 @@ async function checkFollowStatus(authorId: string) {
   }
 }
 
+function redirectToLogin() {
+  router.push({
+    path: '/login',
+    query: {
+      redirect: route.fullPath
+    }
+  })
+}
+
 async function toggleFollow(authorId: string) {
+  if (!user.value) {
+    return redirectToLogin()
+  }
+
   const { error } = await useFetch(`/api/follow/follow/${authorId}`, {
     method: 'POST',
   })
@@ -35,23 +52,37 @@ async function toggleFollow(authorId: string) {
 }
 
 async function toggleUnFollow(authorId: string) {
+  if (!user.value) {
+    return redirectToLogin()
+  }
+
   const { error } = await useFetch(`/api/follow/unfollow/${authorId}`, {
     method: 'POST',
   })
 
   if (!error.value) {
-    isFollowing.value = true
+    isFollowing.value = false
   }
 }
 
-watch(props.author?.id, () => {
-  checkFollowStatus(props.author?.id)
-}, { immediate: true })
+watch(
+  () => props.author?.id,
+  () => {
+    if (user.value) {
+      checkFollowStatus(props.author?.id)
+    }
+  },
+  { immediate: true }
+)
 
 onMounted(async () => {
-  await checkFollowStatus(props.author?.id)
+  if (user.value) {
+    await checkFollowStatus(props.author?.id)
+  }
 })
 </script>
+
+
 
 <template>
   <div class="border-bottom d-flex align-center px-4 py-4">
