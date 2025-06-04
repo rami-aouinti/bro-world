@@ -22,7 +22,6 @@ function toggleAll() {
 
 <template>
   <v-btn
-    v-tooltip="{ text: 'Notification' }"
     :icon="notifications.length ? 'mdi-bell-badge-outline' : 'mdi-bell-outline'"
     :rounded="0"
     @click="toggleAll"
@@ -43,13 +42,11 @@ function toggleAll() {
             "
           />
           <v-btn
-            v-tooltip="{ text: 'Clear All Notifications' }"
             size="small"
             icon="mdi-bell-remove"
             @click="emptyNotifications"
           />
           <v-btn
-            v-tooltip="{ text: 'Hide Notifications' }"
             class="mr-0"
             size="small"
             icon="$expand"

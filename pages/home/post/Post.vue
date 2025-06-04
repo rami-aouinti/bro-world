@@ -14,6 +14,7 @@ defineProps<{
       </p>
     </NuxtLink>
     <v-img
+      :alt="`image-${post.slug}`"
       src="https://images.unsplash.com/photo-1578271887552-5ac3a72752bc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80"
       class="border-radius-lg shadow-lg"
     />

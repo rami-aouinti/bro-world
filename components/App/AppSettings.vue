@@ -32,15 +32,11 @@ const menuShow = ref(false)
     offset="15"
   >
     <template #activator="{ props: menu }">
-      <v-tooltip location="top" text="Theme Palette">
-        <template #activator="{ props: tooltip }">
-          <v-btn
-            icon="mdi-palette-outline"
-            v-bind="mergeProps(menu, tooltip)"
-            :rounded="0"
-          />
-        </template>
-      </v-tooltip>
+      <v-btn
+        icon="mdi-palette-outline"
+        v-bind="mergeProps(menu)"
+        :rounded="0"
+      />
     </template>
     <v-card width="320">
       <v-card-text class="text-center">

@@ -22,7 +22,8 @@ const changeLanguage = async (code) => {
 <template>
   <v-menu location="bottom">
     <template #activator="{ props: menu }">
-      <v-btn icon v-bind="mergeProps(menu)" class="ml-1">
+      <v-btn aria-label="Language"
+             title="language" icon v-bind="mergeProps(menu)" class="ml-1">
         <span style="font-size: 20px" :class="`fi ${currentLanguage.icon}`"></span>
       </v-btn>
     </template>

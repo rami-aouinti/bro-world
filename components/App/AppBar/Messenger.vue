@@ -21,7 +21,10 @@ const lastMessages = [
 <template>
   <v-menu location="bottom">
     <template #activator="{ props: menu }">
-      <v-btn icon v-bind="mergeProps(menu)" class="ml-1">
+      <v-btn
+        aria-label="messenger"
+        title="messenger"
+        icon v-bind="mergeProps(menu)" class="ml-1">
         <v-icon icon="mdi-message" size="30" />
       </v-btn>
     </template>

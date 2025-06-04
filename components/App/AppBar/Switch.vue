@@ -13,6 +13,8 @@ const isDark = computed({
 </script>
 <template>
   <v-switch
+    aria-label="dark"
+    title="dark"
     v-model="isDark"
     color=""
     hide-details

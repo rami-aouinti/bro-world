@@ -18,14 +18,12 @@ const dropdown = [
 <template>
   <v-menu location="bottom">
     <template #activator="{ props: menu }">
-      <v-tooltip location="bottom">
-        <template #activator="{ props: tooltip }">
-          <v-btn icon v-bind="mergeProps(menu, tooltip)" class="ml-1">
-            <v-icon icon="mdi-bell" size="30" />
-          </v-btn>
-        </template>
-        <span>Notification</span>
-      </v-tooltip>
+      <v-btn
+        aria-label="notification"
+        title="Notification"
+        icon v-bind="mergeProps(menu)" class="ml-1">
+        <v-icon icon="mdi-bell" size="30" />
+      </v-btn>
     </template>
     <v-list class="pa-3">
       <v-list-item

@@ -129,39 +129,6 @@ const topics = [
 </script>
 
 <template>
-  <v-card rounded="xl" class="mb-6" variant="text">
-    <div class="pa-4">
-      <div class="text-h6">What are you into?</div>
-
-      <div class="text-subtitle-1">Select topics to continue</div>
-
-      <v-responsive>
-        <v-chip-group multiple class="mt-3" column>
-          <v-chip
-            v-for="topic in topics"
-            :key="topic"
-            :text="topic"
-            :value="topic"
-            filter
-          ></v-chip>
-        </v-chip-group>
-      </v-responsive>
-    </div>
-
-    <v-divider></v-divider>
-
-    <div class="pa-2">
-      <v-btn
-        block
-        color="orange-darken-1"
-        rounded="t-0 b-xl"
-        size="x-large"
-        text="Filter"
-        variant="flat"
-      ></v-btn>
-    </div>
-  </v-card>
-
   <v-card v-for="card in cards" :key="card.title" class="mb-6" variant="text">
     <div class="px-4 py-4">
       <v-row class="align-center">
