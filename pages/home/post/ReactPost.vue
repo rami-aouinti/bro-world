@@ -38,13 +38,13 @@ defineProps<{
       <div class="d-flex align-center">
         <div class="d-flex align-items-center ms-auto">
           <v-avatar size="24" class="border border-white ms-n2">
-            <img src="@/assets/img/team-5.jpg" alt="Avatar" />
+            <v-img src="@/assets/img/team-5.jpg" alt="Avatar" />
           </v-avatar>
           <v-avatar size="24" class="border border-white ms-n2">
-            <img src="@/assets/img/team-2.jpg" alt="Avatar" />
+            <v-img src="@/assets/img/team-2.jpg" alt="Avatar" />
           </v-avatar>
           <v-avatar size="24" class="border border-white ms-n2">
-            <img src="@/assets/img/team-1.jpg" alt="Avatar" />
+            <v-img src="@/assets/img/team-1.jpg" alt="Avatar" />
           </v-avatar>
         </div>
         <small class="ps-2 font-weight-bold text-body text-sm"
