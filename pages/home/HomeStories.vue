@@ -170,6 +170,7 @@ async function handleFileUpload(file: File) {
           :key="index"
         >
           <v-img
+            :alt="index"
             :src="story.mediaPath"
             width="100%"
             height="500"

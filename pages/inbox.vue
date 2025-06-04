@@ -340,6 +340,7 @@ definePageMeta({
                     </p>
                     <div v-if="chat.image" class="w-100 position-relative">
                       <NuxtImg
+                        alt="chat"
                         max-height="200"
                         class="img-fluid mb-2 border-radius-lg"
                         :src="chat.image"
