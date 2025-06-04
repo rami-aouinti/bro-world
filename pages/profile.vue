@@ -7,7 +7,7 @@ const avatarUrl = ref('')
 const loadProfile = async () => {
   pending.value = true
   if (user.value.username) {
-    const { data } = await useFetch(`/api/profile/${user.value.username}`)
+    const { data } = await $fetch(`/api/profile/${user.value.username}`)
     if (data.value) {
       profile.value = data.value
       avatarUrl.value = data.value?.profile?.photo ?? '/person.png'

@@ -10,7 +10,7 @@ const pending = ref(false)
 const post = ref({})
 const loadPost = async () => {
   pending.value = true
-  const { data } = await useFetch(`/api/posts/${slug}`)
+  const { data } = await $fetch(`/api/posts/${slug}`)
   if (data.value) {
     post.value = data.value
   }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, defineExpose } from 'vue'
+import { $fetch } from 'ofetch'
 
 const props = defineProps<{
   fetchUrl: string
@@ -14,15 +15,19 @@ const hasMore = ref(true)
 const isLoading = ref(false)
 const pending = ref(true)
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-
 const loadMore = async () => {
   if (isLoading.value || !hasMore.value) return
   isLoading.value = true
 
   try {
-    const response = await fetch(`${props.fetchUrl}?page=${page.value}&limit=${props.limit || 5}`)
-    const result = await response.json()
+    if (!props.fetchUrl) throw new Error('Missing fetchUrl prop')
+
+    const result = await $fetch<any[]>(props.fetchUrl, {
+      query: {
+        page: page.value,
+        limit: props.limit || 5,
+      },
+    })
 
     if (result && result.length) {
       items.value.push(...result)
