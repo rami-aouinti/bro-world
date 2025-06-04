@@ -50,7 +50,7 @@ const cards = [
         <v-col cols="3" class="text-end">
           <v-menu transition="slide-y-transition" offset-y offset-x min-width="150">
             <template #activator="{ props }">
-              <v-btn icon :ripple="false" v-bind="props" small>
+              <v-btn variant="text" icon :ripple="false" v-bind="props" small>
                 <v-icon size="16">mdi-dots-vertical</v-icon>
               </v-btn>
             </template>
@@ -76,7 +76,7 @@ const cards = [
       <hr class="horizontal dark my-4" />
       <div class="d-flex">
         <p class="mb-0 font-weight-light text-body">Industry:</p>
-        <v-btn elevation="24" small :ripple="false" class="border-radius-md font-weight-bolder px-3 py-3 badge-font-size ms-auto text-body" color="#e4e8ed">
+        <v-btn variant="text" small :ripple="false" class="border-radius-md font-weight-bolder px-3 py-3 badge-font-size ms-auto text-body" color="#e4e8ed">
           {{ card.industry }}
         </v-btn>
       </div>
