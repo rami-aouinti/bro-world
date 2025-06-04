@@ -173,9 +173,11 @@ definePageMeta({
                       <template #activator="{ on, attrs }">
                         <v-icon
                           v-bind="attrs"
+                          v-on="on"
                           size="18"
                           class="material-icons-round"
-                          v-on="on"
+                          role="button"
+                          aria-label="Video call"
                         >
                           videocam
                         </v-icon>

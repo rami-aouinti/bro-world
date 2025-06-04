@@ -42,12 +42,14 @@ const currentYear = new Date().getFullYear();
     floating
   >
     <template #prepend>
-      <v-list>
+      <v-list role="navigation" aria-label="Navigation">
         <v-list-item
           class="pa-1"
           :to="{ path: '/home' }"
           link
           aria-label="Go to the Bro World homepage"
+          icon
+          title="Open navigation menu"
         >
           <template #prepend>
             <v-icon

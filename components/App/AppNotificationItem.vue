@@ -1,33 +1,57 @@
 <script setup lang="ts">
+import { computed, toRef, watch } from 'vue'
+import { useTimeoutFn } from '@vueuse/core'
 import type { Notification } from '~/stores/notification'
 
 const props = defineProps<{
   timeout: number
   notification: Notification
 }>()
-const emit = defineEmits(['close'])
+
+const emit = defineEmits<{
+  (e: 'close'): void
+}>()
+
 const isShow = defineModel<boolean>({ default: false })
-const timeout = toRef(props, 'timeout')
-const { start, stop } = useTimeoutFn(() => (isShow.value = false), timeout, {
-  immediate: false,
-})
-watch(timeout, (v) => (v !== -1 ? start() : stop()), { immediate: true })
-const variant = computed(() => timeout.value === -1)
+
+const timeoutRef = toRef(props, 'timeout')
+const notificationRef = toRef(props, 'notification')
+
+const { start, stop } = useTimeoutFn(() => {
+  isShow.value = false
+}, timeoutRef, { immediate: false })
+
+watch(timeoutRef, (val) => {
+  val !== -1 ? start() : stop()
+}, { immediate: true })
+
+const isPersistent = computed(() => timeoutRef.value === -1)
 </script>
 
 <template>
   <v-alert
-    :border="variant ? 'start' : false"
-    :variant="variant ? 'outlined' : undefined"
-    :density="variant ? 'compact' : undefined"
-    :theme="variant ? undefined : 'dark'"
-    :elevation="variant ? 0 : 3"
-    :type="notification.type"
-    :text="notification.text"
-    :title="notification.time.toLocaleString()"
+    v-if="isShow"
+    :border="isPersistent ? 'start' : false"
+    :variant="isPersistent ? 'outlined' : undefined"
+    :density="isPersistent ? 'compact' : undefined"
+    :theme="isPersistent ? undefined : 'dark'"
+    :elevation="isPersistent ? 0 : 3"
+    :type="notificationRef.type"
+    :text="notificationRef.text"
+    :title="new Date(notificationRef.time).toLocaleString()"
   >
     <template #close>
-      <v-btn icon="$close" @click="emit('close')" />
+      <v-tooltip text="Close alert" location="top">
+        <template #activator="{ props }">
+          <v-btn
+            icon="$close"
+            v-bind="props"
+            aria-label="Close alert"
+            title="Close"
+            @click="emit('close')"
+          />
+        </template>
+      </v-tooltip>
     </template>
   </v-alert>
 </template>

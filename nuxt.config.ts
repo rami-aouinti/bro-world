@@ -27,7 +27,10 @@ export default defineNuxtConfig({
     client: true,
   },
   css: ['~/assets/styles/index.css'],
-  experimental: { typedPages: true },
+  experimental: {
+    typedPages: true,
+    componentIslands: true,
+  },
   typescript: { shim: false, strict: true },
   vue: { propsDestructure: true },
   vueuse: { ssrHandlers: true },
@@ -103,6 +106,13 @@ export default defineNuxtConfig({
   image: {
     dir: 'public',
     domains: [],
+    screens: {
+      sm: 320,
+      md: 640,
+      lg: 1024,
+      xl: 1280,
+    },
+    quality: 75,
     ipx: {
       dir: 'public',
       allowFiles: true,

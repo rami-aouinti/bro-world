@@ -96,14 +96,21 @@ const cards = [
       <div class="d-flex">
         <p class="mb-0 font-weight-light text-body">Members:</p>
         <span class="avatar-group d-flex ms-auto">
-          <v-tooltip v-for="(avatar, i) in card.avatars" :key="i" bottom color="#212529">
+          <v-tooltip v-for="(avatar, i) in card.avatars" :key="i" bottom>
             <template #activator="{ props }">
-              <v-avatar v-bind="props" width="24" height="24" class="border border-white ms-n3">
-                <NuxtImg :src="avatar" alt="Avatar" width="24" height="24" />
+              <v-avatar
+                v-bind="props"
+                width="24"
+                height="24"
+                class="border border-white ms-n3"
+                :aria-label="`Member ${i + 1}`"
+              >
+                <NuxtImg :src="avatar" :alt="`Avatar of member ${i + 1}`" width="24" height="24" />
               </v-avatar>
             </template>
-            <span>Member</span>
+            <span :id="`tooltip-${i}`">Member {{ i + 1 }}</span>
           </v-tooltip>
+
         </span>
       </div>
     </div>
