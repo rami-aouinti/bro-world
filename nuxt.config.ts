@@ -116,7 +116,6 @@ export default defineNuxtConfig({
       lcp: {
         modifiers: {
           format: 'webp',
-          width: 1600,
           quality: 80,
         },
       },
