@@ -1,5 +1,5 @@
 import { defineEventHandler, createError } from 'h3'
-import { useAuthenticatedAxios } from '~/composables/useAuthenticatedFetch'
+import axios from 'axios'
 
 export default defineEventHandler(async (event) => {
   const slug = event.context.params?.slug
@@ -8,16 +8,14 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Missing username' })
   }
 
-  const axiosAuth = await useAuthenticatedAxios()
-
   try {
-    const response = await axiosAuth.get(`https://blog.bro-world.org/public/post/${slug}`)
+    const response = await axios.get(`https://blog.bro-world.org/public/post/${slug}`)
 
     return response.data
   } catch (err: any) {
     if (err.response?.status === 401) {
       try {
-        const retryResponse = await axiosAuth.get(`https://blog.bro-world.org/public/post/${slug}`)
+        const retryResponse = await axios.get(`https://blog.bro-world.org/public/post/${slug}`)
         return retryResponse.data
       } catch (retryErr: any) {
         throw createError({
