@@ -25,7 +25,6 @@ defineProps({
       class="border-radius-lg shadow-lg"
       :preload="true"
       loading="eager"
-      preset="optimized"
       fetchpriority="high"
     />
     <ReactPost :post="post"></ReactPost>

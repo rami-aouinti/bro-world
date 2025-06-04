@@ -108,7 +108,6 @@ definePageMeta({
                     class="rounded-circle"
                   >
                     <NuxtImg
-                      preset="optimized"
                       width="50" height="50" :src="avatarUrl" alt="Avatar" />
                   </v-avatar>
 

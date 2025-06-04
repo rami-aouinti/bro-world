@@ -133,7 +133,6 @@ async function handleFileUpload(file: File) {
               <NuxtImg
                 :alt="`story-${userStories.username}`"
                 :src="userStories.stories[0]?.mediaPath"
-                preset="optimized"
                 width="50"
                 height="50"
                 cover
