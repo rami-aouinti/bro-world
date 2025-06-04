@@ -22,6 +22,10 @@ export default defineNuxtConfig({
     trailingSlash: false,
     gzip: true,
   },
+  sourcemap: {
+    server: true,
+    client: true,
+  },
   css: ['~/assets/styles/index.css'],
   experimental: { typedPages: true },
   typescript: { shim: false, strict: true },

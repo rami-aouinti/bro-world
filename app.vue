@@ -32,14 +32,7 @@ useHead({
       name: 'google-site-verification',
       content: 'TMfvcd4kWDKIVfrwdD3GFq6J9itPdd0ipFJdxO_yMro',
     },
-  ],
-  script: [
-    {
-      src: 'https://speed-insights.vercel.app/script.js',
-      defer: true,
-      'data-sample-rate': '100',
-    },
-  ],
+  ]
 })
 
 useSeoMeta({
