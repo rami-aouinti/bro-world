@@ -33,7 +33,7 @@ const description = "Quizz dynamique généré avec Wikidata et sparql sur le th
 useSeoMeta({
   title: title,
   description: description,
-  author: "arthur.brody@bnu.fr",
+  author: "rami.aouinti@gmail.com",
 
   ogImage: baseUrl + img,
   ogUrl: baseUrl + name,

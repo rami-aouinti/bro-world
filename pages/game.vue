@@ -39,7 +39,7 @@
                   :src="quizzImg(quizz)"
                   :alt="quizz.title"
                   layout="responsive"
-                  style="width: 100%; height: auto"
+                  style="width: 100%; height: 100%"
                   class="border-radius-lg shadow-lg"
                   :preload="true"
                   loading="eager"
