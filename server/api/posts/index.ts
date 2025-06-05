@@ -7,7 +7,8 @@ export default defineEventHandler(async (event) => {
   const limit = parseInt((query.limit as string) || '10', 10)
   const offset = (page - 1) * limit
 
-  const apiUrl = `https://blog.bro-world.org/public/post?page=${page}&limit=${limit}`
+  const config = useRuntimeConfig()
+  const apiUrl = `${config.public.apiBlogBase}/public/post?page=${page}&limit=${limit}`
 
   return await requestWithRetry('get', apiUrl)
 })

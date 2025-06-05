@@ -182,6 +182,8 @@ export default defineNuxtConfig({
     },
     public: {
       siteUrl: 'https://bro-world-space.com',
+      apiBase: 'https://bro-world.org',
+      apiBlogBase: 'https://blog.bro-world.org',
     },
   },
 

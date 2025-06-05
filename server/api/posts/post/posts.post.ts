@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
       axiosFormData.append(name, data)
     }
   }
-
-  const url = 'https://bro-world.org/api/v1/platform/post'
+  const config = useRuntimeConfig()
+  const url = `${config.public.apiBlogBase}/v1/platform/post`
   return await requestWithRetry('post', url, token, axiosFormData, true)
 })

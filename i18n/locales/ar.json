@@ -68,5 +68,8 @@
         "currentPage": "الصفحة الحالية، صفحة {0}"
       }
     }
+  },
+  "post": {
+    "files": "Post files"
   }
 }

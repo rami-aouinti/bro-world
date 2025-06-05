@@ -68,5 +68,8 @@
         "currentPage": "Page actuelle, page {0}"
       }
     }
+  },
+  "post": {
+    "files": "Post files"
   }
 }

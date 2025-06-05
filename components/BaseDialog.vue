@@ -78,8 +78,10 @@ const handleAction = async (action) => {
       } else {
         console.error('files is not an array or is undefined');
       }
-      formData.append('name', 'story');
+      formData.append('name', 'blog');
       formData.append('title', props.forms);
+      formData.append('content', props.forms);
+      formData.append('summary', props.forms);
       const { data, error } = await useFetch(action, {
         method: 'POST',
         body: formData

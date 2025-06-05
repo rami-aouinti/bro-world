@@ -88,7 +88,7 @@ const handleError = (error) => {
           <v-file-upload
             icon="mdi-upload"
             v-model="files"
-            title="Upload avatar"
+            :title="$t('post.files')"
             multiple
             density="compact"
             variant="compact"
