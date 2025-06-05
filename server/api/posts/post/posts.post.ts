@@ -1,40 +1,24 @@
-import axios from 'axios';
+import { defineEventHandler, readMultipartFormData, createError } from 'h3'
+import { getUserToken } from '~/server/utils/getUserToken'
+import { requestWithRetry } from '~/server/utils/requestWithRetry'
 
 export default defineEventHandler(async (event) => {
-  await requireUserSession(event);
-  const session = await getUserSession(event);
-  if (!session?.user?.token) {
-    throw new Error("No token installed");
-  }
-
-  const formData = await readMultipartFormData(event);
+  const token = await getUserToken(event)
+  const formData = await readMultipartFormData(event)
 
   if (!formData || formData.length === 0) {
-    throw new Error("No form data received");
+    throw createError({ statusCode: 400, message: "No form data received" })
   }
 
-  const axiosFormData = new FormData();
-  formData.forEach(({ name, data, filename, type }) => {
+  const axiosFormData = new FormData()
+  for (const { name, data, filename, type } of formData) {
     if (filename) {
-      axiosFormData.append(name, new Blob([data], { type }), filename);
+      axiosFormData.append(name, new Blob([data], { type }), filename)
     } else {
-      axiosFormData.append(name, data);
+      axiosFormData.append(name, data)
     }
-  });
-  try {
-    const response = await axios.post('https://bro-world.org/api/v1/platform/post', axiosFormData, {
-      headers: {
-        Authorization: `Bearer ${session.user.token}`,
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    if (response.data) {
-      return response.data;
-    }
-    throw new Error("No data returned from API");
   }
-  catch (error) {
-    console.error("Error updating profile:", error.response?.data || error.message);
-    throw new Error("Failed to update profile");
-  }
-});
+
+  const url = 'https://bro-world.org/api/v1/platform/post'
+  return await requestWithRetry('post', url, token, axiosFormData, true)
+})
