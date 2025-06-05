@@ -1,11 +1,11 @@
 <template>
-  <v-main class="min-h-screen">
+  <v-container fluid>
     <Header class="mb-6 text-center" :title="quizzContent.title" :description="quizzContent.description" :icon="quizzContent.icon" />
     <RandomSparql
       :quizz = "quizzContent"
       :data-name = "name"
       :sparqlQuery="sparqlRequest" />
-  </v-main>
+  </v-container>
 </template>
 
 <script setup>

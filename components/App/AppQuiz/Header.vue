@@ -6,13 +6,12 @@
       <v-icon dynamic v-if="icon" :name="icon" class="text-gray-400" />
       {{ title }}
     </h1>
- <slot></slot>
+      <slot></slot>
     <p class="mt-6 text-base text-gray-600 dark:text-gray-400" v-if = "description" v-html="description"></p>
   </div>
 </template>
 
 <script lang="ts" setup>
-
 defineProps({
   title: {
     type: String,

@@ -21,11 +21,10 @@ async function startFireworks() {
   if (!fw.value) return
   fw.value.start()
   await new Promise((resolve) => setTimeout(resolve, 4000))
-  if (!fw.value) return   // l'utilisateur peut avoir cliqué sur stop
+  if (!fw.value) return
   await fw.value.waitStop()
 }
 
 watch(fw, () => startFireworks())
 </script>
 
- 

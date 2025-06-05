@@ -2,11 +2,11 @@
   <v-container fluid>
     <v-row align="center" justify="center" dense>
       <v-col cols="12" md="12">
-        <h1 class="text-2xl m-3">
+        <h4 class="justify-center text-2xl m-3">
           <span class="text-teal-400 mr-4">Quiz</span>
           {{ title }}
-        </h1>
-        <p class="text-left [&>a]:text-teal-400 [&>a]:underline">
+        </h4>
+        <p class="justify-center [&>a]:text-teal-400 [&>a]:underline">
           The <NuxtLink to="https://en.wikipedia.org/wiki/SPARQL" target="_blank">SPARQL</NuxtLink> language
           allows querying RDF databases such as
           <NuxtLink to="https://www.wikidata.org/wiki/Wikidata:Main_Page" target="_blank">Wikidata</NuxtLink>.
@@ -22,7 +22,7 @@
         :ripple="false"
         height="21"
         variant="text"
-        class="px-3badge-font-size ms-auto text-success"
+        class="px-3badge-font-size ms-auto text-primary"
       >{{ tag }}</v-btn
       >
     </div>
@@ -30,23 +30,32 @@
       <v-col v-for="(quizz, id) in allQuizz" :key="id" cols="12" md="4">
         <v-card
           dark
-          append-icon="mdi-check"
-          class="mx-auto border-primary"
-          prepend-icon="mdi-account"
-          :title="quizz.title"
-          :description="quizz.description"
+          class="h-100"
+          rounded="xl" variant="text"
           bordered
         >
+          <div class="px-4 pt-4">
+            <h6 class="mb-0 text-h6 text-typo">{{ quizz.title }}</h6>
+          </div>
+          <hr class="horizontal dark mt-2 mb-1" />
           <v-card-text>
             <NuxtLink :to="'/quizz/' + quizz.name" class="border-teal-500">
               <div class="h-48 lg:h-40 overflow-hidden relative">
                 <v-avatar v-if = "quizz.icon" class="absolute z-20 top-2 left-2 bg-gray-700" size="md">
                   <v-icon dynamic :name="quizz.icon"/>
                 </v-avatar>
-                <NuxtImg :src="quizzImg(quizz)" :alt="quizz.title" height="300" width="400" class="opacity-30"/>
+                <NuxtImg
+                  :src="quizzImg(quizz)"
+                  :alt="quizz.title"
+                  layout="responsive"
+                  style="width: 100%; height: auto"
+                  class="border-radius-lg shadow-lg"
+                  :preload="true"
+                  loading="eager"
+                  fetchpriority="high"
+                />
               </div>
               <div class="py-4">
-                <h5 class="text-xl font-bold">{{ quizz.title }}</h5>
                 <p>{{ quizz.description }}</p>
               </div>
             </NuxtLink>
@@ -71,7 +80,7 @@
   </v-container>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 
 const { data: allQuizz } = await useAsyncData("allQuizz", () =>
   queryContent("/quizz").find()
