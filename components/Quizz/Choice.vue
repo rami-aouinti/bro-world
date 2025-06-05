@@ -1,67 +1,112 @@
 <template>
   <section ref="templateSection" class="scroll-mt-14">
-    <div class="flex justify-center gap-3 mb-5">
-      <div v-for="(pic, i) in picsRef" :key="i">
-        <div class="filter saturate-100 border-teal-600 border-solid" :class="{ 'border-b-2': currentIndex === i }">
-          <v-avatar :src="pic.src" :alt="pic.answer" size="lg" :imgClass="getImgClass(pic)"
-                    @click="currentIndex = (quizz.timer && !end) ? currentIndex : i" />
-        </div>
-      </div>
+    <div class="flex justify-center text-center gap-3 mb-5">
+      <v-avatar
+        v-for="(pic, i) in picsRef"
+        :key="i"
+        :src="pic.src"
+        :alt="pic.answer"
+        role="button"
+        tabindex="0"
+        aria-label="Open story"
+        style="cursor: pointer"
+        size="58"
+        class="border border-primary mx-2 py-1"
+        :imgClass="getImgClass(pic)"
+        @click="currentIndex = (quizz.timer && !end) ? currentIndex : i"
+      />
     </div>
 
-    <div class="max-w-2xl m-auto">
-      <v-transition-scale v-if="quizz.timer" group class="block h-2">
-        <template v-for="(pic, i) in picsRef" :key="i">
-          <v-progress-circular v-if="currentIndex === i && !alreadyAnswered(currentPic)" />
-        </template>
+    <div class="max-w-2xl w-full mx-auto px-4 space-y-6">
+      <!-- Barre de progression -->
+      <v-transition-scale v-if="quizz.timer" group>
+        <div class="flex justify-center mb-4">
+          <v-progress-circular
+            v-if="!alreadyAnswered(currentPic)"
+            :model-value="currentIndex"
+            :size="32"
+            :width="3"
+            indeterminate
+            color="primary"
+          />
+        </div>
       </v-transition-scale>
 
-      <div class="bg-slate-800/40 p-2 pt-3 w-full rounded-lg relative" :class="quizz.small ? 'h-[42vh]' : 'h-[62vh]'">
-        <div ref="imgContainer">
-          <v-transition-slide :offset="['100%', 0]" group mode="in-out">
-            <div v-for="(pic, i) in picsRef" :key="i">
-              <div v-if="i === currentIndex">
-                <cite class="text-center text-md mb-2 block w-full truncate min-h-[10px]" :class="{'opacity-0': quizz.hideTitle}">
-                  {{ pic.name }}
-                </cite>
-                <img :src="pic.src" class="rounded m-auto object-contain w-full" :class="quizz.small ? 'h-[33vh]' : 'h-[53vh]'" />
-              </div>
-            </div>
-          </v-transition-slide>
-        </div>
+      <!-- Image principale -->
+      <div class="bg-slate-800/40 p-4 rounded-lg text-center" :class="quizz.small ? 'h-[42vh]' : 'h-[62vh]'">
+        <cite
+          class="block text-md mb-2 truncate transition-opacity duration-300"
+          :class="{ 'opacity-0': quizz.hideTitle }"
+        >
+          {{ currentPic.name }}
+        </cite>
+
+        <img
+          :src="currentPic.src"
+          class="rounded mx-auto object-contain w-full"
+          :class="quizz.small ? 'h-[33vh]' : 'h-[53vh]'"
+          :alt="currentPic.name"
+        />
       </div>
 
-      <div class="flex justify-around gap-3 w-full mt-2 md:mt-5 mb-8">
-        <button v-for="(pic, i) in getChoices()" :key="i" @click="handleChoice(pic.answer)"
-                :disabled="alreadyAnswered(currentPic)"
-                class="bg-teal-900 text-white p-1 grid items-center basis-[48%] rounded lg:hover:bg-teal-600 transition-all border-2 border-transparent"
-                :class="{
-                        '!border-teal-200 !bg-teal-600 !opacity-100': alreadyAnswered(currentPic) && currentPic.answer === pic.answer,
-                        '!bg-red-500': !currentPic.found && selectedAnswer === pic.answer,
-                        '!cursor-default': alreadyAnswered(currentPic),
-                    }">
+      <!-- Choix de réponses -->
+      <div class="flex flex-wrap justify-around text-center gap-3 mt-2">
+        <v-btn
+          v-for="(pic, i) in getChoices()"
+          :key="i"
+          @click="handleChoice(pic.answer)"
+          :disabled="alreadyAnswered(currentPic)"
+          class="basis-[48%] transition-all border-2 border-transparent mx-4"
+          :class="{
+          '!border-teal-200 !bg-teal-600': alreadyAnswered(currentPic) && currentPic.answer === pic.answer,
+          '!bg-red-500': !currentPic.found && selectedAnswer === pic.answer,
+          'bg-primary': !alreadyAnswered(currentPic),
+          '!cursor-default': alreadyAnswered(currentPic)
+        }"
+        >
           {{ pic.answer }}
-        </button>
+        </v-btn>
       </div>
 
-      <div v-if="end" ref="wikiLinks" class="scroll-mt-3">
-        <v-icon name="trophy" class="text-9xl text-teal-700" />
-        <div class="text-lg mb-4 flex gap-6">
-          Partie terminée ...
+      <div v-if="end" class="text-center mt-10">
+        <v-icon name="trophy" class="text-7xl text-teal-700 mb-4" />
+
+        <div class="text-lg mb-4 flex justify-center items-center gap-4">
+          End ...
           <v-btn v-if="replay !== 'no-replay'" :disabled="replay" variant="soft" @click="replay = true">
-            {{ replay ? 'Chargement...' : 'Rejouer' }}
+            {{ replay ? 'Loading...' : 'Replay' }}
           </v-btn>
-          <NuxtLink to="/" class="text-teal-700 underline">Retour aux quizz</NuxtLink>
+          <NuxtLink to="/" class="text-teal-700 underline">Retour</NuxtLink>
         </div>
-        Score : {{ picsRef.filter(pic => pic.found).length }} / {{ picsRef.length }}
-        <v-progress-circular :value="picsRef.filter(pic => pic.found).length" :max="picsRef.length" class="animate-pulse" />
-        <div class="max-w-full my-5 bg-white/5 rounded-lg p-4 mb-40">
-          <div class="text-xl mb-5">Liens Wikipédia</div>
-          <ul class="my-animate-children-appear">
-            <li v-for="(pic, i) in picsRef" :key="i" class="flex items-center gap-3 mb-2 text-md hover:!bg-slate-400/10 rounded-md odd:bg-gray-700/10 p-2">
-              <span class="basis-40">{{ pic.answer }}</span>
-              <v-avatar :src="pic.src" :alt="pic.answer" size="md" />
-              <a :href="pic.article ?? pic.src.split('?width')[0]" target="_blank" class="text-primary underline truncate md:w-80 w-72">
+
+        <div class="mb-6">
+          Score : {{ picsRef.filter(pic => pic.found).length }} / {{ picsRef.length }}
+          <v-progress-circular
+            :model-value="picsRef.filter(pic => pic.found).length"
+            :max="picsRef.length"
+            size="40"
+            width="5"
+            class="mt-2 mx-auto animate-pulse"
+            color="teal"
+          />
+        </div>
+
+        <!-- Liens Wikipédia -->
+        <div class="bg-white/5 p-4 rounded-lg max-w-full text-left">
+          <div class="text-xl mb-4">Liens Wikipédia</div>
+          <ul class="space-y-2">
+            <li
+              v-for="(pic, i) in picsRef"
+              :key="i"
+              class="flex items-center gap-3 text-sm rounded-md p-2 odd:bg-gray-700/10 hover:bg-slate-400/10 transition"
+            >
+              <span class="basis-40 truncate">{{ pic.answer }}</span>
+              <v-avatar :src="pic.src" :alt="pic.answer" size="sm" />
+              <a
+                :href="pic.article ?? pic.src.split('?width')[0]"
+                target="_blank"
+                class="text-primary underline truncate w-full"
+              >
                 {{ pic.name ?? pic.answer }}
               </a>
             </li>

@@ -56,7 +56,7 @@
           :data-answer="answer"
           :style="basisStyle"
         >
-          <v-icon icon="mdi-arrow-up" class="text-gray-500 mx-auto mb-1" />
+          <v-icon icon="mdi-arrow-up" class="mx-auto mb-1">mdi-arrow-up</v-icon>
           {{ answer }}
         </li>
       </ul>
