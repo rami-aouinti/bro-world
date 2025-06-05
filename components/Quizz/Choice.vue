@@ -4,21 +4,20 @@
       <v-avatar
         v-for="(pic, i) in picsRef"
         :key="i"
-        :src="pic.src"
         :alt="pic.answer"
+        :imgClass="getImgClass(pic)"
         role="button"
-        tabindex="0"
-        aria-label="Open story"
+        aria-label="Choices"
         style="cursor: pointer"
-        size="58"
+        size="60"
         class="border border-primary mx-2 py-1"
         @click="currentIndex = (quizz.timer && !end) ? currentIndex : i"
       >
         <img
           :alt="`question-${pic.answer}`"
-          :src="getImgClass(pic)"
-          width="50"
-          height="50"
+          :src="pic.src"
+          width="58"
+          height="58"
         />
       </v-avatar>
     </div>
@@ -29,6 +28,7 @@
         <div class="flex justify-center mb-4">
           <v-progress-linear
             v-if="!alreadyAnswered(currentPic)"
+            @end = "handleChoice(getChoices()[0])"
             :model-value="currentIndex"
             :size="32"
             :width="3"
@@ -56,23 +56,30 @@
         />
       </div>
 
-      <!-- Choix de réponses -->
       <div class="flex flex-wrap justify-around text-center gap-3 mt-2">
-        <v-btn
-          v-for="(pic, i) in getChoices()"
-          :key="i"
-          @click="handleChoice(pic.answer)"
-          :disabled="alreadyAnswered(currentPic)"
-          class="basis-[48%] transition-all border-2 border-transparent mx-4"
-          :class="{
-          '!border-teal-200 !bg-teal-600': alreadyAnswered(currentPic) && currentPic.answer === pic.answer,
-          '!bg-red-500': !currentPic.found && selectedAnswer === pic.answer,
-          'bg-primary': !alreadyAnswered(currentPic),
-          '!cursor-default': alreadyAnswered(currentPic)
-        }"
-        >
-          {{ pic.answer }}
-        </v-btn>
+        <v-row class="w-full mt-4" dense>
+          <v-col
+            v-for="(pic, i) in getChoices()"
+            :key="i"
+            cols="12"
+            md="6"
+          >
+            <v-btn
+              block
+              @click="handleChoice(pic.answer)"
+              :disabled="alreadyAnswered(currentPic)"
+              class="transition-all border-2 border-transparent"
+              :class="{
+        '!border-teal-200 !bg-teal-600': alreadyAnswered(currentPic) && currentPic.answer === pic.answer,
+        '!bg-red-500': !currentPic.found && selectedAnswer === pic.answer,
+        'bg-primary': !alreadyAnswered(currentPic),
+        '!cursor-default': alreadyAnswered(currentPic)
+      }"
+            >
+              {{ pic.answer }}
+            </v-btn>
+          </v-col>
+        </v-row>
       </div>
 
       <div v-if="end" class="text-center mt-10">
