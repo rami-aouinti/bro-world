@@ -18,10 +18,10 @@
       >
     </div>
     <v-row align="center" justify="center" dense>
-      <v-col v-for="(quizz, id) in allQuizz" :key="id" lg="4" md="4" cols="12" class="position-relative">
+      <v-col
+        v-for="(quizz, id) in allQuizz" :key="id" lg="4" md="4" cols="12" class="h-full">
         <v-card
-          dark
-          class="h-100"
+          class="h-full d-flex flex-column justify-between"
           rounded="xl" variant="text"
           bordered
         >
