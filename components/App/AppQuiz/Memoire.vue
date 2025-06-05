@@ -1,5 +1,5 @@
 <template>
-    <main class="min-h-screen">
+    <v-main class="min-h-screen">
         <Header class="mb-1 text-center" :title="title" :description="description" />
 
         <!-- choose between words or pages -->
@@ -69,7 +69,7 @@
                 </div>
             </div>
         </div>
-    </main>
+    </v-main>
 </template>
 
 <script setup lang = "ts">

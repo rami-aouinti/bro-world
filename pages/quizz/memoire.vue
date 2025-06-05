@@ -1,4 +1,6 @@
 <template>
   <!-- Memoire.client.vue -->
-  <AppMemoire />
+  <Memoire />
 </template>
+<script setup lang = "ts">
+</script>

@@ -1,85 +1,105 @@
 <template>
   <div>
-    <div v-if="error" class="text-red-500 ">{{ error }}</div>
+    <div v-if="error" class="text-red-500">{{ error }}</div>
+
     <v-expand-transition>
-      <GhostLoader v-if="!ready" :nbItems="quizz.nbPics" class="w-full max-w-3xl mx-auto my-8" />
+      <GhostLoader
+        v-if="!ready"
+        :nbItems="quizz.nbPics"
+        class="w-full max-w-3xl mx-auto my-8"
+      />
     </v-expand-transition>
+
     <div v-if="pics.length">
-      <Choice v-if="quizz.quizzTemplate === 'choice'" :pics="pics" :nbChoices="4" :class="{ 'opacity-0': !ready }"
-        :quizz="quizz" />
-      <Drag v-else :picsInit="pics" :class="{ 'opacity-0': !ready }" :swap="!quizz.no_swap" />
+      <Choice
+        v-if="quizz.quizzTemplate === 'choice'"
+        :pics="pics"
+        :nbChoices="4"
+        :class="{ 'opacity-0': !ready }"
+        :quizz="quizz"
+      />
+      <Drag
+        v-else
+        :picsInit="pics"
+        :class="{ 'opacity-0': !ready }"
+        :swap="!quizz.no_swap"
+      />
     </div>
   </div>
 </template>
 
-<script setup>
-import GhostLoader from "~/components/Quizz/GhostLoader.vue";
-import Choice from "~/components/Quizz/Choice.vue";
-import Drag from "~/components/Quizz/Drag.vue";
+<script setup lang="ts">
+import { ref, computed, watchEffect, provide } from 'vue'
+import GhostLoader from '~/components/Quizz/GhostLoader.vue'
+import Choice from '~/components/Quizz/Choice.vue'
+import Drag from '~/components/Quizz/Drag.vue'
 
 const imgWidth = 300
 const date = ref('')
-const dateLine = computed(() => `# Requête sparql : ${date.value}`)
+const dateLine = computed(() => `# SPARQL query: ${date.value}`)
 
 const defaultImageLabel = 'image'
 const defaultAnswerLabel = 'answerLabel'
 
-const props = defineProps({
+const props = defineProps<{
   quizz: {
-    type: Object,
-    required: true
+    nbPics: number
+    quizzTemplate: string
+    no_swap?: boolean
+    imageLabel?: string
+    answerLabel?: string
   },
-  sparqlQuery: {
-    type: String,
-    required: true
-  },
-})
+  sparqlQuery: string
+}>()
 
 const limit = `LIMIT ${props.quizz.nbPics + 8}`
 const sparqlQuery = props.sparqlQuery + limit
 
 const baseUrl = 'https://query.wikidata.org/sparql?query='
-const fullUrl = computed(() => baseUrl + encodeURIComponent(dateLine.value + sparqlQuery))
+const fullUrl = computed(() =>
+  baseUrl + encodeURIComponent(dateLine.value + sparqlQuery)
+)
 
-const headers = { 'Accept': 'application/json' };
-const { data: items, error: error } = await useFetch(fullUrl, { headers: headers, server: false });
+const headers = { Accept: 'application/json' }
+const { data: items, error } = await useFetch(fullUrl, {
+  headers,
+  server: false
+})
 
-const pics = ref([])
+const pics = ref<any[]>([])
 
-const cleanResults = (receivedPictures) =>
-  receivedPictures.filter(picture =>
-    !picture.answer.includes('http')
-    && !picture.answer.includes('|')
-    && !picture.src.includes('.tiff')
-  )
-    .filter((picture, index, self) =>
-      index === self.findIndex((t) => (
-        t.answer === picture.answer || t.src === picture.src
-      ))
+const cleanResults = (receivedPictures: any[]) =>
+  receivedPictures
+    .filter(p =>
+      !p.answer.includes('http') &&
+      !p.answer.includes('|') &&
+      !p.src.includes('.tiff')
     )
-    .map(picture => {
-      picture.src = picture.src.replace('http://', 'https://')
-      return picture
-    })
+    .filter((p, i, self) =>
+      i === self.findIndex(t => t.answer === p.answer || t.src === p.src)
+    )
+    .map(p => ({
+      ...p,
+      src: p.src.replace('http://', 'https://')
+    }))
 
 watchEffect(() => {
   if (items.value) {
-    const receivedPictures = items.value.results.bindings.map((item) => {
-      return {
-        src: item[props.quizz.imageLabel ?? defaultImageLabel].value + `?width=${imgWidth}`,
-        answer: item[props.quizz.answerLabel ?? defaultAnswerLabel].value,
-        article: item.article?.value,
-        name: item.itemLabel?.value ?? item.peintureLabel?.value
-      }
-    })
+    const receivedPictures = items.value.results.bindings.map((item: any) => ({
+      src: item[props.quizz.imageLabel ?? defaultImageLabel].value + `?width=${imgWidth}`,
+      answer: item[props.quizz.answerLabel ?? defaultAnswerLabel].value,
+      article: item.article?.value,
+      name: item.itemLabel?.value ?? item.peintureLabel?.value
+    }))
     const cleanPics = cleanResults(receivedPictures)
-    pics.value = cleanPics.length > props.quizz.nbPics ? cleanPics.slice(0, props.quizz.nbPics) : cleanPics
+    pics.value = cleanPics.slice(0, props.quizz.nbPics)
   }
 })
 
 const replay = ref(false)
 provide('replay', replay)
-watchEffect(async () => {
+
+watchEffect(() => {
   if (replay.value) {
     date.value = new Date().toLocaleString()
   }
@@ -94,5 +114,4 @@ watchEffect(() => {
     }, 700)
   }
 })
-
 </script>
