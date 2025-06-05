@@ -35,7 +35,7 @@
           bordered
         >
           <div class="px-4 pt-4">
-            <h6 class="mb-0 text-h6 text-typo">{{ quizz.title }}</h6>
+            <h6 class="mb-0 text-h6 text-typo">{{ truncate(quizz.title, 20) }}</h6>
           </div>
           <hr class="horizontal dark mt-2 mb-1" />
           <v-card-text>
@@ -55,9 +55,6 @@
                   fetchpriority="high"
                 />
               </div>
-              <div class="py-4">
-                <p>{{ quizz.description }}</p>
-              </div>
             </NuxtLink>
           </v-card-text>
 
@@ -65,7 +62,6 @@
             <span v-for="(badge, i) in quizz.badges?.split(',')" class="mr-2">
                 <v-btn
                   :key="i"
-                  small
                   :ripple="false"
                   height="21"
                   variant="text"
@@ -81,6 +77,7 @@
 </template>
 
 <script lang="ts" setup>
+import { truncate } from '~/utils/stringUtils'
 
 const { data: allQuizz } = await useAsyncData("allQuizz", () =>
   queryContent("/quizz").find()
