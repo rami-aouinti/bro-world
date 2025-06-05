@@ -18,7 +18,7 @@
       >
     </div>
     <v-row align="center" justify="center" dense>
-      <v-col v-for="(quizz, id) in allQuizz" :key="id" cols="12" md="4">
+      <v-col v-for="(quizz, id) in allQuizz" :key="id" lg="4" md="4" cols="12" class="position-relative">
         <v-card
           dark
           class="h-100"
