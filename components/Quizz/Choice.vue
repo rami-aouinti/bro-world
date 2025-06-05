@@ -12,16 +12,23 @@
         style="cursor: pointer"
         size="58"
         class="border border-primary mx-2 py-1"
-        :imgClass="getImgClass(pic)"
         @click="currentIndex = (quizz.timer && !end) ? currentIndex : i"
-      />
+      >
+        <NuxtImg
+          :alt="`question-${pic.answer}`"
+          :src="getImgClass(pic)"
+          width="50"
+          height="50"
+          cover
+        />
+      </v-avatar>
     </div>
 
     <div class="max-w-2xl w-full mx-auto px-4 space-y-6">
       <!-- Barre de progression -->
       <v-transition-scale v-if="quizz.timer" group>
         <div class="flex justify-center mb-4">
-          <v-progress-circular
+          <v-progress-linear
             v-if="!alreadyAnswered(currentPic)"
             :model-value="currentIndex"
             :size="32"
@@ -32,7 +39,6 @@
         </div>
       </v-transition-scale>
 
-      <!-- Image principale -->
       <div class="bg-slate-800/40 p-4 rounded-lg text-center" :class="quizz.small ? 'h-[42vh]' : 'h-[62vh]'">
         <cite
           class="block text-md mb-2 truncate transition-opacity duration-300"
@@ -41,8 +47,10 @@
           {{ currentPic.name }}
         </cite>
 
-        <img
+        <NuxtImg
           :src="currentPic.src"
+          width="400"
+          height="200"
           class="rounded mx-auto object-contain w-full"
           :class="quizz.small ? 'h-[33vh]' : 'h-[53vh]'"
           :alt="currentPic.name"
@@ -76,7 +84,7 @@
           <v-btn v-if="replay !== 'no-replay'" :disabled="replay" variant="soft" @click="replay = true">
             {{ replay ? 'Loading...' : 'Replay' }}
           </v-btn>
-          <NuxtLink to="/" class="text-teal-700 underline">Retour</NuxtLink>
+          <NuxtLink to="/" class="text-teal-700 underline">Undo</NuxtLink>
         </div>
 
         <div class="mb-6">
