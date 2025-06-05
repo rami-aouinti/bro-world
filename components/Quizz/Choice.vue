@@ -14,12 +14,11 @@
         class="border border-primary mx-2 py-1"
         @click="currentIndex = (quizz.timer && !end) ? currentIndex : i"
       >
-        <NuxtImg
+        <img
           :alt="`question-${pic.answer}`"
           :src="getImgClass(pic)"
           width="50"
           height="50"
-          cover
         />
       </v-avatar>
     </div>
