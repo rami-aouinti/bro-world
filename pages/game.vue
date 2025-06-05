@@ -2,16 +2,7 @@
   <v-container fluid>
     <v-row align="center" justify="center" dense>
       <v-col cols="12" md="12">
-        <h4 class="justify-center text-2xl m-3">
-          <span class="text-teal-400 mr-4">Quiz</span>
-          {{ title }}
-        </h4>
-        <p class="justify-center [&>a]:text-teal-400 [&>a]:underline">
-          The <NuxtLink to="https://en.wikipedia.org/wiki/SPARQL" target="_blank">SPARQL</NuxtLink> language
-          allows querying RDF databases such as
-          <NuxtLink to="https://www.wikidata.org/wiki/Wikidata:Main_Page" target="_blank">Wikidata</NuxtLink>.
-          Each quiz is generated from a SPARQL query, and the data changes with every page reload.
-        </p>
+        <Header class="mb-6 text-center" :title="title"/>
       </v-col>
     </v-row>
     <div class="my-4 text-center mb-4">
@@ -78,6 +69,7 @@
 
 <script lang="ts" setup>
 import { truncate } from '~/utils/stringUtils'
+import Header from "~/components/App/AppQuiz/Header.vue";
 
 const { data: allQuizz } = await useAsyncData("allQuizz", () =>
   queryContent("/quizz").find()
