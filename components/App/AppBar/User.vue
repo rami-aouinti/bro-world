@@ -10,7 +10,7 @@ const loggedUser = ref([
   { icon: "mdi-network", path: "/job", title: "Jobs" },
   { icon: "mdi-table-large", path: "/crm", title: "Crm" },
   { icon: "mdi-calendar-clock", path: "/calendar", title: "Calendar" },
-  { icon: "mdi-gamepad-variant", path: "/quiz", title: "Quiz" },
+  { icon: "mdi-gamepad-variant", path: "/game", title: "Games" },
 ])
 
 const notLoggedUser = ref([

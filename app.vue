@@ -56,6 +56,7 @@ useHead({
 useSeoMeta({
   title,
   description,
+  author: "rami.aouinti@gmail.com",
   ogTitle: title,
   ogDescription: description,
   ogType: 'website',

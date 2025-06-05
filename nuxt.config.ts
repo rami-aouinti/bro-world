@@ -14,7 +14,13 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
     'nuxt-echarts',
     '@nuxt/icon',
-    '@nuxt/image'
+    '@nuxt/image',
+    "@nuxtjs/fontaine",
+    "@nuxt/content",
+    "@nuxthq/studio",
+    '@formkit/auto-animate/nuxt',
+    "@morev/vue-transitions/nuxt",
+    'nuxt3-leaflet',
   ],
 
   plugins: [
@@ -30,6 +36,10 @@ export default defineNuxtConfig({
   sourcemap: {
     server: true,
     client: true,
+  },
+
+  ui: {
+    icons: ["heroicons", "lucide"],
   },
 
   css: ['~/assets/styles/index.css'],
