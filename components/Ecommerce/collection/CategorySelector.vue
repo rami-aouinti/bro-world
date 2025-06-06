@@ -28,7 +28,7 @@ const selected = ref(
       :items="selectOptions"
       item-title="value"
       item-value="value"
-      class="w-full block lg:hidden mb-4"
+      class="mobile-only mb-4"
       variant="outlined"
       @update:modelValue="val => {
         const target = selectOptions.find(opt => opt.value === val);
@@ -37,7 +37,7 @@ const selected = ref(
     />
 
     <!-- Desktop list -->
-    <div class="hidden lg:block">
+    <div class="desktop-only">
       <ul class="category-list">
         <li
           v-for="{ node } in collections?.edges"
@@ -57,6 +57,26 @@ const selected = ref(
 </template>
 
 <style scoped>
+/* Responsive visibility */
+.mobile-only {
+  display: block;
+}
+
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .mobile-only {
+    display: none;
+  }
+
+  .desktop-only {
+    display: block;
+  }
+}
+
+/* Style de la liste */
 .category-list {
   list-style: none;
   padding: 0;

@@ -1,5 +1,28 @@
 <script setup lang="ts">
-const option: ECOption = {
+const option: {
+  backgroundColor: string;
+  yAxis: { axisTick: { show: boolean }; type: string }[];
+  xAxis: {
+    data: string[];
+    axisTick: { alignWithLabel: boolean };
+    type: string
+  }[];
+  grid: {
+    top: number;
+    left: string;
+    bottom: string;
+    right: string;
+    containLabel: boolean
+  };
+  series: ({
+    barWidth: string;
+    stack: string;
+    data: number[];
+    name: string;
+    type: string
+  })[];
+  tooltip: { axisPointer: { type: string }; trigger: string }
+} = {
   backgroundColor: 'transparent',
   tooltip: {
     trigger: 'axis',

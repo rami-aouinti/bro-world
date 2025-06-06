@@ -34,7 +34,7 @@ const { data: collectionsData } = await useAsyncData('collections-data', () => G
 watch(
   () => route.query.sortKey,
   async (newVal) => {
-    if (!handle || typeof handle !== 'string') return
+    if (!handle) return
     collectionData.value = await GqlGetCollection({
       handle,
       items: 12,

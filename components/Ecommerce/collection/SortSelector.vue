@@ -35,12 +35,12 @@ watch(selected, (newSortKey) => {
   <v-select
     v-model="selected"
     :items="options"
+    max-width="300"
     item-title="label"
     item-value="value"
     :disabled="disabled"
     variant="outlined"
     density="compact"
-    class="w-full"
     aria-label="Sort products"
   />
 </template>

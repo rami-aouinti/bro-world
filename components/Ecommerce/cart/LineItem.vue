@@ -32,12 +32,12 @@ function debouncedUpdateQuantity(newQuantity: number) {
             :to="`/product/${item.merchandise.product.handle}`"
             @click="isCartOpen = false"
           >
-            <img
+            <NuxtImg
               :src="item.merchandise.product.featuredImage?.url"
               width="92"
               height="92"
               class="rounded-xl max-w-[92px] max-h-[92px] object-contain"
-            >
+            />
           </NuxtLink>
 
           <v-btn
