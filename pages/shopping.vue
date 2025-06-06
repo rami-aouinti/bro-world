@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import ProductCarousel from "~/components/Ecommerce/home/ProductCarousel.vue";
 import CookieConsent from "~/components/Ecommerce/layout/CookieConsent.vue";
-import OrderSummary from "~/components/Ecommerce/cart/OrderSummary.vue";
 
 const { data: latestStuffCollection } = await useAsyncData('latest-stuff-collection', () => GqlGetCollection({
   handle: 'latest-stuff',

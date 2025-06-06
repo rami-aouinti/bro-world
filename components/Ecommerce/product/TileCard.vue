@@ -118,6 +118,5 @@ function handleMouseOver(event: MouseEvent) {
   display: block;
   padding-top: 4px;
   font-size: 0.875rem;
-  color: #94a3b8; /* slate-400 */
 }
 </style>
