@@ -2,6 +2,7 @@
 import QuantitySelector
   from "~/components/Ecommerce/product/QuantitySelector.vue";
 import type {ShopifyCartLineItem} from "~/modules/shopify/types";
+import {useShopifyCart} from "~/modules/shopify/composables/useShopifyCart";
 
 const { getPriceWithCurrency, isCartOpen } = useShopifyCart()
 

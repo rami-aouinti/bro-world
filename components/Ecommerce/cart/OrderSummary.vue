@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import LineItem from "~/components/Ecommerce/cart/LineItem.vue";
+import {useShopifyCart} from "~/modules/shopify/composables/useShopifyCart";
 
 const {
   getPriceWithCurrency,

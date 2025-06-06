@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import SearchBar from "~/components/Ecommerce/layout/SearchBar.vue";
+import {useShopifyCart} from "~/modules/shopify/composables/useShopifyCart";
 
 const { cart, isCartOpen } = useShopifyCart()
 

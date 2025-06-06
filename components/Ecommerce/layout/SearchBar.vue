@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { watchDebounced } from '@vueuse/shared'
 import { onClickOutside } from '@vueuse/core'
+import {useShopifyCart} from "~/modules/shopify/composables/useShopifyCart";
+import type {ShopifyProducts} from "~/modules/shopify/types";
 
 const emit = defineEmits(['item-selected'])
 

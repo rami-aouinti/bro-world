@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { ShopifyProduct } from "~/modules/shopify/types";
+import {useShopifyCart} from "~/modules/shopify/composables/useShopifyCart";
 
 const props = defineProps({
   product: {
