@@ -40,7 +40,6 @@ function debouncedUpdateQuantity(newQuantity: number) {
         <v-btn
           class="remove-btn"
           size="xs"
-          color="neutral"
           variant="outline"
           icon="i-heroicons-x-mark-20-solid"
           @click="emit('remove-item', item.id)"

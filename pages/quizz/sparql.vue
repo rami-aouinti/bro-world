@@ -30,7 +30,7 @@
       </span>
       <span v-for="(title, id) in requestTitles"
         @click="indexRequest = id"
-        class = "hover:text-teal-700 text-neutral rounded-sm cursor-pointer select-none m-3"
+        class = "hover:text-teal-700 rounded-sm cursor-pointer select-none m-3"
         :class="{'bg-teal-700 text-white' : indexRequest === id}"
       >{{ title }}</span>
     </div>
@@ -40,7 +40,7 @@
         Essayer un exemple :
       </span>
       <span v-for="example in examples">
-        <span @click = "exampleSearch = example" class = "hover:text-teal-700 text-neutral rounded-sm cursor-pointer select-none">
+        <span @click = "exampleSearch = example" class = "hover:text-teal-700 rounded-sm cursor-pointer select-none">
           {{ example }}
         </span>
       </span>

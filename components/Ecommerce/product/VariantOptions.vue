@@ -30,7 +30,7 @@ function isSelected(name: string, value: string) {
       <v-btn
         v-for="value in option.values"
         :key="value"
-        :color="isSelected(option.name, value) ? 'primary' : 'neutral'"
+        :color="isSelected(option.name, value) ? 'primary' : ''"
         :variant="isSelected(option.name, value) ? 'solid' : 'outline'"
         class="min-w-16 justify-center"
         @click="toggleOption(option.name, value)"
