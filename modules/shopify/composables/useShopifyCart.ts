@@ -3,13 +3,11 @@ import type {
   ShopifyCartLineItem, ShopifyPrice,
   ShopifyProduct
 } from "~/modules/shopify/types";
-import { useToast } from 'vue-toastification'
 export const useShopifyCart = () => {
   const cart = useState<ShopifyCart>('cart', () => undefined)
   const isCartOpen = useState('isCartOpen', () => false)
   const nuxtApp = useNuxtApp()
   const loading = useState('loading', () => false)
-  const toast = useToast()
 
   const getPriceWithCurrency = (price?: ShopifyPrice | null, quantity: number = 1) => {
     if (!price) return ''
@@ -65,10 +63,10 @@ export const useShopifyCart = () => {
 
       await getCart()
 
-      toast.add({ title: 'Product added to cart.', closeIcon: 'i-heroicons-x-mark-20-solid', duration: 2000 })
+      Notify.success('Product added to cart.')
     }
     catch (error) {
-      toast.add({ title: 'Error adding item to cart', color: 'error', closeIcon: 'i-heroicons-x-mark-20-solid', duration: 2000 })
+      Notify.error('Error adding item to cart')
       console.error('Error adding item to cart:', error)
     }
     finally {
@@ -103,7 +101,7 @@ export const useShopifyCart = () => {
       await getCart()
     }
     catch (error) {
-      toast.add({ title: 'Error removing item from cart', color: 'error', closeIcon: 'i-heroicons-x-mark-20-solid', duration: 2000 })
+      Notify.success('Error removing item from cart')
       console.error('Error removing item from cart', error)
     }
     finally {
@@ -126,7 +124,7 @@ export const useShopifyCart = () => {
       await getCart()
     }
     catch (error) {
-      toast.add({ title: 'Error updating item quantity', color: 'error', closeIcon: 'i-heroicons-x-mark-20-solid', duration: 2000 })
+      Notify.error('Error updating item quantity')
       console.error('Error updating item quantity', error)
     }
     finally {
@@ -141,7 +139,6 @@ export const useShopifyCart = () => {
 
   return {
     cart,
-    toast,
     loading,
     addToCart,
     removeFromCart,

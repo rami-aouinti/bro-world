@@ -65,9 +65,7 @@
 </template>
 
 <script setup>
-import { useToast } from 'vue-toastification'
 import { onMounted, watchEffect } from 'vue'
-const toast = useToast()
 const exampleSearch = ref('')
 provide('exampleSearch', exampleSearch)
 

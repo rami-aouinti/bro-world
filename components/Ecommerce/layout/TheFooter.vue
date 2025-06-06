@@ -1,11 +1,8 @@
 <script lang="ts" setup>
-import { useToast } from 'vue-toastification'
-
-const toast = useToast()
 const inputValue = ref('')
 
 function subscribeNewsletter() {
-  toast.add({ title: `Subscribed user with email: ${inputValue.value}`, closeIcon: 'i-heroicons-x-mark-20-solid' })
+  Notify.success(`Subscribed user with email: ${inputValue.value}`)
 }
 
 const categories = [
