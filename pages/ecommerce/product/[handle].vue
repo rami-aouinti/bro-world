@@ -47,11 +47,6 @@ useSeoMeta({
 
 <template>
   <div class="product-container">
-    <div class="back-button">
-      <v-btn icon="i-heroicons-arrow-small-left-solid" variant="link" color="neutral" class="pl-0" @click="router.back()">
-        Back to the list
-      </v-btn>
-    </div>
 
     <div class="product-content">
       <ImageGallery :images="galleryImages" :product-title="product?.title" />
