@@ -62,6 +62,7 @@
     "http": "0.0.1-security",
     "nuxt-auth-utils": "^0.5.20",
     "nuxt-graphql-client": "^0.2.46",
+    "nuxt-og-image": "^5.1.6",
     "nuxt-quasar-ui": "^2.1.12",
     "nuxt3-leaflet": "^1.0.13",
     "pinia": "^3.0.3",
