@@ -57,6 +57,7 @@ const computedVariant = computed(() => {
 
       <v-btn
         class="add-to-cart"
+        color="primary"
         :disabled="loading || !areOptionsSelected"
         @click="addToCart(product, computedVariant?.id, quantity)"
       >

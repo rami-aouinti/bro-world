@@ -41,13 +41,15 @@ watch(count, (newVal: number) => {
         :class="small && '!p-1'"
         :aria-controls="inputId"
         variant="ghost"
+        color="primary"
         aria-label="Decrease value"
         @click="dec()"
       >
         <v-icon
-          name="i-heroicons-minus"
           size="20"
-        />
+        >
+          mdi-minus
+        </v-icon>
       </v-btn>
       <input
         :id="inputId"
@@ -68,13 +70,15 @@ watch(count, (newVal: number) => {
         :class="small && '!p-1'"
         :aria-controls="inputId"
         variant="ghost"
+        color="primary"
         aria-label="Increase value"
         @click="inc()"
       >
         <v-icon
-          name="i-heroicons-plus"
           size="20"
-        />
+        >
+        mdi-plus
+        </v-icon>
       </v-btn>
     </div>
   </div>
