@@ -16,8 +16,8 @@ const props = defineProps({
         <v-row>
           <v-col cols="10">
             <div>
-              <h5 class="text-h5 font-weight-bold">BroWorld Setting</h5>
-              <p class="text-body-2">See our dashboard options.</p>
+              <h5 class="text-h5 font-weight-bold">Order Summary</h5>
+              <p class="text-body-2">Review items in your cart</p>
             </div>
           </v-col>
           <v-col cols="2" class="text-end">

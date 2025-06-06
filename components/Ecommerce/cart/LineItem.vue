@@ -32,8 +32,8 @@ function debouncedUpdateQuantity(newQuantity: number) {
         >
           <NuxtImg
             :src="item.merchandise.product.featuredImage?.url"
-            width="92"
-            height="92"
+            width="62"
+            height="62"
             class="product-image"
           />
         </NuxtLink>
@@ -100,23 +100,21 @@ function debouncedUpdateQuantity(newQuantity: number) {
 }
 
 .product-title {
-  font-size: 1rem;
+  font-size: 0.7rem;
   font-weight: 500;
 }
 
 .product-price {
-  font-size: 0.875rem;
+  font-size: 0.575rem;
   font-weight: 600;
 }
 
 .product-options {
-  font-size: 0.75rem;
-  color: #94a3b8;
+  font-size: 0.55rem;
   margin-bottom: 0.5rem;
 }
 
 .quantity-selector {
-  position: absolute;
   right: 0;
   bottom: 0;
 }
