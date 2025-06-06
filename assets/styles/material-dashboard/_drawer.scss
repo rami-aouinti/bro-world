@@ -586,21 +586,20 @@
 .fixed-plugin {
   .v-card {
     position: fixed !important;
-    right: -430px;
-    bottom: 75px;
-    max-height: 500px;
+    right: -360px;
+    top: 64px;
+    height: 85%;
     left: auto !important;
     transform: unset !important;
-    width: 430px;
+    width: 360px;
     border-radius: 0;
-    padding: 0 0 0 0;
+    padding: 0 10px;
     transition: 0.7s ease;
     z-index: 1020;
-    overflow-y: auto;
   }
   &.show {
     .v-card {
-      right: 75px;
+      right: 0;
     }
   }
 }

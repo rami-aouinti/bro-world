@@ -1,10 +1,17 @@
 <template>
   <v-app>
     <AppDrawer />
-    <AppBar />
+    <AppBar
+      @toggleSettingsDrawer="showSettingsDrawer = $event"
+    />
     <v-main>
       <NuxtPage />
     </v-main>
+    <SettingsDrawer
+      :show-settings-drawer="showSettingsDrawer"
+      @toggleSettingsDrawer="showSettingsDrawer = $event"
+    >
+    </SettingsDrawer>
     <AppFooter />
     <Analytics />
     <SpeedInsights/>
@@ -16,6 +23,9 @@ import AppDrawer from '~/components/App/AppDrawer.vue'
 import AppBar from '~/components/App/AppBar.vue'
 import { Analytics } from '@vercel/analytics/vue';
 import { SpeedInsights } from "@vercel/speed-insights/nuxt"
+import SettingsDrawer from "~/components/App/SettingsDrawer.vue";
+
+const showSettingsDrawer = ref(false)
 </script>
 <style scoped>
 /* replace padding with margin to limit scrollbar in v-main */
