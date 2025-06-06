@@ -81,7 +81,7 @@ async function handleFileUpload(file: File) {
 </script>
 
 <template>
-  <v-row>
+  <v-row v-if="stories.length > 0">
     <v-col cols="12">
       <v-card
         rounded="xl"

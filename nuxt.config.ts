@@ -8,6 +8,7 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/sitemap',
+    '@nuxt/scripts',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
     'vuetify-nuxt-module',
@@ -21,6 +22,8 @@ export default defineNuxtConfig({
     '@formkit/auto-animate/nuxt',
     "@morev/vue-transitions/nuxt",
     'nuxt3-leaflet',
+    'nuxt-og-image',
+    'nuxt-lazy-hydrate',
   ],
 
   plugins: [

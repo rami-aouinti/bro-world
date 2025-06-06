@@ -91,10 +91,10 @@
           <h5 class="mb-0 text-typo text-h5 font-weight-bold">Spotify</h5>
           <p class="text-sm text-body font-weight-light mb-0">Music</p>
         </div>
-        <p v-if="switch2 == true" class="mb-0 text-body text-xs ms-auto">
+        <p v-if="switch2 === true" class="mb-0 text-body text-xs ms-auto">
           Enabled
         </p>
-        <p v-if="switch2 == false" class="mb-0 text-body text-xs ms-auto">
+        <p v-if="switch2 === false" class="mb-0 text-body text-xs ms-auto">
           Disabled
         </p>
         <v-switch
@@ -115,10 +115,10 @@
           <h5 class="mb-0 text-typo text-h5 font-weight-bold">Atlassian</h5>
           <p class="text-sm text-body font-weight-light mb-0">Payment vendor</p>
         </div>
-        <p v-if="switch3 == true" class="mb-0 text-body text-xs ms-auto">
+        <p v-if="switch3 === true" class="mb-0 text-body text-xs ms-auto">
           Enabled
         </p>
-        <p v-if="switch3 == false" class="mb-0 text-body text-xs ms-auto">
+        <p v-if="switch3 === false" class="mb-0 text-body text-xs ms-auto">
           Disabled
         </p>
         <v-switch
