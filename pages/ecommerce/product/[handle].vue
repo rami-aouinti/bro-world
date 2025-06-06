@@ -40,7 +40,6 @@ useSeoMeta({
   description: product.value?.seo.description || product.value?.description,
   ogTitle: product.value?.seo.title || product.value?.title,
   ogDescription: product.value?.seo.description || product.value?.description,
-  ogImage: product.value?.featuredImage?.url || `${config.public.siteUrl}/og-image.png`,
   twitterCard: 'summary_large_image',
 })
 </script>
