@@ -19,6 +19,8 @@
     "@nuxt/icon": "^1.13.0",
     "@nuxt/test-utils": "^3.19.1",
     "@vue/test-utils": "^2.4.6",
+    "nuxt-lazy-hydrate": "^1.0.0",
+    "nuxt-og-image": "^5.0.2",
     "eslint": "^9.28.0",
     "happy-dom": "^17.6.3",
     "nuxt": "^3.17.5",
