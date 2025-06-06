@@ -35,7 +35,7 @@ watch(selected, (newSortKey) => {
   <v-select
     v-model="selected"
     :items="options"
-    max-width="300"
+    max-width="200"
     item-title="label"
     item-value="value"
     :disabled="disabled"
