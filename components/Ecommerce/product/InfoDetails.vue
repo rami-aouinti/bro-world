@@ -97,7 +97,6 @@ const computedVariant = computed(() => {
 
 .product-description {
   margin-top: 1.5rem;
-  color: #94a3b8;
   max-height: 7rem;
   overflow-y: auto;
 }
@@ -115,7 +114,6 @@ const computedVariant = computed(() => {
 
 .quantity-label {
   margin-bottom: 0.5rem;
-  color: #94a3b8;
 }
 
 .quantity-selector {
