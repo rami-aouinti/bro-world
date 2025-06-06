@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {useShopifyCart} from "~/modules/shopify/composables/useShopifyCart";
+
 const { getImagePath } = useShopifyCart()
 
 defineProps<{ images: string[], productTitle?: string }>()
@@ -22,7 +24,7 @@ defineProps<{ images: string[], productTitle?: string }>()
       :fetch-priority="index === 0 ? 'high' : 'low'"
       draggable="false"
       class="max-w-[300px] max-h-[300px] md:min-w-[500px] md:max-w-[500px] md:max-h-[500px] object-contain text-center mx-auto"
-      sizes="300px md:500px"
+      width="300px" height="500px"
       fit="contain"
     />
   </v-carousel>

@@ -1,6 +1,6 @@
 import type {
   ShopifyCart,
-  ShopifyCartLineItem,
+  ShopifyCartLineItem, ShopifyPrice,
   ShopifyProduct
 } from "~/modules/shopify/types";
 import { useToast } from 'vue-toastification'

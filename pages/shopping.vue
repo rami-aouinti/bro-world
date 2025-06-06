@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ProductCarousel from "~/components/Ecommerce/home/ProductCarousel.vue";
+import CookieConsent from "~/components/Ecommerce/layout/CookieConsent.vue";
 
 const { data: latestStuffCollection } = await useAsyncData('latest-stuff-collection', () => GqlGetCollection({
   handle: 'latest-stuff',
@@ -62,5 +63,6 @@ const { data: casualThingsCollection } = await useAsyncData('casual-things-colle
         </section>
       </NuxtLazyHydrate>
     </div>
+    <CookieConsent />
   </v-container>
 </template>
