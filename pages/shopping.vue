@@ -32,7 +32,7 @@ const { data: casualThingsCollection } = await useAsyncData('casual-things-colle
           <NuxtLink
             to="/ecommerce/collection/latest-stuff"
             variant="secondary"
-            class="min-w-fit hover:text-primary-500 text-white justify-center mt-4 flex items-center sm:hidden"
+            class="min-w-fit hover:text-primary-500 justify-center mt-4 flex items-center sm:hidden"
           >
             See all
             <v-icon
@@ -52,7 +52,7 @@ const { data: casualThingsCollection } = await useAsyncData('casual-things-colle
           <NuxtLink
             to="/ecommerce/collection/casual-things"
             variant="secondary"
-            class="min-w-fit hover:text-primary-500 text-white justify-center mt-4 flex items-center sm:hidden"
+            class="min-w-fit hover:text-primary-500 justify-center mt-4 flex items-center sm:hidden"
           >
             See all
             <v-icon
@@ -65,6 +65,5 @@ const { data: casualThingsCollection } = await useAsyncData('casual-things-colle
       </NuxtLazyHydrate>
     </div>
     <CookieConsent />
-    <OrderSummary />
   </v-container>
 </template>

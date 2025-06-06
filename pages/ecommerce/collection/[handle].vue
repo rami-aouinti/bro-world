@@ -84,7 +84,7 @@ useSeoMeta({
           </div>
 
           <div v-else class="no-products">
-            <p class="text-white">No products found in this collection.</p>
+            <p>No products found in this collection.</p>
           </div>
         </NuxtLazyHydrate>
       </section>
@@ -132,7 +132,6 @@ useSeoMeta({
 }
 
 .collection-count {
-  color: white;
   font-size: 1.125rem;
   font-weight: 500;
 }

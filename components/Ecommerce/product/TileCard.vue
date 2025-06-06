@@ -106,14 +106,12 @@ function handleMouseOver(event: MouseEvent) {
 
 .tile-info {
   padding: 8px;
-  color: white;
 }
 
 .tile-title {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #cbd5e1; /* slate-300 */
 }
 
 .tile-price {

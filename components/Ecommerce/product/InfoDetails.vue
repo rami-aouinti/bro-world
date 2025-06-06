@@ -71,7 +71,6 @@ const computedVariant = computed(() => {
 .product-info {
   max-width: 640px;
   padding: 1rem 0;
-  color: white;
   text-align: left;
 }
 

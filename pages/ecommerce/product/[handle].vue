@@ -98,7 +98,6 @@ useSeoMeta({
 .related-title {
   font-size: 24px;
   margin-bottom: 32px;
-  color: white;
 }
 
 .related-scroll {

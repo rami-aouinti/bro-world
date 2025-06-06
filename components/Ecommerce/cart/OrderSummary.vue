@@ -74,7 +74,6 @@ const costs = computed(() => cart?.value?.cost);
   flex-direction: column;
   height: 100%;
   padding: 1rem;
-  color: white;
 }
 
 .cart-header {

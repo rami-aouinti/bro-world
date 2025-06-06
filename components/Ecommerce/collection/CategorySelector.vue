@@ -46,6 +46,7 @@ const selected = ref(
         >
           <NuxtLink
             :to="`/ecommerce/collection/${node.handle}`"
+            class="bg-primary"
             :class="['category-link', { active: isActiveCollection(node.handle) }]"
           >
             {{ node.title }}
@@ -90,21 +91,19 @@ const selected = ref(
 .category-link {
   display: block;
   padding: 8px 12px;
-  color: #94a3b8;
   text-decoration: none;
   border-left: 3px solid transparent;
   transition: all 0.3s ease;
 }
 
 .category-link:hover {
-  color: #f8fafc;
+  color: #818181;
 }
 
 .category-link.active {
-  color: #38bdf8;
+  color: #332f2f;
   font-weight: 600;
-  border-left: 3px solid #38bdf8;
-  background-color: #0f172a;
+  border-left: 3px solid #332f2f;
   border-radius: 4px;
 }
 </style>

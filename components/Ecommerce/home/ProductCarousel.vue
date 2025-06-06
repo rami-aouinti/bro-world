@@ -50,7 +50,6 @@ defineProps<{ products?: ShopifyProducts, title: string, description: string, li
 .carousel-title {
   font-size: 32px;
   font-weight: 500;
-  color: white;
   margin-bottom: 8px;
 }
 
@@ -59,7 +58,6 @@ defineProps<{ products?: ShopifyProducts, title: string, description: string, li
 }
 
 .see-all-link {
-  color: white;
   text-decoration: none;
   display: flex;
   align-items: center;
