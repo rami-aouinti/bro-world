@@ -4,14 +4,11 @@
 
 <template>
   <v-card
-    class="d-flex flex-column mx-auto py-8"
-    elevation="10"
-    height="500"
-    width="360"
+    rounded="xl" class="mx-3" variant="text"
   >
-    <div class="d-flex justify-center mt-auto text-h5 ">
-      Rating overview
-    </div>
+    <v-card-title class="d-flex justify-center mt-auto text-h5">
+      <span class="text-h6">Rating overview</span>
+    </v-card-title>
 
     <div class="d-flex align-center flex-column my-auto">
       <div class="text-h2 mt-5">
@@ -21,7 +18,7 @@
 
       <v-rating
         :model-value="3.5"
-        color="yellow-darken-3"
+        color="primary"
         half-increments
       ></v-rating>
       <div class="px-3">3,360 ratings</div>
@@ -36,7 +33,7 @@
         <v-progress-linear
           :model-value="rating * 15"
           class="mx-n5"
-          color="yellow-darken-3"
+          color="primary"
           height="20"
           rounded
         ></v-progress-linear>

@@ -66,7 +66,7 @@
               :ripple="false"
               height="21"
               variant="text"
-              color="indigo"
+              color="primary"
               class="mr-2"
             >
               {{ badge }}
