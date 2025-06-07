@@ -1,11 +1,12 @@
 <template>
   <v-container fluid>
-    <Calendar></Calendar>
+    <CalendarItem></CalendarItem>
   </v-container>
 </template>
 
 <script setup lang="ts">
 
+import CalendarItem from "~/components/CalendarItem.vue";
 </script>
 
 <style scoped>

@@ -6,11 +6,9 @@ const { loggedIn, clear, user } = useUserSession()
 
 const loggedUser = ref([
   { icon: "mdi-account-settings-variant", path: "/setting", title: "Setting" },
-  { icon: "mdi-shopping", path: "/shopping", title: "Shopping" },
-  { icon: "mdi-network", path: "/job", title: "Jobs" },
-  { icon: "mdi-table-large", path: "/crm", title: "Crm" },
-  { icon: "mdi-calendar-clock", path: "/calendar", title: "Calendar" },
-  { icon: "mdi-gamepad-variant", path: "/game", title: "Games" },
+  { icon: "mdi-network", path: "/plugin", title: "Apps" },
+  { icon: "mdi-help-circle", path: "/help", title: "Help" },
+  { icon: "mdi-information", path: "/about", title: "About" },
 ])
 
 const notLoggedUser = ref([
