@@ -1,5 +1,5 @@
 <template>
-  <v-container class="py-10">
+  <v-container fluid>
     <v-row>
       <v-col cols="12" md="6">
         <h1 class="text-h6 font-weight-bold mb-4">Contact Us</h1>
@@ -40,7 +40,7 @@
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2521.357954112808!2d6.8267341!3d50.9487694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47bf2624c3b909f9%3A0x91a64c5e276e91c6!2s50%C2%B056'55.6%22N%206%C2%B049'45.5%22E!5e0!3m2!1sen!2sde!4v1717777777777!5m2!1sen!2sde"
           width="100%"
-          height="300"
+          height="340"
           style="border:5px; border-radius: 12px"
           allowfullscreen=""
           loading="lazy"
