@@ -10,6 +10,7 @@ defineProps<{ images: string[], productTitle?: string }>()
   <v-carousel
     class="rounded-lg max-w-[300px] max-h-[300px] md:min-w-[500px] md:max-w-[500px] md:max-h-[500px] text-center mx-auto md:text-left md:mx-0 md:ml-12 overflow-hidden md:overflow-visible"
     show-arrows="hover"
+    hide-delimiter-background
     dots
   >
     <v-carousel-item
