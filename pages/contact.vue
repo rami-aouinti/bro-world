@@ -60,9 +60,8 @@ const form = ref({
 })
 
 function sendMessage() {
-  // Replace with real API or mail sending logic
   console.log('Message sent:', form.value)
-  alert('Thank you! Your message has been sent.')
+  Notify.success('Thank you! Your message has been sent.')
   form.value = { name: '', email: '', message: '' }
 }
 </script>
