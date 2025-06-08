@@ -17,7 +17,7 @@
           </p>
         </div>
       </v-col>
-      <v-col cols="12"class="my-auto">
+      <v-col cols="12" class="my-auto">
         <div class="px-6 pt-0">
           <div class="d-sm-flex align-center ms-auto">
             <v-btn
