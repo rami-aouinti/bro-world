@@ -187,6 +187,7 @@ export default defineNuxtConfig({
       siteUrl: 'https://bro-world-space.com',
       apiBase: 'https://bro-world.org',
       apiBlogBase: 'https://blog.bro-world.org',
+      GROQ_API_KEY: '',
     },
   },
 
