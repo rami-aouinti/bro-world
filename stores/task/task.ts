@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import axiosInstance from "../helpers/axios";
+import axiosInstance from "../../helpers/axios";
 import {useCacheStore} from "./cache";
 
 const STORE_ID = 'task';

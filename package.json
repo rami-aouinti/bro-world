@@ -61,6 +61,7 @@
     "form-data": "^4.0.2",
     "formidable": "^3.5.4",
     "fs": "0.0.1-security",
+    "groq-sdk": "^0.23.0",
     "http": "0.0.1-security",
     "nuxt-auth-utils": "^0.5.20",
     "nuxt-graphql-client": "^0.2.46",

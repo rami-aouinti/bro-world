@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import axiosInstance from "../helpers/axios";
+import axiosInstance from "../../helpers/axios";
 import {useCacheStore} from "./cache";
 import {useTasksStore} from "./tasks";
 import {useQueryStore} from "./queryStore";
