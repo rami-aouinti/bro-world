@@ -1,10 +1,5 @@
 <script lang="ts" setup>
-import {useUserStore} from "../stores/user";
-import {toRef} from "vue";
-
-const userStore = useUserStore();
-await userStore.load();
-const user = userStore.user;
+const user = useUserSession;
 </script>
 
 <template>

@@ -1,18 +1,14 @@
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
-import {useProjectStore} from "../stores/project";
+import {useProjectStore} from "../../stores/task/project";
 import {ref} from "vue";
-import axiosInstance from "../helpers/axios";
 import LockableButton from "./LockableButton.vue";
-import router from "../router";
-import {useProjectParticipantsStore} from "../stores/projectParticipants";
-import {useUserStore} from "../stores/user";
+import {useProjectParticipantsStore} from "../../stores/task/projectParticipants";
 import confirmModal from "./confirmModal";
 
 const route = useRoute();
 const projectStore = useProjectStore();
 const participantsStore = useProjectParticipantsStore();
-const userStore = useUserStore();
 const id = route.params.id;
 const isLeaveLocked = ref(false);
 const error = ref('');
@@ -20,14 +16,13 @@ const error = ref('');
 await projectStore.load(id);
 const project = projectStore.project(id);
 await participantsStore.load(id);
-const participant = participantsStore.getParticipants(id)[userStore.user.id];
+const participant = participantsStore.getParticipants(id)[useUserSession.id];
 
 async function onLeave(id) {
   error.value = '';
   isLeaveLocked.value = true;
   await axiosInstance.patch(`/projects/${id}/leave/`)
       .then((response) => {
-        return router.push({name: 'user_projects'});
       })
       .catch((e) => {
         error.value = e.response.data.message;

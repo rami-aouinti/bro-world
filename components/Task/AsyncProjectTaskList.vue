@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
-import {useProjectStore} from "../stores/project";
+import {useProjectStore} from "../../stores/task/project";
 import FormError from "./FormError.vue";
 import Datetime from "./Datetime.vue";
-import {useTasksStore} from "../stores/tasks";
+import {useTasksStore} from "../../stores/task/tasks";
 import TaskStatus from "./TaskStatus.vue";
 import Pagination from "./Pagination.vue";
 

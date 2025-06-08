@@ -2,7 +2,7 @@
 import ProjectStatus from "./ProjectStatus.vue";
 import Datetime from "./Datetime.vue";
 import FormError from "./FormError.vue";
-import {useUserProjectsStore} from "../stores/userProjects";
+import {useUserProjectsStore} from "../../stores/task/userProjects";
 import Pagination from "./Pagination.vue";
 
 const userProjectsStore = useUserProjectsStore();

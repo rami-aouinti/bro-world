@@ -1,8 +1,6 @@
 <script setup>
-import {useAuthStore} from "../stores/auth";
 import AsyncNavBarUserInfo from "./AsyncNavBarUserInfo.vue";
 
-const authStore = useAuthStore();
 </script>
 
 <template>

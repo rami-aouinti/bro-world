@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {reactive, ref} from "vue";
-import {useUserProjectsStore} from "../stores/userProjects";
+import {useUserProjectsStore} from "../../stores/task/userProjects";
 import FormError from "~/components/Task/FormError.vue";
 import FormSuccess from "~/components/Task/FormSuccess.vue";
 import CommonProjectFormFields

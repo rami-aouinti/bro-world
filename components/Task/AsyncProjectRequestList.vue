@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import RequestStatus from "../components/RequestStatus.vue";
 import {useRoute} from "vue-router";
-import {useProjectStore} from "../stores/project";
+import {useProjectStore} from "../../stores/task/project";
 import FormError from "./FormError.vue";
 import Datetime from "./Datetime.vue";
-import {useProjectRequestsStore} from "../stores/projectRequests";
+import {useProjectRequestsStore} from "../../stores/task/projectRequests";
 import confirmModal from "./confirmModal";
 import Pagination from "./Pagination.vue";
 

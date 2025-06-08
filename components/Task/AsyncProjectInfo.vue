@@ -1,15 +1,14 @@
 <script lang="ts" setup>
-import FormSuccess from "../components/FormSuccess.vue";
-import LockableButton from "../components/LockableButton.vue";
-import FormError from "../components/FormError.vue";
 import {ref} from "vue";
 import Datepicker from 'vue3-datepicker';
-import ProjectStatus from "../components/ProjectStatus.vue";
-import {useProjectStore} from "../stores/project";
+import {useProjectStore} from "../../stores/task/project";
 import {useRoute} from "vue-router";
 import CommonProjectFormFields from "./CommonProjectFormFields.vue";
-import axiosInstance from "../helpers/axios";
-import {useTasksStore} from "../stores/tasks";
+import {useTasksStore} from "../../stores/task/tasks";
+import FormError from "~/components/Task/FormError.vue";
+import FormSuccess from "~/components/Task/FormSuccess.vue";
+import ProjectStatus from "~/components/Task/ProjectStatus.vue";
+import LockableButton from "~/components/Task/LockableButton.vue";
 
 const route = useRoute();
 const id = route.params.id;

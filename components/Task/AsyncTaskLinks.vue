@@ -1,21 +1,19 @@
 <script lang="ts" setup>
-import LockableButton from "../components/LockableButton.vue";
-import FormError from "../components/FormError.vue";
-import {useProjectStore} from "../stores/project";
+import {useProjectStore} from "../../stores/task/project";
 import {useRoute} from "vue-router";
 import TaskStatus from "./TaskStatus.vue";
-import {useTaskStore} from "../stores/task";
-import {useUserStore} from "../stores/user";
+import {useTaskStore} from "../../stores/task/task";
 import Pagination from "./Pagination.vue";
-import {useTaskLinksStore} from "../stores/taskLinks";
+import {useTaskLinksStore} from "../../stores/task/taskLinks";
 import {ref} from "vue";
+import FormError from "~/components/Task/FormError.vue";
+import LockableButton from "~/components/Task/LockableButton.vue";
 
 const route = useRoute();
 const id = route.params.id;
 const taskId = route.params.taskId;
 const projectStore = useProjectStore();
 const taskStore = useTaskStore();
-const userStore = useUserStore();
 const linksStore = useTaskLinksStore();
 const linkedTaskId = ref();
 const linkAdditionLocked = ref(false);
@@ -25,7 +23,7 @@ await taskStore.load(taskId);
 await linksStore.load(id, taskId);
 const project = projectStore.project(id);
 const task = taskStore.task(taskId);
-const user = userStore.user;
+const user = useUserSession;
 const isTaskEditor = project.isOwner || user.id === task.ownerId;
 
 async function addLink() {

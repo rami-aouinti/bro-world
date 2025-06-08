@@ -1,5 +1,5 @@
 <script setup>
-import {useQueryStore} from "../stores/queryStore";
+import {useQueryStore} from "../../stores/task/queryStore";
 
 const queryStore = useQueryStore();
 </script>

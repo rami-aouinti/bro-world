@@ -1,5 +1,5 @@
 <script setup>
-import {useTaskStore} from "../stores/task";
+import {useTaskStore} from "../../stores/task/task";
 import {useRoute} from "vue-router";
 
 const route = useRoute();

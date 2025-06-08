@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
-import {useProjectStore} from "../stores/project";
+import {useProjectStore} from "../../stores/task/project";
 import FormError from "./FormError.vue";
-import {useProjectParticipantsStore} from "../stores/projectParticipants";
+import {useProjectParticipantsStore} from "../../stores/task/projectParticipants";
 import confirmModal from "./confirmModal";
 import Pagination from "./Pagination.vue";
 

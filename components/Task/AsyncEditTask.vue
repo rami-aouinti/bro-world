@@ -3,12 +3,11 @@ import FormSuccess from "./FormSuccess.vue";
 import LockableButton from "./LockableButton.vue";
 import FormError from "./FormError.vue";
 import {ref} from "vue";
-import {useProjectStore} from "../stores/project";
+import {useProjectStore} from "../../stores/task/project";
 import {useRoute} from "vue-router";
 import TaskStatus from "./TaskStatus.vue";
-import {useTaskStore} from "../stores/task";
+import {useTaskStore} from "../../stores/task/task";
 import CommonTaskFormFields from "./CommonTaskFormFields.vue";
-import {useUserStore} from "../stores/user";
 
 const route = useRoute();
 const id = route.params.id;
@@ -16,14 +15,12 @@ const taskId = route.params.taskId;
 const success = ref(false);
 const projectStore = useProjectStore();
 const taskStore = useTaskStore();
-const userStore = useUserStore();
 
 await projectStore.load(id);
 await taskStore.load(taskId);
 const project = projectStore.project(id);
 const task = taskStore.task(taskId);
-const user = userStore.user;
-const isTaskEditor = project.isOwner || user.id === task.ownerId;
+const isTaskEditor = project.isOwner;
 
 async function onSubmit() {
   success.value = false;

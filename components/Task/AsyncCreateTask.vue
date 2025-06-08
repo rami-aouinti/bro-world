@@ -4,9 +4,9 @@ import FormSuccess from "./FormSuccess.vue";
 import Datepicker from "vue3-datepicker";
 import LockableButton from "./LockableButton.vue";
 import {reactive, ref} from "vue";
-import {useTasksStore} from "../stores/tasks";
+import {useTasksStore} from "../../stores/task/tasks";
 import {useRoute} from "vue-router";
-import {useProjectStore} from "../stores/project";
+import {useProjectStore} from "../../stores/task/project";
 import CommonTaskFormFields from "./CommonTaskFormFields.vue";
 
 const route = useRoute();

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import RequestStatus from "../components/RequestStatus.vue";
 import Datetime from "./Datetime.vue";
 import FormError from "./FormError.vue";
-import {useUserRequestsStore} from "../stores/userRequests";
+import {useUserRequestsStore} from "../../stores/task/userRequests";
 import Pagination from "./Pagination.vue";
+import RequestStatus from "~/components/Task/RequestStatus.vue";
 
 const userRequestsStore = useUserRequestsStore();
 await userRequestsStore.load();

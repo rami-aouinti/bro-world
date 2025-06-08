@@ -3,12 +3,9 @@ import FormSuccess from "./FormSuccess.vue";
 import FormError from "./FormError.vue";
 import {ref, toRef} from "vue";
 import LockableButton from "./LockableButton.vue";
-import {useUserStore} from "../stores/user";
 
 const success = ref(false);
-const userStore = useUserStore();
-await userStore.load();
-const user = userStore.user;
+const user = useUserSession;
 
 function onSubmit() {
   success.value = false;
