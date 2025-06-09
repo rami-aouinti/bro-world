@@ -31,6 +31,7 @@ const handleEdit = async (id: string | number) => {
   const res = await useFetch(`${props.apiPath}/${id}`)
   console.log('Edit:', res)
 }
+
 const headersWithActions = computed(() => [
   ...props.headers,
   { title: '', key: 'actions', sortable: false },

@@ -25,15 +25,12 @@ defineProps<{
             class="material-icons-round me-1 text-body cursor-pointer"
           >mdi-comment-processing</v-icon
           >
-          <span class="text-sm text-body me-4">36</span>
-        </div>
-        <div class="d-flex align-center">
-          <v-icon
-            size="14"
-            class="material-icons-round me-1 text-body cursor-pointer"
-          >mdi-forward</v-icon
+          <span
+            v-if="post.comments.length > 0"
+            class="text-sm text-body me-4"
           >
-          <span class="text-sm text-body me-4">12</span>
+            {{ post.comments.length }}
+          </span>
         </div>
       </div>
     </v-col>
@@ -50,9 +47,6 @@ defineProps<{
             <NuxtImg width="24" height="24" src="/img/team-1.jpg" alt="Avatar" />
           </v-avatar>
         </div>
-        <small class="ps-2 font-weight-bold text-body text-sm">
-          and 30+ more
-        </small>
       </div>
     </v-col>
   </v-row>

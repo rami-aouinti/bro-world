@@ -2,7 +2,7 @@
 import AuthorPost from "~/pages/home/post/AuthorPost.vue";
 import Post from "~/pages/home/post/Post.vue";
 
-defineProps({
+const props = defineProps({
   post: {
     type: Object,
     required: true,
@@ -13,8 +13,8 @@ defineProps({
 <template>
   <div class="py-3">
     <v-card rounded="xl" class="mx-3" variant="text">
-      <AuthorPost :author="post.user" :date="post.publishedAt"></AuthorPost>
-      <Post :post="post"></Post>
+      <AuthorPost :post="props.post"></AuthorPost>
+      <Post :post="props.post"></Post>
     </v-card>
   </div>
 </template>

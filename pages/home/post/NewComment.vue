@@ -12,18 +12,18 @@ const sendComment = () => {
 </script>
 
 <template>
-  <div class="d-flex mt-6">
-    <div class="flex-shrink-0">
-      <UserAvatar :user="user" size="32"></UserAvatar>
+  <div class="d-flex align-center mt-3">
+    <div class="flex-shrink-0" style="padding-bottom: 18px;">
+      <UserAvatar :user="user" size="48" />
     </div>
-    <div class="flex-grow-1 ms-4">
+    <div class="flex-grow-1 ms-4 d-flex align-center">
       <v-textarea
         v-model="comment"
         append-inner-icon="mdi-send"
         rounded
-        class="mx-2"
+        class="mx-2 w-100"
         label="Write your comment"
-        row-height="8"
+        row-height="10"
         rows="1"
         variant="outlined"
         auto-grow
