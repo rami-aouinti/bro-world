@@ -31,7 +31,7 @@ onMounted(async () => {
     fluid
   >
     <v-card rounded="xl" class="mx-3" variant="text">
-      <AuthorPost :author="post.user" :date="post.publishedAt"></AuthorPost>
+      <AuthorPost :post="post"></AuthorPost>
       <div class="px-4 py-4">
         <p class="text-left mb-6 text-body font-weight-light">
           {{ post.title }}
