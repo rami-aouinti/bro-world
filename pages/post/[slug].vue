@@ -6,10 +6,9 @@ import AuthorPost from "~/pages/home/post/AuthorPost.vue";
 
 const route = useRoute()
 const slug = route.params.slug
-const pending = ref(false)
+const pending = ref(true)
 const post = ref({})
 const loadPost = async () => {
-  pending.value = true
   const { data } = await useFetch(`/api/posts/post/${slug}`)
   if (data.value) {
     post.value = data.value
@@ -30,7 +29,10 @@ onMounted(async () => {
   <v-container
     fluid
   >
-    <v-card rounded="xl" class="mx-3" variant="text">
+    <div v-if="pending" class="d-flex justify-center align-center" style="height: 25vh">
+      <v-progress-circular :size="120" :width="10" color="primary" indeterminate />
+    </div>
+    <v-card v-else rounded="xl" class="mx-3" variant="text">
       <AuthorPost :post="post"></AuthorPost>
       <div class="px-4 py-4">
         <p class="text-left mb-6 text-body font-weight-light">
