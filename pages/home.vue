@@ -9,6 +9,7 @@ import HomeFilters from '~/pages/home/HomeFilters.vue'
 
 const { loggedIn } = useUserSession()
 const postStore = usePostStore()
+
 </script>
 
 <template>
