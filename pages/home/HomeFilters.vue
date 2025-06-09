@@ -77,7 +77,9 @@ const getWeatherFromGroq = async (latitude: number, longitude: number) => {
 onMounted(async () => {
   const tasks: Promise<any>[] = []
   await delay(10)
-  tasks.push(fetchStats())
+  if (loggedIn) {
+    tasks.push(fetchStats())
+  }
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
