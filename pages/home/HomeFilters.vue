@@ -77,7 +77,7 @@ const getWeatherFromGroq = async (latitude: number, longitude: number) => {
 onMounted(async () => {
   const tasks: Promise<any>[] = []
   await delay(10)
-  if (loggedIn) {
+  if (loggedIn.value) {
     tasks.push(fetchStats())
   }
 
