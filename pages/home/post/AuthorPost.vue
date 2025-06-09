@@ -100,7 +100,7 @@ onMounted(async () => {
         <RelativeTime :date="date"></RelativeTime>
       </div>
     </div>
-    <div class="text-end ms-auto" v-if="isFollowing === false">
+    <div class="text-end ms-auto" v-if="isFollowing === false && author?.id !== user?.id">
       <v-btn
         icon
         variant="text"
@@ -111,7 +111,7 @@ onMounted(async () => {
         <v-icon>mdi-account-plus</v-icon>
       </v-btn>
     </div>
-    <div class="text-end ms-auto" v-if="isFollowing === true">
+    <div class="text-end ms-auto" v-if="isFollowing === true && author?.id !== user?.id">
       <v-btn
         icon
         variant="text"
