@@ -24,6 +24,13 @@ const distribution = ref({
 const newRating = ref(0)
 const isSubmitting = ref(false)
 
+const topUsers = ref([
+  { name: 'Alice', points: 1200 },
+  { name: 'Bob', points: 980 },
+  { name: 'Charlie', points: 870 }
+])
+const trophies = ['🥇', '🥈', '🥉']
+
 const fetchStats = async () => {
   const { data, error } = await useFetch('/api/review/get/')
   if (error.value) {
@@ -100,90 +107,118 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="py-3">
-    <v-progress-circular
-      v-if="loading"
-      indeterminate
-      color="primary"
-      class="my-8 d-flex mx-auto"
-    />
+  <v-progress-circular
+    v-if="loading"
+    indeterminate
+    color="primary"
+    class="my-8 d-flex mx-auto"
+  />
 
-    <v-card v-else-if="showCard" rounded="xl" class="mx-3 mb-4" variant="text">
-      <div class="px-4 py-4">
-        <v-row>
-          <v-col cols="8" class="my-auto">
-            <p class="text-sm mb-0 font-weight-bold opacity-7">
-              Weather today
-            </p>
-            <h5 class="text-h5 font-weight-bolder mb-0">
-              {{ city }} {{ weatherInfo }}
-            </h5>
-          </v-col>
-          <v-col cols="4" class="text-end">
-            <v-img src="/img/small-logos/icon-sun-cloud.png" class="w-50 ms-auto" />
-            <h5 class="mb-0 text-h5 text-end me-1">Cloudy</h5>
-          </v-col>
-        </v-row>
+  <v-card v-else-if="showCard" rounded="xl" class="mx-3 mb-4" variant="text">
+    <div class="px-4 py-4">
+      <v-row>
+        <v-col cols="8" class="my-auto">
+          <p class="text-sm mb-0 font-weight-bold opacity-7">
+            Weather today
+          </p>
+          <h5 class="text-h5 font-weight-bolder mb-0">
+            {{ city }} {{ weatherInfo }}
+          </h5>
+        </v-col>
+        <v-col cols="4" class="text-end">
+          <v-img src="/img/small-logos/icon-sun-cloud.png" class="w-50 ms-auto" />
+          <h5 class="mb-0 text-h5 text-end me-1">Cloudy</h5>
+        </v-col>
+      </v-row>
+    </div>
+  </v-card>
+  <v-card class="mx-3 my-4" rounded="xl" variant="text">
+    <v-card-title class="text-h6 text-center">
+      🏆 Top 3 Members in
+      <NuxtLink to="/game" class="text-primary text-decoration-none font-weight-bold ml-1">
+        Quiz
+      </NuxtLink>
+    </v-card-title>
+    <v-divider />
+
+    <v-list class="bg-transparent">
+      <v-list-item
+        v-for="(user, index) in topUsers"
+        :key="user.name"
+        variant="text"
+        class="px-2"
+      >
+        <template #prepend>
+          <v-avatar size="36">
+            <span class="text-h6">{{ trophies[index] }}</span>
+          </v-avatar>
+        </template>
+
+        <template #default>
+          <div class="d-flex align-center w-100">
+            <span class="font-weight-medium">{{ user.name }}</span>
+            <span class="text-body-2 font-weight-bold ms-auto">{{ user.points }} pts</span>
+          </div>
+        </template>
+      </v-list-item>
+    </v-list>
+  </v-card>
+  <v-card v-if="!loading && loggedIn" rounded="xl" class="mx-3" variant="text">
+    <v-card-title class="d-flex justify-center mt-auto text-h5">
+      <span class="text-h6">Rating overview</span>
+    </v-card-title>
+    <v-divider />
+    <div class="d-flex align-center flex-column my-auto">
+      <div class="text-h2 mt-5">
+        {{ averageRating }}
+        <span class="text-h6 ml-n3">/5</span>
       </div>
-    </v-card>
 
-    <v-card v-if="!loading && loggedIn" rounded="xl" class="mx-3" variant="text">
-      <v-card-title class="d-flex justify-center mt-auto text-h5">
-        <span class="text-h6">Rating overview</span>
-      </v-card-title>
+      <v-rating :model-value="averageRating" color="primary" half-increments readonly />
+      <div class="px-3">{{ totalReviews }} ratings</div>
+    </div>
 
-      <div class="d-flex align-center flex-column my-auto">
-        <div class="text-h2 mt-5">
-          {{ averageRating }}
-          <span class="text-h6 ml-n3">/5</span>
-        </div>
-
-        <v-rating :model-value="averageRating" color="primary" half-increments readonly />
-        <div class="px-3">{{ totalReviews }} ratings</div>
-      </div>
-
-      <v-list bg-color="transparent" class="d-flex flex-column-reverse" density="compact">
-        <v-list-item v-for="i in 5" :key="i">
-          <v-progress-linear
-            :model-value="totalReviews > 0 ? (distribution[`${i - 1}-${i}`] / totalReviews) * 100 : 0"
-            class="mx-n5"
-            color="primary"
-            height="20"
-            rounded
-          />
-          <template v-slot:prepend>
-            <span>{{ i }}</span>
-            <v-icon class="mx-3" icon="mdi-star" />
-          </template>
-          <template v-slot:append>
-            <div class="rating-values">
-              <span class="d-flex justify-end"> {{ distribution[`${i - 1}-${i}`] }} </span>
-            </div>
-          </template>
-        </v-list-item>
-      </v-list>
-
-      <v-divider class="my-4" />
-
-      <div class="d-flex align-center justify-center ga-3 mb-4">
-        <v-rating
-          v-model="newRating"
-          half-increments
-          color="secondary"
-          hover
-        />
-        <v-btn
+    <v-list bg-color="transparent" class="d-flex flex-column-reverse" density="compact">
+      <v-list-item v-for="i in 5" :key="i">
+        <v-progress-linear
+          :model-value="totalReviews > 0 ? (distribution[`${i - 1}-${i}`] / totalReviews) * 100 : 0"
+          class="mx-n5"
           color="primary"
-          variant="text"
-          :loading="isSubmitting"
-          :disabled="newRating === 0"
-          @click="submitRating"
-        >
-          Submit
-        </v-btn>
-      </div>
-    </v-card>
-  </div>
+          height="20"
+          rounded
+        />
+        <template v-slot:prepend>
+          <span>{{ i }}</span>
+          <v-icon class="mx-3" icon="mdi-star" />
+        </template>
+        <template v-slot:append>
+          <div class="rating-values">
+            <span class="d-flex justify-end"> {{ distribution[`${i - 1}-${i}`] }} </span>
+          </div>
+        </template>
+      </v-list-item>
+    </v-list>
+
+    <v-divider class="my-4" />
+
+    <div class="d-flex align-center justify-center ga-3 mb-4">
+      <v-rating
+        v-model="newRating"
+        half-increments
+        color="secondary"
+        hover
+      />
+      <v-btn
+        color="primary"
+        variant="text"
+        :loading="isSubmitting"
+        :disabled="newRating === 0"
+        @click="submitRating"
+      >
+        Submit
+      </v-btn>
+    </div>
+  </v-card>
 </template>
 
 <style scoped>
