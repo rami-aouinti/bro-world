@@ -110,16 +110,16 @@ onMounted(async () => {
       <div class="px-4 py-4">
         <v-row>
           <v-col cols="8" class="my-auto">
-            <p class="text-white text-sm mb-0 font-weight-bold opacity-7">
+            <p class="text-sm mb-0 font-weight-bold opacity-7">
               Weather today
             </p>
-            <h5 class="text-white text-h5 font-weight-bolder mb-0">
+            <h5 class="text-h5 font-weight-bolder mb-0">
               {{ city }} {{ weatherInfo }}
             </h5>
           </v-col>
           <v-col cols="4" class="text-end">
             <v-img src="/img/small-logos/icon-sun-cloud.png" class="w-50 ms-auto" />
-            <h5 class="mb-0 text-white text-h5 text-end me-1">Cloudy</h5>
+            <h5 class="mb-0 text-h5 text-end me-1">Cloudy</h5>
           </v-col>
         </v-row>
       </div>
