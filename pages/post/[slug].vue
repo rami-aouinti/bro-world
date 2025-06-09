@@ -39,8 +39,9 @@ onMounted(async () => {
           {{ post.title }}
         </p>
         <NuxtImg
+          v-if="post?.medias?.length > 0"
           :alt="`image-${post.slug}`"
-          src="https://images.unsplash.com/photo-1578271887552-5ac3a72752bc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80"
+          :src="post?.medias[0]?.path"
           layout="responsive"
           style="width: 100%; height: auto"
           class="border-radius-lg shadow-lg"
