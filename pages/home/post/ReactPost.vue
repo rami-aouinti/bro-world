@@ -17,7 +17,9 @@ defineProps<{
             class="material-icons-round me-1 text-body cursor-pointer"
           >mdi-thumb-up</v-icon
           >
-          <span class="text-sm text-body me-4">150</span>
+          <span v-if="post?.likes?.length > 0" class="text-sm text-body me-4">
+            {{ post?.likes?.length }}
+          </span>
         </div>
         <div class="d-flex align-center">
           <v-icon
@@ -26,10 +28,10 @@ defineProps<{
           >mdi-comment-processing</v-icon
           >
           <span
-            v-if="post.comments.length > 0"
+            v-if="post?.comments?.length > 0"
             class="text-sm text-body me-4"
           >
-            {{ post.comments.length }}
+            {{ post?.comments?.length }}
           </span>
         </div>
       </div>
