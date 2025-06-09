@@ -8,5 +8,5 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const apiUrl = `${config.public.apiBase}/api/reviews/stats`
 
-  return await requestWithRetry('get', apiUrl)
+  return await requestWithRetry('get', apiUrl, token)
 })

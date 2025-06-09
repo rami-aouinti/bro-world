@@ -125,7 +125,7 @@ onMounted(async () => {
       </div>
     </v-card>
 
-    <v-card v-if="!loading" rounded="xl" class="mx-3" variant="text">
+    <v-card v-if="!loading && loggedIn" rounded="xl" class="mx-3" variant="text">
       <v-card-title class="d-flex justify-center mt-auto text-h5">
         <span class="text-h6">Rating overview</span>
       </v-card-title>
@@ -161,9 +161,9 @@ onMounted(async () => {
         </v-list-item>
       </v-list>
 
-      <v-divider v-if="loggedIn" class="my-4" />
+      <v-divider class="my-4" />
 
-      <div v-if="loggedIn" class="d-flex align-center justify-center ga-3 mb-4">
+      <div class="d-flex align-center justify-center ga-3 mb-4">
         <v-rating
           v-model="newRating"
           half-increments
