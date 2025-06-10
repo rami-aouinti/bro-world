@@ -20,9 +20,13 @@ function isImageUrl(url) {
 }
 
 function extractYouTubeVideoId(url) {
-  const regex = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^\s&?/]+)/;
-  const match = url.match(regex);
-  return !!match;
+  try {
+    const ytRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^\s&?/]+)/;
+    const match = url.match(ytRegex);
+    return match ? match[1] : null;
+  } catch (e) {
+    return null;
+  }
 }
 </script>
 
@@ -34,8 +38,8 @@ function extractYouTubeVideoId(url) {
         <div v-if="isYoutubeUrl(post.title)" class="text-center">
           <iframe
             :src="`https://www.youtube.com/embed/${extractYouTubeVideoId(post.title)}`"
-            width="560"
-            height="315"
+            style="width: 100%;"
+            height="365"
             frameborder="0"
             allowfullscreen
           ></iframe>
