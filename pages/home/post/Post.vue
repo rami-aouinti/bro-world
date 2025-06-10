@@ -33,7 +33,6 @@ function extractYouTubeVideoId(url) {
         <!-- Si c'est une URL YouTube, on affiche la vidéo centrée -->
         <div v-if="isYoutubeUrl(post.title)" class="text-center">
           <iframe
-            v-if="isYoutubeUrl(post.title)"
             :src="`https://www.youtube.com/embed/${extractYouTubeVideoId(post.title)}`"
             width="560"
             height="315"
