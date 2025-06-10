@@ -1,14 +1,10 @@
 <template>
-  <v-avatar :color="color" :size="size">
+  <v-avatar :color="color" :width="size" :height="size">
     <NuxtImg
       :alt="user?.username"
-      :width="size" :height="size" v-if="user?.profile?.photo" :src="user?.profile?.photo ?? user?.avatar">
-      ></NuxtImg>
-    <v-img :width="size" :height="size"  :alt="user?.username" v-else>
-      <span class="text-h6 white--text">
-          {{ getInitials(user) }}
-      </span>
-    </v-img>
+      :width="size - 2" :height="size - 2" :src="user?.profile?.photo ?? '/person.png'">
+      >
+    </NuxtImg>
   </v-avatar>
 </template>
 
@@ -27,11 +23,4 @@ defineProps({
     default: 'primary'
   }
 })
-
-const getInitials = (user) => {
-  if (!user) return ''
-  const first = user.firstName?.[0] || ''
-  const last = user.lastName?.[0] || ''
-  return (first + last).toUpperCase()
-}
 </script>
