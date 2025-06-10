@@ -8,15 +8,42 @@ defineProps({
     required: true,
   },
 })
+
+
+function isYoutubeUrl(url) {
+  return /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)/.test(url)
+}
+
+function extractYouTubeVideoId(url) {
+  const regex = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^\s&?/]+)/;
+  const match = url.match(regex);
+  return match ? match[1] : null;
+}
 </script>
 
 <template>
   <div class="px-4 py-4">
     <NuxtLink :to="`/post/${post.slug}`" class="text-decoration-none">
-      <p class="text-left mb-6 text-body font-weight-light">
-        {{ post.title }}
-      </p>
+      <div class="text-left mb-6 text-body font-weight-light">
+        <!-- Si c'est une URL YouTube, on affiche la vidéo centrée -->
+        <div v-if="isYoutubeUrl(post.title)" class="text-center">
+          <iframe
+            :src="`https://www.youtube.com/embed/${extractYouTubeVideoId(post.title)}`"
+            width="560"
+            height="315"
+            frameborder="0"
+            allowfullscreen
+            style="max-width: 100%;"
+          ></iframe>
+        </div>
+
+        <!-- Sinon, afficher le titre normalement -->
+        <p v-else>
+          {{ post.title }}
+        </p>
+      </div>
     </NuxtLink>
+
     <NuxtImg
       v-if="post?.medias?.length > 0"
       :alt="`image-${post.slug}`"
@@ -27,7 +54,9 @@ defineProps({
       loading="eager"
       fetchpriority="high"
     />
-    <ReactPost :post="post"></ReactPost>
-    <Comments :post="post"></Comments>
+
+    <ReactPost :post="post" />
+    <Comments :post="post" />
   </div>
+
 </template>
