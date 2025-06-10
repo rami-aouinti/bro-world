@@ -128,7 +128,7 @@ async function handleFileUpload(file: File) {
               aria-label="Open story"
               style="cursor: pointer"
               size="50"
-              class="border border-primary rounded-circle px-1 py-1"
+              class="border-primary border-lg rounded-circle px-1 py-1"
             >
               <NuxtImg
                 :alt="`story-${userStories.username}`"

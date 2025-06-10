@@ -1,9 +1,13 @@
 <template>
-  <v-avatar :color="color" :size="size"
-            class="rounded-circle">
+  <v-avatar :size="size"
+            class="border-primary border-md rounded-circle">
     <NuxtImg
+      :width="size"
+      :height="size"
       :alt="props.user?.username"
-      :width="size + 2" :height="size + 2" :src="props.user?.profile?.photo ?? '/person.png'">
+      :src="props.user?.profile?.photo ?? '/person.png'"
+      cover
+    >
       >
     </NuxtImg>
   </v-avatar>

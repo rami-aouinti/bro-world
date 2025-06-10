@@ -94,42 +94,42 @@ onMounted(async () => {
 <template>
   <div class="border-bottom d-flex align-center px-4 py-4">
     <div class="d-flex align-center">
-      <a :href="`/profile/${post?.user?.username}`" class="text-decoration-none">
-        <UserAvatar :user="post?.user" color="primary" size="48"></UserAvatar>
+      <a :href="`/profile/${props.post?.user?.username}`" class="text-decoration-none">
+        <UserAvatar :user="props.post?.user" color="primary" size="48"></UserAvatar>
       </a>
       <div class="mx-4">
         <NuxtLink
-          :to="`/profile/${post?.user?.username}`"
+          :to="`/profile/${props.post?.user?.username}`"
           class="text-dark font-weight-600 text-sm text-decoration-none"
         >
-          {{ post?.user?.firstName }} {{ user?.lastName }}
+          {{ props.post?.user?.firstName }} {{ props.user?.lastName }}
         </NuxtLink>
-        <RelativeTime :date="post?.publishedAt"></RelativeTime>
+        <RelativeTime :date="props.post?.publishedAt"></RelativeTime>
       </div>
     </div>
-    <div class="text-end ms-auto" v-if="isFollowing === false && post.user?.id !== user?.id">
+    <div class="text-end ms-auto" v-if="isFollowing === false && props.post.user?.id !== user?.id">
       <v-btn
         icon
         variant="text"
         size="small"
         class="text-primary"
-        @click="toggleFollow(post.user?.id)"
+        @click="toggleFollow(props.post.user?.id)"
       >
         <v-icon>mdi-account-plus</v-icon>
       </v-btn>
     </div>
-    <div class="text-end ms-auto" v-if="isFollowing === true && post.user?.id !== user?.id">
+    <div class="text-end ms-auto" v-if="isFollowing === true && props.post.user?.id !== user?.id">
       <v-btn
         icon
         variant="text"
         size="small"
         class="text-primary"
-        @click="toggleUnFollow(post.user?.id)"
+        @click="toggleUnFollow(props.post.user?.id)"
       >
         <v-icon>mdi-account-minus</v-icon>
       </v-btn>
     </div>
-    <div class="text-end ms-auto" v-if="post.user?.id === user?.id">
+    <div class="text-end ms-auto" v-if="props.post.user?.id === user?.id">
       <v-menu location="bottom" max-width="68">
         <template #activator="{ props: menu }">
           <v-btn
@@ -146,11 +146,11 @@ onMounted(async () => {
         <v-list class="pa-2">
 
           <v-list-item>
-            <v-btn icon="mdi-pencil" variant="text" color="warning" @click="handleEdit(post.id)" />
+            <v-btn icon="mdi-pencil" variant="text" color="warning" @click="handleEdit(props.post.id)" />
 
           </v-list-item>
           <v-list-item>
-            <v-btn icon="mdi-delete" variant="text" color="error" @click="handleDelete(post.id)" />
+            <v-btn icon="mdi-delete" variant="text" color="error" @click="handleDelete(props.post.id)" />
           </v-list-item>
         </v-list>
       </v-menu>
