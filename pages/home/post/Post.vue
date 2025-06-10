@@ -34,7 +34,7 @@ function extractYouTubeVideoId(url) {
         <div v-if="isYoutubeUrl(post.title)" class="text-center">
           <iframe
             :src="`https://www.youtube.com/embed/${extractYouTubeVideoId(post.title)}`"
-            style="max-width: 100%;" height="315"
+            style="width: 100%;" height="385"
             frameborder="3"
             allowfullscreen
           ></iframe>
