@@ -9,15 +9,20 @@ defineProps({
   },
 })
 
-
 function isYoutubeUrl(url) {
   return /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)/.test(url)
+}
+
+function isImageUrl(url) {
+  const imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/;
+  const imgMatch = url.match(imgRegex);
+  return !!imgMatch
 }
 
 function extractYouTubeVideoId(url) {
   const regex = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^\s&?/]+)/;
   const match = url.match(regex);
-  return match ? match[1] : null;
+  return !!match;
 }
 </script>
 
@@ -29,14 +34,21 @@ function extractYouTubeVideoId(url) {
         <div v-if="isYoutubeUrl(post.title)" class="text-center">
           <iframe
             :src="`https://www.youtube.com/embed/${extractYouTubeVideoId(post.title)}`"
-            width="560"
-            height="315"
-            frameborder="0"
+            width="560" height="315"
+            frameborder="3"
             allowfullscreen
-            style="max-width: 100%;"
           ></iframe>
         </div>
-
+        <NuxtImg
+          v-else-if="isImageUrl(post.title)"
+          :alt="`image-${post.slug}`"
+          :src="post.title"
+          style="width: 100%; height: auto"
+          class="border-radius-lg shadow-lg"
+          :preload="true"
+          loading="eager"
+          fetchpriority="high"
+        />
         <!-- Sinon, afficher le titre normalement -->
         <p v-else>
           {{ post.title }}
