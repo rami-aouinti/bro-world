@@ -127,14 +127,14 @@ async function handleFileUpload(file: File) {
               tabindex="0"
               aria-label="Open story"
               style="cursor: pointer"
-              size="58"
-              class="border border-primary px-1 py-1"
+              size="50"
+              class="border border-primary rounded-circle px-1 py-1"
             >
               <NuxtImg
                 :alt="`story-${userStories.username}`"
                 :src="userStories.stories[0]?.mediaPath"
-                width="50"
-                height="50"
+                width="58"
+                height="58"
                 cover
               />
             </v-avatar>
