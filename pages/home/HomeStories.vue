@@ -128,10 +128,7 @@ async function handleFileUpload(file: File) {
               aria-label="Open story"
               style="cursor: pointer"
               size="50"
-              :class="[
-    'border-dashed border-lg rounded-circle px-1 py-1',
-    userStories.username === user.username ? 'border-success' : 'border-primary'
-  ]"
+              :class="['border-dashed border-md rounded-circle px-1 py-1', userStories.username === user.username ? 'border-success' : 'border-primary']"
             >
               <NuxtImg
                 :alt="`story-${userStories.username}`"
@@ -166,7 +163,7 @@ async function handleFileUpload(file: File) {
   </v-row>
 
   <!-- Story Viewer -->
-  <v-dialog v-model="storyViewerVisible" width="100%">
+  <v-dialog v-model="storyViewerVisible" max-width="600">
     <v-card>
       <v-carousel height="500" hide-delimiter-background show-arrows>
         <v-carousel-item
