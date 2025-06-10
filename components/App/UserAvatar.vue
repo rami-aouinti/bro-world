@@ -1,15 +1,16 @@
 <template>
-  <v-avatar :color="color" :width="size" :height="size">
+  <v-avatar :color="color" :size="size"
+            class="rounded-circle">
     <NuxtImg
-      :alt="user?.username"
-      :width="size - 2" :height="size - 2" :src="user?.profile?.photo ?? '/person.png'">
+      :alt="props.user?.username"
+      :width="size + 2" :height="size + 2" :src="props.user?.profile?.photo ?? '/person.png'">
       >
     </NuxtImg>
   </v-avatar>
 </template>
 
 <script lang="ts" setup>
-defineProps({
+const props = defineProps({
   user: {
     type: Object,
     required: true
