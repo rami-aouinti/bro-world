@@ -9,6 +9,21 @@ const files = ref<File[]>([])
 const emit = defineEmits(['post-created'])
 const showDialog = ref(false)
 const postContent = ref('')
+const youtubeId = ref(null)
+const imageUrl = ref(null)
+
+function detectLinks() {
+  const ytRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^\s&]+)/;
+  const imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/;
+
+  const ytMatch = postContent.value.match(ytRegex);
+  const imgMatch = postContent.value.match(imgRegex);
+
+  youtubeId.value = ytMatch ? ytMatch[1] : null
+  imageUrl.value = imgMatch ? imgMatch[1] : null
+}
+
+
 const { user } = useUserSession()
 
 const load = () => {
@@ -52,7 +67,7 @@ const handleError = (error) => {
             @click="dialog = true"
             style="min-height: 48px; flex-grow: 1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap"
           >
-            <span>Hello {{ user.username }}, new post?</span>
+            <span>Hello {{ user?.firstName }}, new post?</span>
           </v-btn>
         </div>
       </v-card-text>
@@ -93,7 +108,21 @@ const handleError = (error) => {
             rounded
             outlined
             required
+            @input="detectLinks"
           />
+          <div v-if="youtubeId" class="my-4 text-center">
+            <iframe
+              :src="`https://www.youtube.com/embed/${youtubeId}`"
+              width="560"
+              height="315"
+              frameborder="0"
+              allowfullscreen
+              style="max-width: 100%"
+            ></iframe>
+          </div>
+          <div v-if="imageUrl" class="my-4 text-center">
+            <img :src="imageUrl" alt="preview" style="max-width: 100%; max-height: 300px" />
+          </div>
           <v-file-upload
             icon="mdi-upload"
             v-model="files"
