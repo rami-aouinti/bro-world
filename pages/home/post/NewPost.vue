@@ -32,18 +32,27 @@ const handleError = (error) => {
   <div>
     <v-card rounded="xl" class="mx-3" variant="text">
       <v-card-text>
-        <div class="d-flex align-center flex-wrap" style="max-width: 100%">
-          <button class="btn-reset mx-2" @click="dialog = true" aria-label="User avatar">
-            <UserAvatar :user="user" size="40" color="primary" />
+        <div
+          class="d-flex align-center"
+          style="max-width: 100%; flex-wrap: nowrap; overflow: hidden"
+        >
+          <button
+            class="btn-reset mx-2"
+            @click="dialog = true"
+            aria-label="User avatar"
+            style="flex-shrink: 0"
+          >
+            <UserAvatar :user="user" size="48" color="primary" />
           </button>
+
           <v-btn
-            class="flex-grow-1 px-3 py-2 font-weight-bold justify-start"
+            class="px-3 py-2 font-weight-bold justify-start"
             height="40"
             variant="tonal"
             @click="dialog = true"
-            style="min-height: 48px"
+            style="min-height: 48px; flex-grow: 1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap"
           >
-            <span>Hello {{ user.firstName }} {{ user.lastName }}, new post?</span>
+            <span>Hello {{ user.username }}, new post?</span>
           </v-btn>
         </div>
       </v-card-text>
