@@ -15,10 +15,9 @@ const postStore = usePostStore()
 <template>
   <v-container fluid>
     <UserStatusBanner v-if="loggedIn" />
-    <HomeStories v-if="loggedIn" />
-
     <v-row>
       <v-col cols="12" lg="8">
+        <HomeStories v-if="loggedIn" />
         <NewPost v-if="loggedIn" />
 
         <InfiniteList

@@ -13,8 +13,8 @@ defineProps<{
       <div class="d-flex">
         <div class="d-flex align-center">
           <v-icon
-            size="14"
-            class="material-icons-round me-1 text-body cursor-pointer"
+            size="24"
+            class="material-icons-round me-1 cursor-pointer"
           >mdi-thumb-up</v-icon
           >
           <span v-if="post?.likes?.length > 0" class="text-sm text-body me-4">
@@ -23,8 +23,8 @@ defineProps<{
         </div>
         <div class="d-flex align-center">
           <v-icon
-            size="14"
-            class="material-icons-round me-1 text-body cursor-pointer"
+            size="24"
+            class="material-icons-round me-1 cursor-pointer"
           >mdi-comment-processing</v-icon
           >
           <span

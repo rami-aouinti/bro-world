@@ -4,10 +4,6 @@ import { truncate } from '~/utils/stringUtils'
 const { user } = await useUserSession()
 const stories = ref<any[]>([])
 
-const newStory = ref<File | null>(null)
-
-const fileInput = ref()
-
 const storyViewerVisible = ref(false)
 const currentUserStories = ref<any[]>([])
 const currentUsername = ref('')
@@ -25,11 +21,6 @@ async function loadStories() {
 
 loadStories()
 
-function triggerFileInput() {
-  const input = fileInput.value?.$el?.querySelector('input[type="file"]')
-  if (input) input.click()
-}
-
 function openStoryViewer(userStories: any) {
   currentUsername.value = userStories.username
   currentUserStories.value = userStories.stories
@@ -39,45 +30,6 @@ function openStoryViewer(userStories: any) {
 const uploadSuccess = ref(false)
 const uploadError = ref(false)
 
-async function handleFileUpload(file: File) {
-  const formData = new FormData()
-  formData.append('file', file)
-
-  try {
-    const response = await useFetch('/api/profile/story', {
-      method: 'POST',
-      body: formData,
-      credentials: 'include',
-    })
-
-    const data = response.data.value
-
-    if (data?.mediaPath) {
-      const userId = data.user.id || 'me'
-      const existing = stories.value.find(s => s.userId === userId)
-
-      const newStory = {
-        id: data.id,
-        mediaPath: data.mediaPath,
-      }
-
-      if (existing) {
-        existing.stories.unshift(newStory)
-      } else {
-        stories.value.unshift({
-          userId,
-          username: data.user.username || 'Me',
-          stories: [newStory],
-        })
-      }
-
-      uploadSuccess.value = true
-    }
-  } catch (e) {
-    console.error('Upload error', e)
-    uploadError.value = true
-  }
-}
 </script>
 
 <template>
@@ -88,29 +40,7 @@ async function handleFileUpload(file: File) {
         class="overflow-x-auto mx-3 min-h-stories"
         variant="text"
       >
-        <div class="py-4 d-flex">
-          <!-- Add Story Button -->
-          <v-col
-            lg="1"
-            md="2"
-            sm="3"
-            cols="4"
-            class="text-center"
-            role="button"
-            tabindex="0"
-            aria-label="Add a story"
-            @click="triggerFileInput"
-            @keydown.enter="triggerFileInput"
-            style="cursor: pointer"
-          >
-            <v-avatar size="58" class="shadow-sm">
-              <v-icon class="material-icons-round">mdi-plus</v-icon>
-            </v-avatar>
-            <p class="mb-0 text-sm text-body font-weight-light mt-2">
-              {{ truncate($t('AddStory'), 9) }}
-            </p>
-          </v-col>
-
+        <div class="d-flex align-center justify-center">
           <!-- User Stories -->
           <v-col
             v-for="userStories in stories"
@@ -138,44 +68,30 @@ async function handleFileUpload(file: File) {
                 cover
               />
             </v-avatar>
-            <NuxtLink :to="`/${userStories.username}`" class="text-decoration-none">
-              <p class="mb-0 text-sm text-body font-weight-light mt-2">
-                {{ truncate(userStories.username, 9) }}
-              </p>
-            </NuxtLink>
           </v-col>
         </div>
-
-        <!-- Hidden File Input -->
-        <v-file-input
-          ref="fileInput"
-          v-model="newStory"
-          label="Upload Story"
-          outlined
-          required
-          accept="image/*"
-          show-size
-          v-show="false"
-          @update:modelValue="handleFileUpload"
-        />
       </v-card>
     </v-col>
   </v-row>
 
   <!-- Story Viewer -->
-  <v-dialog v-model="storyViewerVisible" max-width="600">
+  <v-dialog v-model="storyViewerVisible" max-width="500">
     <v-card>
       <v-carousel height="500" hide-delimiter-background show-arrows>
         <v-carousel-item
           v-for="(story, index) in currentUserStories"
           :key="index"
+          class="d-flex align-center justify-center"
         >
           <NuxtImg
             :alt="index"
             :src="story.mediaPath"
             width="100%"
-            height="500"
-            cover
+            height="100%"
+            class="w-100 h-100"
+            object-fit
+            style="object-fit:
+            cover;"
           />
         </v-carousel-item>
       </v-carousel>

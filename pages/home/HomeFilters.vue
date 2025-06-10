@@ -80,6 +80,34 @@ const getWeatherFromGroq = async (latitude: number, longitude: number) => {
   }
 }
 
+const news = ref<string[]>([])
+const loadingNews = ref(true)
+
+const fetchNewsFromGroq = async () => {
+  try {
+    const message = `List 5 key global news headlines today. Just output a plain list, one per line. No introduction or extra text. No markdown or asterisks. No numbers.`
+    const response = await askGroq(message)
+
+    if (response) {
+      const lines = response
+        .split('\n')
+        .map(line => line.trim())
+        .filter(line =>
+          line.length > 0 &&
+          !line.toLowerCase().includes('news headlines') &&
+          !line.toLowerCase().startsWith('here are')
+        )
+
+      news.value = lines
+    }
+  } catch (e) {
+    console.error('Groq News error:', e)
+    news.value = ['Failed to load the latest news.']
+  } finally {
+    loadingNews.value = false
+  }
+}
+
 
 onMounted(async () => {
   const tasks: Promise<any>[] = []
@@ -87,6 +115,7 @@ onMounted(async () => {
   if (loggedIn.value) {
     tasks.push(fetchStats())
   }
+  tasks.push(fetchNewsFromGroq())
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
@@ -113,7 +142,6 @@ onMounted(async () => {
     color="primary"
     class="my-8 d-flex mx-auto"
   />
-
   <v-card v-else-if="showCard" rounded="xl" class="mx-3 mb-4" variant="text">
     <div class="px-4 py-4">
       <v-row>
@@ -132,8 +160,35 @@ onMounted(async () => {
       </v-row>
     </div>
   </v-card>
+  <v-card
+    v-if="!loadingNews"
+    rounded="xl"
+    class="mx-3 mt-4 mb-4"
+    variant="text"
+  >
+    <v-card-title class="text-h6 font-weight-bold text-center">
+      🌐 News
+    </v-card-title>
+    <v-divider />
+    <v-card-text>
+      <v-list class="bg-transparent">
+        <v-list-item
+          v-for="(item, i) in news"
+          :key="i"
+          class="px-0 py-1"
+        >
+          <template #prepend>
+            <v-icon color="primary" class="mr-2">mdi-newspaper-variant-outline</v-icon>
+          </template>
+          <template #default>
+            <span class="text-body-2">{{ item }}</span>
+          </template>
+        </v-list-item>
+      </v-list>
+    </v-card-text>
+  </v-card>
   <v-card class="mx-3 my-4" rounded="xl" variant="text">
-    <v-card-title class="text-h6 text-center">
+    <v-card-title class="text-h6 font-weight-bold text-center">
       🏆 Top 3 Members in
       <NuxtLink to="/game" class="text-primary text-decoration-none font-weight-bold ml-1">
         Quiz

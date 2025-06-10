@@ -12,6 +12,10 @@ const postContent = ref('')
 const youtubeId = ref(null)
 const imageUrl = ref(null)
 
+const newStory = ref<File | null>(null)
+
+const fileInput = ref()
+
 function detectLinks() {
   const ytRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^\s&]+)/;
   const imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/;
@@ -37,14 +41,43 @@ const handleSuccess = (data) => {
   emit('post-created', data)
 }
 
+async function handleFileUpload(file: File) {
+  const formData = new FormData()
+  formData.append('file', file)
+
+  try {
+    const response = await useFetch('/api/profile/story', {
+      method: 'POST',
+      body: formData,
+      credentials: 'include',
+    })
+
+    const data = response.data.value
+
+    if (data?.mediaPath) {
+      const userId = data.user.id || 'me'
+
+      handleSuccess(data)
+    }
+  } catch (e) {
+    console.error('Upload error', e)
+    handleError(e)
+  }
+}
+
 const handleError = (error) => {
   Notify.error("Post failed!")
   console.error('Failed:', error)
 }
+
+function triggerFileInput() {
+  const input = fileInput.value?.$el?.querySelector('input[type="file"]')
+  if (input) input.click()
+}
 </script>
 
 <template>
-  <div>
+  <div class="py-3">
     <v-card rounded="xl" class="mx-3" variant="text">
       <v-card-text>
         <div
@@ -81,13 +114,25 @@ const handleError = (error) => {
           <v-icon class="mx-1" color="primary">mdi-image-multiple</v-icon>
           Photo
         </v-btn>
-        <v-btn icon :loading="loading" class="flex-grow-1" height="48" @click="load">
-          <v-icon class="mx-1" color="primary">mdi-face</v-icon>
-          State
+        <v-btn icon :loading="loading" class="flex-grow-1" height="48"
+               @click="triggerFileInput"
+               @keydown.enter="triggerFileInput">
+          <v-icon class="mx-1" color="primary">mdi-camera-enhance</v-icon>
+          Story
         </v-btn>
       </v-card-actions>
     </v-card>
-
+    <v-file-input
+      ref="fileInput"
+      v-model="newStory"
+      label="Upload Story"
+      outlined
+      required
+      accept="image/*"
+      show-size
+      v-show="false"
+      @update:modelValue="handleFileUpload"
+    />
     <BaseDialog
       v-model="dialog"
       title="New Post"
