@@ -8,7 +8,6 @@
       :src="props.user?.profile?.photo ?? '/person.png'"
       cover
     >
-      >
     </NuxtImg>
   </v-avatar>
 </template>

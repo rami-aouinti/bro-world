@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { truncate } from '~/utils/stringUtils'
 const { user } = await useUserSession()
 const stories = ref<any[]>([])
 
@@ -26,10 +25,6 @@ function openStoryViewer(userStories: any) {
   currentUserStories.value = userStories.stories
   storyViewerVisible.value = true
 }
-
-const uploadSuccess = ref(false)
-const uploadError = ref(false)
-
 </script>
 
 <template>
@@ -58,7 +53,7 @@ const uploadError = ref(false)
               aria-label="Open story"
               style="cursor: pointer"
               size="50"
-              :class="['border-dashed border-md rounded-circle px-1 py-1', userStories.username === user.username ? 'border-success' : 'border-primary']"
+              :class="['border-md rounded-circle px-1 py-1', userStories.username === user.username ? 'border-success' : 'border-primary']"
             >
               <NuxtImg
                 :alt="`story-${userStories.username}`"
@@ -74,7 +69,6 @@ const uploadError = ref(false)
     </v-col>
   </v-row>
 
-  <!-- Story Viewer -->
   <v-dialog v-model="storyViewerVisible" max-width="500">
     <v-card>
       <v-carousel height="500" hide-delimiter-background show-arrows>
@@ -97,13 +91,5 @@ const uploadError = ref(false)
       </v-carousel>
     </v-card>
   </v-dialog>
-
-  <!-- Upload Feedback -->
-  <v-snackbar v-model="uploadSuccess" color="success" timeout="3000">
-    Story uploaded successfully!
-  </v-snackbar>
-  <v-snackbar v-model="uploadError" color="error" timeout="3000">
-    Failed to upload story.
-  </v-snackbar>
 </template>
 

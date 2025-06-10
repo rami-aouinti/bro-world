@@ -26,7 +26,7 @@ const notLoggedUser = ref([
     <template #activator="{ props: menu }">
       <v-btn aria-label="account" title="account" icon v-bind="mergeProps(menu)" class="ml-1">
         <v-icon v-if="!loggedIn" icon="mdi-account-circle" size="32" />
-        <UserAvatar v-else :user="user" size="32" color="primary" />
+        <UserAvatar v-if="loggedIn && user" :user="user" size="32" color="primary" />
       </v-btn>
     </template>
 
