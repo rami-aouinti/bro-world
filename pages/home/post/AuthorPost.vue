@@ -92,7 +92,7 @@ onMounted(async () => {
 
 
 <template>
-  <div class="border-bottom d-flex align-center px-4 py-4">
+  <div class="d-flex align-center px-4 py-4">
     <div class="d-flex align-center">
       <a :href="`/profile/${props.post?.user?.username}`" class="text-decoration-none">
         <UserAvatar :user="props.post?.user" color="primary" size="48"></UserAvatar>
