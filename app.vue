@@ -21,11 +21,14 @@ const description = computed(() => {
 const keywords = computed(() => {
   return route.meta?.description || route.matched[0]?.meta?.description || 'social, Bro world, Community'
 })
-
+const { locale, setLocale } = useI18n()
 useHead({
   title,
   titleTemplate: (t) => (t ? `${t} | Bro World` : 'Bro World'),
-  htmlAttrs: { lang: 'en' },
+  htmlAttrs: {
+    dir: computed(() => locale.value === 'ar' ? 'rtl' : 'ltr'),
+    lang: computed(() => locale.value),
+  },
   link: [
     { rel: 'icon', href: '/earth_favicon.ico' },
     { rel: 'canonical', href: canonicalUrl.value },

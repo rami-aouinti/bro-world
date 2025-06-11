@@ -15,7 +15,7 @@ defineProps<{ products?: ShopifyProducts, title: string, description: string, li
 
       <NuxtLink :to="link" class="see-all-link">
         See all
-        <v-icon name="i-heroicons-arrow-small-right-solid" class="see-all-icon" size="20" />
+        <v-icon class="see-all-icon" size="20">mdi-arrow-right-bold</v-icon>
       </NuxtLink>
     </div>
 
@@ -53,18 +53,10 @@ defineProps<{ products?: ShopifyProducts, title: string, description: string, li
   margin-bottom: 8px;
 }
 
-.carousel-description {
-  color: #94a3b8; /* Slate-400 equivalent */
-}
-
 .see-all-link {
   text-decoration: none;
   display: flex;
   align-items: center;
-}
-
-.see-all-link:hover {
-  color: #3b82f6; /* Primary hover color */
 }
 
 .see-all-icon {

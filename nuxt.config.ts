@@ -78,7 +78,7 @@ export default defineNuxtConfig({
       fallbackLocale: 'en',
     },
     locales: [
-      { code: 'en', name: 'English', iso: 'en-US', icon: 'fi-us us', file: 'en.json' },
+      { code: 'en', name: 'English', iso: 'en-US', icon: 'fi-gb gb', file: 'en.json' },
       { code: 'de', name: 'Deutsch', iso: 'de-DE', icon: 'fi-de de', file: 'de.json' },
       { code: 'fr', name: 'Frensh', iso: 'fr-FR', icon: 'fi-fr fr', file: 'fr.json' },
       { code: 'ar', name: 'Arabic', iso: 'tn-TN', icon: 'fi-tn tn', file: 'ar.json' },

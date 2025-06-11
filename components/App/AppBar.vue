@@ -9,6 +9,10 @@ import Messenger from "~/components/App/AppBar/Messenger.vue";
 import type {ShopifyCartLineItem} from "~/modules/shopify/types";
 const { loggedIn} = useUserSession()
 
+import {useShopifyCart} from "~/modules/shopify/composables/useShopifyCart";
+
+const { cart } = useShopifyCart()
+
 const drawer = useState('drawer')
 const route = useRoute()
 const breadcrumbs = computed(() => {
@@ -43,9 +47,17 @@ const emit = defineEmits<{
       class="opacity-80 ml-0"
       @click="emit('toggleSettingsDrawer', true)"
     >
-      <v-badge color="primary" :content="1">
-        <v-icon> mdi-shopping </v-icon>
+      <v-badge
+        v-if="cart?.lines.edges.length > 0"
+        color="primary"
+        :content="cart?.lines.edges.length"
+      >
+        <template #default>
+          <v-icon>mdi-shopping</v-icon>
+        </template>
       </v-badge>
+
+      <v-icon v-else>mdi-shopping</v-icon>
     </v-btn>
     <User></User>
     <Language></Language>

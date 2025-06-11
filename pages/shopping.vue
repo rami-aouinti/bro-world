@@ -28,38 +28,12 @@ const { data: casualThingsCollection } = await useAsyncData('casual-things-colle
             :products="latestStuffCollection?.collection?.products"
           />
 
-          <NuxtLink
-            to="/ecommerce/collection/latest-stuff"
-            variant="secondary"
-            class="min-w-fit hover:text-primary-500 justify-center mt-4 flex items-center sm:hidden"
-          >
-            See all
-            <v-icon
-              name="i-heroicons-arrow-small-right-solid"
-              class="ml-2"
-              size="20"
-            />
-          </NuxtLink>
-
           <ProductCarousel
             title="Casual Things"
             description="Casual things for everyday"
             link="/ecommerce/collection/casual-things"
             :products="casualThingsCollection?.collection?.products"
           />
-
-          <NuxtLink
-            to="/ecommerce/collection/casual-things"
-            variant="secondary"
-            class="min-w-fit hover:text-primary-500 justify-center mt-4 flex items-center sm:hidden"
-          >
-            See all
-            <v-icon
-              name="i-heroicons-arrow-small-right-solid"
-              class="ml-2"
-              size="20"
-            />
-          </NuxtLink>
         </section>
       </NuxtLazyHydrate>
     </div>
