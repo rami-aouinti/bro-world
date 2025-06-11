@@ -2,7 +2,7 @@
 import Comments from "~/pages/home/post/Comments.vue";
 import ReactPost from "~/pages/home/post/ReactPost.vue";
 
-defineProps({
+const props = defineProps({
   post: {
     type: Object,
     required: true,
@@ -32,48 +32,51 @@ function extractYouTubeVideoId(url) {
 
 <template>
   <div class="px-4 py-4">
-    <NuxtLink :to="`/post/${post.slug}`" class="text-decoration-none">
+    <NuxtLink :to="`/post/${props.post.slug}`" class="text-decoration-none">
       <div class="text-left mb-6 text-body font-weight-light">
         <!-- Si c'est une URL YouTube, on affiche la vidéo centrée -->
-        <div v-if="isYoutubeUrl(post.title)" class="text-center">
-          <iframe
-            :src="`https://www.youtube.com/embed/${extractYouTubeVideoId(post.title)}`"
-            style="width: 100%;"
-            height="365"
-            frameborder="0"
-            allowfullscreen
-          ></iframe>
+        <div v-if="isYoutubeUrl(props.post.title)" class="text-center">
+          <v-sheet color="primary" rounded="xl" class="overflow-hidden" elevation="10">
+            <iframe
+              :src="`https://www.youtube.com/embed/${extractYouTubeVideoId(props.post.title)}`"
+              style="width: 100%;"
+              height="365"
+              frameborder="0"
+              allowfullscreen
+            ></iframe>
+          </v-sheet>
         </div>
+        <v-sheet v-else-if="isImageUrl(props.post.title)" color="primary" rounded="xl" class="overflow-hidden" elevation="10">
         <NuxtImg
-          v-else-if="isImageUrl(post.title)"
-          :alt="`image-${post.slug}`"
-          :src="post.title"
+          :alt="`image-${props.post.slug}`"
+          :src="props.post.title"
           style="width: 100%; height: auto"
           class="border-radius-lg shadow-lg"
           :preload="true"
           loading="eager"
           fetchpriority="high"
         />
+        </v-sheet>
         <!-- Sinon, afficher le titre normalement -->
         <p v-else>
-          {{ post.title }}
+          {{ props.post.title }}
         </p>
       </div>
     </NuxtLink>
-
-    <NuxtImg
-      v-if="post?.medias?.length > 0"
-      :alt="`image-${post.slug}`"
-      :src="post?.medias[0]?.path"
-      style="width: 100%; height: auto"
-      class="border-radius-lg shadow-lg"
-      :preload="true"
-      loading="eager"
-      fetchpriority="high"
-    />
-
-    <ReactPost :post="post" />
-    <Comments :post="post" />
+    <v-sheet color="primary" rounded="xl" class="overflow-hidden" elevation="10">
+      <NuxtImg
+        v-if="props.post?.medias?.length > 0"
+        :alt="`image-${props.post.slug}`"
+        :src="props.post?.medias[0]?.path"
+        style="width: 100%; height: auto"
+        class="border-radius-lg shadow-lg"
+        :preload="true"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </v-sheet>
+    <ReactPost :post="props.post" />
+    <Comments :post="props.post" />
   </div>
 
 </template>

@@ -2,7 +2,7 @@
 import NewComment from "~/pages/home/post/NewComment.vue";
 import ReactComment from "~/pages/home/post/ReactComment.vue";
 import UserAvatar from "~/components/App/UserAvatar.vue";
-defineProps<{
+const props = defineProps<{
   post: {
     type: Object,
     required: true,
@@ -14,7 +14,7 @@ const { loggedIn } = useUserSession()
 <template>
   <div class="mb-1">
     <hr class="horizontal dark mt-1 mb-5" />
-    <div v-for="comment in post.comments" class="d-flex mt-3">
+    <div v-for="comment in props.post.comments" class="d-flex mt-3">
       <div class="flex-shrink-0">
         <UserAvatar :user="comment.user" size="32"></UserAvatar>
       </div>

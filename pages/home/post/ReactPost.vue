@@ -21,7 +21,11 @@ defineProps<{
             {{ post?.likes?.length }}
           </span>
         </div>
-        <div class="d-flex align-center">
+      </div>
+    </v-col>
+    <v-col sm="6">
+      <div class="d-flex align-center">
+        <div class="d-flex align-center ms-auto">
           <v-icon
             size="24"
             class="material-icons-round me-1 cursor-pointer"
@@ -33,21 +37,6 @@ defineProps<{
           >
             {{ post?.comments?.length }}
           </span>
-        </div>
-      </div>
-    </v-col>
-    <v-col sm="6">
-      <div class="d-flex align-center">
-        <div class="d-flex align-center ms-auto">
-          <v-avatar size="24" class="border border-white ms-n2">
-            <NuxtImg width="24" height="24" src="/img/team-5.jpg" alt="Avatar" />
-          </v-avatar>
-          <v-avatar size="24" class="border border-white ms-n2">
-            <NuxtImg width="24" height="24" src="/img/team-2.jpg" alt="Avatar" />
-          </v-avatar>
-          <v-avatar size="24" class="border border-white ms-n2">
-            <NuxtImg width="24" height="24" src="/img/team-1.jpg" alt="Avatar" />
-          </v-avatar>
         </div>
       </div>
     </v-col>
