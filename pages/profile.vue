@@ -110,7 +110,24 @@ definePageMeta({
               </v-col>
 
               <!-- Boutons Follow / Inbox -->
-              <v-col cols="auto" class="ml-auto">
+              <v-col
+                cols="auto"
+                class="ms-auto d-flex align-center justify-end"
+              >
+                <v-btn
+                  variant="text"
+                  to="/setting"
+                  class="font-weight-bolder me-1"
+                >
+                  <v-icon icon="mdi-settings" size="20" />
+                </v-btn>
+                <v-btn
+                  variant="text"
+                  to="/inbox"
+                  class="font-weight-bolder"
+                >
+                  <v-icon icon="mdi-message" size="20" />
+                </v-btn>
 
               </v-col>
             </v-row>
@@ -193,15 +210,15 @@ definePageMeta({
               <v-list-item class="px-0 border-radius-sm">
                 <div class="text-body text-sm">
                   <strong class="text-dark">Full Name:</strong>
-                  &nbsp; {{ profile?.firstName ?? 'Not provided' }}
-                  {{ profile?.lastName ?? 'Not provided' }}
+                  &nbsp; {{ profile?.firstName ?? '' }}
+                  {{ profile?.lastName ?? '' }}
                 </div>
               </v-list-item>
 
               <v-list-item class="px-0 border-radius-sm">
                 <div class="text-body text-sm">
                   <strong class="text-dark">Mobile:</strong>
-                  &nbsp; (44) 123 1234 123
+                  &nbsp; {{ profile?.profile?.phone ?? '' }}
                 </div>
               </v-list-item>
 
@@ -215,7 +232,7 @@ definePageMeta({
               <v-list-item class="px-0 border-radius-sm">
                 <div class="text-body text-sm">
                   <strong class="text-dark">Location:</strong>
-                  &nbsp; {{ profile?.locale ?? 'Not provided' }}
+                  &nbsp; {{ profile?.locale ?? '' }}
                 </div>
               </v-list-item>
 
@@ -223,16 +240,19 @@ definePageMeta({
                 <div class="text-body text-sm">
                   <strong class="text-dark">Social:</strong>
                   &nbsp;
-                  <v-icon color="#344e86" icon="mdi-facebook"
+                  <v-icon v-if="profile.profileLink" :to="profile.profileLink" class="me-1" color="#344e86" icon="mdi-facebook"
                   ></v-icon
                   >
-                  <v-icon color="#3ea1ec" icon="mdi-twitter"
+                  <v-icon v-if="profile.profileLink" :to="profile.profileLink" class="me-1" color="#3ea1ec" icon="mdi-twitter"
                   ></v-icon
                   >
-                  <v-icon color="#0e456d" icon="mdi-instagram"
+                  <v-icon v-if="profile.profileLink" :to="profile.profileLink" class="me-1" color="#0e456d" icon="mdi-instagram"
                   ></v-icon
                   >
-                  <v-icon icon="mdi-google"
+                  <v-icon v-if="profile.profileLink" :to="profile.profileLink" class="me-1" icon="mdi-google"
+                  ></v-icon
+                  >
+                  <v-icon v-if="profile.htmlUrl" :to="profile.htmlUrl" class="me-1" icon="mdi-github"
                   ></v-icon
                   >
                 </div>

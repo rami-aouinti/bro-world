@@ -7,10 +7,12 @@ const { isFullscreen, toggle: toggleFullscreen } = useFullscreen()
       :defaults="{ VBtn: { rounded: 0, class: 'px-5' } }"
     >
       <v-btn
-        style="height: 31px; padding-top: 2px"
+        style="height: 21px; padding-top: 2px"
         aria-label="screen"
         title="screen"
         large
+        size="20"
+        class="ml-2"
         :icon="isFullscreen ? 'ph:corners-in' : 'ph:corners-out'"
         @click="toggleFullscreen()"
       />

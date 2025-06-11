@@ -20,3 +20,7 @@
   }
 }
 </style>
+<script setup lang="ts">
+import AppNotification from "~/components/App/AppNotification.vue";
+import AppSettings from "~/components/App/AppSettings.vue";
+</script>

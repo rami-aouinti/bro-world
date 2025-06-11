@@ -34,19 +34,21 @@ const emit = defineEmits<{
     <Navigation></Navigation>
     <Screen></Screen>
     <div id="app-bar" />
-    <Switch></Switch>
     <Notification v-if="loggedIn"></Notification>
     <Messenger v-if="loggedIn"></Messenger>
     <v-btn
       icon
       title="Shopping"
       aria-label="shopping"
-      class="ml-1"
+      class="opacity-80 ml-0"
       @click="emit('toggleSettingsDrawer', true)"
     >
-      <v-icon size="30"> mdi-shopping </v-icon>
+      <v-badge color="primary" :content="1">
+        <v-icon> mdi-shopping </v-icon>
+      </v-badge>
     </v-btn>
     <User></User>
     <Language></Language>
+    <Switch></Switch>
   </v-app-bar>
 </template>

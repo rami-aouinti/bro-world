@@ -31,7 +31,7 @@ const changeLanguage = async (code: string) => {
         title="Language"
         aria-label="Language"
         v-bind="mergeProps(menu)"
-        class="ml-1"
+        class="mx-2"
       >
         <span :class="`fi ${currentLanguage.icon}`" style="font-size: 20px" />
       </v-btn>

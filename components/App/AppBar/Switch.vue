@@ -16,7 +16,7 @@ const isDark = computed({
     aria-label="dark"
     title="dark"
     v-model="isDark"
-    color=""
+    color="primary"
     hide-details
     density="compact"
     inset

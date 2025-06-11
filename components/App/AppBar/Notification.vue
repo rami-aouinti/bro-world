@@ -25,9 +25,11 @@ const dropdown = [
         title="Notification"
         aria-label="notification"
         v-bind="mergeProps(menu)"
-        class="ml-1"
+        class="opacity-80 ml-0"
       >
-        <v-icon size="30">mdi-bell</v-icon>
+        <v-badge color="primary" :content="1">
+          <v-icon>mdi-bell</v-icon>
+        </v-badge>
       </v-btn>
     </template>
 

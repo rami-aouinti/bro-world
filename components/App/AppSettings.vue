@@ -4,7 +4,7 @@ import { useTheme } from 'vuetify'
 import { useStorage } from '@vueuse/core'
 
 const theme = useTheme()
-const primary = useStorage('theme-primary', '#091b2d')
+const primary = useStorage('theme-primary', '#E91E63')
 
 const color = computed({
   get() {

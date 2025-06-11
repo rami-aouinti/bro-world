@@ -94,12 +94,19 @@ onMounted(async () => {
 <template>
   <div class="d-flex align-center px-4 py-4">
     <div class="d-flex align-center">
-      <a :href="`/profile/${props.post?.user?.username}`" class="text-decoration-none">
+      <a
+        :href="props.post?.user?.username === user?.username
+    ? '/profile'
+    : `/profile/user/${props.post?.user?.username}`"
+        class="text-decoration-none"
+      >
         <UserAvatar :user="props.post?.user" color="primary" size="48"></UserAvatar>
       </a>
       <div class="mx-4">
         <NuxtLink
-          :to="`/profile/${props.post?.user?.username}`"
+          :to="props.post?.user?.username === user?.username
+    ? '/profile'
+    : `/profile/user/${props.post?.user?.username}`"
           class="text-dark font-weight-600 text-sm text-decoration-none"
         >
           {{ props.post?.user?.firstName }} {{ props.user?.lastName }}

@@ -20,10 +20,12 @@ router.afterEach(() => {
       title="can Go Back"
       :disabled="!canGoBack"
       icon="ph:arrow-left"
+      class="opacity-80 ml-0"
       @click="back()"
     />
     <v-btn
       aria-label="refresh"
+      class="opacity-80 ml-0"
       title="refresh"
       icon="ph:arrow-clockwise" @click="refresh()" />
   </div>

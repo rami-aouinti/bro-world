@@ -73,7 +73,6 @@ const chats = [
 ]
 
 definePageMeta({
-  title: 'inbox',
   layout: 'default',
   middleware: 'auth',
   breadcrumb: 'disabled',
@@ -84,7 +83,7 @@ definePageMeta({
   <v-container fluid>
     <v-row>
       <v-col md="4">
-        <v-card class="pt-8 px-3 shadow-blur" variant="text" max-height="500">
+        <v-card class="pt-8 px-3 shadow-blur overflow-scroll" variant="text" max-height="500">
           <h6 class="text-h6 mb-2">Friends</h6>
           <v-form
             id="navbar-search-main"
@@ -146,7 +145,7 @@ definePageMeta({
         </v-card>
       </v-col>
       <v-col md="8">
-        <v-card rounded="xl" class="pt-8 px-1 shadow-blur overflow-scroll" max-height="500" variant="text">
+        <v-card rounded="xl" class="pt-8 px-1 shadow-blur" max-height="500" variant="text">
           <div class="mt-n4">
             <div
               class="bg-gradient-primary shadow-primary border-radius-lg px-3 py-2 mx-3"
@@ -175,11 +174,11 @@ definePageMeta({
                           v-bind="attrs"
                           v-on="on"
                           size="18"
-                          class="material-icons-round"
                           role="button"
+                          variant="text"
                           aria-label="Video call"
                         >
-                          videocam
+                          mdi-camera
                         </v-icon>
                       </template>
                       <span>Video call</span>
@@ -198,13 +197,13 @@ definePageMeta({
                           :ripple="false"
                           class="text-secondary"
                           v-bind="attrs"
+                          variant="text"
                           small
                           v-on="on"
                         >
                           <v-icon
                             size="18"
-                            class="material-icons-round"
-                          >settings</v-icon
+                          >mdi-settings</v-icon
                           >
                         </v-btn>
                       </template>
@@ -272,7 +271,7 @@ definePageMeta({
               </v-container>
             </div>
           </div>
-          <div class="max-vh-50 overflow-scroll pt-6 px-4">
+          <div class="overflow-scroll pt-6 px-4" style="max-height: 200px;" >
             <v-row class="justify-start">
               <v-col cols="auto">
                 <v-card
@@ -392,11 +391,11 @@ definePageMeta({
                 class="font-size-input input-style"
               />
               <v-btn
-                elevation="24"
+                variant="text"
                 class="bg-gradient-primary ms-2"
                 height="40"
               >
-                <v-icon class="material-icons-round">send</v-icon>
+                <v-icon>mdi-send</v-icon>
               </v-btn>
             </v-form>
           </div>
