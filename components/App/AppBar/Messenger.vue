@@ -30,9 +30,17 @@ const lastMessages = [
         v-bind="mergeProps(menu)"
         class="opacity-80 ml-0"
       >
-        <v-badge color="primary" :content="1">
-          <v-icon icon="mdi-message" />
+        <v-badge
+          v-if="lastMessages.length > 0"
+          color="primary"
+          :content="lastMessages.length"
+        >
+          <template #default>
+            <v-icon>mdi-message</v-icon>
+          </template>
         </v-badge>
+
+        <v-icon v-else>mdi-message</v-icon>
       </v-btn>
     </template>
 
@@ -45,7 +53,7 @@ const lastMessages = [
           <v-row align="center" class="pa-0 ma-0">
             <!-- Avatar -->
             <v-col cols="auto">
-              <v-avatar size="24" class="me-3">
+              <v-avatar size="36" class="me-1">
                 <NuxtImg
                   width="24"
                   height="24"

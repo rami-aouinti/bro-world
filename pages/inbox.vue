@@ -83,7 +83,7 @@ definePageMeta({
   <v-container fluid>
     <v-row>
       <v-col md="4">
-        <v-card class="pt-8 px-3 shadow-blur overflow-scroll" variant="text" max-height="500">
+        <v-card class="px-3 overflow-scroll" rounded="xl" variant="text" max-height="500">
           <h6 class="text-h6 mb-2">Friends</h6>
           <v-form
             id="navbar-search-main"
@@ -271,7 +271,7 @@ definePageMeta({
               </v-container>
             </div>
           </div>
-          <div class="overflow-scroll pt-6 px-4" style="max-height: 200px;" >
+          <div class="overflow-scroll pt-6 px-4" style="max-height: 300px;" >
             <v-row class="justify-start">
               <v-col cols="auto">
                 <v-card
