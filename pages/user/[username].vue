@@ -171,65 +171,7 @@ definePageMeta({
       </v-col>
     </v-row>
     <v-row>
-      <v-col lg="4" md="4" cols="12" class="position-relative">
-        <v-card rounded="xl" class="h-60" variant="text">
-          <div class="px-4 pt-4">
-            <h6 class="mb-0 text-h6 text-typo">Platform Settings</h6>
-          </div>
-          <hr class="horizontal dark mt-2 mb-1" />
-          <div class="px-4 py-4">
-            <h6 class="text-uppercase text-body text-xs font-weight-bolder">
-              Account
-            </h6>
-            <v-list class="bg-transparent" elevation="0">
-              <v-list-item
-                v-for="setting in accountSettings"
-                :key="setting.text"
-              >
-                <v-row class="d-flex align-center">
-                  <v-col cols="2">
-                    <v-switch
-                      v-model="setting.switchState"
-                      hide-details
-                      class="d-inline-flex mt-0 pt-0 switch ms-auto"
-                    />
-                  </v-col>
-                  <v-col cols="10">
-                    <div class="ms-4 text-body text-sm">{{ setting.text }}</div>
-                  </v-col>
-                </v-row>
-              </v-list-item>
-            </v-list>
-
-            <h6
-              class="text-uppercase text-body text-xs font-weight-bolder mt-4"
-            >
-              Application
-            </h6>
-            <v-list class="bg-transparent" elevation="0">
-              <v-list-item
-                v-for="setting in applicationSettings"
-                :key="setting.text"
-              >
-                <v-row class="d-flex align-center">
-                  <v-col cols="2">
-                    <v-switch
-                      v-model="setting.switchState"
-                      hide-details
-                      class="d-inline-flex mt-0 pt-0 switch ms-auto"
-                    />
-                  </v-col>
-                  <v-col cols="10">
-                    <div class="ms-4 text-body text-sm">{{ setting.text }}</div>
-                  </v-col>
-                </v-row>
-              </v-list-item>
-            </v-list>
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col lg="4" md="4" cols="12" class="position-relative">
+      <v-col lg="12" md="12" cols="12" class="position-relative">
         <v-card rounded="xl" class="h-100" variant="text">
           <div class="px-4 pt-4">
             <h6 class="mb-0 text-h6 text-typo">Profile Information</h6>
@@ -289,65 +231,6 @@ definePageMeta({
                   >
                 </div>
               </v-list-item>
-            </v-list>
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col lg="4" md="4" cols="12" class="position-relative">
-        <v-card rounded="xl" class="h-100" variant="text">
-          <div class="px-4 pt-4">
-            <h6 class="mb-0 text-h6 text-typo">Conversations</h6>
-          </div>
-          <hr class="horizontal dark mt-2 mb-1" />
-          <div class="px-4 py-4">
-            <v-list class="bg-transparent" elevation="0">
-              <v-list-item-group class="border-radius-sm">
-                <v-list-item
-                  v-for="conversation in conversations"
-                  :key="conversation.text"
-                  :ripple="false"
-                  class="px-0 border-radius-sm mb-2"
-                >
-                  <div class="d-flex align-center">
-                    <div>
-                      <v-avatar
-                        width="48"
-                        height="48"
-                        class="shadow border-radius-lg me-4"
-                      >
-                        <NuxtImg
-                          width="48" height="48"
-                          :src="conversation.avatar"
-                          alt="Avatar"
-                          class="border-radius-lg"
-                        />
-                      </v-avatar>
-                    </div>
-                    <div>
-                      <h6
-                        class="mb-0 text-sm text-sm text-typo font-weight-bold"
-                      >
-                        {{ conversation.user }}
-                      </h6>
-                      <p class="mb-0 text-xs text-body font-weight-light">
-                        {{ conversation.message }}
-                      </p>
-                    </div>
-                    <div class="ms-auto">
-                      <v-btn
-                        :ripple="false"
-                        small
-                        variant="text"
-                        width="auto"
-                        class="text-primary font-weight-bolder"
-                      >
-                        Reply
-                      </v-btn>
-                    </div>
-                  </div>
-                </v-list-item>
-              </v-list-item-group>
             </v-list>
           </div>
         </v-card>

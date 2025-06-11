@@ -103,7 +103,7 @@ onMounted(async () => {
       <a
         :href="props.post?.user?.username === user?.username
     ? '/profile'
-    : `/profile/user/${props.post?.user?.username}`"
+    : `/user/${props.post?.user?.username}`"
         class="text-decoration-none"
       >
         <UserAvatar :user="props.post?.user" color="primary" size="48"></UserAvatar>
@@ -112,7 +112,7 @@ onMounted(async () => {
         <NuxtLink
           :to="props.post?.user?.username === user?.username
     ? '/profile'
-    : `/profile/user/${props.post?.user?.username}`"
+    : `/user/${props.post?.user?.username}`"
           class="text-dark font-weight-600 text-sm text-decoration-none"
         >
           {{ props.post?.user?.firstName }} {{ props.user?.lastName }}
