@@ -149,13 +149,13 @@ onMounted(async () => {
           <p class="text-sm mb-0 font-weight-bold opacity-7">
             Weather today
           </p>
-          <h5 class="text-h5 font-weight-bolder mb-0">
+          <h6 class="text-h6 font-weight-bolder mb-0">
             {{ city }} {{ weatherInfo }}
-          </h5>
+          </h6>
         </v-col>
         <v-col cols="4" class="text-end">
           <v-img src="/img/small-logos/icon-sun-cloud.png" class="w-50 ms-auto" />
-          <h5 class="mb-0 text-h5 text-end me-1">Cloudy</h5>
+          <h6 class="mb-0 text-h6 text-end me-1">Cloudy</h6>
         </v-col>
       </v-row>
     </div>

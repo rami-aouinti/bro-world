@@ -55,8 +55,8 @@ const lastMessages = [
             <v-col cols="auto">
               <v-avatar size="36" class="me-1">
                 <NuxtImg
-                  width="24"
-                  height="24"
+                  width="36"
+                  height="36"
                   :src="item.avatar"
                   :alt="`Avatar ${i}`"
                   cover

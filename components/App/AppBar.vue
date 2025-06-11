@@ -6,7 +6,7 @@ import Navigation from "~/components/App/AppBar/Navigation.vue";
 import Switch from "~/components/App/AppBar/Switch.vue";
 import Notification from "~/components/App/AppBar/Notification.vue";
 import Messenger from "~/components/App/AppBar/Messenger.vue";
-import Shop from "~/components/App/AppBar/Shop.vue";
+import type {ShopifyCartLineItem} from "~/modules/shopify/types";
 const { loggedIn} = useUserSession()
 
 const drawer = useState('drawer')
@@ -20,6 +20,10 @@ const breadcrumbs = computed(() => {
       to: r.path,
     }))
 })
+const emit = defineEmits<{
+  (e: 'toggleSettingsDrawer', value: boolean): void
+}>()
+
 </script>
 
 <template>
@@ -32,7 +36,17 @@ const breadcrumbs = computed(() => {
     <div id="app-bar" />
     <Notification v-if="loggedIn"></Notification>
     <Messenger v-if="loggedIn"></Messenger>
-    <Shop></Shop>
+    <v-btn
+      icon
+      title="Shopping"
+      aria-label="shopping"
+      class="opacity-80 ml-0"
+      @click="emit('toggleSettingsDrawer', true)"
+    >
+      <v-badge color="primary" :content="1">
+        <v-icon> mdi-shopping </v-icon>
+      </v-badge>
+    </v-btn>
     <User></User>
     <Language></Language>
     <Switch></Switch>

@@ -2,7 +2,7 @@
 import { mergeProps, ref } from 'vue'
 import UserAvatar from "~/components/App/UserAvatar.vue";
 
-const { loggedIn, clear, user } = useUserSession()
+const { loggedIn, clear, user, pending } = useUserSession()
 
 const loggedUser = ref([
   { icon: "mdi-account-settings-variant", path: "/setting", title: "Setting" },
@@ -26,7 +26,7 @@ const notLoggedUser = ref([
     <template #activator="{ props: menu }">
       <v-btn aria-label="account" title="account" icon v-bind="mergeProps(menu)" class="ml-0">
         <v-icon v-if="!loggedIn" icon="mdi-account-circle" size="32" />
-        <UserAvatar v-if="loggedIn && user" :user="user" size="32" color="primary" />
+        <UserAvatar v-if="loggedIn && !pending" :user="user" size="32" color="primary" />
       </v-btn>
     </template>
 

@@ -83,8 +83,7 @@ definePageMeta({
   <v-container fluid>
     <v-row>
       <v-col md="4">
-        <v-card class="px-3 overflow-scroll" rounded="xl" variant="text" max-height="500">
-          <h6 class="text-h6 mb-2">Friends</h6>
+        <v-card class="py-3 px-3 overflow-scroll" rounded="xl" variant="text" max-height="500">
           <v-form
             id="navbar-search-main"
             class="navbar-search navbar-search-light d-inline-block w-100 mb-4"

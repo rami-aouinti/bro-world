@@ -14,7 +14,7 @@ const { user } = useUserSession()
 const router = useRouter()
 const route = useRoute()
 const isFollowing = ref<boolean | null>(null)
-
+const loading = ref(false)
 
 const handleEdit = async (id: string | number) => {
   const res = await useFetch(`post/${id}`)
@@ -27,12 +27,14 @@ const handleDelete = async (id: string | number) => {
 
 
 async function checkFollowStatus(userId: string) {
+  loading.value = true
   if (user.value && userId) {
     const { data, error } = await useFetch(`/api/follow/status/${userId}`)
     if (!error.value) {
       isFollowing.value = data.value
     }
   }
+  loading.value = false
 }
 
 function redirectToLogin() {
@@ -45,6 +47,7 @@ function redirectToLogin() {
 }
 
 async function toggleFollow(userId: string) {
+  loading.value = true
   if (!user.value) {
     return redirectToLogin()
   }
@@ -56,9 +59,11 @@ async function toggleFollow(userId: string) {
   if (!error.value) {
     isFollowing.value = true
   }
+  loading.value = false
 }
 
 async function toggleUnFollow(userId: string) {
+  loading.value = true
   if (!user.value) {
     return redirectToLogin()
   }
@@ -70,6 +75,7 @@ async function toggleUnFollow(userId: string) {
   if (!error.value) {
     isFollowing.value = false
   }
+  loading.value = false
 }
 
 watch(
@@ -117,6 +123,7 @@ onMounted(async () => {
     <div class="text-end ms-auto" v-if="isFollowing === false && props.post.user?.id !== user?.id">
       <v-btn
         icon
+        :loading="loading"
         variant="text"
         size="small"
         class="text-primary"
@@ -128,6 +135,7 @@ onMounted(async () => {
     <div class="text-end ms-auto" v-if="isFollowing === true && props.post.user?.id !== user?.id">
       <v-btn
         icon
+        :loading="loading"
         variant="text"
         size="small"
         class="text-primary"
