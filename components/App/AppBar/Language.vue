@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 const { locale, setLocale } = useI18n()
 
 const languages = [
-  { code: 'en', iso: 'en-US', name: 'English', icon: 'fi-us us' },
+  { code: 'en', iso: 'en-GB', name: 'English', icon: 'fi-gb gb' },
   { code: 'fr', iso: 'fr-FR', name: 'Français', icon: 'fi-fr fr' },
   { code: 'de', iso: 'de-DE', name: 'Deutsch', icon: 'fi-de de' },
   { code: 'ar', iso: 'ar-AR', name: 'العربية', icon: 'fi-tn tn' },
