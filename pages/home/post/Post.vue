@@ -36,7 +36,7 @@ function extractYouTubeVideoId(url) {
       <div class="text-left mb-6 text-body font-weight-light">
         <!-- Si c'est une URL YouTube, on affiche la vidéo centrée -->
         <div v-if="isYoutubeUrl(props.post.title)" class="text-center">
-          <v-sheet color="primary" rounded="xl" class="overflow-hidden" elevation="10">
+          <v-sheet color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
             <iframe
               :src="`https://www.youtube.com/embed/${extractYouTubeVideoId(props.post.title)}`"
               style="width: 100%;"
@@ -46,7 +46,7 @@ function extractYouTubeVideoId(url) {
             ></iframe>
           </v-sheet>
         </div>
-        <v-sheet v-else-if="isImageUrl(props.post.title)" color="primary" rounded="xl" class="overflow-hidden" elevation="10">
+        <v-sheet v-else-if="isImageUrl(props.post.title)" color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
         <NuxtImg
           :alt="`image-${props.post.slug}`"
           :src="props.post.title"
@@ -63,7 +63,7 @@ function extractYouTubeVideoId(url) {
         </p>
       </div>
     </NuxtLink>
-    <v-sheet color="primary" rounded="xl" class="overflow-hidden" elevation="10">
+    <v-sheet color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
       <NuxtImg
         v-if="props.post?.medias?.length > 0"
         :alt="`image-${props.post.slug}`"
