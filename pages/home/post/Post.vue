@@ -63,9 +63,8 @@ function extractYouTubeVideoId(url) {
         </p>
       </div>
     </NuxtLink>
-    <v-sheet color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
+    <v-sheet v-if="props.post?.medias?.length > 0" color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
       <NuxtImg
-        v-if="props.post?.medias?.length > 0"
         :alt="`image-${props.post.slug}`"
         :src="props.post?.medias[0]?.path"
         style="width: 100%; height: auto"
