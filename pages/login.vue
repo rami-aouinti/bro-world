@@ -47,7 +47,7 @@ definePageMeta({
       </v-sheet>
 
       <div class="pa-6">
-        <v-progress-circular v-if="isRedirecting" indeterminate color="primary" size="40" class="mx-auto d-block" />
+        <v-progress-circular v-if="isRedirecting" indeterminate color="primary" size="80" class="mx-auto d-block" />
         <LoginForm v-else />
       </div>
     </v-card>

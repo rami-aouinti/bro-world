@@ -9,7 +9,7 @@
             :label="t('contact.name')"
             required
             outlined
-            class="mb-1"
+            class="text-align-auto mb-1"
           />
 
           <v-text-field
@@ -18,7 +18,7 @@
             required
             type="email"
             outlined
-            class="mb-1"
+            class="text-align-auto mb-1"
           />
 
           <v-text-field
@@ -26,7 +26,7 @@
             :label="t('contact.subject')"
             required
             outlined
-            class="mb-1"
+            class="text-align-auto mb-1"
           />
 
           <v-textarea
@@ -35,7 +35,7 @@
             required
             auto-grow
             outlined
-            class="mb-1"
+            class="text-align-auto mb-1"
           />
 
           <v-btn

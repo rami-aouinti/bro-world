@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import PasswordForm from "~/components/Auth/PasswordForm.vue";
+import Social from "~/components/Auth/Social.vue";
+import RegisterForm from "~/components/Auth/RegisterForm.vue";
+const isRedirecting = ref(false)
+
+definePageMeta({
+  title: 'password',
+  layout: 'auth',
+  middleware: 'guest',
+  breadcrumb: 'disabled',
+})
+</script>
 <template>
   <div
     class="d-flex align-center justify-center"
@@ -28,21 +41,12 @@
             Bro World
           </div>
         </div>
-        <Social></Social>
+        <Social @redirect="isRedirecting = true" />
       </v-sheet>
-      <PasswordForm />
+      <div class="pa-6">
+        <v-progress-circular v-if="isRedirecting" indeterminate color="primary" size="80" class="mx-auto d-block" />
+        <PasswordForm v-else />
+      </div>
     </v-card>
   </div>
 </template>
-
-<script setup lang="ts">
-import PasswordForm from "~/components/Auth/PasswordForm.vue";
-import Social from "~/components/Auth/Social.vue";
-
-definePageMeta({
-  title: 'password',
-  layout: 'auth',
-  middleware: 'guest',
-  breadcrumb: 'disabled',
-})
-</script>
