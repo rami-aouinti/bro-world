@@ -71,5 +71,154 @@
   },
   "post": {
     "files": "Post files"
+  },
+  "story": {
+    "title": "Story title",
+    "description": "Story description",
+    "add": "Add story",
+    "edit": "Edit story",
+    "delete": "Delete story",
+    "deleteConfirmation": "Are you sure you want to delete this story?",
+    "noStories": "No stories available"
+  },
+  "pageNotFound": {
+    "headline": "Whoops, 404",
+    "title": "Page not found",
+    "text": "The page you were looking for does not exist",
+    "goHome": "Go Home",
+    "goBack": "Go Back"
+  },
+  "error": {
+    "title": "Error",
+    "message": "An error occurred while processing your request. Please try again later."
+  },
+  "success": {
+    "title": "Success",
+    "message": "Your request was processed successfully."
+  },
+  "warning": {
+    "title": "Warning",
+    "message": "Please check your input and try again."
+  },
+  "info": {
+    "title": "Information",
+    "message": "Here is some information you might find useful."
+  },
+  "loading": {
+    "message": "Loading, please wait..."
+  },
+  "notFound": {
+    "message": "The requested resource could not be found."
+  },
+  "unauthorized": {
+    "message": "You are not authorized to view this page. Please log in."
+  },
+  "forbidden": {
+    "message": "You do not have permission to access this resource."
+  },
+  "serverError": {
+    "message": "An internal server error occurred. Please try again later."
+  },
+  "maintenance": {
+    "message": "The site is currently under maintenance. Please check back later."
+  },
+  "contactSupport": {
+    "message": "If you continue to experience issues, please contact support."
+  },
+  "termsOfService": "Terms of Service",
+  "privacyPolicy": "Privacy Policy",
+  "cookiePolicy": "Cookie Policy",
+  "aboutUs": "About Us",
+  "faq": "FAQ",
+  "feedback": "Feedback",
+  "search": "Search",
+  "settings": "Settings",
+  "profile": "Profile",
+  "logout": "Logout",
+  "login": "Login",
+  "resetPassword": "Reset Password",
+  "changePassword": "Change Password",
+  "updateProfile": "Update Profile",
+  "notifications": "Notifications",
+  "language": "Language",
+  "theme": "Theme",
+  "darkMode": "Dark Mode",
+  "lightMode": "Light Mode",
+  "contact": {
+    "title": "Contact Us",
+    "name": "Your Name",
+    "email": "Your Email",
+    "subject": "Subject",
+    "message": "Your Message",
+    "send": "Send Message",
+    "success": "Thank you! Your message has been sent.",
+    "error": "Error sending message. Please try again later.",
+    "location": "Location"
+  },
+  "about": {
+    "title": "About Bro World",
+    "intro1": "Bro World is more than just a platform—it's your digital companion. Here, you can freely express yourself, share your thoughts, connect with others, and build your own digital space with powerful plugins that extend your experience.",
+    "intro2": "Whether you're into blogging, running a store, chatting with friends, or organizing your time, Bro World adapts to you. Choose and install the plugins you need: Ecommerce, Calendar, Live Chat, CRM, Blog CMS, Games, and more.",
+    "intro3": "We believe in freedom, creativity, and personalization. Bro World lets you build your own digital universe—one post, one plugin, and one connection at a time.",
+    "tech": "Built with love using Vue 3, Vuetify 3 and Nuxt 3. Designed to be fast, modular and joyful."
+  },
+  "help": {
+    "title": "Help & FAQ",
+    "questions": {
+      "q1": "What is Bro World?",
+      "a1": "Bro World is a social web platform where you can post, chat, and add functional plugins to customize your experience.",
+
+      "q2": "How do I install a plugin?",
+      "a2": "Go to the Plugins section. If the plugin is not installed, click on \"Install\". Once installed, it will be accessible via the \"Open\" button.",
+
+      "q3": "Is it free to use?",
+      "a3": "Yes, Bro World is free to use. Some plugins are free, while others may be marked as \"Paid\".",
+
+      "q4": "Can I post anything I want?",
+      "a4": "You can post freely, but please respect others. Any abusive, harmful, or illegal content may be removed according to our community guidelines.",
+
+      "q5": "Who is behind Bro World?",
+      "a5": "Bro World is built by a passionate developer who believes in freedom, creativity, and social connection through modern web technologies."
+    }
+  },
+  "reset": {
+    "email": "Email",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "submit": "Reset Password",
+    "success": "Password has been reset successfully. Redirecting to login...",
+    "errorToken": "Token is missing or invalid.",
+    "errorGeneric": "Something went wrong.",
+    "rules": {
+      "required": "Password is required.",
+      "minLength": "Password must be at least 8 characters.",
+      "mismatch": "Passwords do not match."
+    }
+  },
+  "register": {
+    "email": "Username or Email",
+    "password": "Password",
+    "repeatPassword": "Repeat Password",
+    "agree": "I agree the",
+    "terms": "Terms and Conditions",
+    "errorMissing": "Username and password are required.",
+    "errorTerms": "You must accept the terms and conditions to proceed.",
+    "success": "Successfully registered!",
+    "haveAccount": "You have an account?",
+    "signIn": "Sign In",
+    "requirements": "Password requirements",
+    "requirement1": "One special character",
+    "requirement2": "Min 6 characters",
+    "termsTitle": "Terms and Conditions"
+  },
+  "auth": {
+    "usernameOrEmail": "Username or Email",
+    "password": "Password",
+    "forgotPassword": "Forgot your password?",
+    "signIn": "Sign In",
+    "signUpPrompt": "Don't have an account?",
+    "signUp": "Sign Up",
+    "requiredError": "Username and password are required.",
+    "invalidError": "Username or password is incorrect."
   }
 }

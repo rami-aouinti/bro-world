@@ -5,7 +5,7 @@
         <div class="card-padding">
           <v-text-field
             v-model="username"
-            label="Username or Email"
+            :label="t('auth.usernameOrEmail')"
             required
             class="font-size-input input-style"
             append-inner-icon="mdi-face"
@@ -15,7 +15,7 @@
           <v-text-field
             v-model="password"
             :type="showPassword ? 'text' : 'password'"
-            label="Password"
+            :label="t('auth.password')"
             required
             class="font-size-input input-style"
             :disabled="loading"
@@ -30,7 +30,7 @@
 
           <div class="text-right mt-2 mb-4">
             <NuxtLink to="/forgot-password" class="text-primary text-decoration-none text-sm">
-              Forgot your password?
+              {{ t('auth.forgotPassword') }}
             </NuxtLink>
           </div>
 
@@ -40,16 +40,16 @@
             class="btn btn-outline-primary bg-primary rounded-xl text-decoration-none font-weight-bold text-uppercase py-2 px-6 me-2 mb-2 w-100"
           >
             <v-progress-circular v-if="loading" indeterminate size="20" />
-            <span v-else>Sign In</span>
+            <span v-else>{{ t('auth.signIn') }}</span>
           </button>
 
           <p class="text-sm text-body mt-3 mb-0 d-flex justify-center">
-            Don't have an account?
+            {{ t('auth.signUpPrompt') }}
             <NuxtLink
               to="/register"
               class="text-primary text-decoration-none font-weight-bolder px-1"
             >
-              Sign Up
+              {{ t('auth.signUp') }}
             </NuxtLink>
           </p>
         </div>
@@ -60,8 +60,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/useAuthStore'
 
+const { t } = useI18n()
 const auth = useAuthStore()
 const { fetch: refreshSession } = useUserSession()
 
@@ -80,7 +82,7 @@ async function handleSubmit() {
   loading.value = true
 
   if (!username.value || !password.value) {
-    error.value = 'Username and password are required.'
+    error.value = t('auth.requiredError')
     loading.value = false
     return
   }
@@ -94,7 +96,7 @@ async function handleSubmit() {
   })
 
   if (fetchError.value) {
-    error.value = 'Username or password is incorrect.'
+    error.value = t('auth.invalidError')
     loading.value = false
     return
   }

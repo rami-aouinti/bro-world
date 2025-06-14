@@ -30,7 +30,7 @@ useHead({
     lang: computed(() => locale.value),
   },
   link: [
-    { rel: 'icon', href: '/earth_favicon.ico' },
+    { rel: 'icon', href: '/favicon.ico' },
     { rel: 'canonical', href: canonicalUrl.value },
 
     { rel: 'alternate', hrefLang: 'en', href: baseUrl + '/en' },

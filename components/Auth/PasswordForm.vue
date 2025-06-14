@@ -4,14 +4,14 @@
       <v-form @submit.prevent="handleSubmit" ref="formRef" lazy-validation>
         <v-text-field
           v-model="email"
-          label="Email"
+          :label="t('reset.email')"
           type="email"
           append-inner-icon="mdi-face"
           required
         />
         <v-text-field
           v-model="password"
-          label="New Password"
+          :label="t('reset.newPassword')"
           :type="showPassword ? 'text' : 'password'"
           :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           @click:append-inner="togglePassword"
@@ -21,7 +21,7 @@
 
         <v-text-field
           v-model="confirmPassword"
-          label="Confirm Password"
+          :label="t('reset.confirmPassword')"
           :type="showPassword ? 'text' : 'password'"
           :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           @click:append-inner="togglePassword"
@@ -35,7 +35,7 @@
           color="primary"
           class="mt-4 w-100 rounded-xl text-white font-weight-bold"
         >
-          Reset Password
+          {{ t('reset.submit') }}
         </v-btn>
 
         <p v-if="error" class="mt-3 text-red text-center">
@@ -52,7 +52,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
@@ -64,16 +66,15 @@ const formRef = ref()
 
 const route = useRoute()
 const router = useRouter()
-
 const token = computed(() => route.query.token as string)
 
 const passwordRules = [
-  (v: string) => !!v || 'Password is required.',
-  (v: string) => v.length >= 8 || 'Password must be at least 8 characters.'
+  (v: string) => !!v || t('reset.rules.required'),
+  (v: string) => v.length >= 8 || t('reset.rules.minLength')
 ]
 
 const confirmPasswordRule = (v: string) =>
-  v === password.value || 'Passwords do not match.'
+  v === password.value || t('reset.rules.mismatch')
 
 const togglePassword = () => {
   showPassword.value = !showPassword.value
@@ -85,7 +86,7 @@ async function handleSubmit() {
   loading.value = true
 
   if (!token.value) {
-    error.value = 'Token is missing or invalid.'
+    error.value = t('reset.errorToken')
     loading.value = false
     return
   }
@@ -101,22 +102,15 @@ async function handleSubmit() {
   })
 
   if (fetchError.value) {
-    error.value = fetchError.value.data?.message || 'Something went wrong.'
+    error.value = fetchError.value.data?.message || t('reset.errorGeneric')
     loading.value = false
     return
   }
 
-  success.value = 'Password has been reset successfully. Redirecting to login...'
+  success.value = t('reset.success')
 
   setTimeout(() => {
     router.push('/login')
   }, 2500)
 }
 </script>
-
-<style>
-.v-sheet--offset {
-  top: -44px;
-  position: relative;
-}
-</style>

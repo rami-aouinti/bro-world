@@ -1,8 +1,23 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import LoginForm from '~/components/Auth/LoginForm.vue'
+import Social from '~/components/Auth/Social.vue'
+
+const isRedirecting = ref(false)
+
+definePageMeta({
+  title: 'login',
+  layout: 'auth',
+  middleware: 'guest',
+  breadcrumb: 'disabled',
+})
+</script>
+
 <template>
   <div
     class="d-flex align-center justify-center"
     style="
-      background-image: url('https://images.unsplash.com/photo-1545569341-9eb8b30979d9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+      background-image: url('https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=1950&q=80');
       background-size: cover;
       background-position: center;
       min-height: 100vh;
@@ -28,21 +43,13 @@
             Bro World
           </div>
         </div>
-        <Social></Social>
+        <Social @redirect="isRedirecting = true" />
       </v-sheet>
-      <LoginForm />
+
+      <div class="pa-6">
+        <v-progress-circular v-if="isRedirecting" indeterminate color="primary" size="40" class="mx-auto d-block" />
+        <LoginForm v-else />
+      </div>
     </v-card>
   </div>
 </template>
-
-<script setup lang="ts">
-import LoginForm from '~/components/Auth/LoginForm.vue'
-import Social from "~/components/Auth/Social.vue";
-
-definePageMeta({
-  title: 'login',
-  layout: 'auth',
-  middleware: 'guest',
-  breadcrumb: 'disabled',
-})
-</script>

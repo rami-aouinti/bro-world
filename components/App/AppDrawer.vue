@@ -83,7 +83,7 @@ const currentYear = new Date().getFullYear()
             rel="noopener noreferrer"
             aria-label="Visit Rami Aouinti's GitHub profile"
           >
-            Rami Aouinti
+            Bro World
           </a>
         </div>
       </v-list-item>

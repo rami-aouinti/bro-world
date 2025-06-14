@@ -13,11 +13,11 @@ const loggedUser = ref([
 ])
 
 const notLoggedUser = ref([
-  { icon: "mdi-login", path: "/login", title: "Login" },
+  { icon: "mdi-account", path: "/login", title: "Login" },
   { icon: "mdi-account-plus", path: "/register", title: "Register" },
   { icon: "mdi-help-circle", path: "/help", title: "Help" },
   { icon: "mdi-information", path: "/about", title: "About" },
-  { icon: "mdi-message", path: "/contact", title: "Contact" },
+  { icon: "mdi-contact-mail", path: "/contact", title: "Contact" },
 ])
 </script>
 

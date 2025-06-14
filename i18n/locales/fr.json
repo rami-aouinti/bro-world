@@ -71,5 +71,145 @@
   },
   "post": {
     "files": "Post files"
+  },
+  "pageNotFound": {
+    "headline": "Oups, 404",
+    "title": "Page non trouvée",
+    "text": "La page que vous recherchez n'existe pas",
+    "goHome": "Retour à l'accueil",
+    "goBack": "Retour"
+  },
+  "error": {
+    "title": "Erreur",
+    "message": "Une erreur est survenue lors du traitement de votre demande. Veuillez réessayer plus tard."
+  },
+  "success": {
+    "title": "Succès",
+    "message": "Votre demande a été traitée avec succès."
+  },
+  "warning": {
+    "title": "Avertissement",
+    "message": "Veuillez vérifier vos informations et réessayer."
+  },
+  "info": {
+    "title": "Information",
+    "message": "Voici quelques informations qui pourraient vous être utiles."
+  },
+  "loading": {
+    "message": "Chargement, veuillez patienter..."
+  },
+  "notFound": {
+    "message": "La ressource demandée est introuvable."
+  },
+  "unauthorized": {
+    "message": "Vous n'êtes pas autorisé à consulter cette page. Veuillez vous connecter."
+  },
+  "forbidden": {
+    "message": "Vous n'avez pas la permission d'accéder à cette ressource."
+  },
+  "serverError": {
+    "message": "Une erreur interne du serveur est survenue. Veuillez réessayer plus tard."
+  },
+  "maintenance": {
+    "message": "Le site est actuellement en maintenance. Veuillez revenir plus tard."
+  },
+  "contactSupport": {
+    "message": "Si le problème persiste, veuillez contacter le support."
+  },
+  "termsOfService": "Conditions d'utilisation",
+  "privacyPolicy": "Politique de confidentialité",
+  "cookiePolicy": "Politique de cookies",
+  "aboutUs": "À propos",
+  "faq": "FAQ",
+  "feedback": "Retour",
+  "search": "Recherche",
+  "settings": "Paramètres",
+  "profile": "Profil",
+  "logout": "Se déconnecter",
+  "login": "Se connecter",
+  "resetPassword": "Réinitialiser le mot de passe",
+  "changePassword": "Changer le mot de passe",
+  "updateProfile": "Mettre à jour le profil",
+  "notifications": "Notifications",
+  "language": "Langue",
+  "theme": "Thème",
+  "darkMode": "Mode sombre",
+  "lightMode": "Mode clair",
+  "contact": {
+    "title": "Nous contacter",
+    "name": "Votre nom",
+    "email": "Votre adresse e-mail",
+    "subject": "Sujet",
+    "message": "Votre message",
+    "send": "Envoyer le message",
+    "success": "Merci ! Votre message a été envoyé.",
+    "error": "Erreur lors de l'envoi du message. Veuillez réessayer plus tard.",
+    "location": "Localisation"
+  },
+  "about": {
+    "title": "À propos de Bro World",
+    "intro1": "Bro World est bien plus qu'une simple plateforme — c'est votre compagnon numérique. Ici, vous pouvez vous exprimer librement, partager vos idées, interagir avec d'autres et construire votre propre espace numérique grâce à des plugins puissants.",
+    "intro2": "Que vous souhaitiez bloguer, gérer une boutique, discuter avec des amis ou organiser votre emploi du temps, Bro World s’adapte à vos besoins. Choisissez et installez les plugins dont vous avez besoin : E-commerce, Calendrier, Chat en direct, CRM, Blog CMS, Jeux, et plus encore.",
+    "intro3": "Nous croyons en la liberté, la créativité et la personnalisation. Bro World vous permet de bâtir votre univers numérique — un post, un plugin, une connexion à la fois.",
+    "tech": "Conçu avec amour à l’aide de Vue 3, Vuetify 3 et Nuxt 3. Pensé pour être rapide, modulaire et agréable à utiliser."
+  },
+  "help": {
+    "title": "Aide & FAQ",
+    "questions": {
+      "q1": "Qu'est-ce que Bro World ?",
+      "a1": "Bro World est une plateforme sociale où vous pouvez publier, discuter et ajouter des plugins fonctionnels pour personnaliser votre expérience.",
+
+      "q2": "Comment installer un plugin ?",
+      "a2": "Allez dans la section Plugins. Si le plugin n'est pas installé, cliquez sur « Installer ». Une fois installé, vous pourrez y accéder via le bouton « Ouvrir ».",
+
+      "q3": "Est-ce gratuit ?",
+      "a3": "Oui, Bro World est gratuit. Certains plugins sont gratuits, d'autres peuvent être marqués comme « Payants ».",
+
+      "q4": "Puis-je publier tout ce que je veux ?",
+      "a4": "Vous pouvez publier librement, mais veuillez respecter les autres. Tout contenu abusif, nuisible ou illégal peut être supprimé selon nos règles communautaires.",
+
+      "q5": "Qui est derrière Bro World ?",
+      "a5": "Bro World est développé par un passionné qui croit en la liberté, la créativité et les liens sociaux via les technologies web modernes."
+    }
+  },
+  "reset": {
+    "email": "Adresse e-mail",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "submit": "Réinitialiser le mot de passe",
+    "success": "Le mot de passe a été réinitialisé avec succès. Redirection vers la connexion...",
+    "errorToken": "Le jeton est manquant ou invalide.",
+    "errorGeneric": "Une erreur s'est produite.",
+    "rules": {
+      "required": "Le mot de passe est requis.",
+      "minLength": "Le mot de passe doit contenir au moins 8 caractères.",
+      "mismatch": "Les mots de passe ne correspondent pas."
+    }
+  },
+  "register": {
+    "email": "Nom d'utilisateur ou e-mail",
+    "password": "Mot de passe",
+    "repeatPassword": "Répéter le mot de passe",
+    "agree": "J'accepte les",
+    "terms": "Conditions d'utilisation",
+    "errorMissing": "Le nom d'utilisateur et le mot de passe sont requis.",
+    "errorTerms": "Vous devez accepter les conditions d'utilisation pour continuer.",
+    "success": "Inscription réussie !",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "signIn": "Se connecter",
+    "requirements": "Exigences du mot de passe",
+    "requirement1": "Un caractère spécial",
+    "requirement2": "Minimum 6 caractères",
+    "termsTitle": "Conditions d'utilisation"
+  },
+  "auth": {
+    "usernameOrEmail": "Nom d'utilisateur ou e-mail",
+    "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "signIn": "Se connecter",
+    "signUpPrompt": "Vous n'avez pas de compte ?",
+    "signUp": "S'inscrire",
+    "requiredError": "Le nom d'utilisateur et le mot de passe sont requis.",
+    "invalidError": "Nom d'utilisateur ou mot de passe incorrect."
   }
 }

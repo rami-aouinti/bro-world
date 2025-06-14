@@ -71,5 +71,148 @@
   },
   "post": {
     "files": "Post files"
+  },
+  "story": {
+    "loadingText": "Lade Elemente..."
+  },
+  "pageNotFound": {
+    "headline": "Hoppla, 404",
+    "title": "Seite nicht gefunden",
+    "message": "Die angeforderte Seite konnte nicht gefunden werden.",
+    "goHome": "Zur Startseite",
+    "goBack": "Zurück"
+  },
+  "error": {
+    "title": "Fehler",
+    "message": "Beim Verarbeiten Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
+  },
+  "success": {
+    "title": "Erfolg",
+    "message": "Ihre Anfrage wurde erfolgreich verarbeitet."
+  },
+  "warning": {
+    "title": "Warnung",
+    "message": "Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut."
+  },
+  "info": {
+    "title": "Information",
+    "message": "Hier sind einige Informationen, die für Sie nützlich sein könnten."
+  },
+  "loading": {
+    "message": "Laden, bitte warten..."
+  },
+  "notFound": {
+    "message": "Die angeforderte Ressource wurde nicht gefunden."
+  },
+  "unauthorized": {
+    "message": "Sie sind nicht berechtigt, diese Seite anzuzeigen. Bitte melden Sie sich an."
+  },
+  "forbidden": {
+    "message": "Sie haben keine Berechtigung, auf diese Ressource zuzugreifen."
+  },
+  "serverError": {
+    "message": "Ein interner Serverfehler ist aufgetreten. Bitte versuchen Sie es später erneut."
+  },
+  "maintenance": {
+    "message": "Die Website wird derzeit gewartet. Bitte versuchen Sie es später erneut."
+  },
+  "contactSupport": {
+    "message": "Wenn das Problem weiterhin besteht, wenden Sie sich bitte an den Support."
+  },
+  "termsOfService": "Nutzungsbedingungen",
+  "privacyPolicy": "Datenschutzrichtlinie",
+  "cookiePolicy": "Cookie-Richtlinie",
+  "aboutUs": "Über uns",
+  "faq": "FAQ",
+  "feedback": "Feedback",
+  "search": "Suche",
+  "settings": "Einstellungen",
+  "profile": "Profil",
+  "logout": "Abmelden",
+  "login": "Anmelden",
+  "resetPassword": "Passwort zurücksetzen",
+  "changePassword": "Passwort ändern",
+  "updateProfile": "Profil aktualisieren",
+  "notifications": "Benachrichtigungen",
+  "language": "Sprache",
+  "theme": "Thema",
+  "darkMode": "Dunkler Modus",
+  "lightMode": "Heller Modus",
+  "contact": {
+    "title": "Kontaktieren Sie uns",
+    "name": "Ihr Name",
+    "email": "Ihre E-Mail-Adresse",
+    "subject": "Betreff",
+    "message": "Ihre Nachricht",
+    "send": "Nachricht senden",
+    "success": "Vielen Dank! Ihre Nachricht wurde gesendet.",
+    "error": "Fehler beim Senden der Nachricht. Bitte versuchen Sie es später erneut.",
+    "location": "Standort"
+  },
+  "about": {
+    "title": "Über Bro World",
+    "intro1": "Bro World ist mehr als nur eine Plattform – es ist dein digitaler Begleiter. Hier kannst du dich frei ausdrücken, deine Gedanken teilen, dich mit anderen verbinden und deinen eigenen digitalen Raum mit leistungsstarken Plugins gestalten.",
+    "intro2": "Egal ob Bloggen, ein Geschäft führen, mit Freunden chatten oder deine Zeit organisieren – Bro World passt sich dir an. Wähle und installiere die Plugins, die du brauchst: E-Commerce, Kalender, Live-Chat, CRM, Blog-CMS, Spiele und vieles mehr.",
+    "intro3": "Wir glauben an Freiheit, Kreativität und Individualisierung. Mit Bro World kannst du dein eigenes digitales Universum aufbauen – Beitrag für Beitrag, Plugin für Plugin, Verbindung für Verbindung.",
+    "tech": "Mit Liebe entwickelt mit Vue 3, Vuetify 3 und Nuxt 3. Entworfen, um schnell, modular und angenehm zu sein."
+  },
+  "help": {
+    "title": "Hilfe & FAQ",
+    "questions": {
+      "q1": "Was ist Bro World?",
+      "a1": "Bro World ist eine soziale Webplattform, auf der du Beiträge erstellen, chatten und funktionale Plugins hinzufügen kannst, um dein Erlebnis zu personalisieren.",
+
+      "q2": "Wie installiere ich ein Plugin?",
+      "a2": "Gehe zum Plugin-Bereich. Wenn das Plugin nicht installiert ist, klicke auf „Installieren“. Nach der Installation kannst du es über den Button „Öffnen“ aufrufen.",
+
+      "q3": "Ist es kostenlos?",
+      "a3": "Ja, Bro World ist kostenlos. Einige Plugins sind gratis, andere können als „Kostenpflichtig“ gekennzeichnet sein.",
+
+      "q4": "Darf ich alles posten, was ich will?",
+      "a4": "Du kannst frei posten, aber bitte respektiere andere. Missbräuchliche, schädliche oder illegale Inhalte können gemäß unseren Gemeinschaftsrichtlinien entfernt werden.",
+
+      "q5": "Wer steckt hinter Bro World?",
+      "a5": "Bro World wurde von einem leidenschaftlichen Entwickler gebaut, der an Freiheit, Kreativität und soziale Verbindungen durch moderne Webtechnologien glaubt."
+    }
+  },
+  "reset": {
+    "email": "E-Mail-Adresse",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "submit": "Passwort zurücksetzen",
+    "success": "Passwort wurde erfolgreich zurückgesetzt. Weiterleitung zum Login...",
+    "errorToken": "Token fehlt oder ist ungültig.",
+    "errorGeneric": "Etwas ist schiefgelaufen.",
+    "rules": {
+      "required": "Passwort ist erforderlich.",
+      "minLength": "Das Passwort muss mindestens 8 Zeichen lang sein.",
+      "mismatch": "Passwörter stimmen nicht überein."
+    }
+  },
+  "register": {
+    "email": "Benutzername oder E-Mail",
+    "password": "Passwort",
+    "repeatPassword": "Passwort wiederholen",
+    "agree": "Ich akzeptiere die",
+    "terms": "Nutzungsbedingungen",
+    "errorMissing": "Benutzername und Passwort sind erforderlich.",
+    "errorTerms": "Sie müssen die Nutzungsbedingungen akzeptieren, um fortzufahren.",
+    "success": "Erfolgreich registriert!",
+    "haveAccount": "Sie haben ein Konto?",
+    "signIn": "Anmelden",
+    "requirements": "Passwortanforderungen",
+    "requirement1": "Ein Sonderzeichen",
+    "requirement2": "Mindestens 6 Zeichen",
+    "termsTitle": "Nutzungsbedingungen"
+  },
+  "auth": {
+    "usernameOrEmail": "Benutzername oder E-Mail",
+    "password": "Passwort",
+    "forgotPassword": "Passwort vergessen?",
+    "signIn": "Anmelden",
+    "signUpPrompt": "Sie haben noch kein Konto?",
+    "signUp": "Registrieren",
+    "requiredError": "Benutzername und Passwort sind erforderlich.",
+    "invalidError": "Benutzername oder Passwort ist falsch."
   }
 }
