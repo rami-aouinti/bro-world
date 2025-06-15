@@ -80,6 +80,16 @@ const plugins = ref([
     link: '/crm',
     pricing: 'free',
   },
+  {
+    key: 'job',
+    name: 'JOB',
+    description:
+      'Track leads, manage clients, and automate sales processes with a full-featured CRM system. Build strong relationships, follow up on deals, and drive revenue with ease.',
+    icon: 'mdi-table-large',
+    installed: true,
+    link: '/job',
+    pricing: 'free',
+  },
 ])
 
 </script>

@@ -161,11 +161,11 @@ onMounted(async () => {
         <v-list class="pa-2">
 
           <v-list-item>
-            <v-btn icon="mdi-pencil" variant="text" color="warning" @click="handleEdit(props.post.id)" />
+            <v-btn size="small" icon="mdi-pencil" variant="text" color="warning" @click="handleEdit(props.post.id)" />
 
           </v-list-item>
           <v-list-item>
-            <v-btn icon="mdi-delete" variant="text" color="error" @click="handleDelete(props.post.id)" />
+            <v-btn size="small" icon="mdi-delete" variant="text" color="error" @click="handleDelete(props.post.id)" />
           </v-list-item>
         </v-list>
       </v-menu>
