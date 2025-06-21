@@ -214,5 +214,44 @@
     "signUp": "Registrieren",
     "requiredError": "Benutzername und Passwort sind erforderlich.",
     "invalidError": "Benutzername oder Passwort ist falsch."
+  },
+  "job": {
+    "create": "Stellenangebot erstellen",
+    "edit": "Stellenangebot bearbeiten",
+    "delete": "Stellenangebot löschen",
+    "search": "Stelle suchen",
+    "filterByExperience": "Nach Berufserfahrung filtern",
+    "yearsExperience": "Jahre Erfahrung",
+    "skills": "Erforderliche Fähigkeiten",
+    "description": "Beschreibung",
+    "company": "Unternehmen",
+    "title": "Stellentitel",
+    "experience": "Berufserfahrung (in Jahren)",
+    "submit": "Veröffentlichen",
+    "noMatch": "Keine Stellenanzeige entspricht Ihrer Suche.",
+    "list": "Stellenliste",
+    "details": "Stellendetails"
+  },
+  "applicant": {
+    "create": "Bewerbung einreichen",
+    "name": "Vollständiger Name",
+    "contactEmail": "E-Mail-Adresse",
+    "jobPreferences": "Jobpräferenzen",
+    "submit": "Bewerben",
+    "list": "Bewerber",
+    "details": "Bewerbungsdetails"
+  },
+  "buttons": {
+    "back": "Zurück",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen"
+  },
+  "messages": {
+    "jobCreated": "Stellenangebot erfolgreich erstellt.",
+    "jobUpdated": "Stellenangebot erfolgreich aktualisiert.",
+    "applicationSubmitted": "Bewerbung erfolgreich eingereicht.",
+    "errorOccurred": "Ein Fehler ist aufgetreten. Bitte versuche es erneut."
   }
 }

@@ -188,7 +188,7 @@ export default defineNuxtConfig({
       apiBase: 'https://bro-world.org',
       apiBlogBase: 'https://blog.bro-world.org',
       apiJobBase: 'https://job.bro-world.org',
-      groqApiKey: process.env.GROQ_API_KEY
+      groqApiKey: process.env.GROQ_API_KEY,
     },
   },
 

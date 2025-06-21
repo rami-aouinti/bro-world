@@ -4,7 +4,8 @@ import { requestWithRetry } from '~/server/utils/requestWithRetry'
 
 export default defineEventHandler(async (event) => {
   const token = await getUserToken(event)
-  const url = 'https://job.bro-world.org/api/v1/company'
+  const config = useRuntimeConfig()
+  const url = `${config.public.apiJobBase}/api/v1/profile/company`
 
   return await requestWithRetry('get', url, token)
 })

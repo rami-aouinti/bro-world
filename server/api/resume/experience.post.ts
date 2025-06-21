@@ -18,12 +18,11 @@ export default defineEventHandler(async (event) => {
 
   const formData = new FormData()
 
-  // 🔐 Toujours forcer en string (évite les erreurs "Arrays not supported")
-  formData.append('name', String(fields.name ?? ''))
+  formData.append('firstName', String(fields.firstName ?? ''))
+  formData.append('lastName', String(fields.lastName ?? ''))
   formData.append('description', String(fields.description ?? ''))
-  formData.append('location', String(fields.location ?? ''))
   formData.append('contactEmail', String(fields.contactEmail ?? ''))
-  formData.append('siteUrl', String(fields.siteUrl ?? ''))
+  formData.append('phone', String(fields.phone ?? ''))
 
   const file = Array.isArray(files.file) ? files.file[0] : files.file
 
@@ -34,7 +33,7 @@ export default defineEventHandler(async (event) => {
   formData.append('file', fs.createReadStream(file.filepath), file.originalFilename)
 
   const config = useRuntimeConfig()
-  const apiUrl = `${config.public.apiJobBase}/api/v1/company`
+  const apiUrl = `${config.public.apiJobBase}/api/v1/resume/experience`
 
   return await requestWithRetry('post', apiUrl, token, formData, true)
 })

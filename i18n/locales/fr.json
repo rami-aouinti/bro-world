@@ -211,5 +211,44 @@
     "signUp": "S'inscrire",
     "requiredError": "Le nom d'utilisateur et le mot de passe sont requis.",
     "invalidError": "Nom d'utilisateur ou mot de passe incorrect."
+  },
+  "job": {
+    "create": "Créer une offre d'emploi",
+    "edit": "Modifier l'offre d'emploi",
+    "delete": "Supprimer l'offre d'emploi",
+    "search": "Rechercher un emploi",
+    "filterByExperience": "Filtrer par années d'expérience",
+    "yearsExperience": "ans d'expérience",
+    "skills": "Compétences requises",
+    "description": "Description",
+    "company": "Entreprise",
+    "title": "Titre du poste",
+    "experience": "Années d'expérience",
+    "submit": "Publier",
+    "noMatch": "Aucun emploi ne correspond à votre recherche.",
+    "list": "Liste des emplois",
+    "details": "Détails de l'emploi"
+  },
+  "applicant": {
+    "create": "Créer une candidature",
+    "name": "Nom complet",
+    "contactEmail": "Adresse e-mail",
+    "jobPreferences": "Préférences d'emploi",
+    "submit": "Postuler",
+    "list": "Candidats",
+    "details": "Détails de la candidature"
+  },
+  "buttons": {
+    "back": "Retour",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "edit": "Modifier",
+    "delete": "Supprimer"
+  },
+  "messages": {
+    "jobCreated": "Offre d'emploi créée avec succès.",
+    "jobUpdated": "Offre d'emploi mise à jour avec succès.",
+    "applicationSubmitted": "Candidature envoyée avec succès.",
+    "errorOccurred": "Une erreur s'est produite. Veuillez réessayer."
   }
 }

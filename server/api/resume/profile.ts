@@ -5,9 +5,7 @@ import { requestWithRetry } from '~/server/utils/requestWithRetry'
 export default defineEventHandler(async (event) => {
   const token = await getUserToken(event)
   const config = useRuntimeConfig()
-  const query = getQuery(event)
-  const params = new URLSearchParams(query as Record<string, string>)
+  const url = `${config.public.apiJobBase}/api/v1/profile/resume`
 
-  const apiUrl = `${config.public.apiJobBase}/api/v1/job?${params.toString()}`
-  return await requestWithRetry('get', apiUrl, token)
+  return await requestWithRetry('get', url, token)
 })
