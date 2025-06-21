@@ -3,7 +3,7 @@
     <v-row>
       <!-- Filters Column -->
       <v-col cols="12" md="4">
-        <v-card class="pa-4 mb-4" rounded="xl" variant="text">
+        <v-card class="pa-4 mb-4 position-sticky top-1" rounded="xl" variant="text">
           <JobCreateButtons
             @create-job="showCreateJobModal = true"
             @create-applicant="showCreateApplicantModal = true"
