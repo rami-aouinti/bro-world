@@ -6,6 +6,7 @@
           <v-text-field
             v-model="email"
             :label="t('register.email')"
+            :class="isRtl ? 'text-end' : 'text-start'"
             required
             class="font-size-input input-style"
             append-inner-icon="mdi-face"
@@ -14,6 +15,7 @@
           <v-text-field
             v-model="password"
             :type="showPassword ? 'text' : 'password'"
+            :class="isRtl ? 'text-end' : 'text-start'"
             :label="t('register.password')"
             required
             class="font-size-input input-style"
@@ -27,38 +29,50 @@
             :label="t('register.repeatPassword')"
             required
             class="font-size-input input-style"
+            :class="isRtl ? 'text-end' : 'text-start'"
             :disabled="loading"
             :append-inner-icon="showRepeatPassword ? 'mdi-eye-off' : 'mdi-eye'"
             @click:append-inner="toggleRepeatPassword"
           />
 
-          <v-checkbox v-model="checkbox" hide-details>
-            <template #label>
-              <span class="text-body text-sm ls-0">
-                {{ t('register.agree') }}
-                <a
-                  href="javascript:"
-                  @click="showTerms = true"
-                  class="font-weight-bolder text-decoration-none text-primary"
-                >
-                  {{ t('register.terms') }}
-                </a>
-              </span>
-            </template>
-          </v-checkbox>
+          <v-row
+            :class="isRtl ? 'flex-row-reverse' : ''"
+            class="align-center"
+          >
+            <v-col cols="auto">
+              <v-checkbox
+                v-model="checkbox"
+                hide-details
+                class="ma-0 pa-0"
+                density="compact"
+              />
+            </v-col>
+            <v-col>
+    <span class="text-body text-sm ls-0" :class="isRtl ? 'text-end' : 'text-start'">
+      {{ t('register.agree') }}
+      <a
+        href="javascript:"
+        @click="showTerms = true"
+        class="font-weight-bolder text-decoration-none text-primary"
+      >
+        {{ t('register.terms') }}
+      </a>
+    </span>
+            </v-col>
+          </v-row>
 
           <p v-if="error" class="mt-1 text-red d-flex justify-center">
             {{ error }}
           </p>
 
-          <p class="mt-1 mb-2 font-weight-bold text-typo">
+          <p class="mt-1 mb-2 font-weight-bold text-typo" :class="isRtl ? 'text-end' : 'text-start'">
             {{ t('register.requirements') }}
           </p>
 
-          <div class="d-sm-flex">
-            <ul class="text-muted ps-6 mb-0">
-              <li><h6 class="text-h7">{{ t('register.requirement1') }}</h6></li>
-              <li><h6 class="text-h7">{{ t('register.requirement2') }}</h6></li>
+          <div class="d-sm-flex" :class="isRtl ? 'rtl-block' : 'ltr-block'">
+            <ul class="text-muted ps-6 mb-0" :class="isRtl ? 'rtl-block' : 'ltr-block'">
+              <li><h6 class="text-h7" :class="isRtl ? 'rtl-block' : 'ltr-block'">{{ t('register.requirement1') }}</h6></li>
+              <li><h6 class="text-h7" :class="isRtl ? 'rtl-block' : 'ltr-block'">{{ t('register.requirement2') }}</h6></li>
             </ul>
           </div>
 
@@ -68,14 +82,15 @@
             class="btn btn-outline-primary bg-primary rounded-xl text-decoration-none font-weight-bold text-uppercase py-2 px-6 me-2 mt-6 mb-2 w-100"
           >
             <v-progress-circular v-if="loading" indeterminate size="20" />
-            <span v-else>{{ t('register.signUp') }}</span>
+            <span :class="isRtl ? 'text-end' : 'text-start'" v-else>{{ t('register.signUp') }}</span>
           </button>
 
-          <p class="text-sm text-body mt-1 mb-0 d-flex justify-center">
+          <p class="text-sm text-body mt-1 mb-0 d-flex justify-center" :class="isRtl ? 'text-end' : 'text-start'">
             {{ t('register.haveAccount') }}
             <NuxtLink
-              to="/login"
+              :to="localePath('/login')"
               class="text-primary text-decoration-none font-weight-bolder px-1"
+              :class="isRtl ? 'text-end' : 'text-start'"
             >
               {{ t('register.signIn') }}
             </NuxtLink>
@@ -86,15 +101,12 @@
 
     <v-dialog v-model="showTerms" max-width="600">
       <v-card class="mx-auto">
-        <v-card-title class="text-h6 font-weight-bold">
+        <v-card-title class="text-h6 font-weight-bold" :class="isRtl ? 'text-end' : 'text-start'">
           {{ t('register.termsTitle') }}
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text class="text-body-2 text-justify">
-          <!-- Tu peux ici aussi traduire le contenu des conditions -->
-          <p><strong>1. Introduction</strong><br>
-            By accessing and using our platform ("Service"), you agree to be bound by these Terms and Conditions.</p>
-          <!-- ... autres articles -->
+        <Terms></Terms>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -102,13 +114,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
 
-const { t } = useI18n()
 const router = useRouter()
-
+import { useLocalePath } from '#i18n'
+import Terms from "~/components/Auth/Terms.vue";
+const { t, locale } = useI18n()
+const localePath = useLocalePath()
 const email = ref('')
 const password = ref('')
 const repeatPassword = ref('')
@@ -167,6 +182,14 @@ async function handleSubmit() {
 </script>
 
 <style>
+.rtl-block {
+  direction: rtl;
+  text-align: right;
+}
+.ltr-block {
+  direction: ltr;
+  text-align: left;
+}
 .v-sheet--offset {
   top: -44px;
   position: relative;

@@ -2,53 +2,22 @@
   <v-container class="py-10">
     <v-row>
       <v-col cols="12" md="8" offset-md="2">
-        <h1 class="text-h4 font-weight-bold mb-6 text-align-auto">
+        <h1 :class="['text-h4', 'font-weight-bold', 'mb-6', isRtl ? 'text-right' : 'text-left']">
           {{ t('help.title') }}
         </h1>
 
         <v-expansion-panels>
-          <v-expansion-panel>
+          <v-expansion-panel
+            v-for="i in 5"
+            :key="i"
+          >
             <template #title>
-              <div class="text-align-auto">{{ t('help.questions.q1') }}</div>
+              <div :dir="isRtl ? 'rtl' : 'ltr'" class="w-100">
+                {{ t(`help.questions.q${i}`) }}
+              </div>
             </template>
-            <v-expansion-panel-text>
-              {{ t('help.questions.a1') }}
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-
-          <v-expansion-panel>
-            <template #title>
-              <div class="text-align-auto">{{ t('help.questions.q2') }}</div>
-            </template>
-            <v-expansion-panel-text>
-              {{ t('help.questions.a2') }}
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-
-          <v-expansion-panel>
-            <template #title>
-              <div class="text-align-auto">{{ t('help.questions.q3') }}</div>
-            </template>
-            <v-expansion-panel-text>
-              {{ t('help.questions.a3') }}
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-
-          <v-expansion-panel>
-            <template #title>
-              <div class="text-align-auto">{{ t('help.questions.q4') }}</div>
-            </template>
-            <v-expansion-panel-text>
-              {{ t('help.questions.a4') }}
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-
-          <v-expansion-panel>
-            <template #title>
-              <div class="text-align-auto">{{ t('help.questions.q5') }}</div>
-            </template>
-            <v-expansion-panel-text>
-              {{ t('help.questions.a5') }}
+            <v-expansion-panel-text :class="isRtl ? 'text-right' : 'text-left'">
+              {{ t(`help.questions.a${i}`) }}
             </v-expansion-panel-text>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -57,9 +26,13 @@
   </v-container>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+import { computed } from 'vue'
+
+const { t, locale } = useI18n()
+const isRtl = computed(() => locale.value === 'ar')
+
 definePageMeta({
   layout: 'default',
   description: 'Help page',

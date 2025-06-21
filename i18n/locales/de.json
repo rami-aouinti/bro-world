@@ -1,4 +1,154 @@
 {
+  "dashboard": {
+    "weather": {
+      "title": "Wetter heute",
+      "condition": "Bewölkt"
+    },
+    "news": {
+      "title": "Nachrichten",
+      "fallback": "Die neuesten Nachrichten konnten nicht geladen werden.",
+      "error": "Beim Abrufen der Nachrichten ist ein Fehler aufgetreten."
+    },
+    "quiz": {
+      "title": "Top 3 Mitglieder im",
+      "link": "Quiz"
+    },
+    "rating": {
+      "title": "Bewertungsübersicht",
+      "count": "Bewertungen",
+      "submit": "Absenden"
+    },
+    "groq": {
+      "place": "Basierend auf diesen Koordinaten: Breitengrad {lat}, Längengrad {lng}, gib nur den Namen des nächstgelegenen Ortes oder der Stadt zurück. Nur ein Wort oder Name, kein Satz.",
+      "weather": "Basierend auf diesen Koordinaten: Breitengrad {lat}, Längengrad {lng}, gib nur die aktuelle Temperatur zurück (z. B. \"7°C\"). Keine Sätze oder Erklärungen, nur ein Wert.",
+      "news": "Liste 5 wichtige globale Nachrichtenschlagzeilen von heute auf. Gib einfach eine Liste aus, eine pro Zeile. Keine Einleitung oder zusätzlichen Texte. Kein Markdown oder Nummerierung."
+    }
+  },
+  "navbar": {
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "logout": "Abmelden",
+    "profile": "Profil",
+    "setting": "Einstellungen",
+    "apps": "Apps",
+    "help": "Hilfe",
+    "about": "Über uns",
+    "contact": "Kontakt"
+  },
+  "plugin": {
+    "actions": {
+      "open": "Öffnen",
+      "install": "Installieren"
+    },
+    "pricing": {
+      "free": "Kostenlos",
+      "paid": "Kostenpflichtig"
+    },
+    "ecommerce": {
+      "name": "E-Commerce",
+      "description": "Verwalten Sie einfach Ihren Online-Shop."
+    },
+    "calendar": {
+      "name": "Kalender",
+      "description": "Organisieren Sie Ihre Ereignisse und Aufgaben."
+    },
+    "chat": {
+      "name": "Chat",
+      "description": "Sofortnachrichten mit Ihren Kontakten."
+    },
+    "game": {
+      "name": "Spiele",
+      "description": "Spielen und genießen Sie interaktive Spiele."
+    },
+    "blog": {
+      "name": "Blog",
+      "description": "Teilen Sie Ihre Ideen und Geschichten."
+    },
+    "crm": {
+      "name": "CRM",
+      "description": "Verwalten Sie Kundenbeziehungen effizient."
+    },
+    "job": {
+      "name": "Jobs",
+      "description": "Finden und verwalten Sie Stellenanzeigen."
+    }
+  },
+  "profile": {
+    "platform": "Plattform-Einstellungen",
+    "account": "Konto",
+    "application": "Anwendung",
+    "information": "Profilinformationen",
+    "fullName": "Vollständiger Name",
+    "mobile": "Handy",
+    "email": "E-Mail",
+    "location": "Standort",
+    "social": "Soziale Netzwerke",
+    "reply": "Antworten",
+    "notProvided": "Nicht angegeben",
+    "settings": {
+      "title": "Plattform-Einstellungen",
+      "account": "Konto",
+      "application": "Anwendung",
+      "Email me when someone follows me": "E-Mail senden, wenn mir jemand folgt",
+      "Email me when someone answers on my post": "E-Mail senden, wenn jemand auf meinen Beitrag antwortet",
+      "New launches and projects": "Neue Starts und Projekte",
+      "Monthly product updates": "Monatliche Produktupdates"
+    },
+    "info": {
+      "title": "Profilinformationen",
+      "fullname": "Vollständiger Name",
+      "mobile": "Telefonnummer",
+      "email": "E-Mail",
+      "location": "Standort",
+      "social": "Soziale Netzwerke"
+    },
+    "conversations": {
+      "title": "Unterhaltungen",
+      "reply": "Antworten"
+    }
+  },
+  "setting": {
+    "switch_to_invisible": "Zu unsichtbar wechseln",
+    "switch_to_visible": "Zu sichtbar wechseln"
+  },
+  "terms": {
+    "1": {
+      "title": "Einleitung",
+      "text": "Durch den Zugriff auf unsere Plattform („Dienst“) und deren Nutzung erklären Sie sich mit diesen Allgemeinen Geschäftsbedingungen einverstanden. Wenn Sie mit einem Teil nicht einverstanden sind, nutzen Sie den Dienst bitte nicht."
+    },
+    "2": {
+      "title": "Zulässigkeit",
+      "text": "Sie müssen mindestens 13 Jahre alt sein, um diesen Dienst nutzen zu dürfen. Durch die Registrierung erklären und garantieren Sie, dass Sie diese Voraussetzung erfüllen."
+    },
+    "3": {
+      "title": "Kontoverantwortung",
+      "text": "Sie sind dafür verantwortlich, Ihre Anmeldedaten vertraulich zu behandeln. Sie tragen auch die volle Verantwortung für alle Aktivitäten unter Ihrem Konto."
+    },
+    "4": {
+      "title": "Zulässige Nutzung",
+      "text": "Sie erklären sich damit einverstanden, Folgendes zu unterlassen:\n- Nutzung des Dienstes für rechtswidrige Zwecke;\n- Hochladen oder Teilen von Inhalten, die beleidigend, schädlich oder rechtsverletzend sind;\n- Der Versuch, sich unbefugten Zugang zu den Konten anderer Nutzer oder zu unseren Systemen zu verschaffen."
+    },
+    "5": {
+      "title": "Inhaltsrechte",
+      "text": "Sie behalten das Eigentum an den Inhalten, die Sie veröffentlichen. Durch das Posten auf unserer Plattform gewähren Sie uns jedoch eine nicht-exklusive, weltweite Lizenz zur Anzeige, Verbreitung und Bewerbung Ihrer Inhalte innerhalb der Plattform."
+    },
+    "6": {
+      "title": "Beendigung",
+      "text": "Wir behalten uns das Recht vor, Ihren Zugriff auf den Dienst jederzeit und ohne Vorankündigung zu sperren oder zu beenden, wenn wir glauben, dass Sie gegen diese Bedingungen verstoßen haben."
+    },
+    "7": {
+      "title": "Datenschutz",
+      "text": "Ihre personenbezogenen Daten werden gemäß unserer Datenschutzrichtlinie verarbeitet. Durch die Nutzung des Dienstes stimmen Sie dieser Verarbeitung zu."
+    },
+    "8": {
+      "title": "Änderungen",
+      "text": "Wir können diese Bedingungen von Zeit zu Zeit überarbeiten. Die fortgesetzte Nutzung des Dienstes bedeutet, dass Sie die aktualisierten Bedingungen akzeptieren."
+    },
+    "9": {
+      "title": "Kontakt",
+      "text": "Wenn Sie Fragen zu diesen Bedingungen haben, kontaktieren Sie uns bitte unter"
+    }
+  },
   "MyAssets": "My Assets",
   "PersonalAssets": "Personal Assets",
   "CompanyAssets": "Company Assets",
@@ -127,7 +277,6 @@
   "feedback": "Feedback",
   "search": "Suche",
   "settings": "Einstellungen",
-  "profile": "Profil",
   "logout": "Abmelden",
   "login": "Anmelden",
   "resetPassword": "Passwort zurücksetzen",

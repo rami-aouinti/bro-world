@@ -29,7 +29,7 @@
           </p>
 
           <div class="text-right mt-2 mb-4">
-            <NuxtLink to="/forgot-password" class="text-primary text-decoration-none text-sm">
+            <NuxtLink :to="localePath('/forgot-password')" class="text-primary text-decoration-none text-sm">
               {{ t('auth.forgotPassword') }}
             </NuxtLink>
           </div>
@@ -46,7 +46,7 @@
           <p class="text-sm text-body mt-3 mb-0 d-flex justify-center">
             {{ t('auth.signUpPrompt') }}
             <NuxtLink
-              to="/register"
+              :to="localePath('/register')"
               class="text-primary text-decoration-none font-weight-bolder px-1"
             >
               {{ t('auth.signUp') }}
@@ -63,10 +63,11 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/useAuthStore'
 
-const { t } = useI18n()
 const auth = useAuthStore()
 const { fetch: refreshSession } = useUserSession()
-
+import { useLocalePath } from '#i18n'
+const { t, locale } = useI18n()
+const localePath = useLocalePath()
 const username = ref('')
 const password = ref('')
 const loading = ref(false)

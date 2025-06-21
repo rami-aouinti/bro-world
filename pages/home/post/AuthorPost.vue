@@ -9,13 +9,16 @@ const props = defineProps<{
     required: true,
   },
 }>();
+import { useLocalePath } from '#i18n'
 
+const localePath = useLocalePath()
 const { user } = useUserSession()
 const router = useRouter()
 const route = useRoute()
 const isFollowing = ref<boolean | null>(null)
 const loading = ref(false)
-
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const handleEdit = async (id: string | number) => {
   const res = await useFetch(`post/${id}`)
   console.log('Edit:', res)
@@ -111,8 +114,8 @@ onMounted(async () => {
       <div class="mx-4">
         <NuxtLink
           :to="props.post?.user?.username === user?.username
-    ? '/profile'
-    : `/user/${props.post?.user?.username}`"
+      ? localePath('/profile')
+      : localePath(`/user/${props.post?.user?.username}`)"
           class="text-dark font-weight-600 text-sm text-decoration-none"
         >
           {{ props.post?.user?.firstName }} {{ props.user?.lastName }}

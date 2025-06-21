@@ -6,14 +6,17 @@ import HomeStories from '~/pages/home/HomeStories.vue'
 import NewPost from '~/pages/home/post/NewPost.vue'
 import HomePosts from '~/pages/home/HomePosts.vue'
 import HomeFilters from '~/pages/home/HomeFilters.vue'
+import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 
 const { loggedIn } = useUserSession()
 const postStore = usePostStore()
+const { locale } = useI18n()
 
+const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
 </script>
-
 <template>
-  <v-container fluid>
+  <v-container fluid :dir="isRtl ? 'rtl' : 'ltr'">
     <UserStatusBanner v-if="loggedIn" />
     <v-row>
       <v-col cols="12" lg="8">
@@ -37,6 +40,7 @@ const postStore = usePostStore()
             <HomePosts :post="post" />
           </div>
         </div>
+
         <v-alert v-else type="warning" class="mt-4">
           No Posts
         </v-alert>
@@ -48,3 +52,4 @@ const postStore = usePostStore()
     </v-row>
   </v-container>
 </template>
+

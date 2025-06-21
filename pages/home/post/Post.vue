@@ -28,11 +28,14 @@ function extractYouTubeVideoId(url) {
     return null;
   }
 }
+
+import { useLocalePath } from '#i18n'
+const localePath = useLocalePath()
 </script>
 
 <template>
   <div class="px-4 py-4">
-    <NuxtLink :to="`/post/${props.post.slug}`" class="text-decoration-none">
+    <NuxtLink :to="localePath(`/post/${props.post.slug}`)" class="text-decoration-none">
       <div class="text-left mb-6 text-body font-weight-light">
         <!-- Si c'est une URL YouTube, on affiche la vidéo centrée -->
         <div v-if="isYoutubeUrl(props.post.title)" class="text-center">

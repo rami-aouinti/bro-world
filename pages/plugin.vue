@@ -8,96 +8,97 @@
         sm="6"
         md="4"
       >
-        <PluginList :plugin="plugin"></PluginList>
+        <PluginList :plugin="plugin" class="text-end" />
       </v-col>
     </v-row>
-
   </v-container>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+import PluginList from "~/components/PluginList.vue"
 
-import PluginList from "~/components/PluginList.vue";
-definePageMeta({
-  layout: 'default',
-  description: 'Plugin page',
-  breadcrumb: 'disabled',
-})
+const { t, locale } = useI18n()
+
+definePageMeta({ layout: 'default', breadcrumb: 'disabled', description: 'Plugin page' })
+
 const plugins = ref([
   {
     key: 'ecommerce',
-    name: 'Ecommerce',
-    description:
-      'Manage your online store with a complete ecommerce solution. Track orders, monitor inventory, analyze sales trends, and offer a smooth shopping experience to your customers across multiple channels.',
+    name: t('plugin.ecommerce.name'),
+    description: t('plugin.ecommerce.description'),
     icon: 'mdi-shopping',
     installed: true,
     link: '/shopping',
-    pricing: 'free',
+    pricing: t('plugin.pricing.free'),
+    action: t('plugin.actions.open'),
   },
   {
     key: 'calendar',
-    name: 'Calendar',
-    description:
-      'Plan, organize, and manage your events with an intuitive calendar system. Sync with external services, set reminders, invite users, and get a clear overview of your schedules and upcoming deadlines.',
+    name: t('plugin.calendar.name'),
+    description: t('plugin.calendar.description'),
     icon: 'mdi-calendar-clock',
     installed: true,
     link: '/calendar',
-    pricing: 'paid',
+    pricing: t('plugin.pricing.paid'),
+    action: t('plugin.actions.open'),
   },
   {
     key: 'chat',
-    name: 'Live Chat',
-    description:
-      'Engage with your visitors in real-time using a built-in live chat system. Improve customer support, respond instantly, and convert more leads into paying users through direct interaction.',
+    name: t('plugin.chat.name'),
+    description: t('plugin.chat.description'),
     icon: 'mdi-chat',
     installed: false,
     link: '/inbox',
-    pricing: 'free',
+    pricing: t('plugin.pricing.free'),
+    action: t('plugin.actions.install'),
   },
   {
     key: 'game',
-    name: 'Games',
-    description:
-      'Boost user engagement through interactive games and challenges. Integrate gamification features such as rewards, leaderboards, and quizzes to make your platform more fun and sticky.',
+    name: t('plugin.game.name'),
+    description: t('plugin.game.description'),
     icon: 'mdi-gamepad-variant',
     installed: true,
     link: '/game',
-    pricing: 'paid',
+    pricing: t('plugin.pricing.paid'),
+    action: t('plugin.actions.open'),
   },
   {
     key: 'blog',
-    name: 'Blog CMS',
-    description:
-      'Publish and manage content easily with a powerful blog editor. Schedule articles, optimize for SEO, embed media, and manage comments—all from one centralized and user-friendly interface.',
+    name: t('plugin.blog.name'),
+    description: t('plugin.blog.description'),
     icon: 'mdi-file-document',
     installed: true,
     link: '/home',
-    pricing: 'free',
+    pricing: t('plugin.pricing.free'),
+    action: t('plugin.actions.open'),
   },
   {
     key: 'crm',
-    name: 'CRM',
-    description:
-      'Track leads, manage clients, and automate sales processes with a full-featured CRM system. Build strong relationships, follow up on deals, and drive revenue with ease.',
+    name: t('plugin.crm.name'),
+    description: t('plugin.crm.description'),
     icon: 'mdi-table-large',
     installed: true,
     link: '/crm',
-    pricing: 'free',
+    pricing: t('plugin.pricing.free'),
+    action: t('plugin.actions.open'),
   },
   {
     key: 'job',
-    name: 'JOB',
-    description:
-      'Track leads, manage clients, and automate sales processes with a full-featured CRM system. Build strong relationships, follow up on deals, and drive revenue with ease.',
+    name: t('plugin.job.name'),
+    description: t('plugin.job.description'),
     icon: 'mdi-table-large',
     installed: true,
     link: '/jobs',
-    pricing: 'free',
-  },
+    pricing: t('plugin.pricing.free'),
+    action: t('plugin.actions.open'),
+  }
 ])
-
 </script>
 
 <style scoped>
-
+.text-end {
+  direction: rtl;
+  text-align: right;
+}
 </style>

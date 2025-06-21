@@ -42,7 +42,7 @@ definePageMeta({
         </div>
         <Social @redirect="isRedirecting = true" />
       </v-sheet>
-      <div class="pa-6">
+      <div class="pa-2">
         <v-progress-circular v-if="isRedirecting" indeterminate color="primary" size="80" class="mx-auto d-block" />
         <RegisterForm v-else />
       </div>

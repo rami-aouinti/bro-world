@@ -1,4 +1,154 @@
 {
+  "dashboard": {
+    "weather": {
+      "title": "Weather today",
+      "condition": "Cloudy"
+    },
+    "news": {
+      "title": "News",
+      "fallback": "Failed to load the latest news.",
+      "error": "Failed to load the latest news."
+    },
+    "quiz": {
+      "title": "Top 3 Members in",
+      "link": "Quiz"
+    },
+    "rating": {
+      "title": "Rating overview",
+      "count": "ratings",
+      "submit": "Submit"
+    },
+    "groq": {
+      "place": "Based on these coordinates: latitude {lat}, longitude {lng}, return only the name of the nearest city or place. Just one word or name, no sentence.",
+      "weather": "Based on these coordinates: latitude {lat}, longitude {lng}, return only the current temperature (e.g., \"7°C\"). Do not write a sentence or explanation, just one value.",
+      "news": "List 5 key global news headlines today. Just output a plain list, one per line. No introduction or extra text. No markdown or asterisks. No numbers."
+    }
+  },
+  "navbar": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "profile": "Profile",
+    "setting": "Setting",
+    "apps": "Apps",
+    "help": "Help",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "plugin": {
+    "actions": {
+      "open": "Open",
+      "install": "Install"
+    },
+    "pricing": {
+      "free": "Free",
+      "paid": "Paid"
+    },
+    "ecommerce": {
+      "name": "E-commerce",
+      "description": "Manage your online store with ease."
+    },
+    "calendar": {
+      "name": "Calendar",
+      "description": "Organize your events and tasks."
+    },
+    "chat": {
+      "name": "Chat",
+      "description": "Instant messaging with your contacts."
+    },
+    "game": {
+      "name": "Game",
+      "description": "Play and enjoy interactive games."
+    },
+    "blog": {
+      "name": "Blog",
+      "description": "Share your ideas and stories."
+    },
+    "crm": {
+      "name": "CRM",
+      "description": "Manage customer relationships efficiently."
+    },
+    "job": {
+      "name": "Jobs",
+      "description": "Find and manage job listings."
+    }
+  },
+  "profile": {
+    "platform": "Platform Settings",
+    "account": "Account",
+    "application": "Application",
+    "information": "Profile Information",
+    "fullName": "Full Name",
+    "mobile": "Mobile",
+    "email": "Email",
+    "location": "Location",
+    "social": "Social",
+    "reply": "Reply",
+    "notProvided": "Not provided",
+    "settings": {
+      "title": "Platform Settings",
+      "account": "Account",
+      "application": "Application"
+    },
+    "info": {
+      "title": "Profile Information",
+      "fullname": "Full Name",
+      "mobile": "Mobile",
+      "email": "Email",
+      "location": "Location",
+      "social": "Social"
+    },
+    "conversations": {
+      "title": "Conversations",
+      "reply": "Reply"
+    }
+  },
+  "setting": {
+    "switch_to_invisible": "Switch to invisible",
+    "switch_to_visible": "Switch to visible",
+    "Email me when someone follows me": "Email me when someone follows me",
+    "Email me when someone answers on my post": "Email me when someone answers on my post",
+    "New launches and projects": "New launches and projects",
+    "Monthly product updates": "Monthly product updates"
+  },
+  "terms": {
+    "1": {
+      "title": "Introduction",
+      "text": "By accessing and using our platform (\"Service\"), you agree to be bound by these Terms and Conditions. If you do not agree with any part, please do not use the Service."
+    },
+    "2": {
+      "title": "Eligibility",
+      "text": "You must be at least 13 years old to use this Service. By registering, you represent and warrant that you meet this requirement."
+    },
+    "3": {
+      "title": "Account Responsibility",
+      "text": "You are responsible for maintaining the confidentiality of your login credentials. You are also fully responsible for all activities that occur under your account."
+    },
+    "4": {
+      "title": "Acceptable Use",
+      "text": "You agree not to:\n- Use the Service for any unlawful purposes;\n- Upload or share content that is offensive, harmful, or violates the rights of others;\n- Attempt to gain unauthorized access to other users’ accounts or our systems."
+    },
+    "5": {
+      "title": "Content Ownership",
+      "text": "You retain ownership of the content you post. However, by posting on our platform, you grant us a non-exclusive, worldwide license to display, distribute, and promote your content within the platform."
+    },
+    "6": {
+      "title": "Termination",
+      "text": "We reserve the right to suspend or terminate your access to the Service at any time and without notice, if we believe you have violated these Terms."
+    },
+    "7": {
+      "title": "Privacy",
+      "text": "Your personal data will be processed according to our Privacy Policy. By using the Service, you consent to such processing."
+    },
+    "8": {
+      "title": "Modifications",
+      "text": "We may revise these Terms from time to time. Continued use of the Service implies acceptance of the updated Terms."
+    },
+    "9": {
+      "title": "Contact",
+      "text": "If you have any questions about these Terms, please contact us at"
+    }
+  },
   "MyAssets": "My Assets",
   "PersonalAssets": "Personal Assets",
   "CompanyAssets": "Company Assets",
@@ -133,7 +283,6 @@
   "feedback": "Feedback",
   "search": "Search",
   "settings": "Settings",
-  "profile": "Profile",
   "logout": "Logout",
   "login": "Login",
   "resetPassword": "Reset Password",

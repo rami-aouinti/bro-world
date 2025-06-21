@@ -1,121 +1,19 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-
-import BasicInfo from '~/pages/setting/BasicInfo.vue'
-import ChangePassword from '~/pages/setting/ChangePassword.vue'
-import TwoFactor from '~/pages/setting/TwoFactor.vue'
-import Accounts from '~/pages/setting/Accounts.vue'
-import Notifications from '~/pages/setting/Notifications.vue'
-import Sessions from '~/pages/setting/Sessions.vue'
-import DeleteAccount from '~/pages/setting/DeleteAccount.vue'
-const { user } = await useUserSession()
-const switche = true
-const pending = ref(false)
-const profile = ref<any>(null)
-const avatar = ref<File | null>(null)
-const avatarUrl = ref('')
-const fileInput = ref(null)
-
-const triggerUpload = () => {
-  fileInput.value?.click()
-}
-
-async function handleUpload(file: File) {
-  if (!file) return
-
-  const formData = new FormData()
-  formData.append('file', file)
-  try {
-  const response = await useFetch('/api/profile/avatar', {
-    method: 'POST',
-    body: formData,
-    credentials: 'include',
-  })
-    const data = response.data.value
-    if (data) {
-      const reader = new FileReader()
-      reader.onload = () => {
-        avatarUrl.value = reader.result
-      }
-      reader.readAsDataURL(file)
-    }
-  } catch (e) {
-    console.error('Upload error', e)
-  }
-}
-
-
-const loadProfile = async () => {
-  pending.value = true
-  if (user.value.username) {
-    const { data } = await useFetch(`/api/profile/${user.value.username}`)
-    if (data.value) {
-      profile.value = data.value
-      avatarUrl.value = data.value?.profile?.photo ?? '/person.png'
-    }
-  }
-  pending.value = false
-}
-
-watch(user.value.username, () => {
-  loadProfile()
-}, { immediate: true })
-
-onMounted(async () => {
-  window.scrollTo({ top: 0 })
-  await loadProfile()
-})
-
-definePageMeta({
-  layout: 'default',
-  middleware: 'auth',
-  breadcrumb: 'disabled',
-})
-</script>
-
 <template>
-  <v-container
-    fluid
-  >
+  <v-container fluid>
     <v-row>
       <v-col lg="12">
-        <div
-          v-if="pending"
-          class="d-flex justify-center align-center"
-          style="height: 25vh"
-        >
-          <v-progress-circular
-            :size="120"
-            :width="10"
-            color="primary"
-            indeterminate
-          />
+        <div v-if="pending" class="d-flex justify-center align-center" style="height: 25vh">
+          <v-progress-circular :size="120" :width="10" color="primary" indeterminate />
         </div>
-        <v-card
-          v-else
-          rounded="xl"
-          class="py-4"
-          variant="text"
-        >
+        <v-card v-else rounded="xl" class="py-4" variant="text">
           <div class="px-5">
             <v-row align="center" class="pa-0 ma-0">
-              <!-- Avatar -->
               <v-col cols="auto">
                 <div class="avatar-wrapper">
-                  <v-avatar
-                    size="50"
-                    class="border-primary border-lg rounded-circle"
-                  >
-                    <NuxtImg
-                      width="50" height="50" :src="avatarUrl" alt="Avatar" />
+                  <v-avatar size="50" class="border-primary border-lg rounded-circle">
+                    <NuxtImg width="50" height="50" :src="avatarUrl" alt="Avatar" />
                   </v-avatar>
-
-                  <v-btn
-                    icon
-                    size="15"
-                    class="upload-btn"
-                    @click="triggerUpload"
-                  >
+                  <v-btn icon size="15" class="upload-btn" @click="triggerUpload">
                     <v-icon>mdi-camera</v-icon>
                   </v-btn>
                   <v-file-input
@@ -131,8 +29,6 @@ definePageMeta({
                   />
                 </div>
               </v-col>
-
-              <!-- Nom et titre -->
               <v-col cols="auto">
                 <div>
                   <h6 class="mb-1 text-h6 text-typo font-weight-bold">
@@ -143,24 +39,14 @@ definePageMeta({
                   </p>
                 </div>
               </v-col>
-
-              <!-- Switch visibilité -->
-              <v-col
-                cols="auto"
-                class="ms-auto d-flex align-center justify-end"
-              >
+              <v-col cols="auto" class="ms-auto d-flex align-center justify-end">
                 <p v-if="switche" class="mb-0 text-body text-xs me-2">
-                  Switch to invisible
+                  {{ t('setting.visible') }}
                 </p>
                 <p v-else class="mb-0 text-body text-xs me-2">
-                  Switch to visible
+                  {{ t('setting.invisible') }}
                 </p>
-                <v-switch
-                  v-model="switche"
-                  :ripple="false"
-                  class="mt-0 pt-0 switch"
-                  hide-details
-                />
+                <v-switch v-model="switche" :ripple="false" class="mt-0 pt-0 switch" hide-details />
               </v-col>
             </v-row>
           </div>
@@ -198,12 +84,88 @@ definePageMeta({
     </v-row>
   </v-container>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
+import BasicInfo from '~/pages/setting/BasicInfo.vue'
+import ChangePassword from '~/pages/setting/ChangePassword.vue'
+import TwoFactor from '~/pages/setting/TwoFactor.vue'
+import Accounts from '~/pages/setting/Accounts.vue'
+import Notifications from '~/pages/setting/Notifications.vue'
+import Sessions from '~/pages/setting/Sessions.vue'
+import DeleteAccount from '~/pages/setting/DeleteAccount.vue'
+
+const { user } = await useUserSession()
+const switche = true
+const pending = ref(false)
+const profile = ref<any>(null)
+const avatar = ref<File | null>(null)
+const avatarUrl = ref('')
+const fileInput = ref(null)
+
+const triggerUpload = () => {
+  fileInput.value?.click()
+}
+
+async function handleUpload(file: File) {
+  if (!file) return
+  const formData = new FormData()
+  formData.append('file', file)
+  try {
+    const response = await useFetch('/api/profile/avatar', {
+      method: 'POST',
+      body: formData,
+      credentials: 'include',
+    })
+    const data = response.data.value
+    if (data) {
+      const reader = new FileReader()
+      reader.onload = () => {
+        avatarUrl.value = reader.result
+      }
+      reader.readAsDataURL(file)
+    }
+  } catch (e) {
+    console.error('Upload error', e)
+  }
+}
+
+const loadProfile = async () => {
+  pending.value = true
+  if (user.value.username) {
+    const { data } = await useFetch(`/api/profile/${user.value.username}`)
+    if (data.value) {
+      profile.value = data.value
+      avatarUrl.value = data.value?.profile?.photo ?? '/person.png'
+    }
+  }
+  pending.value = false
+}
+
+watch(user.value.username, () => {
+  loadProfile()
+}, { immediate: true })
+
+onMounted(async () => {
+  window.scrollTo({ top: 0 })
+  await loadProfile()
+})
+
+definePageMeta({
+  layout: 'default',
+  middleware: 'auth',
+  breadcrumb: 'disabled',
+})
+</script>
+
 <style scoped>
 .avatar-wrapper {
   position: relative;
   display: inline-block;
 }
-
 .upload-btn {
   position: absolute;
   bottom: 0;

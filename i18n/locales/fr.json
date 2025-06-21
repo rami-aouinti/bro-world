@@ -1,4 +1,154 @@
 {
+  "dashboard": {
+    "weather": {
+      "title": "Météo aujourd'hui",
+      "condition": "Nuageux"
+    },
+    "news": {
+      "title": "Actualités",
+      "fallback": "Échec du chargement des dernières actualités.",
+      "error": "Erreur lors du chargement des actualités."
+    },
+    "quiz": {
+      "title": "Top 3 des membres dans",
+      "link": "Quiz"
+    },
+    "rating": {
+      "title": "Aperçu des notes",
+      "count": "évaluations",
+      "submit": "Soumettre"
+    },
+    "groq": {
+      "place": "Sur la base de ces coordonnées : latitude {lat}, longitude {lng}, retourne uniquement le nom de la ville ou du lieu le plus proche. Un seul mot ou nom, pas de phrase.",
+      "weather": "Sur la base de ces coordonnées : latitude {lat}, longitude {lng}, retourne uniquement la température actuelle (par ex. \"7°C\"). Pas de phrase ni d'explication, une seule valeur.",
+      "news": "Liste les 5 principaux titres de l'actualité mondiale aujourd'hui. Fournis une simple liste, un par ligne. Pas d’introduction, de texte supplémentaire ni de numérotation."
+    }
+  },
+  "navbar": {
+    "login": "Connexion",
+    "register": "Inscription",
+    "logout": "Déconnexion",
+    "profile": "Profil",
+    "setting": "Paramètres",
+    "apps": "Applications",
+    "help": "Aide",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "plugin": {
+    "actions": {
+      "open": "Ouvrir",
+      "install": "Installer"
+    },
+    "pricing": {
+      "free": "Gratuit",
+      "paid": "Payant"
+    },
+    "ecommerce": {
+      "name": "E-commerce",
+      "description": "Gérez facilement votre boutique en ligne."
+    },
+    "calendar": {
+      "name": "Calendrier",
+      "description": "Organisez vos événements et tâches."
+    },
+    "chat": {
+      "name": "Messagerie",
+      "description": "Messagerie instantanée avec vos contacts."
+    },
+    "game": {
+      "name": "Jeux",
+      "description": "Jouez et profitez de jeux interactifs."
+    },
+    "blog": {
+      "name": "Blog",
+      "description": "Partagez vos idées et vos histoires."
+    },
+    "crm": {
+      "name": "CRM",
+      "description": "Gérez efficacement les relations clients."
+    },
+    "job": {
+      "name": "Emplois",
+      "description": "Trouvez et gérez des offres d'emploi."
+    }
+  },
+  "profile": {
+    "platform": "Paramètres de la plateforme",
+    "account": "Compte",
+    "application": "Application",
+    "information": "Informations du profil",
+    "fullName": "Nom complet",
+    "mobile": "Téléphone",
+    "email": "E-mail",
+    "location": "Localisation",
+    "social": "Réseaux sociaux",
+    "reply": "Répondre",
+    "notProvided": "Non fourni",
+    "settings": {
+      "title": "Paramètres de la plateforme",
+      "account": "Compte",
+      "application": "Application",
+      "Email me when someone follows me": "M'envoyer un email quand quelqu'un me suit",
+      "Email me when someone answers on my post": "M'envoyer un email quand quelqu'un répond à mon post",
+      "New launches and projects": "Nouveaux lancements et projets",
+      "Monthly product updates": "Mises à jour mensuelles du produit"
+    },
+    "info": {
+      "title": "Informations du profil",
+      "fullname": "Nom complet",
+      "mobile": "Téléphone",
+      "email": "Email",
+      "location": "Localisation",
+      "social": "Réseaux sociaux"
+    },
+    "conversations": {
+      "title": "Conversations",
+      "reply": "Répondre"
+    }
+  },
+  "setting": {
+    "switch_to_invisible": "Passer en invisible",
+    "switch_to_visible": "Passer en visible"
+  },
+  "terms": {
+    "1": {
+      "title": "Introduction",
+      "text": "En accédant à notre plateforme (« Service ») et en l'utilisant, vous acceptez d’être lié par les présentes Conditions Générales. Si vous n'êtes pas d'accord avec une partie quelconque, veuillez ne pas utiliser le Service."
+    },
+    "2": {
+      "title": "Éligibilité",
+      "text": "Vous devez avoir au moins 13 ans pour utiliser ce Service. En vous inscrivant, vous déclarez et garantissez que vous remplissez cette condition."
+    },
+    "3": {
+      "title": "Responsabilité du compte",
+      "text": "Vous êtes responsable de la confidentialité de vos identifiants de connexion. Vous êtes également entièrement responsable de toutes les activités effectuées sous votre compte."
+    },
+    "4": {
+      "title": "Utilisation acceptable",
+      "text": "Vous acceptez de ne pas :\n- Utiliser le Service à des fins illégales ;\n- Télécharger ou partager du contenu offensant, nuisible ou portant atteinte aux droits d'autrui ;\n- Tenter d'accéder sans autorisation aux comptes d'autres utilisateurs ou à nos systèmes."
+    },
+    "5": {
+      "title": "Propriété du contenu",
+      "text": "Vous conservez la propriété du contenu que vous publiez. Cependant, en publiant sur notre plateforme, vous nous accordez une licence mondiale non exclusive pour afficher, distribuer et promouvoir votre contenu sur la plateforme."
+    },
+    "6": {
+      "title": "Résiliation",
+      "text": "Nous nous réservons le droit de suspendre ou de résilier votre accès au Service à tout moment et sans préavis si nous estimons que vous avez violé les présentes Conditions."
+    },
+    "7": {
+      "title": "Confidentialité",
+      "text": "Vos données personnelles seront traitées conformément à notre Politique de confidentialité. En utilisant le Service, vous consentez à ce traitement."
+    },
+    "8": {
+      "title": "Modifications",
+      "text": "Nous pouvons réviser ces Conditions de temps à autre. L'utilisation continue du Service implique l'acceptation des Conditions mises à jour."
+    },
+    "9": {
+      "title": "Contact",
+      "text": "Si vous avez des questions concernant ces conditions, veuillez nous contacter à l'adresse suivante"
+    }
+  },
   "MyAssets": "My Assets",
   "PersonalAssets": "Personal Assets",
   "CompanyAssets": "Company Assets",
@@ -124,7 +274,6 @@
   "feedback": "Retour",
   "search": "Recherche",
   "settings": "Paramètres",
-  "profile": "Profil",
   "logout": "Se déconnecter",
   "login": "Se connecter",
   "resetPassword": "Réinitialiser le mot de passe",

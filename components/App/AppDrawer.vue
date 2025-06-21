@@ -1,5 +1,14 @@
 <script setup lang="ts">
-import AppDrawerItem from "~/components/App/AppDrawerItem.vue";
+defineProps({
+  right: Boolean
+})
+
+import AppDrawerItem from "~/components/App/AppDrawerItem.vue"
+import { useDisplay } from 'vuetify'
+import { useRouter } from 'vue-router'
+import { useLocalePath } from '#i18n'
+import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 
 const drawerState = useState('drawer', () => false)
 const { mobile } = useDisplay()
@@ -8,9 +17,16 @@ const drawer = computed({
   set: (val: boolean) => (drawerState.value = val),
 })
 const rail = computed(() => !drawerState.value && !mobile.value)
+
 const router = useRouter()
 const { user } = useUserSession()
+const localePath = useLocalePath()
 
+// RTL detection
+const { locale } = useI18n()
+const isRtl = computed(() => locale.value === 'ar')
+
+// Routes autorisées
 const routes = router.getRoutes().filter((r) => {
   const isTopLevel = r.path.lastIndexOf('/') === 0
   if (r.meta?.requiredRoles) {
@@ -22,11 +38,14 @@ const routes = router.getRoutes().filter((r) => {
   return isTopLevel
 })
 routes.sort((a, b) => (a.meta?.drawerIndex ?? 99) - (b.meta?.drawerIndex ?? 98))
+
 const currentYear = new Date().getFullYear()
 </script>
 
 <template>
   <v-navigation-drawer
+    :location="right ? 'right' : 'left'"
+    permanent
     v-model="drawer"
     :expand-on-hover="rail"
     :rail="rail"
@@ -34,11 +53,13 @@ const currentYear = new Date().getFullYear()
     role="navigation"
     aria-label="Main Navigation Drawer"
   >
+    <!-- En-tête -->
     <template #prepend>
       <v-list role="navigation" aria-label="Brand Navigation">
         <v-list-item
-          class="pa-1"
-          :to="{ path: '/home' }"
+          class="pa-1 drawer-header"
+          :class="{ 'rtl-fix': isRtl }"
+          :to="localePath('/home')"
           link
           aria-label="Go to homepage"
         >
@@ -61,6 +82,7 @@ const currentYear = new Date().getFullYear()
       </v-list>
     </template>
 
+    <!-- Liens -->
     <v-list nav density="default" role="list" aria-label="Main Menu Links">
       <AppDrawerItem
         v-for="route in routes"
@@ -72,6 +94,7 @@ const currentYear = new Date().getFullYear()
 
     <v-spacer />
 
+    <!-- Pied -->
     <template #append>
       <v-list-item class="drawer-footer px-0 d-flex flex-column justify-center">
         <div class="text-caption pt-6 pt-md-0 text-center text-no-wrap">
@@ -96,69 +119,42 @@ const currentYear = new Date().getFullYear()
   transition-property: box-shadow, transform, visibility, width, height, left,
   right, top, bottom, border-radius;
   overflow: hidden;
+}
 
-  &.v-navigation-drawer--rail {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
+.drawer-header {
+  display: flex;
+  align-items: center;
+}
 
-    &.v-navigation-drawer--is-hovering {
-      border-top-right-radius: 15px;
-      border-bottom-right-radius: 15px;
-      box-shadow:
-        0px 1px 2px rgba(0, 0, 0, 0.3),
-        0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-    }
+.drawer-header .v-list-item__content {
+  text-align: left;
+}
 
-    &:not(.v-navigation-drawer--is-hovering) {
-      .drawer-footer {
-        transform: translateX(-160px);
-      }
+.rtl-fix {
+  direction: rtl;
+}
 
-      .drawer-header-icon {
-        height: 1em;
-        width: 1em;
-      }
+.rtl-fix .v-list-item__prepend {
+  order: 2;
+  margin-inline-start: 12px !important;
+  margin-inline-end: 0 !important;
+}
 
-      .v-list-group {
-        --list-indent-size: 0px;
-        --prepend-width: 0px;
-      }
-    }
-  }
+.rtl-fix .v-list-item__content {
+  order: 1;
+  text-align: right;
+}
 
-  .v-navigation-drawer__content {
-    overflow-y: auto;
-    @supports (scrollbar-gutter: stable) {
-      scrollbar-gutter: stable;
-      > .v-list--nav {
-        padding-right: 0;
-      }
-    }
+.drawer-footer {
+  transition: transform 0.2s ease;
+  min-height: 30px;
+}
 
-    &:hover {
-      overflow-y: overlay;
-    }
-  }
-
-  .drawer-footer {
-    transition: transform 0.2s ease;
-    min-height: 30px;
-  }
-
-  .drawer-header-icon {
-    opacity: 1;
-    height: 1.2em;
-    width: 1.2em;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-    margin-right: -10px;
-  }
-
-  .v-list-group {
-    --prepend-width: 10px;
-  }
-
-  .v-list-item {
-    transition: background-color 0.2s ease, transform 0.2s ease;
-  }
+.drawer-header-icon {
+  opacity: 1;
+  height: 1.2em;
+  width: 1.2em;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  margin-right: 5px;
 }
 </style>
