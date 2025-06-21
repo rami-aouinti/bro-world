@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import ProductCarousel from "~/components/Ecommerce/home/ProductCarousel.vue";
 import CookieConsent from "~/components/Ecommerce/layout/CookieConsent.vue";
-
+definePageMeta({
+  layout: 'default',
+  description: 'Shopping page',
+  breadcrumb: 'disabled',
+})
 const { data: latestStuffCollection } = await useAsyncData('latest-stuff-collection', () => GqlGetCollection({
   handle: 'latest-stuff',
   items: 10,

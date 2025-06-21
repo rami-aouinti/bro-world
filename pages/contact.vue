@@ -69,7 +69,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-
+definePageMeta({
+  layout: 'default',
+  description: 'Contact page',
+  breadcrumb: 'disabled',
+})
 const { t } = useI18n()
 const loading = ref(false)
 const error = ref('')

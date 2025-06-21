@@ -81,7 +81,11 @@
 <script lang="ts" setup>
 import { truncate } from '~/utils/stringUtils';
 import Header from '~/components/App/AppQuiz/Header.vue';
-
+definePageMeta({
+  layout: 'default',
+  description: 'Game page',
+  breadcrumb: 'disabled',
+})
 const { data: allQuizz } = await useAsyncData("allQuizz", () =>
   queryContent("/quizz").find()
 );

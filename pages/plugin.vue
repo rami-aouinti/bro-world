@@ -18,7 +18,11 @@
 <script setup lang="ts">
 
 import PluginList from "~/components/PluginList.vue";
-
+definePageMeta({
+  layout: 'default',
+  description: 'Plugin page',
+  breadcrumb: 'disabled',
+})
 const plugins = ref([
   {
     key: 'ecommerce',

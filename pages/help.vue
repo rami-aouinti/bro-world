@@ -57,7 +57,12 @@
   </v-container>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
+definePageMeta({
+  layout: 'default',
+  description: 'Help page',
+  breadcrumb: 'disabled',
+})
 </script>

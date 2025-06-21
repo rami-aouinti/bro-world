@@ -63,6 +63,13 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: 'default',
+  description: 'Job page',
+  breadcrumb: 'disabled',
+})
+
+
 import { ref, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useJobStore } from '~/stores/useJobStore'
