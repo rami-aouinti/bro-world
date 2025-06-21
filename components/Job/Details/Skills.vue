@@ -52,7 +52,7 @@ const displayLanguages = computed(() =>
     <!-- Stack / Requirements -->
     <v-col cols="12" md="4">
       <v-sheet
-        class="v-sheet--offset mx-auto mb-2"
+        class="mx-auto mb-2"
         elevation="12"
         max-width="calc(100% - 32px)"
         rounded="xl"
@@ -87,7 +87,7 @@ const displayLanguages = computed(() =>
     <!-- Skills -->
     <v-col cols="12" md="4">
       <v-sheet
-        class="v-sheet--offset mx-auto mb-2"
+        class="mx-auto mb-2"
         elevation="12"
         max-width="calc(100% - 32px)"
         rounded="xl"
@@ -122,7 +122,7 @@ const displayLanguages = computed(() =>
     <!-- Languages -->
     <v-col cols="12" md="4">
       <v-sheet
-        class="v-sheet--offset mx-auto mb-2"
+        class="mx-auto mb-2"
         elevation="12"
         max-width="calc(100% - 32px)"
         rounded="xl"
