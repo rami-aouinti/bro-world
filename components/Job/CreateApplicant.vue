@@ -49,7 +49,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import CreateCompany from "~/components/Job/CreateCompany.vue";
 import CreateResume from "~/components/Job/CreateResume.vue";
 import UploadResume from "~/components/Job/UploadResume.vue";
 
@@ -115,13 +114,7 @@ watch(!applicants.value, () => {
 onMounted(fetchApplicants)
 
 const submitApplicant = async () => {
-  const { data } = await useFetch('/api/job/applicant', {
-    method: 'POST',
-    body: form.value
-  })
-  if (!data.value?.id) return
-
-  await useFetch(`/api/job/application/${props.selectedJobId}/${data.value.id}`, {
+  await useFetch(`/api/job/application/${props.selectedJobId}/${form.value.applicantId}`, {
     method: 'POST'
   })
 

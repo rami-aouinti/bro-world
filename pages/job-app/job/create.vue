@@ -1,9 +1,10 @@
 <template>
-  <v-dialog :model-value="modelValue" max-width="900px" @update:model-value="$emit('update:modelValue', $event)">
-    <v-card>
-      <v-card-title>{{ t('job.create') }}</v-card-title>
+  <v-container fluid :dir="isRtl ? 'rtl' : 'ltr'">
+    <v-card class="mb-4 pa-3"
+            rounded="xl"
+            variant="text">
       <v-card-text>
-        <v-stepper v-model="step" elevation="0">
+        <v-stepper class="bg-transparent" v-model="step" elevation="0">
           <v-stepper-header>
             <v-stepper-item :value="1" :title="t('company.title')" />
             <v-stepper-item :value="2" :title="t('job.details')" />
@@ -61,8 +62,8 @@
                 </v-col>
               </v-row>
               <v-row class="d-flex justify-space-between mt-4 mb-2 mx-2">
-                  <v-btn variant="text" @click="prevStep">{{ t('buttons.back') }}</v-btn>
-                  <v-btn color="primary" :disabled="!jobForm.title" @click="nextStep">{{ t('buttons.continue') }}</v-btn>
+                <v-btn variant="text" @click="prevStep">{{ t('buttons.back') }}</v-btn>
+                <v-btn color="primary" :disabled="!jobForm.title" @click="nextStep">{{ t('buttons.continue') }}</v-btn>
               </v-row>
             </v-stepper-window-item>
 
@@ -191,17 +192,16 @@
         </v-stepper>
       </v-card-text>
     </v-card>
-  </v-dialog>
+  </v-container>
 </template>
-
 <script setup lang="ts">
+import CreateCompany from "~/components/Job/CreateCompany.vue";
 import { ref, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import CreateCompany from './CreateCompany.vue'
-
-const props = defineProps<{ modelValue: boolean }>()
-const emit = defineEmits(['update:modelValue', 'job-created'])
-
+const { locale } = useI18n()
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
 const { t } = useI18n()
 const step = ref(1)
 
@@ -295,7 +295,7 @@ const submitJob = async () => {
     method: 'POST',
     body: jobForm.value
   })
-  emit('job-created')
-  emit('update:modelValue', false)
+  Notify.success(t('job.submissionSuccess'))
+  router.push('/job-app/applications')
 }
 </script>

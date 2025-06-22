@@ -50,7 +50,7 @@ const { t } = useI18n()
     </v-card>
   </div>
 
-  <v-alert v-else type="info" border="start" color="primary" class="mt-4">
+  <v-alert v-else border="start" type="info" color="primary" class="mt-10 mx-6">
     {{ t('job.noMatch') }}
   </v-alert>
 </template>

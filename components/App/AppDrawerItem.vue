@@ -70,11 +70,23 @@ const to = computed(() => ({
       v-for="child in visibleChildren"
       :key="child.name"
       :item="child"
+      class="sub-item pl-8"
     />
   </v-list-group>
 </template>
 
 <style scoped>
+/* Force un léger décalage à gauche pour les sous-items (LTR) */
+:deep(.sub-item.v-list-item) {
+  padding-left: 12px !important;
+}
+
+/* En RTL : décaler à droite plutôt */
+.rtl-fix :deep(.sub-item.v-list-item) {
+  padding-left: 0 !important;
+  padding-right: 12px !important;
+}
+
 /* comportement normal */
 .drawer-item {
   direction: ltr;

@@ -2,7 +2,6 @@
   <v-app>
     <AppDrawer :right="isRtl" />
     <AppBar :rtl="isRtl" @toggleSettingsDrawer="showSettingsDrawer = $event" />
-
     <v-main>
       <NuxtPage />
     </v-main>

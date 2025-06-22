@@ -25,7 +25,7 @@
       </v-chip>
     </v-slide-y-transition>
 
-    <v-alert type="info" class="pl-5">
+    <v-alert type="info" color="primary" class="mt-10 mx-6">
       <template #title>Liens utiles</template>
       <v-list density="compact">
         <v-list-item

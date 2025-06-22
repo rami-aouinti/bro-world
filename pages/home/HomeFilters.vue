@@ -1,12 +1,14 @@
 <template>
   <v-container :dir="isRtl ? 'rtl' : 'ltr'">
-    <v-progress-circular
-      v-if="loading"
-      indeterminate
-      color="primary"
-      class="my-8 d-flex mx-auto"
-    />
+    <!-- Loader global -->
+    <template v-if="loading">
+      <v-skeleton-loader type="card" class="mx-3 mb-4 rounded-xl" height="120" />
+      <v-skeleton-loader type="list-item-two-line" class="mx-3 mb-4 rounded-xl" v-for="i in 3" :key="i" />
+      <v-skeleton-loader type="list-item-avatar-three-line" class="mx-3 mb-4 rounded-xl" />
+      <v-skeleton-loader type="list-item-two-line" class="mx-3 mb-4 rounded-xl" v-for="i in 5" :key="'rate' + i" />
+    </template>
 
+    <!-- Weather Card -->
     <v-card v-else-if="showCard" rounded="xl" class="mx-3 mb-4" variant="text">
       <div class="px-4 py-4">
         <v-row>
@@ -26,6 +28,7 @@
       </div>
     </v-card>
 
+    <!-- News -->
     <v-card v-if="!loadingNews" rounded="xl" class="mx-3 mt-4 mb-4" variant="text">
       <v-card-title class="text-h6 font-weight-bold text-center">
         🌐 {{ t('dashboard.news.title') }}
@@ -40,7 +43,6 @@
             <template v-else #prepend>
               <v-icon color="primary" class="mr-2">mdi-newspaper-variant-outline</v-icon>
             </template>
-
             <template #default>
               <span class="text-body-2">{{ item }}</span>
             </template>
@@ -49,6 +51,7 @@
       </v-card-text>
     </v-card>
 
+    <!-- Quiz -->
     <v-card class="mx-3 my-4" rounded="xl" variant="text">
       <v-card-title class="text-h6 font-weight-bold text-center">
         🏆 {{ t('dashboard.quiz.title') }}
@@ -81,6 +84,7 @@
       </v-list>
     </v-card>
 
+    <!-- Rating -->
     <v-card v-if="!loading && loggedIn" rounded="xl" class="mx-3" variant="text">
       <v-card-title class="d-flex justify-center mt-auto text-h5">
         <span class="text-h6">{{ t('dashboard.rating.title') }}</span>
@@ -139,6 +143,7 @@
     </v-card>
   </v-container>
 </template>
+
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'

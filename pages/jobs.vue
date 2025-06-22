@@ -28,8 +28,15 @@
           @update:location="selectedLocations = $event"
         />
 
-        <div v-if="pending" class="d-flex justify-center align-center" style="height: 25vh">
-          <v-progress-circular :size="120" :width="10" color="primary" indeterminate />
+        <div v-if="pending">
+          <v-col cols="12" md="12" lg="12" v-for="n in 6" :key="n">
+            <v-skeleton-loader
+              type="card"
+              class="pa-4 rounded-xl"
+              height="200"
+              rounded="xl"
+            />
+          </v-col>
         </div>
         <JobList
           v-else

@@ -371,6 +371,15 @@
     "invalidError": "Username or password is incorrect."
   },
   "job": {
+    "view": "Show",
+    "empty": "Empty",
+    "resume": "Resume (Pdf)",
+    "error": "Error",
+    "jobs": "Jobs",
+    "requests": "Requests",
+    "applications": "Applications",
+    "viewApplications": "Applications",
+    "hideApplications": "Hide Applications",
     "create": "Create a Job Offer",
     "edit": "Edit Job Offer",
     "delete": "Delete Job Offer",
@@ -408,6 +417,8 @@
     "contractType": "Contract Type"
   },
   "applicant": {
+    "title": "Applicants",
+    "resume": "Resume (Pdf)",
     "basic": "Information",
     "education": "Education",
     "skills": "Skills",

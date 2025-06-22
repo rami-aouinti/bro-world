@@ -8,25 +8,34 @@ import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
 import { useLocalePath } from '#i18n'
 import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
+
+const isClientMounted = ref(false) // ← important
+onMounted(() => {
+  isClientMounted.value = true
+  // On force drawerState à false côté client uniquement
+  drawerState.value = false
+})
 
 const drawerState = useState('drawer', () => false)
 const { mobile } = useDisplay()
+
 const drawer = computed({
-  get: () => drawerState.value || !mobile.value,
-  set: (val: boolean) => (drawerState.value = val),
+  get: () => isClientMounted.value && (drawerState.value || !mobile.value),
+  set: (val: boolean) => {
+    if (isClientMounted.value) drawerState.value = val
+  },
 })
+
 const rail = computed(() => !drawerState.value && !mobile.value)
 
 const router = useRouter()
 const { user } = useUserSession()
 const localePath = useLocalePath()
-
-// RTL detection
 const { locale } = useI18n()
+
 const isRtl = computed(() => locale.value === 'ar')
 
-// Routes autorisées
 const routes = router.getRoutes().filter((r) => {
   const isTopLevel = r.path.lastIndexOf('/') === 0
   if (r.meta?.requiredRoles) {
@@ -37,10 +46,18 @@ const routes = router.getRoutes().filter((r) => {
   }
   return isTopLevel
 })
+
 routes.sort((a, b) => (a.meta?.drawerIndex ?? 99) - (b.meta?.drawerIndex ?? 98))
 
 const currentYear = new Date().getFullYear()
+
+const isMounted = ref(false)
+onMounted(() => {
+  isMounted.value = true
+})
+
 </script>
+
 
 <template>
   <v-navigation-drawer
@@ -55,7 +72,7 @@ const currentYear = new Date().getFullYear()
   >
     <!-- En-tête -->
     <template #prepend>
-      <v-list role="navigation" aria-label="Brand Navigation">
+      <v-list v-if="isMounted" role="navigation" aria-label="Brand Navigation">
         <v-list-item
           class="pa-1 drawer-header"
           :class="{ 'rtl-fix': isRtl }"
@@ -83,7 +100,7 @@ const currentYear = new Date().getFullYear()
     </template>
 
     <!-- Liens -->
-    <v-list nav density="default" role="list" aria-label="Main Menu Links">
+    <v-list v-if="isMounted" nav density="default" role="list" aria-label="Main Menu Links">
       <AppDrawerItem
         v-for="route in routes"
         :key="route.name"
