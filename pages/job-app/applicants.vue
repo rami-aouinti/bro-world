@@ -26,7 +26,7 @@
       >
         <v-card rounded="xl" class="pa-2 mx-3" variant="text">
           <v-row no-gutters>
-            <v-col cols="3" class="d-flex justify-center">
+            <v-col cols="3" class="d-flex align-center justify-center">
               <v-avatar size="48">
                 <v-img
                   :src="applicant.user?.profile?.photo || '/default-avatar.png'"
@@ -40,19 +40,19 @@
                 {{ applicant.firstName }} {{ applicant.lastName }}
               </div>
               <div class="text-body-2 mb-1 px-1">
-                📧 <a :href="`mailto:${applicant.contactEmail}`">{{ applicant.contactEmail }}</a>
+                📧 <a :href="`mailto:${applicant.contactEmail}`" class="no-style-link">{{ applicant.contactEmail }}</a>
               </div>
               <div class="text-body-2 mb-1 px-1">
                 📞 {{ applicant.phone }}
               </div>
               <div class="text-body-2 mb-1 px-1">
                 📎
-                <a :href="applicant.resume" target="_blank" rel="noopener" class="text-primary">
+                <a :href="applicant.resume" target="_blank" rel="noopener" class="no-style-link">
                   {{ t('applicant.resume') }}
                 </a>
               </div>
               <div class="text-caption mt-1 px-1">
-                🕒 {{ $dayjs(applicant.createdAt).format('YYYY-MM-DD HH:mm') }}
+                🕒 {{ $dayjs(applicant?.createdAt).format('YYYY-MM-DD HH:mm') }}
               </div>
             </v-col>
           </v-row>
@@ -79,7 +79,6 @@ definePageMeta({
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useLocalePath } from '#i18n'
-
 const { $dayjs } = useNuxtApp()
 
 const { t } = useI18n()
@@ -112,3 +111,9 @@ onMounted(async () => {
   await fetchApplicants()
 })
 </script>
+<style scoped>
+.no-style-link {
+  color: inherit;
+  text-decoration: none;
+}
+</style>

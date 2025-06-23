@@ -8,11 +8,19 @@ import HomePosts from '~/pages/home/HomePosts.vue'
 import HomeFilters from '~/pages/home/HomeFilters.vue'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-
+import LoaderStatusBanner
+  from "~/components/App/Loader/Home/LoaderStatusBanner.vue";
+import LoaderPost from "~/components/App/Loader/Home/LoaderPost.vue";
+import { ref, onMounted } from 'vue'
 const { loggedIn } = useUserSession()
 const postStore = usePostStore()
 const { locale } = useI18n()
 const loadingUser = ref(true)
+
+async function reloadPosts() {
+  postStore.clearPosts()
+  await postStore.fetchPosts()
+}
 
 onMounted(async () => {
   await nextTick()
@@ -23,14 +31,7 @@ const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
 <template>
   <v-container fluid :dir="isRtl ? 'rtl' : 'ltr'">
     <template v-if="loadingUser">
-      <v-card class="mb-3 px-4 py-3 d-flex align-center rounded-xl" variant="text">
-        <v-skeleton-loader type="avatar" class="mr-3" />
-        <v-skeleton-loader
-          class="rounded-pill"
-          height="16px"
-          width="100%"
-        />
-      </v-card>
+      <LoaderStatusBanner />
     </template>
     <template v-else>
       <UserStatusBanner v-if="loggedIn" />
@@ -39,37 +40,13 @@ const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
       <v-col cols="12" lg="8">
         <!-- Loader pendant chargement -->
         <template v-if="loadingUser">
-          <!-- Simule l’input “Hello John, new post?” -->
-          <v-card class="mb-3 px-4 py-3 d-flex align-center rounded-xl" variant="text">
-            <v-skeleton-loader type="avatar" class="mr-3" />
-            <v-skeleton-loader
-              class="rounded-pill"
-              height="36px"
-              width="100%"
-            />
-          </v-card>
-
-          <!-- Simule les boutons Video / Photo / Story -->
-          <v-card class="mb-4 px-4 py-3 d-flex justify-space-around rounded-xl" variant="text">
-            <v-skeleton-loader type="button" width="80px" class="mx-2" />
-            <v-skeleton-loader type="button" width="80px" class="mx-2" />
-            <v-skeleton-loader type="button" width="80px" class="mx-2" />
-          </v-card>
-
-          <!-- Simule la zone des stories -->
-          <v-card class="mb-4 px-4 py-3 rounded-xl" variant="text">
-            <v-row dense justify="start" no-gutters>
-              <v-col v-for="n in 5" :key="n" class="mx-2" cols="auto">
-                <v-skeleton-loader type="avatar" class="mx-auto" />
-              </v-col>
-            </v-row>
-          </v-card>
+          <LoaderPost />
         </template>
 
         <!-- Composants réels -->
         <template v-else>
-          <NewPost />
-          <HomeStories />
+          <NewPost @post-created="reloadPosts" v-if="loggedIn" />
+          <HomeStories v-if="loggedIn" />
         </template>
 
         <InfiniteList

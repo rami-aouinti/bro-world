@@ -1,35 +1,44 @@
 <script setup lang="ts">
 import NewComment from "~/pages/home/post/NewComment.vue";
-import ReactComment from "~/pages/home/post/ReactComment.vue";
-import UserAvatar from "~/components/App/UserAvatar.vue";
+import Comment from "~/pages/home/post/Comment.vue";
+import { ref } from 'vue'
+import { useLocalePath } from '#i18n'
+
 const props = defineProps<{
   post: {
-    type: Object,
-    required: true,
+    id: string
+    comments: any[]
   },
-}>();
-const { loggedIn } = useUserSession()
+}>()
+
+const localePath = useLocalePath()
+const { loggedIn, user } = useUserSession()
+const comments = ref(props.post.comments) // copie locale pour réactivité
+
+async function reloadComments() {
+  try {
+    const { data } = await useFetch(`/api/posts/comments/${props.post.id}/comment`)
+    if (data.value && Array.isArray(data.value)) {
+      comments.value = data.value
+    }
+  } catch (e) {
+    console.error('Error', e)
+  }
+}
 </script>
 
 <template>
   <div class="mb-1">
     <hr class="horizontal dark mt-1 mb-5" />
-    <div v-for="comment in props.post.comments" class="d-flex mt-3">
-      <div class="flex-shrink-0">
-        <UserAvatar :user="comment.user" size="32"></UserAvatar>
-      </div>
-      <div class="flex-grow-1 ms-4">
-        <h5
-          class="text-left text-h6 text-typo font-weight-bold mt-0 mb-2"
-        >
-          {{ comment.user.firstName }} {{ comment.user.lastName }}
-        </h5>
-        <p class="text-left text-sm font-weight-light text-body">
-          {{ comment.content }}
-        </p>
-        <ReactComment></ReactComment>
-      </div>
+
+    <div v-for="comment in comments" :key="comment.id" class="d-flex mt-3">
+      <Comment @comment-created="reloadComments" :comment="comment" />
     </div>
-    <NewComment v-if="loggedIn"></NewComment>
+
+    <NewComment
+      :post="props.post"
+      v-if="loggedIn"
+      @comment-created="reloadComments"
+    />
   </div>
 </template>

@@ -7,6 +7,6 @@ export default defineEventHandler(async (event) => {
   const token = await getUserToken(event)
 
   const config = useRuntimeConfig()
-  const url = `${config.public.apiBlogBase}/v1/platform/post/${id}/like`
-  return await requestWithRetry('post', url, token, {})
+  const url = `${config.public.apiBlogBase}/v1/platform/post/${id}/comments`
+  return await requestWithRetry('get', url, token, {})
 })

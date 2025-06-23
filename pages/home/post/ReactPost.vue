@@ -1,87 +1,110 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useFetch } from '#app'
+import Comments from "~/pages/home/post/Comments.vue";
 
-const { user } = useUserSession()
-
+const { user, loggedIn } = await useUserSession()
+const showReplies = ref(false)
 const props = defineProps<{
   post: {
     id: string
-    likes?: { id: string }[] // ou tout autre structure
+    likes?: any[]
     comments?: any[]
   }
 }>()
 
 const isLiking = ref(false)
 const localLikes = ref([...props.post.likes ?? []])
+const likeId = ref('')
+function hasLiked() {
+  if (localLikes.value) {
+    for (const like of localLikes.value) {
+      if (like?.user?.id == user.value.id) {
+        likeId.value = like.id
+        return isLiking.value = true;
+      }
+    }
+  }
+}
 
-const hasLiked = computed(() =>
-  localLikes.value.some((like) => like.id === user.id)
-)
+
+watch(!user.value.id, () => {
+  hasLiked()
+}, { immediate: true })
+
+watch(!localLikes.value, () => {
+  hasLiked()
+}, { immediate: true })
 
 const handleLike = async () => {
-  if (!user.id) {
-    Notify.error('Veuillez vous connecter pour liker un post')
+  if (!loggedIn) {
+    Notify.error('You are not logged')
     return
   }
-  if (isLiking.value) return
 
-  isLiking.value = true
-  try {
-    const { error } = await useFetch(`/api/posts/${props.post.id}/like`, {
-      method: 'POST',
-    })
-
-    if (error.value) {
-      Notify.error('Erreur lors du like')
-      return
+  if (isLiking.value === false) {
+    try {
+      const { data } = await useFetch(`/api/posts/${props.post.id}/like`, {
+        method: 'POST',
+      })
+      localLikes.value.push({
+        id: data.id,
+        user: user.value
+      })
+      likeId.value = data.value.id
+      isLiking.value = true
+      Notify.success('Post is liked !')
+    } catch (err) {
+      Notify.error('Error : ' + err)
     }
-
-    // Simule toggle localement (à remplacer par retour API si tu veux)
-    if (hasLiked.value) {
-      localLikes.value = localLikes.value.filter(like => like.id !== user.id)
-    } else {
-      localLikes.value.push({ id: user.id })
+  } else {
+    try {
+      await useFetch(`/api/posts/${likeId.value}/post`, {
+        method: 'POST',
+      })
+      localLikes.value = localLikes.value.filter(
+        like => like.user?.id !== user.value.id
+      )
+      isLiking.value = false
+      Notify.success('Post is disliked !')
+    } catch (err) {
+      Notify.error('Error : ' + err)
     }
-
-    Notify.success(hasLiked.value ? 'Like retiré !' : 'Post liké !')
-  } catch (err) {
-    Notify.error('Erreur réseau : ' + err)
-  } finally {
-    isLiking.value = false
   }
 }
 </script>
 
 <template>
-  <v-row class="align-center px-2 mt-6 mb-2">
-    <v-col sm="6">
-      <div class="d-flex align-center">
-        <v-icon
-          size="24"
-          class="me-1 cursor-pointer"
-          :color="hasLiked ? 'primary' : undefined"
-          @click="handleLike"
-        >
-          mdi-thumb-up
-        </v-icon>
-        <span v-if="localLikes.length > 0" class="text-sm text-body me-4">
+  <div class="d-flex justify-end mb-2">
+    <div class="d-flex align-center me-2">
+      <v-icon
+        size="24"
+        class="me-1 cursor-pointer"
+        :color="isLiking ? 'primary' : 'secondary'"
+        @click="handleLike"
+      >
+        mdi-thumb-up
+      </v-icon>
+      <span v-if="localLikes.length > 0" class="text-sm me-4" :class="isLiking ? 'text-primary' : 'text-secondary'">
           {{ localLikes.length }}
         </span>
-      </div>
-    </v-col>
-
-    <v-col sm="6">
-      <div class="d-flex align-center">
-        <div class="d-flex align-center ms-auto">
-          <v-icon size="24" class="me-1 cursor-pointer">
-            mdi-comment-processing
-          </v-icon>
-          <span v-if="props.post?.comments?.length > 0" class="text-sm text-body me-4">
+    </div>
+    <div class="d-flex align-center">
+      <div class="d-flex align-center ms-auto">
+        <v-icon
+          size="24"
+          class="me-1 cursor-pointer text-body"
+          @click="showReplies = !showReplies"
+        >
+          mdi-comment-processing
+        </v-icon>
+        <span @click="showReplies = !showReplies" v-if="props.post?.comments?.length > 0" class="text-sm text-body me-4">
           {{ props.post.comments.length }}
         </span>
-        </div>
       </div>
-    </v-col>
-  </v-row>
+    </div>
+  </div>
+  <div v-if="showReplies">
+    <Comments :post="props.post" />
+  </div>
 </template>

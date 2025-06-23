@@ -10,5 +10,19 @@ export const usePostStore = defineStore('post', {
       this.posts = newPosts
       this.loaded = true
     },
+    clearPosts() {
+      this.posts = []
+      this.loaded = false
+    },
+    async fetchPosts() {
+      try {
+        const { data, error } = await useFetch('/api/posts')
+        if (data.value && Array.isArray(data.value)) {
+          this.setPosts(data.value)
+        }
+      } catch (e) {
+        console.error('Failed to fetch posts', e)
+      }
+    },
   },
 })

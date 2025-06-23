@@ -20,6 +20,7 @@ const loggedUser = ref([
 const notLoggedUser = ref([
   { icon: "mdi-account", path: "/login", title: "login" },
   { icon: "mdi-account-plus", path: "/register", title: "register" },
+  { icon: "mdi-network", path: "/plugin", title: "apps" },
   { icon: "mdi-help-circle", path: "/help", title: "help" },
   { icon: "mdi-information", path: "/about", title: "about" },
   { icon: "mdi-contact-mail", path: "/contact", title: "contact" },

@@ -1,44 +1,61 @@
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue'
+import { ref, computed } from 'vue'
 import UserAvatar from '~/components/App/UserAvatar.vue'
+import Camera from '~/components/App/Blog/Camera.vue'
 import BaseDialog from '~/components/BaseDialog.vue'
 
 const dialog = ref(false)
+const dialogFile = ref(false)
+const video = ref(false)
 const loading = ref(false)
 const files = ref<File[]>([])
 const emit = defineEmits(['post-created'])
-const showDialog = ref(false)
 const postContent = ref('')
-const youtubeId = ref(null)
-const imageUrl = ref(null)
-
+const youtubeId = ref<string | null>(null)
+const imageUrl = ref<string | null>(null)
+const fileInput = ref()
 const newStory = ref<File | null>(null)
 
-const fileInput = ref()
+const { user } = await useUserSession()
 
 function detectLinks() {
   const ytRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^\s&]+)/;
   const imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/;
 
-  const ytMatch = postContent.value.match(ytRegex);
-  const imgMatch = postContent.value.match(imgRegex);
+  const ytMatch = postContent.value.match(ytRegex)
+  const imgMatch = postContent.value.match(imgRegex)
 
   youtubeId.value = ytMatch ? ytMatch[1] : null
   imageUrl.value = imgMatch ? imgMatch[1] : null
 }
 
+// ✅ Payload dynamique
+const formPayload = computed(() => {
+  if (youtubeId.value) {
+    return { url: `https://www.youtube.com/watch?v=${youtubeId.value}` }
+  } else if (imageUrl.value) {
+    return { url: imageUrl.value }
+  } else {
+    return { title: postContent.value }
+  }
+})
 
-const { user } = useUserSession()
-
-const load = () => {
-  loading.value = true
-  setTimeout(() => (loading.value = false), 3000)
-}
-
-const handleSuccess = (data) => {
+const handleSuccess = (data: any) => {
   postContent.value = ''
+  imageUrl.value = null
+  youtubeId.value = null
   Notify.success("Post created!")
   emit('post-created', data)
+}
+
+const handleError = (error: any) => {
+  Notify.error("Post failed!")
+  console.error('Failed:', error)
+}
+
+function triggerFileInput() {
+  const input = fileInput.value?.$el?.querySelector('input[type="file"]')
+  if (input) input.click()
 }
 
 async function handleFileUpload(file: File) {
@@ -55,8 +72,6 @@ async function handleFileUpload(file: File) {
     const data = response.data.value
 
     if (data?.mediaPath) {
-      const userId = data.user.id || 'me'
-
       handleSuccess(data)
     }
   } catch (e) {
@@ -65,14 +80,9 @@ async function handleFileUpload(file: File) {
   }
 }
 
-const handleError = (error) => {
-  Notify.error("Post failed!")
-  console.error('Failed:', error)
-}
-
-function triggerFileInput() {
-  const input = fileInput.value?.$el?.querySelector('input[type="file"]')
-  if (input) input.click()
+const load = () => {
+  loading.value = true
+  setTimeout(() => (loading.value = false), 3000)
 }
 </script>
 
@@ -80,16 +90,8 @@ function triggerFileInput() {
   <div class="py-3">
     <v-card rounded="xl" class="mx-3" variant="text">
       <v-card-text>
-        <div
-          class="d-flex align-center"
-          style="max-width: 100%; flex-wrap: nowrap; overflow: hidden"
-        >
-          <button
-            class="btn-reset mx-2"
-            @click="dialog = true"
-            aria-label="User avatar"
-            style="flex-shrink: 0"
-          >
+        <div class="d-flex align-center" style="max-width: 100%; flex-wrap: nowrap; overflow: hidden">
+          <button class="btn-reset mx-2" @click="dialog = true" aria-label="User avatar" style="flex-shrink: 0">
             <UserAvatar :user="user" size="48" color="primary" />
           </button>
 
@@ -104,16 +106,20 @@ function triggerFileInput() {
           </v-btn>
         </div>
       </v-card-text>
+
       <hr class="horizontal dark my-2" />
+
       <v-card-actions>
-        <v-btn :loading="loading" icon class="flex-grow-1" height="48" @click="load">
+        <v-btn @click="video = true" :loading="loading" icon class="flex-grow-1" height="48">
           <v-icon class="mx-1" color="primary">mdi-video</v-icon>
           Video
         </v-btn>
-        <v-btn :loading="loading" icon class="flex-grow-1" height="48" @click="load">
+
+        <v-btn @click="dialogFile = true" :loading="loading" icon class="flex-grow-1" height="48">
           <v-icon class="mx-1" color="primary">mdi-image-multiple</v-icon>
           Photo
         </v-btn>
+
         <v-btn icon :loading="loading" class="flex-grow-1" height="48"
                @click="triggerFileInput"
                @keydown.enter="triggerFileInput">
@@ -122,6 +128,8 @@ function triggerFileInput() {
         </v-btn>
       </v-card-actions>
     </v-card>
+
+    <!-- Upload d’un fichier story -->
     <v-file-input
       ref="fileInput"
       v-model="newStory"
@@ -133,6 +141,36 @@ function triggerFileInput() {
       v-show="false"
       @update:modelValue="handleFileUpload"
     />
+
+    <!-- BaseDialog pour création de post -->
+    <BaseDialog
+      v-model="dialogFile"
+      title="New Post"
+      color="primary"
+      :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (dialog = false) }]"
+      :saveButton="[{ text: 'Save', color: 'primary', action: '/api/posts/post/posts' }]"
+      :files="files"
+      :forms="formPayload"
+      @success="handleSuccess"
+      @error="handleError"
+    >
+      <v-card rounded="xl">
+        <v-card-text>
+          <v-file-upload
+            icon="mdi-upload"
+            v-model="files"
+            :title="$t('post.files')"
+            multiple
+            density="compact"
+            variant="compact"
+            show-size
+            clearable
+          />
+
+          <small class="text-grey">* This doesn't actually save.</small>
+        </v-card-text>
+      </v-card>
+    </BaseDialog>
     <BaseDialog
       v-model="dialog"
       title="New Post"
@@ -140,7 +178,7 @@ function triggerFileInput() {
       :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (dialog = false) }]"
       :saveButton="[{ text: 'Save', color: 'primary', action: '/api/posts/post/posts' }]"
       :files="files"
-      :forms="postContent"
+      :forms="formPayload"
       @success="handleSuccess"
       @error="handleError"
     >
@@ -155,6 +193,8 @@ function triggerFileInput() {
             required
             @input="detectLinks"
           />
+
+          <!-- Aperçu YouTube -->
           <div v-if="youtubeId" class="my-4 text-center">
             <iframe
               :src="`https://www.youtube.com/embed/${youtubeId}`"
@@ -165,9 +205,13 @@ function triggerFileInput() {
               style="max-width: 100%"
             ></iframe>
           </div>
+
+          <!-- Aperçu Image -->
           <div v-if="imageUrl" class="my-4 text-center">
             <img :src="imageUrl" alt="preview" style="max-width: 100%; max-height: 300px" />
           </div>
+
+          <!-- Upload de fichiers -->
           <v-file-upload
             icon="mdi-upload"
             v-model="files"
@@ -178,10 +222,18 @@ function triggerFileInput() {
             show-size
             clearable
           />
+
           <small class="text-grey">* This doesn't actually save.</small>
         </v-card-text>
       </v-card>
     </BaseDialog>
+
+    <!-- Caméra vidéo -->
+    <v-dialog v-model="video" max-width="500">
+      <v-card rounded="xl">
+        <Camera />
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 

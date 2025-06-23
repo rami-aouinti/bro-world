@@ -28,6 +28,7 @@ export default defineNuxtConfig({
 
   plugins: [
     '~/plugins/vuetify-i18n.ts',
+    '~/plugins/dayjs.ts',
   ],
 
   sitemap: {

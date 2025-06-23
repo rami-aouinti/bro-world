@@ -14,9 +14,12 @@ function isYoutubeUrl(url) {
 }
 
 function isImageUrl(url) {
-  const imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/;
-  const imgMatch = url.match(imgRegex);
-  return !!imgMatch
+  if (url) {
+    const imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/;
+    const imgMatch = url.match(imgRegex);
+    return !!imgMatch
+  }
+  return false
 }
 
 function extractYouTubeVideoId(url) {
@@ -38,10 +41,10 @@ const localePath = useLocalePath()
     <NuxtLink :to="localePath(`/post/${props.post.slug}`)" class="text-decoration-none">
       <div class="text-left mb-6 text-body font-weight-light">
         <!-- Si c'est une URL YouTube, on affiche la vidéo centrée -->
-        <div v-if="isYoutubeUrl(props.post.title)" class="text-center">
+        <div v-if="isYoutubeUrl(props.post?.url)" class="text-center">
           <v-sheet color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
             <iframe
-              :src="`https://www.youtube.com/embed/${extractYouTubeVideoId(props.post.title)}`"
+              :src="`https://www.youtube.com/embed/${extractYouTubeVideoId(props.post.url)}`"
               style="width: 100%;"
               height="365"
               frameborder="0"
@@ -49,10 +52,10 @@ const localePath = useLocalePath()
             ></iframe>
           </v-sheet>
         </div>
-        <v-sheet v-else-if="isImageUrl(props.post.title)" color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
+        <v-sheet v-else-if="isImageUrl(props.post?.url)" color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
         <NuxtImg
           :alt="`image-${props.post.slug}`"
-          :src="props.post.title"
+          :src="props.post.url"
           style="width: 100%; height: auto"
           class="border-radius-lg shadow-lg"
           :preload="true"
@@ -78,7 +81,6 @@ const localePath = useLocalePath()
       />
     </v-sheet>
     <ReactPost :post="props.post" />
-    <Comments :post="props.post" />
   </div>
 
 </template>
