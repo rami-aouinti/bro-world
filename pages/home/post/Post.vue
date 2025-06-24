@@ -31,22 +31,39 @@ function extractYouTubeVideoId(url) {
     return null;
   }
 }
+const currentPostIndex = ref(0)
 
+function goToPreviousPost() {
+  if (currentPostIndex.value > 0) {
+    currentPostIndex.value--
+  } else {
+    currentPostIndex.value = props.post?.medias?.length
+  }
+}
+function goToNextPost() {
+  if (currentPostIndex.value < props.post?.medias?.length - 1) {
+    currentPostIndex.value++
+  } else {
+    currentPostIndex.value = 0
+  }
+}
 import { useLocalePath } from '#i18n'
 const localePath = useLocalePath()
 </script>
 
 <template>
-  <div class="px-4 py-4">
+  <div class="px-4 py-1">
     <NuxtLink :to="localePath(`/post/${props.post.slug}`)" class="text-decoration-none">
-      <div class="text-left mb-6 text-body font-weight-light">
+      <p v-if="props.post?.title" class="text-secondary font-weight-bolder px-12 mb-4">{{ props.post?.title }}</p>
+    </NuxtLink>
+      <div class="text-left px-12 mb-6 text-body font-weight-light">
         <!-- Si c'est une URL YouTube, on affiche la vidéo centrée -->
         <div v-if="isYoutubeUrl(props.post?.url)" class="text-center">
           <v-sheet color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
             <iframe
               :src="`https://www.youtube.com/embed/${extractYouTubeVideoId(props.post.url)}`"
               style="width: 100%;"
-              height="365"
+              height="315"
               frameborder="0"
               allowfullscreen
             ></iframe>
@@ -56,30 +73,72 @@ const localePath = useLocalePath()
         <NuxtImg
           :alt="`image-${props.post.slug}`"
           :src="props.post.url"
-          style="width: 100%; height: auto"
+          style="width: 100%;"
+          height="315"
           class="border-radius-lg shadow-lg"
           :preload="true"
           loading="eager"
           fetchpriority="high"
         />
         </v-sheet>
-        <!-- Sinon, afficher le titre normalement -->
-        <p v-else>
-          {{ props.post.title }}
-        </p>
+        <v-sheet v-else-if="props.post?.medias?.length > 0 && isImageUrl(props.post?.medias[0]?.path)" color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
+          <NuxtImg
+            v-if="props.post?.medias?.length > 1"
+            :alt="`image-${props.post.slug}`"
+            :src="props.post?.medias[currentPostIndex]?.path"
+            style="width: 100%"
+            height="315"
+            class="border-radius-lg shadow-lg"
+            :preload="true"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <NuxtImg
+            v-else
+            :alt="`image-${props.post.slug}`"
+            :src="props.post?.medias[0]?.path"
+            style="width: 100%;"
+            height="315"
+            class="border-radius-lg shadow-lg"
+            :preload="true"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <v-btn
+            v-if="props.post?.medias?.length > 1"
+            variant="text"
+            icon
+            class="position-absolute left-0"
+            color="primary"
+            style="top: 58%; transform: translateY(-50%) translateX(25%); z-index: 10;"
+            @click="goToPreviousPost"
+          >
+            <v-icon size="48">mdi-chevron-left</v-icon>
+          </v-btn>
+
+          <v-btn
+            v-if="props.post?.medias?.length > 1"
+            variant="text"
+            icon
+            color="primary"
+            class="position-absolute right-0"
+            style="top: 58%; transform: translateY(-50%) translateX(-25%); z-index: 10;"
+            @click="goToNextPost"
+          >
+            <v-icon size="48">mdi-chevron-right</v-icon>
+          </v-btn>
+        </v-sheet>
+        <v-sheet v-else color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
+          <iframe
+            :src="props.post?.medias[0]?.path"
+            style="width: 100%;"
+            height="315"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </v-sheet>
       </div>
-    </NuxtLink>
-    <v-sheet v-if="props.post?.medias?.length > 0" color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
-      <NuxtImg
-        :alt="`image-${props.post.slug}`"
-        :src="props.post?.medias[0]?.path"
-        style="width: 100%; height: auto"
-        class="border-radius-lg shadow-lg"
-        :preload="true"
-        loading="eager"
-        fetchpriority="high"
-      />
-    </v-sheet>
+
     <ReactPost :post="props.post" />
   </div>
 

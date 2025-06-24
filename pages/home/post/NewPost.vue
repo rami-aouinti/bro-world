@@ -19,26 +19,44 @@ const newStory = ref<File | null>(null)
 const { user } = await useUserSession()
 
 function detectLinks() {
+  if (youtubeId.value || imageUrl.value) return // Empêcher la redétection
+
   const ytRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^\s&]+)/;
   const imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/;
 
   const ytMatch = postContent.value.match(ytRegex)
   const imgMatch = postContent.value.match(imgRegex)
 
-  youtubeId.value = ytMatch ? ytMatch[1] : null
-  imageUrl.value = imgMatch ? imgMatch[1] : null
+  if (ytMatch) {
+    youtubeId.value = ytMatch[1]
+    postContent.value = ''
+  } else if (imgMatch) {
+    imageUrl.value = imgMatch[1]
+    postContent.value = ''
+  }
 }
 
-// ✅ Payload dynamique
+function clearPreview() {
+  youtubeId.value = null
+  imageUrl.value = null
+}
+
 const formPayload = computed(() => {
+  const payload: Record<string, any> = {}
+
   if (youtubeId.value) {
-    return { url: `https://www.youtube.com/watch?v=${youtubeId.value}` }
+    payload.url = `https://www.youtube.com/watch?v=${youtubeId.value}`
   } else if (imageUrl.value) {
-    return { url: imageUrl.value }
-  } else {
-    return { title: postContent.value }
+    payload.url = imageUrl.value
   }
+
+  if (postContent.value.trim()) {
+    payload.title = postContent.value.trim()
+  }
+
+  return payload
 })
+
 
 const handleSuccess = (data: any) => {
   postContent.value = ''
@@ -78,11 +96,6 @@ async function handleFileUpload(file: File) {
     console.error('Upload error', e)
     handleError(e)
   }
-}
-
-const load = () => {
-  loading.value = true
-  setTimeout(() => (loading.value = false), 3000)
 }
 </script>
 
@@ -136,7 +149,6 @@ const load = () => {
       label="Upload Story"
       outlined
       required
-      accept="image/*"
       show-size
       v-show="false"
       @update:modelValue="handleFileUpload"
@@ -156,6 +168,42 @@ const load = () => {
     >
       <v-card rounded="xl">
         <v-card-text>
+          <v-text-field
+            v-model="postContent"
+            label="Post Title"
+            variant="outlined"
+            rounded
+            outlined
+            required
+            @input="detectLinks"
+          />
+
+          <!-- Aperçu YouTube -->
+          <div v-if="youtubeId" class="my-4 text-center">
+            <div class="d-flex justify-end">
+              <v-btn icon @click="clearPreview" variant="text" size="small">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </div>
+            <iframe
+              :src="`https://www.youtube.com/embed/${youtubeId}`"
+              width="560"
+              height="315"
+              frameborder="0"
+              allowfullscreen
+              style="max-width: 100%"
+            ></iframe>
+          </div>
+
+          <!-- Aperçu Image -->
+          <div v-if="imageUrl" class="my-4 text-center">
+            <div class="d-flex justify-end">
+              <v-btn icon @click="clearPreview" variant="text" size="small">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </div>
+            <img :src="imageUrl" alt="preview" style="max-width: 100%; max-height: 300px" />
+          </div>
           <v-file-upload
             icon="mdi-upload"
             v-model="files"
@@ -196,6 +244,11 @@ const load = () => {
 
           <!-- Aperçu YouTube -->
           <div v-if="youtubeId" class="my-4 text-center">
+            <div class="d-flex justify-end">
+              <v-btn icon @click="clearPreview" variant="text" size="small">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </div>
             <iframe
               :src="`https://www.youtube.com/embed/${youtubeId}`"
               width="560"
@@ -208,22 +261,13 @@ const load = () => {
 
           <!-- Aperçu Image -->
           <div v-if="imageUrl" class="my-4 text-center">
+            <div class="d-flex justify-end">
+              <v-btn icon @click="clearPreview" variant="text" size="small">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </div>
             <img :src="imageUrl" alt="preview" style="max-width: 100%; max-height: 300px" />
           </div>
-
-          <!-- Upload de fichiers -->
-          <v-file-upload
-            icon="mdi-upload"
-            v-model="files"
-            :title="$t('post.files')"
-            multiple
-            density="compact"
-            variant="compact"
-            show-size
-            clearable
-          />
-
-          <small class="text-grey">* This doesn't actually save.</small>
         </v-card-text>
       </v-card>
     </BaseDialog>

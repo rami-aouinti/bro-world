@@ -47,20 +47,15 @@ function resetProgress() {
 
 async function loadStories() {
   try {
-    const response = await useFetch('/api/profile/stories', {
-      credentials: 'include',
-    })
-    stories.value = response.data.value || []
+    const response = await useFetch('/api/profile/stories')
+    stories.value = response?.data.value || []
   } catch (e) {
     console.error('Failed to load stories', e)
   }
 }
 
-// 🛠️ Corrigé : utiliser une fonction dans le watch
-watch(stories, (val) => {
-  if (!val.length) {
-    loadStories()
-  }
+watch(!stories.value , (val) => {
+  loadStories()
 }, { immediate: true })
 
 onMounted(loadStories)

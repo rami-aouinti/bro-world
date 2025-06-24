@@ -46,7 +46,7 @@ function toggleAll() {
     <teleport to="body">
       <v-card
         elevation="6"
-        width="400"
+        width="300"
         class="d-flex flex-column notification-card"
         :class="{ 'notification-card--open': showAll }"
       >

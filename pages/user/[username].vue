@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import UserAvatar from "~/components/App/UserAvatar.vue";
 import { useRoute } from 'vue-router'
+import LoaderProfile from "~/components/App/Loader/Profile/LoaderProfile.vue";
+import LoaderUser from "~/components/App/Loader/Profile/LoaderUser.vue";
 
 const route = useRoute()
 const { user } = useUserSession()
@@ -99,21 +101,12 @@ definePageMeta({
   <v-container
     fluid
   >
-    <v-row>
+    <div v-if="pending">
+      <LoaderUser />
+    </div>
+    <v-row v-else >
       <v-col lg="12">
-        <div
-          v-if="pending"
-          class="d-flex justify-center align-center"
-          style="height: 25vh"
-        >
-          <v-progress-circular
-            :size="120"
-            :width="10"
-            color="primary"
-            indeterminate
-          />
-        </div>
-        <v-card v-else rounded="xl" class="py-4" variant="text">
+        <v-card rounded="xl" class="py-4" variant="text">
           <div class="px-5">
             <v-row align="center" class="pa-0 ma-0">
               <!-- Avatar -->
@@ -169,8 +162,6 @@ definePageMeta({
           </div>
         </v-card>
       </v-col>
-    </v-row>
-    <v-row>
       <v-col lg="12" md="12" cols="12" class="position-relative">
         <v-card rounded="xl" class="h-100" variant="text">
           <div class="px-4 pt-4">
