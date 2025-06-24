@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, defineEmits } from 'vue'
 import UserAvatar from '~/components/App/UserAvatar.vue'
 import Camera from '~/components/App/Blog/Camera.vue'
 import BaseDialog from '~/components/BaseDialog.vue'

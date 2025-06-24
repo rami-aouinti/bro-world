@@ -59,7 +59,7 @@ const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
         >
           <template #default="{ items }">
             <div v-for="post in items" :key="post.id">
-              <HomePosts :post="post" />
+              <HomePosts @post-deleted="reloadPosts" :post="post" />
             </div>
           </template>
         </InfiniteList>

@@ -25,7 +25,7 @@ const handleEdit = async (id: string | number) => {
   const res = await useFetch(`post/${id}`)
   console.log('Edit:', res)
 }
-const emit = defineEmits(["update:modelValue", "post-deleted"]);
+const emit = defineEmits(["update:modelValue", "post-delete"]);
 const handleDelete = async (id: string | number) => {
   deletePost.value = true
 }
@@ -178,7 +178,7 @@ onMounted(async () => {
           </v-list-item>
         </v-list>
       </v-menu>
-      <DeleteDialog @deleted="emit('post-deleted')" :model-value="deletePost" delete-url="/api/posts/post/delete" :item-id="props.post.id"></DeleteDialog>
+      <DeleteDialog @deleted="emit('post-delete')" :model-value="deletePost" delete-url="/api/posts/post/delete" :item-id="props.post.id"></DeleteDialog>
     </div>
   </div>
 </template>
