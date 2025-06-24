@@ -1,24 +1,43 @@
 <template>
   <div :dir="isRtl ? 'rtl' : 'ltr'">
     <template v-if="loading">
-      <v-skeleton-loader type="list-item-two-line" class="mx-3 mb-4 rounded-xl" v-for="i in 5" :key="'rate' + i" />
+      <v-skeleton-loader
+        type="list-item-two-line"
+        class="mx-3 mb-4 rounded-xl"
+        v-for="i in 5"
+        :key="'rate' + i"
+      />
     </template>
+
     <v-card v-else rounded="xl" class="mx-3" variant="text">
       <v-card-title class="d-flex justify-center mt-auto text-h5">
         <span class="text-h6">{{ t('dashboard.rating.title') }}</span>
       </v-card-title>
+
       <v-divider />
+
       <div class="d-flex align-center flex-column my-auto">
         <div class="text-h2 mt-5">
           {{ averageRating }}
           <span class="text-h6 ml-n3">/5</span>
         </div>
 
-        <v-rating :model-value="averageRating" color="primary" half-increments readonly />
-        <div class="px-3">{{ totalReviews }} {{ t('dashboard.rating.count') }}</div>
+        <v-rating
+          :model-value="averageRating"
+          color="primary"
+          half-increments
+          readonly
+        />
+        <div class="px-3">
+          {{ totalReviews }} {{ t('dashboard.rating.count') }}
+        </div>
       </div>
 
-      <v-list bg-color="transparent" class="d-flex flex-column-reverse" density="compact">
+      <v-list
+        bg-color="transparent"
+        class="d-flex flex-column-reverse"
+        density="compact"
+      >
         <v-list-item v-for="i in 5" :key="i">
           <v-progress-linear
             :model-value="totalReviews > 0 ? (distribution[`${i - 1}-${i}`] / totalReviews) * 100 : 0"
@@ -62,7 +81,6 @@
   </div>
 </template>
 
-
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -73,56 +91,51 @@ const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
 const { loggedIn } = useUserSession()
 
 const loading = ref(true)
-
 const averageRating = ref(0)
 const totalReviews = ref(0)
-const distribution = ref({
+const distribution = ref<Record<string, number>>({
   '0-1': 0,
   '1-2': 0,
   '2-3': 0,
   '3-4': 0,
-  '4-5': 0
+  '4-5': 0,
 })
 
 const newRating = ref(0)
-const result = ref(<any>[])
 const isSubmitting = ref(false)
-
-const tasks: Promise<any>[] = []
 
 const fetchStats = async () => {
   const { data, error } = await useFetch('/api/review/get/')
   if (error.value) {
-    console.error('Failed to load Reviews:', error.value)
+    console.error('Failed to load reviews:', error.value)
     return
   }
-  result.value = data.value
-  if (result.value) {
-    averageRating.value = result.average_rating ?? 0
-    totalReviews.value = result.total_reviews ?? 0
-    distribution.value = result.distribution ?? distribution.value
+
+  const res = data.value as any
+  if (res) {
+    averageRating.value = res.average_rating ?? 0
+    totalReviews.value = res.total_reviews ?? 0
+    distribution.value = res.distribution ?? distribution.value
   }
+
   loading.value = false
 }
 
 const submitRating = async () => {
   if (newRating.value > 0) {
     isSubmitting.value = true
+
     await useFetch('/api/review/post/', {
       method: 'POST',
-      body: { rating: newRating.value }
+      body: { rating: newRating.value },
     })
+
     newRating.value = 0
     await fetchStats()
+
     isSubmitting.value = false
   }
 }
 
-watch(!result.value, () => {
-  fetchStats()
-})
-
-onMounted(async () => {
-  tasks.push(fetchStats())
-})
+onMounted(fetchStats)
 </script>

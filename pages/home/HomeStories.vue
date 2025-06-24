@@ -3,6 +3,7 @@ import { ref, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useIntervalFn } from '@vueuse/core'
 
 const { user } = await useUserSession()
+
 const stories = ref<any[]>([])
 
 const storyViewerVisible = ref(false)
@@ -47,18 +48,32 @@ function resetProgress() {
 
 async function loadStories() {
   try {
-    const response = await useFetch('/api/profile/stories')
-    stories.value = response?.data.value || []
+    const data = await $fetch('/api/profile/stories')
+    if (Array.isArray(data)) {
+      stories.value = data
+    } else {
+      console.warn('Invalid response format:', data)
+    }
   } catch (e) {
-    console.error('Failed to load stories', e)
+    console.error('Failed to load stories:', e)
   }
 }
 
-watch(!stories.value , (val) => {
-  loadStories()
-}, { immediate: true })
+// 🔁 Recharger si stories est vide
+watch(
+  () => stories.value.length === 0,
+  (isEmpty) => {
+    if (isEmpty) loadStories()
+  },
+  { immediate: true }
+)
 
-onMounted(loadStories)
+onMounted(() => {
+  if (stories.value.length === 0) {
+    loadStories()
+  }
+})
+
 onBeforeUnmount(() => {
   pause()
   if (progressTimer) clearInterval(progressTimer)
@@ -83,13 +98,11 @@ function closeStoryViewer() {
   if (progressTimer) clearInterval(progressTimer)
 }
 
-// 🧡 Réaction
 function sendHeart() {
   console.log('❤️ Heart sent for story:', currentUserStories.value[currentStoryIndex.value])
   // TODO: Envoyer à l’API
 }
 
-// 💬 Message
 function sendMessage() {
   if (!message.value.trim()) return
   console.log('💬 Message sent:', message.value)
@@ -140,10 +153,8 @@ function sendMessage() {
 
   <v-dialog v-model="storyViewerVisible" max-width="500" @click:outside="closeStoryViewer">
     <v-card class="pa-0">
-      <!-- Progress bar -->
       <v-progress-linear :model-value="progress" height="4" color="primary" stream />
 
-      <!-- Story Display -->
       <div class="position-relative d-flex align-center justify-center" style="height: 500px; background-color: black;">
         <NuxtImg
           v-if="currentUserStories[currentStoryIndex]"
@@ -155,8 +166,6 @@ function sendMessage() {
           style="object-fit: cover;"
         />
 
-        <!-- Navigation Zones -->
-        <!-- Navigation Arrows -->
         <v-btn
           variant="text"
           icon
@@ -180,7 +189,6 @@ function sendMessage() {
         </v-btn>
       </div>
 
-      <!-- Reactions / Input -->
       <div class="d-flex align-center justify-space-between px-4 py-2">
         <v-btn variant="text" icon @click="sendHeart">
           <v-icon>mdi-heart</v-icon>
