@@ -1,8 +1,5 @@
 <script setup lang="ts">
-defineProps({
-  rtl: Boolean
-})
-import { ref, computed, onMounted } from 'vue'
+import { computed, defineEmits, defineProps } from 'vue'
 import Language from "~/components/App/AppBar/Language.vue"
 import User from "~/components/App/AppBar/User.vue"
 import Screen from "~/components/App/AppBar/Screen.vue"
@@ -12,6 +9,9 @@ import Notification from "~/components/App/AppBar/Notification.vue"
 import Messenger from "~/components/App/AppBar/Messenger.vue"
 import { useShopifyCart } from "~/modules/shopify/composables/useShopifyCart"
 
+defineProps({
+  rtl: Boolean
+})
 const { loggedIn } = useUserSession()
 const { cart } = useShopifyCart()
 

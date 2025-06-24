@@ -1,15 +1,13 @@
 <script setup lang="ts">
-defineProps({
-  right: Boolean
-})
-
 import AppDrawerItem from "~/components/App/AppDrawerItem.vue"
 import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
 import { useLocalePath } from '#i18n'
 import { useI18n } from 'vue-i18n'
-import { computed, ref, onMounted } from 'vue'
-
+import { computed, ref, onMounted, defineProps } from 'vue'
+defineProps({
+  right: Boolean
+})
 const isClientMounted = ref(false) // ← important
 onMounted(() => {
   isClientMounted.value = true
