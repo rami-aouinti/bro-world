@@ -2,9 +2,10 @@
 import UserAvatar from "~/components/App/UserAvatar.vue";
 import RelativeTime from "~/components/App/RelativeTime.vue";
 import DeleteDialog from "~/components/DeleteDialog.vue";
-import { mergeProps, defineProps, defineEmits } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useLocalePath } from '#i18n'
+import {defineEmits, defineProps, mergeProps} from 'vue'
+import {useI18n} from 'vue-i18n'
+import {useLocalePath} from '#i18n'
+import BaseDialog from "~/components/BaseDialog.vue";
 
 const props = defineProps<{
   post: {
@@ -13,7 +14,7 @@ const props = defineProps<{
   },
 }>()
 
-const emit = defineEmits(['post-delete'])
+const emit = defineEmits(['post-delete', 'post-created'])
 
 const { t } = useI18n()
 const localePath = useLocalePath()
@@ -24,21 +25,77 @@ const route = useRoute()
 const isFollowing = ref<boolean | null>(null)
 const loading = ref(false)
 const deletePost = ref(false)
+const editPost = ref(false)
+
+const postContent = ref('')
+const youtubeId = ref<string | null>(null)
+const imageUrl = ref<string | null>(null)
+
+function detectLinks() {
+  if (youtubeId.value || imageUrl.value) return // Empêcher la redétection
+
+  const ytRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^\s&]+)/;
+  const imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/;
+
+  const ytMatch = postContent.value.match(ytRegex)
+  const imgMatch = postContent.value.match(imgRegex)
+
+  if (ytMatch) {
+    youtubeId.value = ytMatch[1]
+    postContent.value = ''
+  } else if (imgMatch) {
+    imageUrl.value = imgMatch[1]
+    postContent.value = ''
+  }
+}
+
+function clearPreview() {
+  youtubeId.value = null
+  imageUrl.value = null
+}
+
+const formPayload = computed(() => {
+  const payload: Record<string, any> = {}
+
+  if (youtubeId.value) {
+    payload.url = `https://www.youtube.com/watch?v=${youtubeId.value}`
+  } else if (imageUrl.value) {
+    payload.url = imageUrl.value
+  }
+
+  if (postContent.value.trim()) {
+    payload.title = postContent.value.trim()
+  }
+
+  return payload
+})
+
+
+const handleSuccess = (data: any) => {
+  postContent.value = ''
+  imageUrl.value = null
+  youtubeId.value = null
+  Notify.success("Post updated!")
+  emit('post-created', data)
+}
+
+const handleError = (error: any) => {
+  Notify.error("Post failed!")
+  console.error('Failed:', error)
+}
+
+
+
 
 const handleEdit = async (id: string | number) => {
-  try {
-    const res = await $fetch(`/post/${id}`)
-    console.log('Edit:', res)
-  } catch (error) {
-    console.error('Error editing post:', error)
-  }
+  postContent.value = props.post.title
+  editPost.value = true
 }
 
 const checkFollowStatus = async (userId: string) => {
   loading.value = true
   try {
-    const res = await $fetch(`/api/follow/status/${userId}`)
-    isFollowing.value = res
+    isFollowing.value = await $fetch(`/api/follow/status/${userId}`)
   } catch (error) {
     console.error('Error checking follow status:', error)
   }
@@ -89,7 +146,7 @@ const redirectToLogin = () => {
 const handleDelete = (id: string | number) => {
   deletePost.value = true
 }
-
+const files = ref<File[]>([])
 watch(
   () => props.post.user?.id,
   () => {
@@ -185,6 +242,59 @@ watch(
           </v-list-item>
         </v-list>
       </v-menu>
+
+      <BaseDialog
+        v-model="editPost"
+        title="Edit Post"
+        color="primary"
+        :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (editPost = false) }]"
+        :saveButton="[{ text: 'Save', color: 'primary', action: '/api/posts/post/edit/' + props.post.id }]"
+        :files="files"
+        :forms="formPayload"
+        @success="handleSuccess"
+        @error="handleError"
+      >
+        <v-card rounded="xl">
+          <v-card-text>
+            <v-text-field
+              v-model="postContent"
+              label="Post Title"
+              variant="outlined"
+              rounded
+              outlined
+              required
+              @input="detectLinks"
+            />
+
+            <!-- Aperçu YouTube -->
+            <div v-if="youtubeId" class="my-4 text-center">
+              <div class="d-flex justify-end">
+                <v-btn icon @click="clearPreview" variant="text" size="small">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </div>
+              <iframe
+                :src="`https://www.youtube.com/embed/${youtubeId}`"
+                width="560"
+                height="315"
+                frameborder="0"
+                allowfullscreen
+                style="max-width: 100%"
+              ></iframe>
+            </div>
+
+            <!-- Aperçu Image -->
+            <div v-if="imageUrl" class="my-4 text-center">
+              <div class="d-flex justify-end">
+                <v-btn icon @click="clearPreview" variant="text" size="small">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </div>
+              <img :src="imageUrl" alt="preview" style="max-width: 100%; max-height: 300px" />
+            </div>
+          </v-card-text>
+        </v-card>
+      </BaseDialog>
 
       <DeleteDialog
         @deleted="emit('post-delete')"

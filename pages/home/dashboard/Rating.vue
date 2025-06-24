@@ -102,20 +102,22 @@ const distribution = ref<Record<string, number>>({
 })
 
 const newRating = ref(0)
+const readyRating = ref(true)
 const isSubmitting = ref(false)
 
 const fetchStats = async () => {
   const { data, error } = await useFetch('/api/review/get/')
   if (error.value) {
+    readyRating.value = false
     console.error('Failed to load reviews:', error.value)
     return
   }
 
-  const res = data.value as any
-  if (res) {
-    averageRating.value = res.average_rating ?? 0
-    totalReviews.value = res.total_reviews ?? 0
-    distribution.value = res.distribution ?? distribution.value
+  if (data.value) {
+    readyRating.value = false
+    averageRating.value = data.value.average_rating ?? 0
+    totalReviews.value = data.value.total_reviews ?? 0
+    distribution.value = data.value.distribution ?? distribution.value
   }
 
   loading.value = false
@@ -136,6 +138,9 @@ const submitRating = async () => {
     isSubmitting.value = false
   }
 }
+watch(readyRating, () => {
+  fetchStats()
+}, { immediate: true })
 
 onMounted(fetchStats)
 </script>

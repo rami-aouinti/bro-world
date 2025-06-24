@@ -2,7 +2,7 @@ import axios from 'axios'
 import { createError } from 'h3'
 
 export async function requestWithRetry(
-  method: 'get' | 'post' | 'put' | 'delete',
+  method: 'get' | 'post' | 'put' | 'patch' | 'delete',
   url: string,
   token?: string,
   data: any = null,
