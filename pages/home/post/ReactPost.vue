@@ -18,7 +18,7 @@ const isLiking = ref(false)
 const localLikes = ref([...props.post.likes ?? []])
 const likeId = ref('')
 function hasLiked() {
-  if (localLikes.value) {
+  if (localLikes.value && user.value.id) {
     for (const like of localLikes.value) {
       if (like?.user?.id == user.value.id) {
         likeId.value = like.id
@@ -27,11 +27,6 @@ function hasLiked() {
     }
   }
 }
-
-
-watch(!user.value.id, () => {
-  hasLiked()
-}, { immediate: true })
 
 watch(!localLikes.value, () => {
   hasLiked()
