@@ -5,7 +5,7 @@ import UserStatusBanner from '~/components/App/UserStatusBanner.vue'
 import HomeStories from '~/pages/home/HomeStories.vue'
 import NewPost from '~/pages/home/post/NewPost.vue'
 import HomePosts from '~/pages/home/HomePosts.vue'
-import HomeFilters from '~/pages/home/HomeFilters.vue'
+import Dashboard from '~/pages/home/Dashboard.vue'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import LoaderStatusBanner
@@ -83,7 +83,7 @@ const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
       </v-col>
 
       <v-col cols="12" lg="4">
-        <HomeFilters />
+        <Dashboard />
       </v-col>
     </v-row>
   </v-container>
