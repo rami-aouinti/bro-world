@@ -22,7 +22,7 @@ const isLiking = ref(false)
 const localLikes = ref([...props.comment.likes ?? []])
 const likeId = ref('')
 function hasLiked() {
-  if (localLikes.value && user.value.id) {
+  if (localLikes.value && loggedIn) {
     for (const like of localLikes.value) {
       if (like?.user?.id == user.value.id) {
         likeId.value = like.id
