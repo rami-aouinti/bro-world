@@ -25,7 +25,7 @@ const handleEdit = async (id: string | number) => {
   const res = await useFetch(`post/${id}`)
   console.log('Edit:', res)
 }
-const emit = defineEmits(["update:modelValue", "post-delete"]);
+const emit = defineEmits(['post-delete']);
 const handleDelete = async (id: string | number) => {
   deletePost.value = true
 }
