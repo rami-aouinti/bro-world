@@ -24,7 +24,7 @@ const likeId = ref('')
 function hasLiked() {
   if (localLikes.value && loggedIn) {
     for (const like of localLikes.value) {
-      if (like?.user?.id == user.value.id) {
+      if (like?.user?.id == user?.value?.id) {
         likeId.value = like.id
         return isLiking.value = true;
       }
