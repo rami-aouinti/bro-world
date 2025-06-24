@@ -3,7 +3,7 @@ import Comment from "~/pages/home/post/Comment.vue";
 import { computed, ref, defineEmits} from 'vue'
 const emit = defineEmits(['comment-commented'])
 const { user, loggedIn } = await useUserSession()
-
+const sendingComment = ref(false)
 const props = defineProps<{
   comment: {
     id: string
@@ -17,7 +17,7 @@ const props = defineProps<{
 
 const showReplies = ref(false)
 const newReply = ref('')
-
+const loading = ref(false)
 const isLiking = ref(false)
 const localLikes = ref([...props.comment.likes ?? []])
 const likeId = ref('')
@@ -42,6 +42,7 @@ watch(!localLikes.value, () => {
 }, { immediate: true })
 
 const handleLike = async () => {
+  loading.value = true
   if (!loggedIn) {
     Notify.error('You are not logged')
     return
@@ -76,10 +77,12 @@ const handleLike = async () => {
       Notify.error('Error : ' + err)
     }
   }
+  loading.value = false
 }
 
 
 const sendComment = async () => {
+  sendingComment.value = true
   const formData = new FormData();
   formData.append('content', newReply.value);
   const {data, error} = await useFetch(`/api/posts/post/comment/${props.comment.id}/comments`, {
@@ -92,6 +95,7 @@ const sendComment = async () => {
   } else {
     console.error("Error send comment:", error);
   }
+  sendingComment.value = false
 }
 </script>
 
@@ -100,12 +104,19 @@ const sendComment = async () => {
   <div>
     <v-icon
       size="20"
+      v-if="!loading"
       class="material-icons-round me-1 cursor-pointer"
       :color="isLiking ? 'primary' : 'secondary'"
       @click="handleLike"
     >mdi-thumb-up</v-icon
     >
-    <span v-if="localLikes.length > 0" class="text-sm me-4" :class="isLiking ? 'text-primary' : 'text-secondary'">
+    <v-progress-circular
+      v-else
+      indeterminate
+      size="24"
+      color="primary"
+    />
+    <span v-if="localLikes.length > 0 && !loading " class="text-sm me-4" :class="isLiking ? 'text-primary' : 'text-secondary'">
           {{ localLikes.length }}
         </span>
     <v-icon
@@ -128,7 +139,8 @@ const sendComment = async () => {
     </div>
     <v-textarea
       v-model="newReply"
-      append-inner-icon="mdi-send"
+      :append-inner-icon="sendingComment ? 'mdi-loading' : 'mdi-send'"
+      :class="{ 'mdi-spin': sendingComment }"
       rounded
       class="mx-0 w-100"
       label="Write your comment"

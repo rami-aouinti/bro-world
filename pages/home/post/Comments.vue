@@ -32,7 +32,7 @@ async function reloadComments() {
     <hr class="horizontal dark mt-1 mb-5" />
 
     <div v-for="comment in comments" :key="comment.id" class="d-flex mt-3">
-      <Comment @comment-created="reloadComments" :comment="comment" />
+      <Comment @comment-created="reloadComments" @comment-deleted="reloadComments" :comment="comment" />
     </div>
 
     <NewComment

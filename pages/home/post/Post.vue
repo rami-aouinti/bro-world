@@ -56,7 +56,7 @@ const localePath = useLocalePath()
     <NuxtLink :to="localePath(`/post/${props.post.slug}`)" class="text-decoration-none">
       <p v-if="props.post?.title" class="text-secondary font-weight-bolder px-12 mb-4">{{ props.post?.title }}</p>
     </NuxtLink>
-      <div class="text-left px-12 mb-6 text-body font-weight-light">
+      <div v-if="props.post?.url || props.post?.medias?.length > 0" class="text-left px-12 mb-6 text-body font-weight-light">
         <!-- Si c'est une URL YouTube, on affiche la vidéo centrée -->
         <div v-if="isYoutubeUrl(props.post?.url)" class="text-center">
           <v-sheet color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">

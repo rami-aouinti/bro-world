@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import UserAvatar from "~/components/App/UserAvatar.vue";
 import RelativeTime from "~/components/App/RelativeTime.vue";
-import { mergeProps, defineProps } from 'vue'
+import { mergeProps, defineProps, defineEmits } from 'vue'
 
 const props = defineProps<{
   post: {
@@ -18,14 +18,16 @@ const route = useRoute()
 const isFollowing = ref<boolean | null>(null)
 const loading = ref(false)
 import { useI18n } from 'vue-i18n'
+import DeleteDialog from "~/components/DeleteDialog.vue";
+const deletePost = ref(false)
 const { t } = useI18n()
 const handleEdit = async (id: string | number) => {
   const res = await useFetch(`post/${id}`)
   console.log('Edit:', res)
 }
-
+const emit = defineEmits(["update:modelValue", "post-deleted"]);
 const handleDelete = async (id: string | number) => {
-  await useFetch(`post/${id}`, { method: 'DELETE' })
+  deletePost.value = true
 }
 
 
@@ -157,21 +159,26 @@ onMounted(async () => {
             class="text-primary"
             v-bind="mergeProps(menu)"
           >
-            <v-icon icon="mdi-menu" size="20" />
+            <v-icon icon="mdi-dots-vertical" size="20" />
           </v-btn>
         </template>
 
         <v-list class="pa-2">
 
           <v-list-item>
-            <v-btn size="small" icon="mdi-pencil" variant="text" color="warning" @click="handleEdit(props.post.id)" />
+            <v-icon size="small" icon="mdi-pencil"  color="warning" @click="handleEdit(props.post.id)">
+            mdi-pencil
+            </v-icon>
 
           </v-list-item>
           <v-list-item>
-            <v-btn size="small" icon="mdi-delete" variant="text" color="error" @click="handleDelete(props.post.id)" />
+            <v-icon size="small"  color="error" @click="handleDelete(props.post.id)" >
+              mdi-delete
+            </v-icon>
           </v-list-item>
         </v-list>
       </v-menu>
+      <DeleteDialog @deleted="emit('post-deleted')" :model-value="deletePost" delete-url="/api/posts/post/delete" :item-id="props.post.id"></DeleteDialog>
     </div>
   </div>
 </template>

@@ -13,6 +13,7 @@ const props = defineProps<{
   }
 }>()
 
+const loading = ref(false)
 const isLiking = ref(false)
 const localLikes = ref([...props.post.likes ?? []])
 const likeId = ref('')
@@ -37,6 +38,7 @@ watch(!localLikes.value, () => {
 }, { immediate: true })
 
 const handleLike = async () => {
+  loading.value = true
   if (!loggedIn) {
     Notify.error('You are not logged')
     return
@@ -71,6 +73,7 @@ const handleLike = async () => {
       Notify.error('Error : ' + err)
     }
   }
+  loading.value = false
 }
 </script>
 
@@ -78,6 +81,7 @@ const handleLike = async () => {
   <div class="d-flex justify-end mb-2">
     <div class="d-flex align-center me-2">
       <v-icon
+        v-if="!loading"
         size="24"
         class="me-1 cursor-pointer"
         :color="isLiking ? 'primary' : 'secondary'"
@@ -85,7 +89,13 @@ const handleLike = async () => {
       >
         mdi-thumb-up
       </v-icon>
-      <span v-if="localLikes.length > 0" class="text-sm me-4" :class="isLiking ? 'text-primary' : 'text-secondary'">
+      <v-progress-circular
+        v-else
+        indeterminate
+        size="24"
+        color="primary"
+      />
+      <span v-if="localLikes.length > 0 && !loading" class="text-sm me-4" :class="isLiking ? 'text-primary' : 'text-secondary'">
           {{ localLikes.length }}
         </span>
     </div>

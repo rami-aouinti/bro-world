@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue'
 import UserAvatar from "~/components/App/UserAvatar.vue"
-
+const sendingComment = ref(false)
 const { user } = useUserSession()
 const comment = ref('')
 
@@ -16,7 +16,7 @@ const props = defineProps<{
 
 const sendComment = async () => {
   if (!comment.value.trim()) return
-
+  sendingComment.value = true
   const formData = new FormData()
   formData.append('content', comment.value)
 
@@ -32,6 +32,7 @@ const sendComment = async () => {
   } else {
     console.error("Error send comment:", error)
   }
+  sendingComment.value = false
 }
 </script>
 
@@ -44,7 +45,8 @@ const sendComment = async () => {
     <div class="flex-grow-1 ms-4 d-flex align-center">
       <v-textarea
         v-model="comment"
-        append-inner-icon="mdi-send"
+        :append-inner-icon="sendingComment ? 'mdi-loading' : 'mdi-send'"
+        :class="{ 'mdi-spin': sendingComment }"
         rounded
         class="mx-2 w-100"
         label="Write your comment"

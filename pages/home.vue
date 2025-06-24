@@ -16,7 +16,9 @@ const { loggedIn } = useUserSession()
 const postStore = usePostStore()
 const { locale } = useI18n()
 const loadingUser = ref(true)
-
+const currentPage = ref(1)
+const limit = ref(5)
+const totalPages = ref(1)
 async function reloadPosts() {
   postStore.clearPosts()
   await postStore.fetchPosts()
@@ -52,7 +54,7 @@ const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
         <InfiniteList
           v-if="!postStore.loaded"
           fetch-url="/api/posts"
-          :limit="5"
+          :limit="20"
           @loaded="postStore.setPosts"
         >
           <template #default="{ items }">
@@ -66,6 +68,13 @@ const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
           <div v-for="post in postStore.posts" :key="post.id">
             <HomePosts :post="post" />
           </div>
+          <v-pagination
+            rounded="circle"
+            color="primary"
+            v-model="currentPage"
+            :length="totalPages"
+            class="mt-4"
+          />
         </div>
 
         <v-alert v-else type="info" color="primary" class="mt-10 mx-6">
