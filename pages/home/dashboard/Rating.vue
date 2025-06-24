@@ -125,7 +125,7 @@ const submitRating = async () => {
   if (newRating.value > 0) {
     isSubmitting.value = true
 
-    await useFetch('/api/review/post/', {
+    await $fetch('/api/review/post/', {
       method: 'POST',
       body: { rating: newRating.value },
     })

@@ -48,7 +48,7 @@
     </video>
 
     <v-btn
-      color="error"
+      color="primary"
       class="mt-4"
       prepend-icon="mdi-update"
       @click="handleAction"
@@ -68,14 +68,16 @@ const videoUrl = ref(null)
 const videoRef = ref(null)
 const isRecording = ref(false)
 const handleAction = async () => {
+
+  const blob = new Blob(chunks.value, {type: 'video/webm'})
+  videoUrl.value = URL.createObjectURL(blob)
+  const formData = new FormData()
+
   if (Array.isArray(files)) {
     files.forEach(file => {
       formData.append('files[]', file)
     })
   }
-  const blob = new Blob(chunks.value, {type: 'video/webm'})
-  videoUrl.value = URL.createObjectURL(blob)
-  const formData = new FormData()
   formData.append('files[]', blob, 'video.webm')
   try {
     const {data, error} = await useFetch('/api/posts/post/posts', {

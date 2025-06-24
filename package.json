@@ -51,6 +51,7 @@
     "@pinia/nuxt": "^0.11.1",
     "@quasar/extras": "^1.17.0",
     "@sipec/vue3-tags-input": "^3.0.4",
+    "@tinymce/tinymce-vue": "^5.1.1",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "@vueuse/nuxt": "^13.3.0",
@@ -75,6 +76,7 @@
     "prettier-plugin-tailwindcss": "^0.6.12",
     "puppeteer": "^24.10.2",
     "quasar": "^2.18.1",
+    "quill": "^2.0.3",
     "sass-embedded": "^1.89.1",
     "sharp": "^0.34.2",
     "vite-plugin-compression": "^0.5.1",
@@ -84,6 +86,7 @@
     "vue3-apexcharts": "^1.8.0",
     "vue3-datepicker": "^0.4.0",
     "vue3-lottie": "^3.3.1",
+    "vue3-quill": "^0.3.1",
     "vuetify": "^3.8.8"
   }
 }

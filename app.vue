@@ -84,3 +84,29 @@ useSeoMeta({
 <template>
   <NuxtLayout />
 </template>
+<style scoped>
+.tox {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.tox-editor-container {
+  background-color: transparent !important;
+}
+
+.tox-edit-area__iframe {
+  background-color: transparent !important;
+}
+
+.tox-sidebar-wrap {
+  background-color: transparent !important;
+}
+.tox .tox-menubar {
+  background-color: transparent !important;
+}
+.tox-edit-area {
+  background-color: transparent !important;
+  border: none !important;
+}
+</style>

@@ -3,11 +3,15 @@ import { ref, computed, defineEmits } from 'vue'
 import UserAvatar from '~/components/App/UserAvatar.vue'
 import Camera from '~/components/App/Blog/Camera.vue'
 import BaseDialog from '~/components/BaseDialog.vue'
-
+import Editor from "~/components/App/Editor.vue";
+const runtimeConfig = useRuntimeConfig()
+const apiKey = runtimeConfig.public.tinyMceApiKey
 const dialog = ref(false)
 const dialogFile = ref(false)
+const dialogText = ref(false)
 const video = ref(false)
 const loading = ref(false)
+const loadingText = ref(false)
 const files = ref<File[]>([])
 const emit = defineEmits(['post-created'])
 const postContent = ref('')
@@ -81,7 +85,7 @@ async function handleFileUpload(file: File) {
   formData.append('file', file)
 
   try {
-    const response = await useFetch('/api/profile/story', {
+    const response = await $fetch('/api/profile/story', {
       method: 'POST',
       body: formData,
       credentials: 'include',
@@ -97,6 +101,33 @@ async function handleFileUpload(file: File) {
     handleError(e)
   }
 }
+
+
+const handleAction = async () => {
+  loadingText.value = true
+  const formData = new FormData()
+  if (postContent.value.trim()) {
+    formData.append('title', postContent.value.trim())
+  }
+  try {
+    const {data, error} = await useFetch('/api/posts/post/posts', {
+      method: 'POST',
+      body: formData,
+    })
+
+  } catch (err) {
+    Notify.error('error')
+  }
+  finally {
+    postContent.value = ''
+    Notify.success("Post created!")
+    dialogText.value = false
+    emit('post-created')
+  }
+  loadingText.value = false
+}
+
+
 </script>
 
 <template>
@@ -107,8 +138,8 @@ async function handleFileUpload(file: File) {
           <button class="btn-reset mx-2" @click="dialog = true" aria-label="User avatar" style="flex-shrink: 0">
             <UserAvatar :user="user" size="48" color="primary" />
           </button>
-
           <v-btn
+            v-if="!dialogText"
             class="px-3 py-2 font-weight-bold justify-start"
             height="40"
             variant="tonal"
@@ -117,15 +148,35 @@ async function handleFileUpload(file: File) {
           >
             <span>Hello {{ user?.firstName }}, new post?</span>
           </v-btn>
+          <v-card v-else rounded="xl" class="mx-3 w-100" variant="text">
+            <div class="px-3 py-2 font-weight-bold justify-start" style="width: 100%; flex-wrap: nowrap; overflow: hidden">
+              <Editor v-model="postContent" :api-key="apiKey" />
+            </div>
+            <v-card-actions>
+              <v-spacer />
+              <v-btn
+                color="primary"
+                class="mt-4"
+                prepend-icon="mdi-update"
+                :loading="loadingText"
+                @click="handleAction"
+              >
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
         </div>
       </v-card-text>
-
-      <hr class="horizontal dark my-2" />
 
       <v-card-actions>
         <v-btn @click="video = true" :loading="loading" icon class="flex-grow-1" height="48">
           <v-icon class="mx-1" color="primary">mdi-video</v-icon>
           Video
+        </v-btn>
+
+        <v-btn @click="dialogText = !dialogText" icon class="flex-grow-1" height="48">
+          <v-icon class="mx-1" color="primary">mdi-file-word-box</v-icon>
+          Text
         </v-btn>
 
         <v-btn @click="dialogFile = true" :loading="loading" icon class="flex-grow-1" height="48">
@@ -141,7 +192,6 @@ async function handleFileUpload(file: File) {
         </v-btn>
       </v-card-actions>
     </v-card>
-
     <!-- Upload d’un fichier story -->
     <v-file-input
       ref="fileInput"
@@ -168,53 +218,58 @@ async function handleFileUpload(file: File) {
     >
       <v-card rounded="xl">
         <v-card-text>
-          <v-text-field
-            v-model="postContent"
-            label="Post Title"
-            variant="outlined"
-            rounded
-            outlined
-            required
-            @input="detectLinks"
-          />
+          <v-row>
+            <v-col cols="12">
+              <v-text-field
+                v-model="postContent"
+                label="Post Title"
+                variant="outlined"
+                rounded
+                outlined
+                required
+                @input="detectLinks"
+              />
 
-          <!-- Aperçu YouTube -->
-          <div v-if="youtubeId" class="my-4 text-center">
-            <div class="d-flex justify-end">
-              <v-btn icon @click="clearPreview" variant="text" size="small">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </div>
-            <iframe
-              :src="`https://www.youtube.com/embed/${youtubeId}`"
-              width="560"
-              height="315"
-              frameborder="0"
-              allowfullscreen
-              style="max-width: 100%"
-            ></iframe>
-          </div>
+              <!-- Aperçu YouTube -->
+              <div v-if="youtubeId" class="my-4 text-center">
+                <div class="d-flex justify-end">
+                  <v-btn icon @click="clearPreview" variant="text" size="small">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </div>
+                <iframe
+                  :src="`https://www.youtube.com/embed/${youtubeId}`"
+                  width="560"
+                  height="315"
+                  frameborder="0"
+                  allowfullscreen
+                  style="max-width: 100%"
+                ></iframe>
+              </div>
 
-          <!-- Aperçu Image -->
-          <div v-if="imageUrl" class="my-4 text-center">
-            <div class="d-flex justify-end">
-              <v-btn icon @click="clearPreview" variant="text" size="small">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </div>
-            <img :src="imageUrl" alt="preview" style="max-width: 100%; max-height: 300px" />
-          </div>
-          <v-file-upload
-            icon="mdi-upload"
-            v-model="files"
-            :title="$t('post.files')"
-            multiple
-            density="compact"
-            variant="compact"
-            show-size
-            clearable
-          />
-
+              <!-- Aperçu Image -->
+              <div v-if="imageUrl" class="my-4 text-center">
+                <div class="d-flex justify-end">
+                  <v-btn icon @click="clearPreview" variant="text" size="small">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </div>
+                <img :src="imageUrl" alt="preview" style="max-width: 100%; max-height: 300px" />
+              </div>
+            </v-col>
+            <v-col cols="12">
+              <v-file-upload
+                icon="mdi-upload"
+                v-model="files"
+                :title="$t('post.files')"
+                multiple
+                density="compact"
+                variant="compact"
+                show-size
+                clearable
+              />
+            </v-col>
+          </v-row>
           <small class="text-grey">* This doesn't actually save.</small>
         </v-card-text>
       </v-card>
