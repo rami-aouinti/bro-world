@@ -1,5 +1,7 @@
 <template>
   <v-container :dir="isRtl ? 'rtl' : 'ltr'">
+
+
     <!-- Loader global -->
     <template v-if="loading">
       <v-skeleton-loader type="card" class="mx-3 mb-4 rounded-xl" height="120" />
