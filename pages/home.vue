@@ -1,35 +1,92 @@
 <script setup lang="ts">
-import InfiniteList from '~/components/Blog/InfiniteList.vue'
+import { ref, computed, watch, onMounted, nextTick } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { usePostStore } from '~/stores/usePostStore'
+
 import UserStatusBanner from '~/components/App/UserStatusBanner.vue'
 import HomeStories from '~/pages/home/HomeStories.vue'
 import NewPost from '~/pages/home/post/NewPost.vue'
 import HomePosts from '~/pages/home/HomePosts.vue'
 import Dashboard from '~/pages/home/Dashboard.vue'
-import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
-import LoaderStatusBanner
-  from "~/components/App/Loader/Home/LoaderStatusBanner.vue";
-import LoaderPost from "~/components/App/Loader/Home/LoaderPost.vue";
-import { ref, onMounted } from 'vue'
-const { loggedIn } = useUserSession()
-const postStore = usePostStore()
+import LoaderStatusBanner from '~/components/App/Loader/Home/LoaderStatusBanner.vue'
+import LoaderPost from '~/components/App/Loader/Home/LoaderPost.vue'
+
 const { locale } = useI18n()
+const { loggedIn } = useUserSession()
+
+const postStore = usePostStore()
+
 const loadingUser = ref(true)
+const loadingPost = ref(true)
+const isLoading = ref(false)
+const hasMore = ref(true)
+const pending = ref(true)
 const currentPage = ref(1)
-const limit = ref(5)
-const totalPages = ref(1)
-async function reloadPosts() {
-  postStore.clearPosts()
-  await postStore.fetchPosts()
+const newPostsLoaded = ref(true)
+
+const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
+const totalPages = computed(() =>
+  Math.ceil(postStore.total / postStore.limit)
+)
+
+const init = async () => {
+  const newPosts = await postStore.fetchPosts(1, postStore.limit)
+  if (newPosts) {
+    postStore.setPosts({
+      data: newPosts,
+      page: 1,
+      limit: postStore.limit,
+      count: postStore.total,
+    })
+    hasMore.value = totalPages >= currentPage
+    pending.value = false
+    loadingPost.value = false
+    newPostsLoaded.value = false
+  }
 }
 
+const reloadPosts = async () => {
+  loadingPost.value = true
+  postStore.clearPosts()
+  const newPosts = await postStore.fetchPosts(1, postStore.limit)
+  postStore.setPosts({
+    data: newPosts,
+    page: 1,
+    limit: postStore.limit,
+    count: postStore.total,
+  })
+  currentPage.value = 1
+  loadingPost.value = false
+}
+
+const loadMore = async () => {
+  if (isLoading.value || !hasMore.value) return
+
+  isLoading.value = true
+  pending.value = true
+
+  const nextPage = currentPage.value + 1
+  const newPosts = await postStore.fetchPosts(nextPage, postStore.limit)
+
+  if (newPosts.length > 0) {
+    postStore.appendPosts(newPosts)
+    currentPage.value = nextPage
+    isLoading.value = false
+  }
+  hasMore.value = Math.ceil(postStore.total / postStore.limit) > nextPage;
+  pending.value = false
+}
+
+watch(newPostsLoaded, init, { immediate: false })
+
 onMounted(async () => {
+  await init()
   await nextTick()
   loadingUser.value = false
 })
-const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
+
 </script>
+
 <template>
   <v-container fluid :dir="isRtl ? 'rtl' : 'ltr'">
     <template v-if="loadingUser">
@@ -38,54 +95,54 @@ const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
     <template v-else>
       <UserStatusBanner v-if="loggedIn" />
     </template>
+
     <v-row>
       <v-col cols="12" lg="8">
-        <!-- Loader pendant chargement -->
         <template v-if="loadingUser">
           <LoaderPost />
         </template>
 
-        <!-- Composants réels -->
         <template v-else>
           <NewPost @post-created="reloadPosts" v-if="loggedIn" />
           <HomeStories v-if="loggedIn" />
         </template>
 
-        <InfiniteList
-          v-if="!postStore.loaded"
-          fetch-url="/api/posts"
-          :limit="20"
-          @loaded="postStore.setPosts"
-        >
-          <template #default="{ items }">
-            <div v-for="post in items" :key="post.id">
-              <HomePosts @post-created="reloadPosts" @post-deleted="reloadPosts" :post="post" />
-            </div>
-          </template>
-        </InfiniteList>
-
-        <div v-else-if="postStore.posts.length">
-          <div v-for="post in postStore.posts" :key="post.id">
-            <HomePosts @post-created="reloadPosts" @post-deleted="reloadPosts" :post="post" />
-          </div>
-          <v-pagination
-            rounded="circle"
-            color="primary"
-            v-model="currentPage"
-            :length="totalPages"
-            class="mt-4"
-          />
+        <div v-if="loadingPost">
+          <v-col cols="12" md="12" lg="12" v-for="n in 2" :key="n">
+            <v-skeleton-loader
+              type="card"
+              class="pa-4 rounded-xl"
+              height="200"
+              rounded="xl"
+            />
+          </v-col>
         </div>
-
-        <v-alert v-else type="info" color="primary" class="mt-10 mx-6">
-          No Posts
-        </v-alert>
+        <div v-else>
+          <div v-if="postStore.posts.length > 0">
+            <HomePosts
+              v-for="post in postStore.posts"
+              :key="post.id"
+              @post-updated="reloadPosts"
+              @post-deleted="reloadPosts"
+              :post="post"
+            />
+            <div class="d-flex justify-center mt-4" v-if="hasMore && !pending">
+              <v-btn color="primary" :loading="isLoading" @click="loadMore">
+                Load more
+              </v-btn>
+            </div>
+          </div>
+          <v-alert v-else type="info" color="primary" class="mt-10 mx-6">
+            No Posts
+          </v-alert>
+        </div>
       </v-col>
 
       <v-col cols="12" lg="4">
-        <Dashboard />
+        <ClientOnly>
+          <Dashboard />
+        </ClientOnly>
       </v-col>
     </v-row>
   </v-container>
 </template>
-

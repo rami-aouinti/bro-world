@@ -22,9 +22,9 @@ const loadMore = async () => {
     const response = await fetch(`${props.fetchUrl}?page=${page.value}&limit=${props.limit || 5}`)
     const result = await response.json()
 
-    if (result && result.length) {
+    if (result.data && result.data.length) {
       pending.value = false
-      items.value.push(...result)
+      items.value.push(...result.data)
       emit('loaded', items.value)
       page.value++
     } else {

@@ -14,7 +14,7 @@ const props = defineProps<{
   },
 }>()
 
-const emit = defineEmits(['post-delete', 'post-created'])
+const emit = defineEmits(['post-delete', 'post-updated'])
 
 const { t } = useI18n()
 const localePath = useLocalePath()
@@ -76,7 +76,7 @@ const handleSuccess = (data: any) => {
   imageUrl.value = null
   youtubeId.value = null
   Notify.success("Post updated!")
-  emit('post-created', data)
+  emit('post-updated', data)
 }
 
 const handleError = (error: any) => {
