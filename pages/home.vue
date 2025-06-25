@@ -40,8 +40,8 @@ const init = async () => {
     })
     hasMore.value = totalPages >= currentPage
     pending.value = false
-    loadingPost.value = false
     newPostsLoaded.value = false
+    loadingPost.value = false
   }
 }
 
@@ -107,7 +107,7 @@ onMounted(async () => {
           <HomeStories v-if="loggedIn" />
         </template>
 
-        <div v-if="loadingPost">
+        <template v-if="loadingPost || loadingUser">
           <v-col cols="12" md="12" lg="12" v-for="n in 2" :key="n">
             <v-skeleton-loader
               type="card"
@@ -116,8 +116,8 @@ onMounted(async () => {
               rounded="xl"
             />
           </v-col>
-        </div>
-        <div v-else>
+        </template>
+        <template v-else>
           <div v-if="postStore.posts.length > 0">
             <HomePosts
               v-for="post in postStore.posts"
@@ -132,10 +132,7 @@ onMounted(async () => {
               </v-btn>
             </div>
           </div>
-          <v-alert v-else type="info" color="primary" class="mt-10 mx-6">
-            No Posts
-          </v-alert>
-        </div>
+        </template>
       </v-col>
 
       <v-col cols="12" lg="4">
