@@ -102,7 +102,7 @@ import DeleteAccount from '~/pages/setting/DeleteAccount.vue'
 import LoaderSetting from "~/components/App/Loader/Profile/LoaderSetting.vue";
 
 const { user } = await useUserSession()
-const switche = true
+const switche = ref(true)
 const pending = ref(true)
 const profile = ref<any>(null)
 const avatar = ref<File | null>(null)

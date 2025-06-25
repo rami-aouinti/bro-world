@@ -27,7 +27,7 @@ export default defineNuxtModule({
     }
 
     await installModule('nuxt-graphql-client', {
-      documentPaths: ['../modules/shopify/graphql'],
+      documentPaths: ['modules/shopify/graphql'],
       clients: {
         default: {
           host: process.env.SHOPIFY_GRAPHQL_API_URL as string || DEFAULT_SHOPIFY_GRAPHQL_API_URL,
