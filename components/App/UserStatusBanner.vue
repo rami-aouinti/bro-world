@@ -26,30 +26,34 @@
       </div>
 
       <div v-if="success">
-        <h3 class="text-h6 mb-2">
-          Please enter the one time password to verify your account
-        </h3>
+        <v-row>
+          <v-col cols="12">
+            <h3 class="text-h6 mb-2">
+              Please enter the one time password to verify your account
+            </h3>
 
-        <div>A code has been sent to {{ truncate(user.email, 3) }}*****</div>
+            <div>A code has been sent to {{ truncate(user.email, 3) }}*****</div>
 
-        <v-otp-input
-          v-model="otp"
-          :disabled="validating"
-          color="primary"
-          variant="plain"
-        ></v-otp-input>
+            <v-otp-input
+              v-model="otp"
+              :disabled="validating"
+              color="primary"
+              variant="plain"
+            ></v-otp-input>
 
-        <v-btn
-          :loading="validating"
-          class="mt-6 text-none bg-surface-variant"
-          height="40"
-          text="Validate"
-          variant="plain"
-          width="135"
-          border
-          rounded
-          @click="sendActivation"
-        ></v-btn>
+            <v-btn
+              :loading="validating"
+              class="mt-6 text-none bg-surface-variant"
+              height="40"
+              text="Validate"
+              variant="plain"
+              width="135"
+              border
+              rounded
+              @click="sendActivation"
+            ></v-btn>
+          </v-col>
+        </v-row>
       </div>
 
       <v-snackbar v-model="success" color="success" timeout="3000">
@@ -74,7 +78,7 @@ const validating = shallowRef(false)
 async function sendActivation() {
   validating.value = true
   try {
-    const { data } = await useFetch(`/api/auth/${otp.value}/request-activation`)
+    const { data } = await useFetch(`/api/auth/${otp.value}/activate`)
     success.value = data.value
     validating.value = false
   } catch (e) {
@@ -84,7 +88,7 @@ async function sendActivation() {
 }
 async function requestActivation() {
   try {
-    await useFetch(`/api/auth/request-activation`, {
+    await useFetch(`/api/auth/request-verification`, {
       method: 'POST',
     })
     success.value = true
@@ -96,6 +100,6 @@ async function requestActivation() {
 
 <style scoped>
 .user-status-banner {
-  min-height: 80px;
+  min-height: 60px;
 }
 </style>
