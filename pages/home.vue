@@ -10,14 +10,17 @@ import HomePosts from '~/pages/home/HomePosts.vue'
 import Dashboard from '~/pages/home/Dashboard.vue'
 import LoaderStatusBanner from '~/components/App/Loader/Home/LoaderStatusBanner.vue'
 import LoaderPost from '~/components/App/Loader/Home/LoaderPost.vue'
+import CreateWorldDialog from "~/components/App/Home/CreateWorldDialog.vue";
 
 const { locale } = useI18n()
 const { loggedIn } = useUserSession()
 
 const postStore = usePostStore()
 
+const dialogCreateWorld = ref(false)
 const loadingUser = ref(true)
 const loadingPost = ref(true)
+const loadingPlugin = ref(true)
 const isLoading = ref(false)
 const hasMore = ref(true)
 const pending = ref(true)
@@ -77,10 +80,25 @@ const loadMore = async () => {
   pending.value = false
 }
 
+const plugins = ref<any[]>([])
+
+const fetchPlugins = async () => {
+  const { data } = await useFetch('/api/plugin/profile/get')
+  if (data.value) {
+    plugins.value = data.value
+    loadingPlugin.value = false
+  }
+}
+
+watch(loadingPlugin, () => {
+  fetchPlugins()
+}, { immediate: true })
+
 watch(newPostsLoaded, init, { immediate: false })
 
 onMounted(async () => {
   await init()
+  await fetchPlugins
   await nextTick()
   loadingUser.value = false
 })
@@ -118,24 +136,37 @@ onMounted(async () => {
           </v-col>
         </template>
         <template v-else>
-          <div v-if="postStore.posts.length > 0">
-            <HomePosts
-              v-for="post in postStore.posts"
-              :key="post.id"
-              @post-updated="reloadPosts"
-              @post-deleted="reloadPosts"
-              :post="post"
-            />
-            <div class="d-flex justify-center mt-4" v-if="hasMore && !pending">
-              <v-btn color="primary" :loading="isLoading" @click="loadMore">
-                Load more
-              </v-btn>
-            </div>
+          <HomePosts
+            v-if="postStore.posts.length > 0"
+            v-for="post in postStore.posts"
+            :key="post.id"
+            @post-updated="reloadPosts"
+            @post-deleted="reloadPosts"
+            :post="post"
+          />
+          <div class="d-flex justify-center mt-4" v-if="hasMore && !pending && postStore.posts.length > 0">
+            <v-btn color="primary" :loading="isLoading" @click="loadMore">
+              Load more
+            </v-btn>
           </div>
         </template>
       </v-col>
 
       <v-col cols="12" lg="4">
+        <v-card rounded="xl" class="mx-3 mt-2 mb-4" variant="text" elevation="10">
+          <div class="d-flex justify-center">
+            <v-btn
+              class="font-weight-bold w-100"
+              color="primary"
+              height="50"
+              variant="text"
+              @click="dialogCreateWorld = true"
+            >
+              <h6 class="text-h6 font-weight-bolder mb-0">Build your World Bro</h6>
+            </v-btn>
+          </div>
+        </v-card>
+        <CreateWorldDialog :plugins="plugins" v-model="dialogCreateWorld" />
         <ClientOnly>
           <Dashboard />
         </ClientOnly>

@@ -1,5 +1,5 @@
 <template>
-  <div :dir="isRtl ? 'rtl' : 'ltr'">
+  <div v-if="loggedIn" :dir="isRtl ? 'rtl' : 'ltr'">
     <template v-if="loading">
       <v-skeleton-loader
         type="list-item-two-line"
@@ -106,21 +106,23 @@ const readyRating = ref(true)
 const isSubmitting = ref(false)
 
 const fetchStats = async () => {
-  const { data, error } = await useFetch('/api/review/get/')
-  if (error.value) {
-    readyRating.value = false
-    console.error('Failed to load reviews:', error.value)
-    return
-  }
+  if (loggedIn) {
+    const { data, error } = await useFetch('/api/review/get/')
+    if (error.value) {
+      readyRating.value = false
+      console.error('Failed to load reviews:', error.value)
+      return
+    }
 
-  if (data.value) {
-    readyRating.value = false
-    averageRating.value = data.value.average_rating ?? 0
-    totalReviews.value = data.value.total_reviews ?? 0
-    distribution.value = data.value.distribution ?? distribution.value
-  }
+    if (data.value) {
+      readyRating.value = false
+      averageRating.value = data.value.average_rating ?? 0
+      totalReviews.value = data.value.total_reviews ?? 0
+      distribution.value = data.value.distribution ?? distribution.value
+    }
 
-  loading.value = false
+    loading.value = false
+  }
 }
 
 const submitRating = async () => {

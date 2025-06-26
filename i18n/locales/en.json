@@ -38,7 +38,9 @@
   "plugin": {
     "actions": {
       "open": "Open",
-      "install": "Install"
+      "install": "Install",
+      "active": "Enable",
+      "deactive": "Disable"
     },
     "pricing": {
       "free": "Free",
