@@ -7,7 +7,7 @@
           color="primary"
           icon="mdi-alert-circle"
           lines="one"
-          class="mb-1 px-8 text-center rounded-lg"
+          class="mb-0 px-8 text-center rounded-lg"
         >
           <template #text>
             Your account is currently <strong>not activated</strong>. Please check your email or
@@ -42,7 +42,7 @@ const error = ref(false)
 
 async function requestActivation() {
   try {
-    await useFetch(`/api/users/${user.value.id}/request-activation`, {
+    await useFetch(`/api/auth/request-activation`, {
       method: 'POST',
     })
     success.value = true
