@@ -5,13 +5,18 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev -o",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
     "generate": "nuxt generate",
     "postinstall": "nuxt prepare",
     "preview": "nuxt preview",
     "typecheck": "nuxt typecheck",
     "test": "vitest",
     "lint": "eslint . --fix",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "prisma:reset": "dotenv -e .env -- npx prisma migrate reset",
+    "prisma:generate": "dotenv -e .env -- npx prisma generate",
+    "prisma:migrate": "dotenv -e .env -- npx prisma migrate dev --name init"
   },
   "devDependencies": {
     "@iconify-json/mdi": "^1.2.3",
@@ -50,6 +55,7 @@
     "@nuxtjs/i18n": "^9.5.5",
     "@nuxtjs/sitemap": "^7.3.1",
     "@pinia/nuxt": "^0.11.1",
+    "@prisma/client": "^6.10.1",
     "@quasar/extras": "^1.17.0",
     "@sipec/vue3-tags-input": "^3.0.4",
     "@tinymce/tinymce-vue": "^5.1.1",
@@ -59,6 +65,7 @@
     "axios": "^1.9.0",
     "bootstrap": "^5.3.6",
     "dayjs": "^1.11.13",
+    "dotenv-cli": "^8.0.0",
     "echarts": "^5.6.0",
     "fireworks-js": "^2.10.8",
     "flag-icons": "^7.5.0",
@@ -75,6 +82,7 @@
     "nuxt3-leaflet": "^1.0.13",
     "pinia": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.6.12",
+    "prisma": "^6.10.1",
     "puppeteer": "^24.10.2",
     "quasar": "^2.18.1",
     "quill": "^2.0.3",
@@ -89,5 +97,8 @@
     "vue3-lottie": "^3.3.1",
     "vue3-quill": "^0.3.1",
     "vuetify": "^3.8.8"
+  },
+  "prisma": {
+    "schema": "server/database/schema.prisma"
   }
 }

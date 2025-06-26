@@ -77,9 +77,7 @@ async function sendActivation() {
 }
 async function requestActivation() {
   try {
-    await useFetch(`/api/auth/request-verification`, {
-      method: 'POST',
-    })
+    await useFetch(`/api/auth/request-verification`)
     success.value = true
   } catch (e) {
     error.value = true
