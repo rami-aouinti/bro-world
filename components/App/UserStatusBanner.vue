@@ -27,24 +27,20 @@
 
       <div v-if="success">
         <v-row>
-          <v-col cols="12">
-            <h3 class="text-h6 mb-2">
-              Please enter the one time password to verify your account
-            </h3>
-
+          <v-col class="text-center" cols="12">
             <div>A code has been sent to {{ truncate(user.email, 3) }}*****</div>
 
             <v-otp-input
               v-model="otp"
               :disabled="validating"
-              color="primary"
+              color="secondary"
               variant="plain"
             ></v-otp-input>
 
             <v-btn
               :loading="validating"
-              class="mt-6 text-none bg-surface-variant"
-              height="40"
+              class="mt-2 text-none"
+              height="30"
               text="Validate"
               variant="plain"
               width="135"
@@ -55,13 +51,6 @@
           </v-col>
         </v-row>
       </div>
-
-      <v-snackbar v-model="success" color="success" timeout="3000">
-        Activation request sent successfully.
-      </v-snackbar>
-      <v-snackbar v-model="error" color="error" timeout="3000">
-        Failed to send activation request.
-      </v-snackbar>
     </v-col>
   </v-row>
 </template>
