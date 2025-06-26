@@ -25,6 +25,33 @@
         </v-banner>
       </div>
 
+      <div v-if="success">
+        <h3 class="text-h6 mb-2">
+          Please enter the one time password to verify your account
+        </h3>
+
+        <div>A code has been sent to {{ truncate(user.email, 3) }}*****</div>
+
+        <v-otp-input
+          v-model="otp"
+          :disabled="validating"
+          color="primary"
+          variant="plain"
+        ></v-otp-input>
+
+        <v-btn
+          :loading="validating"
+          class="mt-6 text-none bg-surface-variant"
+          height="40"
+          text="Validate"
+          variant="plain"
+          width="135"
+          border
+          rounded
+          @click="sendActivation"
+        ></v-btn>
+      </div>
+
       <v-snackbar v-model="success" color="success" timeout="3000">
         Activation request sent successfully.
       </v-snackbar>
@@ -39,7 +66,22 @@
 const { user, loggedIn } = useUserSession()
 const success = ref(false)
 const error = ref(false)
+import { shallowRef } from 'vue'
 
+const otp = shallowRef('')
+const validating = shallowRef(false)
+
+async function sendActivation() {
+  validating.value = true
+  try {
+    const { data } = await useFetch(`/api/auth/${otp.value}/request-activation`)
+    success.value = data.value
+    validating.value = false
+  } catch (e) {
+    error.value = true
+    validating.value = false
+  }
+}
 async function requestActivation() {
   try {
     await useFetch(`/api/auth/request-activation`, {
