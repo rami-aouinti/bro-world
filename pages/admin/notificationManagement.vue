@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-  title: 'School Management',
-  icon: 'mdi-school',
+  title: 'Notification Management',
+  icon: 'mdi-bell-plus',
   drawerIndex: 7,
 })
 </script>

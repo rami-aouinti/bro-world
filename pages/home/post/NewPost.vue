@@ -132,7 +132,7 @@ const handleAction = async () => {
 
 <template>
   <div class="py-3">
-    <v-card rounded="xl" class="mx-3" variant="text">
+    <v-card rounded="xl" class="mx-3" variant="text" elevation="10">
       <v-card-text>
         <div class="d-flex align-center" style="max-width: 100%; flex-wrap: nowrap; overflow: hidden">
           <button class="btn-reset mx-2" @click="dialog = true" aria-label="User avatar" style="flex-shrink: 0">
@@ -168,28 +168,35 @@ const handleAction = async () => {
         </div>
       </v-card-text>
 
-      <v-card-actions>
-        <v-btn @click="video = true" :loading="loading" icon class="flex-grow-1" height="48">
-          <v-icon class="mx-1" color="primary">mdi-video</v-icon>
-          Video
-        </v-btn>
-
-        <v-btn @click="dialogText = !dialogText" icon class="flex-grow-1" height="48">
-          <v-icon class="mx-1" color="primary">mdi-file-word-box</v-icon>
-          Text
-        </v-btn>
-
-        <v-btn @click="dialogFile = true" :loading="loading" icon class="flex-grow-1" height="48">
-          <v-icon class="mx-1" color="primary">mdi-image-multiple</v-icon>
-          Photo
-        </v-btn>
-
-        <v-btn icon :loading="loading" class="flex-grow-1" height="48"
-               @click="triggerFileInput"
-               @keydown.enter="triggerFileInput">
-          <v-icon class="mx-1" color="primary">mdi-camera-enhance</v-icon>
-          Story
-        </v-btn>
+      <v-card-actions class="d-flex align-center text-center">
+        <v-row>
+          <v-col cols="6" md="3">
+            <v-btn @click="video = true" :loading="loading" icon class="flex-grow-1" height="48">
+              <v-icon class="mx-1" color="primary">mdi-video</v-icon>
+              Video
+            </v-btn>
+          </v-col>
+          <v-col cols="6" md="3">
+            <v-btn @click="dialogText = !dialogText" icon class="flex-grow-1" height="48">
+              <v-icon class="mx-1" color="primary">mdi-file-word-box</v-icon>
+              Text
+            </v-btn>
+          </v-col>
+          <v-col cols="6" md="3">
+            <v-btn @click="dialogFile = true" :loading="loading" icon class="flex-grow-1" height="48">
+              <v-icon class="mx-1" color="primary">mdi-image-multiple</v-icon>
+              Photo
+            </v-btn>
+          </v-col>
+          <v-col cols="6" md="3">
+            <v-btn icon :loading="loading" class="flex-grow-1" height="48"
+                   @click="triggerFileInput"
+                   @keydown.enter="triggerFileInput">
+              <v-icon class="mx-1" color="primary">mdi-camera-enhance</v-icon>
+              Story
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-card-actions>
     </v-card>
     <!-- Upload d’un fichier story -->

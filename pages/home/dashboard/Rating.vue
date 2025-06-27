@@ -9,7 +9,7 @@
       />
     </template>
 
-    <v-card v-else rounded="xl" class="mx-3" variant="text">
+    <v-card v-else rounded="xl" class="mx-3" variant="text" elevation="10">
       <v-card-title class="d-flex justify-center mt-auto text-h5">
         <span class="text-h6">{{ t('dashboard.rating.title') }}</span>
       </v-card-title>

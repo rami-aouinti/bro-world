@@ -14,7 +14,7 @@ const props = defineProps({
 
 <template>
   <div class="py-3">
-    <v-card rounded="xl" class="mx-3" variant="text">
+    <v-card rounded="xl" class="mx-3" variant="text" elevation="10">
       <AuthorPost @post-updated="emit('post-updated')" @post-delete="emit('post-deleted')" :post="props.post"></AuthorPost>
       <Post :post="props.post"></Post>
     </v-card>

@@ -78,7 +78,7 @@ function handleDelete(item: any) {
 <template>
   <v-skeleton-loader v-if="loading" type="table" class="mx-4 my-6" />
 
-  <v-card v-else rounded="xl" class="py-4" variant="text">
+  <v-card v-else rounded="xl" class="py-4" variant="text" elevation="10">
     <v-card-title class="d-flex justify-space-between align-center">
       <span class="text-h6 px-4">{{ label }}</span>
       <v-btn

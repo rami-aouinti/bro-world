@@ -3,7 +3,7 @@
     <template v-if="showCard">
       <v-skeleton-loader type="card" class="mx-3 mb-4 rounded-xl" height="120" />
     </template>
-    <v-card v-else rounded="xl" class="mx-3 mb-4" variant="text">
+    <v-card v-else rounded="xl" class="mx-3 mb-4" variant="text" elevation="10">
       <div class="px-4 py-4">
         <v-row>
           <v-col cols="8" class="my-auto">

@@ -114,7 +114,7 @@ function sendMessage() {
 <template>
   <v-row v-if="stories.length">
     <v-col cols="12">
-      <v-card rounded="xl" class="overflow-x-auto mx-3 min-h-stories" variant="text">
+      <v-card rounded="xl" class="overflow-x-auto mx-3 min-h-stories" variant="text" elevation="10">
         <div class="d-flex align-center justify-center">
           <v-col
             v-for="userStories in stories"

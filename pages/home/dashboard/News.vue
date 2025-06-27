@@ -3,7 +3,7 @@
     <template v-if="loadingNews">
       <v-skeleton-loader type="list-item-two-line" class="mx-3 mb-4 rounded-xl" v-for="i in 3" :key="i" />
     </template>
-    <v-card v-else rounded="xl" class="mx-3 mt-4 mb-4" variant="text">
+    <v-card v-else rounded="xl" class="mx-3 mt-4 mb-4" variant="text" elevation="10">
       <v-card-title class="text-h6 font-weight-bold text-center">
         🌐 {{ t('dashboard.news.title') }}
       </v-card-title>

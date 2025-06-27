@@ -71,6 +71,9 @@ importers:
       '@tinymce/tinymce-vue':
         specifier: ^5.1.1
         version: 5.1.1(vue@3.5.17(typescript@5.8.3))
+      '@twilio/conversations':
+        specifier: ^2.6.2
+        version: 2.6.2
       '@vercel/analytics':
         specifier: ^1.5.0
         version: 1.5.0(vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3))
@@ -119,6 +122,9 @@ importers:
       http:
         specifier: 0.0.1-security
         version: 0.0.1-security
+      https:
+        specifier: ^1.0.0
+        version: 1.0.0
       js-base64:
         specifier: ^3.7.7
         version: 3.7.7
@@ -2688,6 +2694,38 @@ packages:
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
 
+  '@twilio/conversations@2.6.2':
+    resolution: {integrity: sha512-xbikMRIiDeVxthchThAp2aL3BDHxCd6gqDkpQU4cwMHkzktxceuTC3NoBmV6HtDHzt1xjvct2WxBKw/ZPJj8Xw==}
+    engines: {node: '>=14'}
+
+  '@twilio/declarative-type-validator@0.1.11':
+    resolution: {integrity: sha512-yRAMLPD8j3k67UFvPeZvfTlKYuceiNq+iZ8a/ADzAbZMeaV0FMvsJmG97MH8yN/VdXY9hcscchsnc99bJ1sClw==}
+    engines: {node: '>=14'}
+
+  '@twilio/declarative-type-validator@0.2.10':
+    resolution: {integrity: sha512-q3ep+qsctZ0u+xr1U6/kjs4RlIJ/u8+wHyUQkrNCoVtjgnCV938P0RP7OUkW/fYt/vLhfy0Nnzo1G0bBbn9o/w==}
+    engines: {node: '>=14'}
+
+  '@twilio/deprecation-decorator@0.2.8':
+    resolution: {integrity: sha512-kDWN6sxOisTMQXQL0JgvzqGjNZIUj+hdZ1eZtm/5z6EMb14xuoi6qSXb//0x6Yn02zSrr6c7K8YKDrUawDRabQ==}
+    engines: {node: '>=14'}
+
+  '@twilio/mcs-client@0.6.10':
+    resolution: {integrity: sha512-MrZtvxyChUXUpcHG+BR/hY3u573/HsBtMMrTQE4HRvy3v9ZYY0RhHrECqW2TRw0iA3R9quk0CNrz357fjg8I+w==}
+    engines: {node: '>=14'}
+
+  '@twilio/notifications@2.0.9':
+    resolution: {integrity: sha512-sHuiIwSPx9xMo6y2l1p+lISs7kWt299B7AOsFqhoetgQr/Pz2PePwKLDruch9OWtW8ZNnT/vOpoz7qbN15vvmA==}
+    engines: {node: '>=14'}
+
+  '@twilio/operation-retrier@4.0.18':
+    resolution: {integrity: sha512-vG3i41XEa4lyC3+8FRFbjYBPZQftkI1WrJTtTDBf85N2UzZ8brqrUp9EbSdQmny1/zIvoZ18AswQrvBDLtNEvA==}
+    engines: {node: '>=14'}
+
+  '@twilio/replay-event-emitter@0.3.10':
+    resolution: {integrity: sha512-GaT5ihN3eJvIgCV81ggvLgtNwMtD2pBR4hMrFE/dlqN73FsNw01bawLSMIofOdRj8ydEPgvSTJHVCIjBWKHQvg==}
+    engines: {node: '>=14'}
+
   '@tybys/wasm-util@0.9.0':
     resolution: {integrity: sha512-6+7nlbMVX/PVDCwaIQ8nTOPveOcFLSt8GcXdx8hD0bt39uWxYT88uXzqTd4fTvqta7oeUJqudepapKNt2DYJFw==}
 
@@ -3427,6 +3465,9 @@ packages:
   astral-regex@2.0.0:
     resolution: {integrity: sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==}
     engines: {node: '>=8'}
+
+  async-limiter@1.0.1:
+    resolution: {integrity: sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==}
 
   async-sema@3.1.1:
     resolution: {integrity: sha512-tLRNUXati5MFePdAk8dw7Qt7DpxPB60ofAgn8WRhW6a2rcimZnYBP9oxHiv0OHy+Wz7kPMG+t4LGdt31+4EmGg==}
@@ -4865,6 +4906,10 @@ packages:
   form-data-encoder@1.7.2:
     resolution: {integrity: sha512-qfqtYan3rxrnCk1VYaA4H+Ms9xdpPqvLZa6xmMgFvhO32x7/3J/ExcTd6qpxM0vH2GdMI+poehyBZvqfMTto8A==}
 
+  form-data@2.5.3:
+    resolution: {integrity: sha512-XHIrMD0NpDrNM/Ckf7XJiBbLl57KEhT3+i3yY+eWm+cqYZJQTZrKo8Y8AWKnuV5GT4scfuUGt9LzNoIx3dU1nQ==}
+    engines: {node: '>= 0.12'}
+
   form-data@4.0.3:
     resolution: {integrity: sha512-qsITQPfmvMOSAdeyZ+12I1c+CKSstAFAwu+97zrnWAbIr5u8wfsExUzCesVLC8NgHuRUqNN4Zy6UPWUTRGslcA==}
     engines: {node: '>= 6'}
@@ -5210,6 +5255,9 @@ packages:
     resolution: {integrity: sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw==}
     engines: {node: '>= 14'}
 
+  https@1.0.0:
+    resolution: {integrity: sha512-4EC57ddXrkaF0x83Oj8sM6SLQHAWXw90Skqu2M4AEWENZ3F02dFJE/GARA8igO79tcgYqGrD7ae4f5L3um2lgg==}
+
   httpxy@0.1.7:
     resolution: {integrity: sha512-pXNx8gnANKAndgga5ahefxc++tJvNL87CXoRwxn1cJE2ZkWEojF3tNfQIEhZX/vfpt+wzeAzpUI4qkediX1MLQ==}
 
@@ -5505,6 +5553,12 @@ packages:
     resolution: {integrity: sha512-LpB/54B+/2J5hqQ7imZHfdU31OlgQqx7ZicVlkm9kzg9/w8GKLEcFfJl/t7DCEDueOyBAD6zCCwTO6Fzs0NoEQ==}
     engines: {node: '>=16'}
 
+  iso8601-duration@1.2.0:
+    resolution: {integrity: sha512-ErTBd++b17E8nmWII1K1uZtBgD1E8RjyvwmxlCjPHNqHMD7gmcMHOw0E8Ro/6+QT4PhHRSnnMo7bxa1vFPkwhg==}
+
+  isomorphic-form-data@2.0.0:
+    resolution: {integrity: sha512-TYgVnXWeESVmQSg4GLVbalmQ+B4NPi/H4eWxqALKj63KsUrcu301YDjBqaOw3h+cbak7Na4Xyps3BiptHtxTfg==}
+
   isomorphic-ws@5.0.0:
     resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}
     peerDependencies:
@@ -5512,6 +5566,9 @@ packages:
 
   jackspeak@3.4.3:
     resolution: {integrity: sha512-OGlZQpz2yfahA/Rd1Y8Cd9SIEsqvXkLVoSw/cgwhnhFMDbsQFeZYoJJ7bIZBS9BcamUW96asq/npPWugM+RQBw==}
+
+  javascript-state-machine@3.1.0:
+    resolution: {integrity: sha512-BwhYxQ1OPenBPXC735RgfB+ZUG8H3kjsx8hrYTgWnoy6TPipEy4fiicyhT2lxRKAXq9pG7CfFT8a2HLr6Hmwxg==}
 
   jiti@1.21.7:
     resolution: {integrity: sha512-/imKNG4EbWNrVjoNC/1H5/9GFy+tqjGBHCaSsN+P2RnPqjsLmv6UD3Ej+Kj8nBWaRAwyk7kK5ZUc+OEatnTR3A==}
@@ -5814,6 +5871,14 @@ packages:
   logform@2.7.0:
     resolution: {integrity: sha512-TFYA4jnP7PVbmlBIfhlSe+WKxs9dklXMTEGcBCIvLhE/Tn3H6Gk1norupVW7m5Cnd4bLcr08AytbyV/xj7f/kQ==}
     engines: {node: '>= 12.0.0'}
+
+  loglevel@1.8.0:
+    resolution: {integrity: sha512-G6A/nJLRgWOuuwdNuA6koovfEV1YpqqAG4pRUlFaz3jj2QNZ8M4vBqnVA+HBTmU/AMNUtlOsMmSpF6NyOjztbA==}
+    engines: {node: '>= 0.6.0'}
+
+  loglevel@1.9.2:
+    resolution: {integrity: sha512-HgMmCqIJSAKqo68l0rS2AanEWfkxaZ5wNiEFb5ggm08lDs9Xl2KxBlX3PTcaD2chBM1gXAYf491/M2Rv8Jwayg==}
+    engines: {node: '>= 0.6.0'}
 
   longest-streak@3.1.0:
     resolution: {integrity: sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==}
@@ -6682,6 +6747,9 @@ packages:
   pkg-types@2.1.0:
     resolution: {integrity: sha512-wmJwA+8ihJixSoHKxZJRBQG1oY8Yr9pGLzRmSsNms0iNWyHHAlZCa7mmKiFR10YPZuz/2k169JiS/inOjBCZ2A==}
 
+  platform@1.3.6:
+    resolution: {integrity: sha512-fnWVljUchTro6RiCFvCXBbNhJc2NijN7oIQxbwsyL0buWJPG85v81ehlHI9fXrJsMNgTofEoWIQeClKpgxFLrg==}
+
   playwright-core@1.53.1:
     resolution: {integrity: sha512-Z46Oq7tLAyT0lGoFx4DOuB1IA9D1TPj0QkYxpPVUnGDqHHvDpCftu1J2hM2PiWsNMoZh8+LQaarAWcDfPBc6zg==}
     engines: {node: '>=18'}
@@ -7032,6 +7100,10 @@ packages:
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
+
+  quick-lru@5.1.1:
+    resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==}
+    engines: {node: '>=10'}
 
   quill-delta@3.6.3:
     resolution: {integrity: sha512-wdIGBlcX13tCHOXGMVnnTVFtGRLoP0imqxM696fIPwIf5ODIYUHIvHbZcyvGlZFiFhK5XzDC2lpjbxRhnM05Tg==}
@@ -7945,6 +8017,14 @@ packages:
   tunnel-agent@0.6.0:
     resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}
 
+  twilio-sync@3.1.0:
+    resolution: {integrity: sha512-KNkbbnoBITpsmxV2UnmNDEot/Q5t7p5I1zP05oqj0OYT1kMcZq4nhiSNkcxkunfxINFSUzz8d/mUA82yWS7iLQ==}
+    engines: {node: '>=14'}
+
+  twilsock@0.12.2:
+    resolution: {integrity: sha512-7G59f2TCEnxcY2ZBCzaZOPmMDoxDrK9lMTiA7UvuiKca37Dljbdlu2EHI3+d7gU1JHkH5GNCmyxqJzSbZodwXA==}
+    engines: {node: '>=14'}
+
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -8226,6 +8306,11 @@ packages:
 
   uuid@11.1.0:
     resolution: {integrity: sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==}
+    hasBin: true
+
+  uuid@3.4.0:
+    resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==}
+    deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
     hasBin: true
 
   valibot@1.1.0:
@@ -8661,6 +8746,17 @@ packages:
     resolution: {integrity: sha512-GmqrO8WJ1NuzJ2DrziEI2o57jKAVIQNf8a18W3nCYU3H7PNWqCCVTeH6/NQE93CIllIgQS98rrmVkYgTX9fFJQ==}
     engines: {node: ^18.17.0 || >=20.5.0}
 
+  ws@5.2.4:
+    resolution: {integrity: sha512-fFCejsuC8f9kOSu9FYaOw8CdO68O3h5v0lg4p74o8JqWpwTf9tniOD+nOB78aWoVSS6WptVUmDrp/KPsMVBWFQ==}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: ^5.0.2
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   ws@8.17.1:
     resolution: {integrity: sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ==}
     engines: {node: '>=10.0.0'}
@@ -8691,6 +8787,10 @@ packages:
 
   xmlhttprequest-ssl@2.1.2:
     resolution: {integrity: sha512-TEU+nJVUUnA4CYJFLvK5X9AOeH4KvDvhIfm0vV1GaQRtchnG0hgK5p8hw/xjv8cunWYCsiPCSDzObPyhEwq3KQ==}
+    engines: {node: '>=0.4.0'}
+
+  xmlhttprequest@1.8.0:
+    resolution: {integrity: sha512-58Im/U0mlVBLM38NdZjHyhuMtCqa61469k2YP/AaPbvCoV9aQGUpbJBj1QRm2ytRiVQBD/fsw7L2bJGDVQswBA==}
     engines: {node: '>=0.4.0'}
 
   xss@1.0.15:
@@ -11882,6 +11982,78 @@ snapshots:
 
   '@trysound/sax@0.2.0': {}
 
+  '@twilio/conversations@2.6.2':
+    dependencies:
+      '@babel/runtime': 7.27.6
+      '@twilio/declarative-type-validator': 0.2.10
+      '@twilio/deprecation-decorator': 0.2.8
+      '@twilio/mcs-client': 0.6.10
+      '@twilio/notifications': 2.0.9
+      '@twilio/operation-retrier': 4.0.18
+      '@twilio/replay-event-emitter': 0.3.10
+      core-js: 3.43.0
+      iso8601-duration: 1.2.0
+      isomorphic-form-data: 2.0.0
+      lodash.isequal: 4.5.0
+      loglevel: 1.9.2
+      platform: 1.3.6
+      quick-lru: 5.1.1
+      twilio-sync: 3.1.0
+      twilsock: 0.12.2
+      uuid: 3.4.0
+      xmlhttprequest: 1.8.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@twilio/declarative-type-validator@0.1.11':
+    dependencies:
+      '@babel/runtime': 7.27.6
+      core-js: 3.43.0
+
+  '@twilio/declarative-type-validator@0.2.10':
+    dependencies:
+      '@babel/runtime': 7.27.6
+      core-js: 3.43.0
+
+  '@twilio/deprecation-decorator@0.2.8':
+    dependencies:
+      '@babel/runtime': 7.27.6
+      core-js: 3.43.0
+      loglevel: 1.8.0
+
+  '@twilio/mcs-client@0.6.10':
+    dependencies:
+      '@babel/runtime': 7.27.6
+      '@twilio/declarative-type-validator': 0.2.10
+      '@twilio/operation-retrier': 4.0.18
+      core-js: 3.43.0
+      loglevel: 1.9.2
+      xmlhttprequest: 1.8.0
+
+  '@twilio/notifications@2.0.9':
+    dependencies:
+      '@babel/runtime': 7.27.6
+      '@twilio/declarative-type-validator': 0.2.10
+      '@twilio/operation-retrier': 4.0.18
+      core-js: 3.43.0
+      loglevel: 1.9.2
+      twilsock: 0.12.2
+      uuid: 3.4.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@twilio/operation-retrier@4.0.18':
+    dependencies:
+      '@babel/runtime': 7.27.6
+      core-js: 3.43.0
+
+  '@twilio/replay-event-emitter@0.3.10':
+    dependencies:
+      '@babel/runtime': 7.27.6
+      core-js: 3.43.0
+
   '@tybys/wasm-util@0.9.0':
     dependencies:
       tslib: 2.8.1
@@ -12704,6 +12876,8 @@ snapshots:
       ast-kit: 1.4.3
 
   astral-regex@2.0.0: {}
+
+  async-limiter@1.0.1: {}
 
   async-sema@3.1.1: {}
 
@@ -14271,6 +14445,14 @@ snapshots:
 
   form-data-encoder@1.7.2: {}
 
+  form-data@2.5.3:
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      es-set-tostringtag: 2.1.0
+      mime-types: 2.1.35
+      safe-buffer: 5.2.1
+
   form-data@4.0.3:
     dependencies:
       asynckit: 0.4.0
@@ -14715,6 +14897,8 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  https@1.0.0: {}
+
   httpxy@0.1.7: {}
 
   human-signals@5.0.0: {}
@@ -15020,6 +15204,12 @@ snapshots:
 
   isexe@3.1.1: {}
 
+  iso8601-duration@1.2.0: {}
+
+  isomorphic-form-data@2.0.0:
+    dependencies:
+      form-data: 2.5.3
+
   isomorphic-ws@5.0.0(ws@8.18.2):
     dependencies:
       ws: 8.18.2
@@ -15029,6 +15219,8 @@ snapshots:
       '@isaacs/cliui': 8.0.2
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
+
+  javascript-state-machine@3.1.0: {}
 
   jiti@1.21.7: {}
 
@@ -15315,6 +15507,10 @@ snapshots:
       ms: 2.1.3
       safe-stable-stringify: 2.5.0
       triple-beam: 1.4.1
+
+  loglevel@1.8.0: {}
+
+  loglevel@1.9.2: {}
 
   longest-streak@3.1.0: {}
 
@@ -16663,6 +16859,8 @@ snapshots:
       exsolve: 1.0.7
       pathe: 2.0.3
 
+  platform@1.3.6: {}
+
   playwright-core@1.53.1: {}
 
   pluralize@8.0.0: {}
@@ -16981,6 +17179,8 @@ snapshots:
   quasar@2.18.1: {}
 
   queue-microtask@1.2.3: {}
+
+  quick-lru@5.1.1: {}
 
   quill-delta@3.6.3:
     dependencies:
@@ -18063,6 +18263,37 @@ snapshots:
       safe-buffer: 5.2.1
     optional: true
 
+  twilio-sync@3.1.0:
+    dependencies:
+      '@babel/runtime': 7.27.6
+      '@twilio/declarative-type-validator': 0.1.11
+      '@twilio/operation-retrier': 4.0.18
+      core-js: 3.43.0
+      iso8601-duration: 1.2.0
+      loglevel: 1.9.2
+      platform: 1.3.6
+      twilsock: 0.12.2
+      uuid: 3.4.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  twilsock@0.12.2:
+    dependencies:
+      '@babel/runtime': 7.27.6
+      '@twilio/declarative-type-validator': 0.1.11
+      '@twilio/operation-retrier': 4.0.18
+      core-js: 3.43.0
+      iso8601-duration: 1.2.0
+      javascript-state-machine: 3.1.0
+      loglevel: 1.9.2
+      platform: 1.3.6
+      uuid: 3.4.0
+      ws: 5.2.4
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
@@ -18399,6 +18630,8 @@ snapshots:
       base64-arraybuffer: 1.0.2
 
   uuid@11.1.0: {}
+
+  uuid@3.4.0: {}
 
   valibot@1.1.0(typescript@5.8.3):
     optionalDependencies:
@@ -18862,6 +19095,10 @@ snapshots:
       imurmurhash: 0.1.4
       signal-exit: 4.1.0
 
+  ws@5.2.4:
+    dependencies:
+      async-limiter: 1.0.1
+
   ws@8.17.1: {}
 
   ws@8.18.2: {}
@@ -18869,6 +19106,8 @@ snapshots:
   xml-name-validator@4.0.0: {}
 
   xmlhttprequest-ssl@2.1.2: {}
+
+  xmlhttprequest@1.8.0: {}
 
   xss@1.0.15:
     dependencies:

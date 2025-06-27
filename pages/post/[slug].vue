@@ -43,7 +43,7 @@ onMounted(async () => {
 
     <v-row v-else justify="center">
       <v-col cols="12" md="8" lg="8">
-        <v-card rounded="xl" class="mx-3" variant="text">
+        <v-card rounded="xl" class="mx-3" variant="text" elevation="10">
           <AuthorPost :post="post" />
           <Post :post="post" />
         </v-card>
