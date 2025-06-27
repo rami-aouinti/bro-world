@@ -189,7 +189,8 @@ export default defineNuxtConfig({
       apiBlogBase: 'https://blog.bro-world.org',
       apiJobBase: 'https://job.bro-world.org',
       groqApiKey: process.env.GROQ_API_KEY,
-      tinyMceApiKey: process.env.TINYMCE_API_KEY || 'no-api-key'
+      tinyMceApiKey: process.env.TINYMCE_API_KEY || 'no-api-key',
+      googleMapsApiKey: process.env.NUXT_GOOGLE_MAPS_API_KEY
     },
   },
 

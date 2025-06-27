@@ -41,6 +41,7 @@
   "dependencies": {
     "@fireworks-js/vue": "^2.10.8",
     "@formkit/auto-animate": "^0.8.2",
+    "@googlemaps/js-api-loader": "^1.16.10",
     "@iconify-json/lucide": "^1.2.45",
     "@morev/vue-transitions": "^3.0.5",
     "@nuxt/content": "^2.9.0",

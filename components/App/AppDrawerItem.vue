@@ -80,13 +80,23 @@ const to = computed(() => ({
 :deep(.sub-item.v-list-item) {
   padding-left: 12px !important;
 }
+:deep(.v-list-group__items .v-list-item) {
+  padding-inline-start: calc(-60px + var(--indent-padding)) !important;
+}
+:deep(.sub-item.v-list-group) {
+  padding-left: 0px !important;
+}
 
 /* En RTL : décaler à droite plutôt */
 .rtl-fix :deep(.sub-item.v-list-item) {
   padding-left: 0 !important;
   padding-right: 12px !important;
 }
-
+/* En RTL : décaler à droite plutôt */
+.rtl-fix :deep(.sub-item.v-list-group) {
+  padding-left: 0 !important;
+  padding-right: 0px !important;
+}
 /* comportement normal */
 .drawer-item {
   direction: ltr;
@@ -104,7 +114,20 @@ const to = computed(() => ({
   margin-inline-end: 0 !important;
 }
 
+/* Pour forcer l’ordre visuel de l’icône et du texte */
+.rtl-fix .v-list-group__prepend {
+  order: 2;
+  margin-inline-start: 5px !important;
+  margin-inline-end: 0 !important;
+}
+
+
 .rtl-fix .v-list-item__content {
+  order: 1;
+  text-align: right;
+}
+
+.rtl-fix .v-list-group__content {
   order: 1;
   text-align: right;
 }

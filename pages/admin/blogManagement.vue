@@ -1,9 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-  title: 'Course',
-  icon: 'mdi-airplay',
-  middleware: 'auth',
-  requiredRoles: ['ROLE_USER'],
+  title: 'Blog Management',
+  icon: 'mdi-access-point-network',
   drawerIndex: 3,
 })
 </script>

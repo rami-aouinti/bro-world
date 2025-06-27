@@ -18,10 +18,10 @@ const items = computed(() =>
 
 <template>
   <v-container>
-    <div class="d-none">
+    <div>
       <v-row>
-        <v-col>
-          <v-card v-for="item in items" :key="item.title" class="mb-1">
+        <v-col v-for="item in items" :key="item.title" cols="12" md="4">
+          <v-card  class="mb-1">
             <v-list-item
               v-bind="item"
               append-icon="mdi-chevron-right"
