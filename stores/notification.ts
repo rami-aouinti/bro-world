@@ -1,29 +1,54 @@
 export interface Notification {
   show: boolean
   type: 'info' | 'error' | 'success' | 'warning'
-  text: string
+  pushTitle: string
+  pushContent: string
+  pushSubtitle: string
   time: Date
   id: number
 }
 
 export const useNotificationStore = defineStore('notification', {
-  state: () => {
-    const notifications: Notification[] = []
-    return {
-      notifications,
-      notificationCount: 0,
-    }
-  },
+  state: () => ({
+    notifications: [] as Notification[],
+    notificationCount: 0,
+  }),
+
   actions: {
-    addNotification(text: string, type: Notification['type'] = 'info') {
+    async fetchNotifications() {
+      try {
+        const { data } = await $fetch<{ value: any[] }>('/api/profile/notifications')
+
+        if (data?.value) {
+          for (const notif of data.value) {
+            this.notifications.push({
+              id: this.notificationCount++,
+              pushTitle: notif.pushTitle || 'No title',
+              pushContent: notif.pushContent || '',
+              pushSubtitle: notif.pushSubtitle || '',
+              type: 'info',
+              time: new Date(),
+              show: true,
+            })
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching notifications:', error)
+      }
+    },
+
+    addNotification(pushTitle: string, type: Notification['type'] = 'info') {
       this.notifications.push({
         id: this.notificationCount++,
-        text,
+        pushTitle,
+        pushContent: '',
+        pushSubtitle: '',
         type,
         time: new Date(),
         show: true,
       })
     },
+
     delNotification(id: number) {
       const index = this.notifications.findIndex((m) => m.id === id)
       if (index !== -1) {
@@ -34,20 +59,21 @@ export const useNotificationStore = defineStore('notification', {
 })
 
 export const Notify = {
-  info: (text: string) => useNotificationStore().addNotification(text, 'info'),
-  success: (text: string) =>
-    useNotificationStore().addNotification(text, 'success'),
-  warning: (text: string) =>
-    useNotificationStore().addNotification(text, 'warning'),
+  info: (pushTitle: string) =>
+    useNotificationStore().addNotification(pushTitle, 'info'),
+  success: (pushTitle: string) =>
+    useNotificationStore().addNotification(pushTitle, 'success'),
+  warning: (pushTitle: string) =>
+    useNotificationStore().addNotification(pushTitle, 'warning'),
   error: (val: unknown) => {
-    let text = ''
+    let pushTitle = ''
     if (typeof val === 'string') {
-      text = val
+      pushTitle = val
     } else if (val instanceof Error) {
-      text = val.message
+      pushTitle = val.message
     } else {
-      text = JSON.stringify(val)
+      pushTitle = JSON.stringify(val)
     }
-    useNotificationStore().addNotification(text, 'error')
+    useNotificationStore().addNotification(pushTitle, 'error')
   },
 }

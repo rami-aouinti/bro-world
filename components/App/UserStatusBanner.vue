@@ -3,7 +3,6 @@
     <v-col cols="12">
       <div class="user-status-banner">
         <v-card
-          v-if="loggedIn && !user?.enabled"
           icon="mdi-alert-circle"
           rounded="xl" class="mx-3 text-center" variant="text" elevation="10"
         >

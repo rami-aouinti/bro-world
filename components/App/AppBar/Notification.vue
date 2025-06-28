@@ -3,24 +3,19 @@ import { ref, computed , mergeProps } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { useNotificationStore } from '~/stores/notification'
-
+const loading = ref(true)
 const notificationStore = useNotificationStore()
 const { notifications } = storeToRefs(notificationStore)
+const countNotification = ref(0)
+async function fetchNotifications() {
+  await notificationStore.fetchNotifications()
+}
 
-const dropdown = [
-  {
-    icon: 'mdi-email',
-    title: 'Check new messages',
-  },
-  {
-    icon: 'mdi-podcast',
-    title: 'Manage podcast session',
-  },
-  {
-    icon: 'mdi-shopping-cart',
-    title: 'Payment successfully completed',
-  },
-]
+watch(loading, () => {
+  fetchNotifications()
+}, { immediate: true })
+
+onMounted(await fetchNotifications)
 </script>
 
 <template>
@@ -56,7 +51,7 @@ const dropdown = [
       >
         <v-icon size="20" class="me-3 text-body">mdi-bell-outline</v-icon>
         <span class="text-sm font-weight-normal text-typo">
-          {{ notification.text }}
+          {{ notification.pushTitle }}
         </span>
       </v-list-item>
       <v-list-item

@@ -13,7 +13,7 @@ import LoaderPost from '~/components/App/Loader/Home/LoaderPost.vue'
 import CreateWorldDialog from "~/components/App/Home/CreateWorldDialog.vue";
 
 const { locale } = useI18n()
-const { loggedIn } = useUserSession()
+const { loggedIn, user } = useUserSession()
 
 const postStore = usePostStore()
 
@@ -111,7 +111,7 @@ onMounted(async () => {
       <LoaderStatusBanner />
     </template>
     <template v-else>
-      <UserStatusBanner v-if="loggedIn" />
+      <UserStatusBanner v-if="loggedIn && !user?.enabled" />
     </template>
 
     <v-row>

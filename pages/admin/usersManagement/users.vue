@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
 import type { DataTableHeaders } from '~/plugins/vuetify'
 import { useUserStore } from '~/stores/admin/user/userStore'
 import ReusableDataTable from '~/components/Admin/ReusableDataTable.vue'
@@ -34,7 +34,7 @@ async function fetchUsers() {
   await userStore.fetchUsers()
   loading.value = false
 }
-
+watch(loading, fetchUsers, { immediate: true })
 onMounted(await fetchUsers)
 </script>
 

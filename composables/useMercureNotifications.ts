@@ -1,24 +1,29 @@
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useNotificationStore } from '~/stores/notification'
 
-export const useMercureNotifications = () => {
-  const specifiedNotifications = ref<any[]>([])
+
+export const useMercureNotifications = (userId: string) => {
+  const notificationsMercure = ref<any[]>([])
   let es: EventSource | null = null
 
-  onMounted(async () => {
-    if (!process.client) return
+  onMounted(() => {
+    if (process.client && userId) {
+      const store = useNotificationStore()
+      const url = new URL('https://bro-world.org/.well-known/mercure')
+      url.searchParams.append('topic', `/notifications/${userId}`)
+      url.searchParams.append('token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InN1YnNjcmliZSI6WyJodHRwczovL2Jyby13b3JsZC5vcmcvdXNlci9ub3RpZmljYXRpb25zLzEyM2U0NTY3LWU4OWItMTJkMy1hNDU2LTQyNjYxNDE3NDAwMCJdLCJwdWJsaXNoIjpbIioiXX0sImlhdCI6MTcxOTUxNTI4NSwiZXhwIjoxNzE5NTE4ODg1fQ.k2Zf_8YXHk7VfW7SwkpHjSkD7rm4_7yKD_ZZsd_ZIwo')
+      es = new EventSource(url.toString(), {
+        withCredentials: true, // crucial pour envoyer le cookie JWT
+      })
 
-    const url = new URL('https://bro-world.org/.well-known/mercure')
-    url.searchParams.append('topic', '/user/notifications/123e4567-e89b-12d3-a456-426614174000')
-    url.searchParams.append('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXJjdXJlIjp7InN1YnNjcmliZSI6WyIvdXNlci9ub3RpZmljYXRpb25zLyJdfSwiZXhwIjoxOTUwMDAwMDAwfQ.zK4L3lwn88cL7m9bc9yBa3z27Uz_rEsSk1j1u-VUjZ4')
+      es.onmessage = (event) => {
+        const data = JSON.parse(event.data)
+        store.addNotification(data.title)
+      }
 
-    es = new EventSource(url.toString(), { withCredentials: true })
-
-    es.onmessage = (event) => {
-      specifiedNotifications.value.push(JSON.parse(event.data))
-    }
-
-    es.onerror = (err) => {
-      console.error('Mercure error:', err)
+      es.onerror = (err) => {
+        console.error('Mercure error:', err)
+      }
     }
   })
 
@@ -26,5 +31,5 @@ export const useMercureNotifications = () => {
     es?.close()
   })
 
-  return { specifiedNotifications }
+  return { notificationsMercure }
 }

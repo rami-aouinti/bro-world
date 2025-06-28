@@ -33,8 +33,6 @@ definePageMeta({
   requiresAdmin: true,
   drawerIndex: 2,
 })
-const { notificationsMercure } = useMercureGlobaleNotifications()
-const { specifiedNotifications } = useMercureNotifications()
 
 function cancelEdit() {
   dialogEdit.value = false
@@ -139,47 +137,6 @@ function getStatus(item: {
 </script>
 
 <template>
-  <v-alert
-    v-for="(notif, index) in notificationsMercure"
-    :key="index"
-    type="info"
-    class="my-2"
-    border="start"
-    elevation="2"
-  >
-    <template #default>
-      <div>
-        <strong>{{ notif.title }}</strong>
-        <div v-if="notif.subtitle" class="text-subtitle-2 text-grey">
-          {{ notif.subtitle }}
-        </div>
-        <div v-if="notif.content" class="mt-2">
-          {{ notif.content }}
-        </div>
-      </div>
-    </template>
-  </v-alert>
-
-  <v-alert
-    v-for="(notif, index) in specifiedNotifications"
-    :key="index"
-    type="warning"
-    class="my-2"
-    border="start"
-    elevation="2"
-  >
-    <template #default>
-      <div>
-        <strong>{{ notif.title }}</strong>
-        <div v-if="notif.subtitle" class="text-subtitle-2 text-grey">
-          {{ notif.subtitle }}
-        </div>
-        <div v-if="notif.content" class="mt-2">
-          {{ notif.content }}
-        </div>
-      </div>
-    </template>
-  </v-alert>
   <v-card-text>
       <client-only>
         <teleport to="#app-bar">
