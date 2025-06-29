@@ -24,27 +24,20 @@ const description = computed(() => {
 const keywords = computed(() => {
   return route.meta?.keywords || route.matched[0]?.meta?.keywords || 'social, Bro world, Community'
 })
+
 if (process.client) {
   useMercureGlobaleNotifications()
 }
-const { loggedIn, user } = await useUserSession()
-const isMounted = ref(true)
-// Démarre l'écoute Mercure dès que le site est chargé côté client
-const init = async () => {
-  if (process.client) {
-    if (user.value) {
-      useMercureNotifications(user.value.id)
-      isMounted.value = false
-    }
-  }
-  if (!loggedIn) {
-    isMounted.value = false
-  }
-}
 
-watch(isMounted, () => {
-  init()
-}, { immediate: true })
+const { loggedIn, user } = await useUserSession()
+const notificationsStarted = ref(false)
+
+watchEffect(() => {
+  if (process.client && user.value && loggedIn && !notificationsStarted.value) {
+    useMercureNotifications(user.value.id)
+    notificationsStarted.value = true
+  }
+})
 
 const { locale } = useI18n()
 

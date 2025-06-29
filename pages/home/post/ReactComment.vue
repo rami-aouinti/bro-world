@@ -20,6 +20,7 @@ const newReply = ref('')
 const loading = ref(false)
 const isLiking = ref(false)
 const localLikes = ref([...props.comment.likes ?? []])
+const children = ref(props.comment.children)
 const likeId = ref('')
 function hasLiked() {
   if (localLikes.value && loggedIn) {
@@ -85,6 +86,9 @@ const sendComment = async () => {
     body: formData
   });
   if (data.value) {
+    data.value.content = sendingComment.value
+    data.value.user = user.value
+    children.value.unshift(data.value);
     emit('comment-commented')
     newReply.value = ''
   } else {
@@ -126,7 +130,7 @@ const sendComment = async () => {
   <!-- Replies + Input -->
   <div v-if="showReplies" class="mt-3 ms-5">
     <div
-      v-for="reply in props.comment.children"
+      v-for="reply in children"
       :key="reply.id"
       class="mb-2"
     >

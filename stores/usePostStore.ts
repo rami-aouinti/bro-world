@@ -23,6 +23,10 @@ export const usePostStore = defineStore('post', {
       this.loaded = true
     },
 
+    appendPost(post: any) {
+      this.posts = [post.data, ...this.posts];
+    },
+
     appendPosts(posts: any[]) {
       this.posts = [...this.posts, ...posts]
     },

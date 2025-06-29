@@ -3,7 +3,6 @@ import NewComment from "~/pages/home/post/NewComment.vue";
 import Comment from "~/pages/home/post/Comment.vue";
 import { ref } from 'vue'
 import { useLocalePath } from '#i18n'
-
 const props = defineProps<{
   post: {
     id: string
@@ -13,17 +12,10 @@ const props = defineProps<{
 
 const localePath = useLocalePath()
 const { loggedIn, user } = useUserSession()
-const comments = ref(props.post.comments) // copie locale pour réactivité
+const comments = ref(props.post.comments)
 
-async function reloadComments() {
-  try {
-    const { data } = await useFetch(`/api/posts/comments/${props.post.id}/comment`)
-    if (data.value && Array.isArray(data.value)) {
-      comments.value = data.value
-    }
-  } catch (e) {
-    console.error('Error', e)
-  }
+const reloadComments = async (data: any) => {
+  comments.value.unshift(data.value);
 }
 </script>
 

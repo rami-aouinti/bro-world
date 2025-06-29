@@ -63,6 +63,8 @@ const formPayload = computed(() => {
 
 
 const handleSuccess = (data: any) => {
+  data.title = postContent.value
+  data.user = user.value
   postContent.value = ''
   imageUrl.value = null
   youtubeId.value = null

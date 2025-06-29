@@ -48,19 +48,13 @@ const init = async () => {
   }
 }
 
-const reloadPosts = async () => {
+const reloadPosts = async (data: any) => {
   loadingPost.value = true
-  postStore.clearPosts()
-  const newPosts = await postStore.fetchPosts(1, postStore.limit)
-  postStore.setPosts({
-    data: newPosts,
-    page: 1,
-    limit: postStore.limit,
-    count: postStore.total,
-  })
+  postStore.appendPost({data})
   currentPage.value = 1
   loadingPost.value = false
 }
+
 
 const loadMore = async () => {
   if (isLoading.value || !hasMore.value) return

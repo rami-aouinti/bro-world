@@ -2,7 +2,7 @@
 import { ref, defineEmits } from 'vue'
 import UserAvatar from "~/components/App/UserAvatar.vue"
 const sendingComment = ref(false)
-const { user } = useUserSession()
+const { user } = await useUserSession()
 const comment = ref('')
 
 // 👇 Ajout de l’emit
@@ -26,9 +26,10 @@ const sendComment = async () => {
   })
 
   if (data.value) {
-    emit('comment-created', data.value)
+    data.value.content = comment.value
+    data.value.user = user.value
+    emit('comment-created', data)
     comment.value = ''
-
   } else {
     console.error("Error send comment:", error)
   }

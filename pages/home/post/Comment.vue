@@ -32,7 +32,7 @@ const { loggedIn, user } = await useUserSession()
 const localePath = useLocalePath()
 
 const formattedComment = computed(() =>
-  props.comment.content?.replace(/\n/g, '<br>') || ''
+  props.comment?.content?.replace(/\n/g, '<br>') || ''
 )
 
 const isOwner = computed(() => props.comment?.user?.id === user.value?.id)
@@ -71,6 +71,10 @@ async function saveEdit() {
   } finally {
     loading.value = false
   }
+}
+
+const createdComment = () => {
+  Notify.success('Comment created.')
 }
 </script>
 
@@ -173,7 +177,7 @@ async function saveEdit() {
 
     <!-- Reactions / replies -->
     <ReactComment
-      @comment-commented="emit('comment-created')"
+      @comment-commented="createdComment"
       :comment="props.comment"
     />
   </v-card>

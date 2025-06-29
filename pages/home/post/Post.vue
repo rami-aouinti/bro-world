@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Comments from "~/pages/home/post/Comments.vue";
 import ReactPost from "~/pages/home/post/ReactPost.vue";
 
 const props = defineProps({
