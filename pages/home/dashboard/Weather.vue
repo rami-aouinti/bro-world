@@ -15,7 +15,7 @@
             </h6>
           </v-col>
           <v-col cols="4" class="text-end">
-            <v-img src="/img/small-logos/icon-sun-cloud.png" class="w-50 ms-auto" />
+            <v-img alt="weather image" src="/img/small-logos/icon-sun-cloud.png" class="w-50 ms-auto" />
             <h6 class="mb-0 text-h6 text-end me-1">{{ t('dashboard.weather.condition') }}</h6>
           </v-col>
         </v-row>
@@ -34,12 +34,27 @@ const { t, locale } = useI18n()
 const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
 
 const { loggedIn } = useUserSession()
+const runtimeConfig = useRuntimeConfig()
 const { askGroq } = useGroq()
 const showCard = ref(true)
 const weatherInfo = ref('')
 const city = ref('')
 const tasks: Promise<any>[] = []
+import { useCachedFetch } from '@/composables/useCachedFetch'; // ou '~/composables/useCachedFetch'
 
+const getWeather = async(place) => {
+  const result = await useCachedFetch('my-weather', async () => {
+    const { data } = await useFetch('https://api.weatherapi.com/v1/current.json', {
+      query: {
+        key: runtimeConfig.public.weatherKey,
+        q: place,
+      },
+    });
+    return toRaw(data.value); // ✅ important !
+  }, 600);
+
+  weatherInfo.value = result.current?.temp_c;
+}
 
 const getWeatherFromGroq = async (latitude: number, longitude: number) => {
   try {
@@ -60,8 +75,9 @@ const getWeatherFromGroq = async (latitude: number, longitude: number) => {
     const temperature = temperatureMatch ? temperatureMatch[0] : 'N/A'
 
     city.value = place
-    weatherInfo.value = temperature
+    await getWeather(place)
     showCard.value = true
+
   } catch (e) {
     console.error('Groq error:', e)
     showCard.value = false

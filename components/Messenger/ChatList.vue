@@ -17,6 +17,7 @@
         <v-col cols="12">
           <div class="d-flex align-items-center text-center">
             <v-autocomplete
+              :search="search"
               v-model="friends"
               :items="filteredConversations"
               color="blue-grey-lighten-2"

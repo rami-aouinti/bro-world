@@ -9,7 +9,8 @@ import { useMercureNotifications } from '~/composables/useMercureNotifications'
 
 const route = useRoute()
 const runtimeConfig = useRuntimeConfig()
-
+const { data } = await useFetch('/api/item');
+console.log(data.value);
 const baseUrl = runtimeConfig.public.siteUrl || 'https://bro-world-space.com'
 const canonicalUrl = computed(() => baseUrl + route.fullPath)
 
