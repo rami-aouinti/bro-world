@@ -191,6 +191,7 @@ async function handleSubmit() {
   text-align: left;
 }
 .v-sheet--offset {
+  z-index: 2;
   top: -44px;
   position: relative;
 }

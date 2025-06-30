@@ -39,8 +39,7 @@
         </div>
       </template>
 
-      <div v-if="isOnline" class="online-badge" />
-      <div v-else class="offline-badge" />
+
     </template>
   </div>
 </template>
@@ -56,10 +55,6 @@ defineProps({
     default: 64,
   },
   isActive: {
-    type: Boolean,
-    default: false,
-  },
-  isOnline: {
     type: Boolean,
     default: false,
   },
@@ -108,42 +103,4 @@ defineProps({
   }
 }
 
-.online-badge {
-  position: absolute;
-  bottom: 20px;
-  left: 175px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #4caf50;
-  box-shadow: 0 0 4px #4caf50, 0 0 8px #4caf50;
-  animation: onlinePulse 1.5s ease-in-out infinite;
-}
-
-.offline-badge {
-  position: absolute;
-  bottom: 20px;
-  left: 175px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #e00a1e;
-  box-shadow: 0 0 4px #c51616, 0 0 8px #e00a1e;
-  animation: onlinePulse 1.5s ease-in-out infinite;
-}
-
-@keyframes onlinePulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.4);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-}
 </style>

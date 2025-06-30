@@ -1,5 +1,8 @@
 <template>
-  <small class="d-block text-muted">{{ relativeDate }}</small>
+  <p class="text-xs text-secondary d-flex align-center">
+  <v-icon size="14" class="me-1">mdi-clock</v-icon>
+  {{ relativeDate }}
+  </p>
 </template>
 
 <script setup>

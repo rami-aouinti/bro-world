@@ -1,7 +1,8 @@
 <template>
-  <div class="text-body-1 font-mono pa-2">
+  <p class="text-xs text-secondary d-flex align-center">
+    <v-icon size="14" class="me-1">mdi-clock</v-icon>
     {{ displayedText }}<span v-if="showCursor" class="blinking-cursor">|</span>
-  </div>
+  </p>
 </template>
 
 <script lang="ts" setup>

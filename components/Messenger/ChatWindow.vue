@@ -14,49 +14,13 @@
 
   <v-card
     v-else
-    class="pt-3 px-1 shadow-blur fade-in"
-    max-height="500"
+    class="pt-12 px-1 shadow-blur fade-in overflow-visible"
+    style="margin-top: 20px;"
+    max-height="520"
     rounded="xl"
     variant="text"
   >
-    <div class="bg-primary shadow-primary border-radius-lg px-3 py-2 mx-3">
-      <v-container>
-        <v-row>
-          <v-col md="10">
-            <div class="d-flex align-items-center">
-              <GlowingAvatar :src="user?.profile?.photo ?? '/img/person.png'" :size="56" :online="true" />
-              <div class="ms-3">
-                <h6 class="mb-0 text-h6 d-block">{{ conversation?.title || 'Unnamed' }}</h6>
-                <span class="text-sm opacity-8">last seen recently</span>
-              </div>
-            </div>
-          </v-col>
-          <v-col cols="1" class="my-auto">
-            <v-tooltip location="top">
-              <template #activator="{ props }">
-                <v-icon v-bind="props" size="18">mdi-video</v-icon>
-              </template>
-              <span>Video call</span>
-            </v-tooltip>
-          </v-col>
-          <v-col cols="1" class="my-auto">
-            <v-menu transition="slide-y-transition" offset-y offset-x min-width="150">
-              <template #activator="{ props }">
-                <v-btn variant="text" icon :ripple="false" v-bind="props" size="small">
-                  <v-icon size="18">mdi-cog</v-icon>
-                </v-btn>
-              </template>
-              <v-list class="pa-2">
-                <v-list-item v-for="item in ['Profile', 'Mute Conversation', 'Block', 'Clear Chat', 'Delete Chat']" :key="item">
-                  <v-list-item-title :class="item === 'Delete Chat' ? 'text-danger' : 'text-body'">{{ item }}</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </v-col>
-        </v-row>
-      </v-container>
-    </div>
-
+    <CardWindow :conversation="conversation" />
     <!-- Loader lors de l'envoi -->
     <v-progress-linear v-if="sendingMessage" indeterminate color="primary" height="2" class="mt-n4" />
 
@@ -64,7 +28,7 @@
     <div
       ref="messageContainer"
       class="overflow-y-auto px-2 pt-2"
-      style="max-height: 290px;  overflow-x: hidden;"
+      style="height: 300px;  overflow-x: hidden;"
       @dragover.prevent
       @drop.prevent="onDrop"
     >
@@ -128,8 +92,7 @@
                   class="rounded-lg mb-2"
                   :placeholder="'/img/loading.svg'"
                 />
-
-                <small class="opacity-8">{{ formatTime(message?.createdAt) }}</small>
+                <RelativeTime :date="message?.createdAt" />
               </v-card>
             </div>
           </div>
@@ -163,6 +126,9 @@ const playSound = () => {
 
 
 import { useMercureConversation } from '~/composables/useMercureConversation'
+import Social from "~/components/Auth/Social.vue";
+import RelativeTime from "~/components/App/RelativeTime.vue";
+import CardWindow from "~/components/Messenger/Widgets/CardWindow.vue";
 
 const conversationId = computed(() => props.conversation?.id ?? null)
 useMercureConversation(conversationId, (newMessage) => {
@@ -236,7 +202,7 @@ onMounted(async () => {
 const { current } = useTheme()
 
 const computedGlow = computed(() => {
-  const primary = current.value.colors.primary || '#be0072'
+  const primary = current.value.colors.primary || '#e91e63'
   return `radial-gradient(circle, ${primary} 0%, transparent 70%)`
 })
 </script>
@@ -245,7 +211,6 @@ const computedGlow = computed(() => {
 .fade-in {
   animation: fadeIn 0.4s ease-in-out;
 }
-
 @keyframes fadeIn {
   from {
     opacity: 0;

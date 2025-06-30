@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <!-- Liste des conversations -->
-    <v-col md="4">
+    <v-col cols="12" md="4">
       <template v-if="loadConversation">
         <v-card class="pa-4" rounded="xl" variant="text">
           <v-skeleton-loader
@@ -22,7 +22,7 @@
     </v-col>
 
     <!-- Fenêtre de chat -->
-    <v-col md="8">
+    <v-col cols="12" md="8">
       <ChatWindow
         v-if="activeConversation"
         :conversation="activeConversation"
