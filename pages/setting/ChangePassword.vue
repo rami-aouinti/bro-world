@@ -11,24 +11,21 @@
     <div class="px-6 pb-6 pt-0">
       <v-row>
         <v-col cols="12">
-          <v-text-field
-            label="Current password"
+          <v-text-field rounded="xl" label="Current password"
             color="#e91e63"
             variant="outlined"
             dense
             type="password"
             class="font-size-input input-style py-0"
           />
-          <v-text-field
-            label="New password"
+          <v-text-field rounded="xl" label="New password"
             color="#e91e63"
             variant="outlined"
             dense
             type="password"
             class="font-size-input input-style py-0"
           />
-          <v-text-field
-            label="Confirm new password"
+          <v-text-field rounded="xl" label="Confirm new password"
             color="#e91e63"
             variant="outlined"
             dense

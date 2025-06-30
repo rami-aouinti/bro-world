@@ -3,7 +3,7 @@
     <template v-if="loadingQuiz">
       <v-skeleton-loader type="list-item-avatar-three-line" class="mx-3 mb-4 rounded-xl" />
     </template>
-    <v-card v-else class="mx-3 my-4" rounded="xl" variant="text" elevation="10">
+    <v-card v-else class="mx-3 my-4 " rounded="xl" variant="text" elevation="10">
       <v-card-title class="text-h6 font-weight-bold text-center">
         🏆 {{ t('dashboard.quiz.title') }}
         <NuxtLink to="/game" class="text-primary text-decoration-none font-weight-bold ml-1">

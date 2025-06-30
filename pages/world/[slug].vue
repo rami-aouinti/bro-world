@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { mergeProps, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import AddMember from "~/pages/world/dialog/addMember.vue";
 const route = useRoute()
 const slug = route.params.slug
-
+const menuShow = ref(false)
 const pending = ref(true)
 const blog = ref({})
 const loadBlog = async () => {
@@ -12,7 +14,10 @@ const loadBlog = async () => {
   }
   pending.value = false
 }
-
+const addMemberDialog = ref(false)
+const closeMenu = () => {
+  menuShow.value = false
+}
 watch(!slug, () => {
   loadBlog()
 }, { immediate: true })
@@ -43,21 +48,89 @@ onMounted(async () => {
                     {{ blog?.title }}
                   </h6>
                   <p class="mb-0 font-weight-light text-body text-sm">
-                    {{ blog?.subTitle }}
+                    {{ blog?.blogSubTitle }}
                   </p>
                 </div>
               </v-col>
               <!-- Buttons -->
               <v-col cols="auto" class="ms-auto d-flex align-center justify-end">
-                <v-btn variant="text" to="/setting" class="font-weight-bolder me-1">
-                  <v-icon icon="mdi-settings" size="20" />
-                </v-btn>
+                <!-- On utilise SEULEMENT v-menu, et on applique manuellement le tooltip -->
+                <v-menu
+                  v-model="menuShow"
+                  transition="slide-y-transition"
+                  offset-y
+                  offset-x
+                  min-width="150"
+                  :close-on-content-click="false"
+                >
+                  <template #activator="{ props: menu }">
+                    <v-btn
+                      v-bind="menu"
+                      icon
+                      :ripple="false"
+                      variant="text"
+                      class="text-primary"
+                      small
+                    >
+                      <v-tooltip activator="parent" location="bottom">
+                        Setting
+                      </v-tooltip>
+                      <v-icon size="16">mdi-settings</v-icon>
+                    </v-btn>
+                  </template>
+
+                  <v-list class="pa-2">
+                    <v-list-item class="list-item-hover-active border-radius-md">
+                      <v-list-item-content class="pa-0">
+                        <v-list-item-title
+                          class="text-body-2 ls-0 text-body font-weight-600 py-2"
+                        >
+                          Edit Team
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item class="list-item-hover-active border-radius-md">
+                      <v-list-item-content class="pa-0">
+                        <v-list-item-title
+                          class="text-body-2 ls-0 text-body font-weight-600 py-2 cursor-pointer"
+                          @click="addMemberDialog = true; closeMenu"
+                        >
+                          Add Member
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item class="list-item-hover-active border-radius-md">
+                      <v-list-item-content class="pa-0">
+                        <v-list-item-title
+                          class="text-body-2 ls-0 text-body font-weight-600 py-2"
+                        >
+                          See Details
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+
+                    <hr class="horizontal dark my-2" />
+
+                    <v-list-item class="list-item-hover-active border-radius-md">
+                      <v-list-item-content class="pa-0">
+                        <v-list-item-title
+                          class="text-danger ls-0 font-weight-600 mb-0"
+                        >
+                          Remove Team
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
               </v-col>
             </v-row>
           </div>
         </v-card>
       </v-col>
     </v-row>
+    <add-member :blogId="blog.id" v-model="addMemberDialog" />
   </v-container>
 </template>
 

@@ -23,13 +23,13 @@
           </a>
         </div>
         <p
-          v-if="switch1 == true"
+          v-if="switch1 === true"
           class="mb-0 text-body text-sm font-weight-light ms-auto"
         >
           Enabled
         </p>
         <p
-          v-if="switch1 == false"
+          v-if="switch1 === false"
           class="mb-0 text-body text-sm font-weight-light ms-auto"
         >
           Disabled
@@ -141,10 +141,10 @@
             Organize your team
           </p>
         </div>
-        <p v-if="switch4 == true" class="mb-0 text-body text-xs ms-auto">
+        <p v-if="switch4 === true" class="mb-0 text-body text-xs ms-auto">
           Enabled
         </p>
-        <p v-if="switch4 == false" class="mb-0 text-body text-xs ms-auto">
+        <p v-if="switch4 === false" class="mb-0 text-body text-xs ms-auto">
           Disabled
         </p>
         <v-switch

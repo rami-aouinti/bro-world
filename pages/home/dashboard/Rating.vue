@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loggedIn" :dir="isRtl ? 'rtl' : 'ltr'">
+  <div :dir="isRtl ? 'rtl' : 'ltr'">
     <template v-if="loading">
       <v-skeleton-loader
         type="list-item-two-line"

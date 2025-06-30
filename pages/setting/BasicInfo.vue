@@ -117,16 +117,16 @@ onMounted(async () => {
       <v-form ref="formRef">
         <v-row>
           <v-col cols="12" md="3">
-            <v-text-field variant="outlined" v-model="userData.title" label="Title" />
+            <v-text-field rounded="xl" variant="outlined" v-model="userData.title" label="Title" />
           </v-col>
           <v-col cols="12" md="3">
-            <v-text-field variant="outlined" v-model="userData.description" label="Description" />
+            <v-text-field rounded="xl" variant="outlined" v-model="userData.description" label="Description" />
           </v-col>
           <v-col cols="12" md="3">
-            <v-text-field variant="outlined" v-model="userData.firstName" label="First Name" />
+            <v-text-field rounded="xl" variant="outlined" v-model="userData.firstName" label="First Name" />
           </v-col>
           <v-col cols="12" md="3">
-            <v-text-field variant="outlined" v-model="userData.lastName" label="Last Name" />
+            <v-text-field rounded="xl" variant="outlined" v-model="userData.lastName" label="Last Name" />
           </v-col>
         </v-row>
         <v-row>
@@ -135,6 +135,7 @@ onMounted(async () => {
           </v-col>
           <v-col cols="12" sm="8">
             <v-date-input
+              rounded="xl"
               label="Date of birth"
               prepend-icon=""
               variant="outlined"
@@ -144,30 +145,30 @@ onMounted(async () => {
         </v-row>
         <v-row>
           <v-col cols="12" md="6">
-            <v-text-field variant="outlined" v-model="userData.email" label="Email" />
+            <v-text-field rounded="xl" variant="outlined" v-model="userData.email" label="Email" />
           </v-col>
           <v-col cols="12" md="6">
-            <v-text-field variant="outlined" v-model="userData.confirmEmail" label="Confirmation Email" />
+            <v-text-field rounded="xl" variant="outlined" v-model="userData.confirmEmail" label="Confirmation Email" />
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12" md="3">
-            <v-text-field label="Address" variant="outlined"></v-text-field>
+            <v-text-field rounded="xl" label="Address" variant="outlined"></v-text-field>
           </v-col>
           <v-col cols="12" md="3">
-            <v-text-field label="City" variant="outlined"></v-text-field>
+            <v-text-field rounded="xl" label="City" variant="outlined"></v-text-field>
           </v-col>
           <v-col cols="12" md="3">
-            <v-text-field label="State" variant="outlined"></v-text-field>
+            <v-text-field rounded="xl" label="State" variant="outlined"></v-text-field>
           </v-col>
           <v-col cols="12" md="3">
-            <v-text-field label="Zip code" variant="outlined"></v-text-field>
+            <v-text-field rounded="xl" label="Zip code" variant="outlined"></v-text-field>
           </v-col>
           <v-col cols="12" md="6">
-            <v-text-field variant="outlined" v-model="userData.location" label="Your Location" />
+            <v-text-field rounded="xl" variant="outlined" v-model="userData.location" label="Your Location" />
           </v-col>
           <v-col cols="12" md="6">
-            <v-text-field variant="outlined" v-model="userData.phone" label="Phone Number" />
+            <v-text-field rounded="xl" variant="outlined" v-model="userData.phone" label="Phone Number" />
           </v-col>
         </v-row>
         <v-row>
