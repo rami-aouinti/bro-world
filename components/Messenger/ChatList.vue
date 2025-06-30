@@ -10,7 +10,7 @@
       class="mb-2"
     />
 
-    <v-list style="height: 400px; background-color: transparent">
+    <v-list style="height: 410px; background-color: transparent; overflow-x: hidden;">
       <v-list-item-group v-model="selectedId" color="primary">
         <v-list-item
           v-for="conversation in filteredConversations"
@@ -20,22 +20,36 @@
           class="chat-list-item"
           rounded="xl"
         >
+          <template v-slot:append>
+            <v-badge
+              v-if="conversation.unreadCount > 0"
+              :content="conversation.unreadCount"
+              color="primary"
+              overlap
+            ></v-badge>
+          </template>
           <template #default>
             <v-list-item-content>
               <v-row>
                 <v-col md="12">
-                  <v-list-item-title class="text-subtitle-1 font-weight-bold">
-                    {{ conversation.title || 'Untitled Chat' }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle class="text-caption">
-                    {{ conversation.typing ? 'Typing…' : conversation.lastMessage || 'No message yet' }}
-                  </v-list-item-subtitle>
                   <div class="d-flex align-items-center">
+                    <div>
+                      <div
+                        class="mb-1 text-subtitle-1 font-weight-bold"
+                      >
+                        {{ conversation.title || 'Untitled Chat' }}
+                      </div>
+                      <div
+                        class="text-caption"
+                      >
+                        {{ conversation.typing ? 'Typing…' : conversation.lastMessage || 'No message yet' }}
+                      </div>
+                    </div>
                     <CompositeImage
                       :avatars="getAvatars(conversation)"
                       :isActive="selectedId === conversation.id"
                       :isOnline="isOnline(conversation)"
-                      :size="48"
+                      :size="56"
                       :loading="!conversation.loaded"
                     />
                   </div>
@@ -101,13 +115,11 @@ function isOnline(conversation: any): boolean {
 }
 
 .chat-list-item.v-item--active {
-  background: linear-gradient(to right, #d61e5b, #e24993);
-  color: white;
+  background: linear-gradient(to right, #d61e5b, #d61e5b);
   box-shadow: 0 4px 12px rgba(214, 30, 91, 0.5);
 }
 
 .chat-list-item.v-item--active .v-list-item-title,
 .chat-list-item.v-item--active .v-list-item-subtitle {
-  color: white !important;
 }
 </style>

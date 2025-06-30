@@ -79,6 +79,7 @@ defineProps({
 }
 
 .two-avatars {
+  margin-left: 65px;
   display: flex;
   gap: 4px;
 }
@@ -109,8 +110,8 @@ defineProps({
 
 .online-badge {
   position: absolute;
-  bottom: 50px;
-  left: 300px;
+  bottom: 20px;
+  left: 175px;
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -121,8 +122,8 @@ defineProps({
 
 .offline-badge {
   position: absolute;
-  bottom: 50px;
-  left: 300px;
+  bottom: 20px;
+  left: 175px;
   width: 12px;
   height: 12px;
   border-radius: 50%;

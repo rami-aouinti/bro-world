@@ -44,6 +44,31 @@ const setActiveConversation = (conv: any) => {
   activeConversation.value = conv
 }
 
+import { useMercureInbox } from '~/composables/useMercureInbox'
+
+const updateConversationPreview = (message: any, convId: string) => {
+  const conv = conversations.value.find(c => c.id === convId)
+  if (!conv) return
+
+  // mise à jour du contenu
+  conv.lastMessage = message.content
+  conv.typing = false // facultatif
+  conv.updatedAt = message.createdAt
+
+  // s’il est actif, tu peux ignorer (car ChatWindow s’en occupe)
+  if (activeConversation.value?.id !== convId) {
+    // notifier par son ou visuel
+    playSound()
+    // conv.unreadCount = (conv.unreadCount || 0) + 1 // facultatif
+  }
+}
+
+const playSound = () => {
+  const audio = new Audio('/sounds/new-message.mp3')
+  audio.play().catch(() => {})
+}
+
+
 const fetchConversations = async () => {
   const { data } = await useFetch('/api/messenger/conversations')
 
@@ -51,8 +76,9 @@ const fetchConversations = async () => {
     const unique = Array.from(
       new Map(data.value.map((c: any) => [c.id, c])).values()
     )
-    conversations.value = unique.map(c => ({ ...c, loaded: true }))
+    conversations.value = unique.map(c => ({ ...c, loaded: true, unreadCount: 0  }))
 
+    useMercureInbox(conversations, updateConversationPreview)
     // auto-select la première conversation
     if (!activeConversation.value && unique.length > 0) {
       activeConversation.value = unique[0]

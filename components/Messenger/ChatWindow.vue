@@ -14,12 +14,12 @@
 
   <v-card
     v-else
-    class="pt-8 px-1 shadow-blur fade-in"
+    class="pt-3 px-1 shadow-blur fade-in"
     max-height="500"
     rounded="xl"
     variant="text"
   >
-    <div class="bg-gradient-primary shadow-primary border-radius-lg px-3 py-2 mx-3">
+    <div class="bg-primary shadow-primary border-radius-lg px-3 py-2 mx-3">
       <v-container>
         <v-row>
           <v-col md="10">
@@ -64,12 +64,12 @@
     <div
       ref="messageContainer"
       class="overflow-y-auto px-2 pt-2"
-      style="max-height: 290px"
+      style="max-height: 290px;  overflow-x: hidden;"
       @dragover.prevent
       @drop.prevent="onDrop"
     >
       <v-row
-        v-if="messages.length > 0"
+        v-if="messages?.length > 0"
         v-for="message in messages"
         :key="message.id"
         :class="{
@@ -85,12 +85,19 @@
               'flex-row': message?.sender?.id !== user.id
             }"
           >
-            <GlowingAvatar
-              :src="message?.sender?.avatar ?? '/img/person.png'"
-              :size="46"
-              class="shrink-0 py-3"
-              :online="true"
-            />
+            <div class="px-4">
+              <GlowingAvatar
+                :src="message?.sender?.avatar ?? '/img/person.png'"
+                :size="46"
+                class="shrink-0 py-3"
+                :online="true"
+              />
+              <div
+                class="mb-1 text-caption font-weight-bold"
+              >
+                {{ message?.sender?.firstName || 'Unknown' }} {{ message?.sender?.lastName || '' }}
+              </div>
+            </div>
 
             <div class="mx-3" style="max-width: 75%">
               <v-card
@@ -103,13 +110,6 @@
                 ]"
                 rounded="xl"
               >
-                <div
-                  v-if="conversation?.isGroup && message?.sender?.id !== user.id"
-                  class="mb-1 text-caption font-weight-bold text-white"
-                >
-                  {{ message?.sender?.username || 'Unknown' }}
-                </div>
-
                 <p v-if="message?.text" class="mb-2">{{ message?.text }}</p>
 
                 <v-img
@@ -161,6 +161,28 @@ const playSound = () => {
   audio.play().catch(() => {})
 }
 
+
+import { useMercureConversation } from '~/composables/useMercureConversation'
+
+const conversationId = computed(() => props.conversation?.id ?? null)
+useMercureConversation(conversationId, (newMessage) => {
+  const message = {
+    sender: {
+      firstName: newMessage.title || 'Unknown',
+      avatar: newMessage.subtitle || '/img/person.png',
+      id: newMessage?.sender?.id || '111111111111111',
+    },
+    text: newMessage?.content || '',
+    createdAt: newMessage?.createdAt,
+    mediaUrl: newMessage?.mediaUrl || null,
+  }
+  messages.value.push(message)
+  scrollToBottom()
+  playSound()
+})
+
+
+
 const fetchMessages = async () => {
   const { data, error } = await useFetch(`/api/messenger/conversations/${props.conversation.id}/messages`)
   if (error.value) {
@@ -202,7 +224,7 @@ watchEffect(async () => {
 })
 
 watch(messages, async (newVal, oldVal) => {
-  if (newVal.length > oldVal?.length) playSound()
+  if (newVal?.length > oldVal?.length) playSound()
   await scrollToBottom()
 })
 
