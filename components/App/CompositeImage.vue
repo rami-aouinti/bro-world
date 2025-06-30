@@ -109,8 +109,8 @@ defineProps({
 
 .online-badge {
   position: absolute;
-  bottom: 2px;
-  right: 2px;
+  bottom: 50px;
+  left: 300px;
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -121,8 +121,8 @@ defineProps({
 
 .offline-badge {
   position: absolute;
-  bottom: 2px;
-  right: 2px;
+  bottom: 50px;
+  left: 300px;
   width: 12px;
   height: 12px;
   border-radius: 50%;
