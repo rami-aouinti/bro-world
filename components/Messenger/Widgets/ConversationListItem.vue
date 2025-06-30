@@ -31,7 +31,12 @@ import { ref, defineProps, defineEmits } from 'vue'
 import CompositeImage from '~/components/App/CompositeImage.vue'
 
 const { user } = useUserSession()
-const props = defineProps<{ conversation: any[] }>()
+const props = defineProps<{
+  conversation: {
+    type: Object,
+    required: true
+  }
+}>()
 const emit = defineEmits(['select'])
 
 function getAvatars(conversation: any): string[] {

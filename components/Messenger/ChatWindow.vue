@@ -112,7 +112,12 @@ import GlowingAvatar from '~/components/App/GlowingAvatar.vue'
 import { useTheme } from 'vuetify'
 
 const { user } = useUserSession()
-const props = defineProps<{ conversation: any }>()
+const props = defineProps<{
+  conversation: {
+    type: Object,
+    required: true
+  }
+}>()
 
 const messages = ref<any[]>([])
 const conversationLoaded = ref(true)

@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import LoaderProfile from "~/components/App/Loader/Profile/LoaderProfile.vue";
+import LoaderProfile from '~/components/App/Loader/Profile/LoaderProfile.vue'
+
 const { t } = useI18n()
 const { user } = await useUserSession()
 const profile = ref<any>(null)
 const pending = ref(true)
 const avatarUrl = ref('')
+
 const loadProfile = async () => {
   pending.value = true
   if (user.value.username) {
-    const { data } = await useFetch(`/api/profile/${user.value.username}`)
-    if (data.value) {
-      profile.value = data.value
-      avatarUrl.value = data.value?.profile?.photo ?? '/person.png'
+    const data = await $fetch(`/api/profile/${user.value.username}`)
+    if (data) {
+      profile.value = data
+      avatarUrl.value = data?.profile?.photo ?? '/person.png'
     }
   }
   pending.value = false
@@ -27,14 +29,15 @@ onMounted(async () => {
   await loadProfile()
 })
 
+// 🎯 Traductions via clés courtes
 const accountSettings = ref([
-  { text: 'Email me when someone follows me', switchState: true },
-  { text: 'Email me when someone answers on my post', switchState: false },
+  { text: 'emailWhenFollow', switchState: true },
+  { text: 'emailWhenAnswer', switchState: false },
 ])
 
 const applicationSettings = ref([
-  { text: 'New launches and projects', switchState: true },
-  { text: 'Monthly product updates', switchState: false },
+  { text: 'newProjects', switchState: true },
+  { text: 'monthlyUpdates', switchState: false },
 ])
 
 const conversations = ref([
@@ -59,6 +62,7 @@ const conversations = ref([
     avatar: 'https://randomuser.me/api/portraits/men/85.jpg',
   },
 ])
+
 definePageMeta({
   layout: 'default',
   description: 'Profile page',
@@ -66,6 +70,7 @@ definePageMeta({
   middleware: 'auth',
 })
 </script>
+
 <template>
   <v-container fluid>
     <div v-if="pending">
@@ -77,13 +82,11 @@ definePageMeta({
           <v-card rounded="xl" class="py-4" variant="text">
             <div class="px-5">
               <v-row align="center" class="pa-0 ma-0">
-                <!-- Avatar -->
                 <v-col cols="auto">
                   <v-avatar size="50" class="border-primary border-lg rounded-circle">
                     <NuxtImg width="50" height="50" :src="avatarUrl" alt="Avatar" />
                   </v-avatar>
                 </v-col>
-                <!-- Name -->
                 <v-col cols="auto">
                   <div>
                     <h6 class="mb-1 text-h6 text-typo font-weight-bold">
@@ -94,7 +97,6 @@ definePageMeta({
                     </p>
                   </div>
                 </v-col>
-                <!-- Buttons -->
                 <v-col cols="auto" class="ms-auto d-flex align-center justify-end">
                   <v-btn variant="text" to="/setting" class="font-weight-bolder me-1">
                     <v-icon icon="mdi-settings" size="20" />
@@ -108,7 +110,9 @@ definePageMeta({
           </v-card>
         </v-col>
       </v-row>
+
       <v-row>
+        <!-- Account & App Settings -->
         <v-col lg="4" md="4" cols="12">
           <v-card rounded="xl" class="h-60" variant="text">
             <div class="px-4 pt-4">
@@ -131,6 +135,7 @@ definePageMeta({
                   </v-row>
                 </v-list-item>
               </v-list>
+
               <h6 class="text-uppercase text-body text-xs font-weight-bolder mt-4">
                 {{ t('profile.application') }}
               </h6>
@@ -149,6 +154,8 @@ definePageMeta({
             </div>
           </v-card>
         </v-col>
+
+        <!-- Info -->
         <v-col lg="4" md="4" cols="12">
           <v-card rounded="xl" class="h-100" variant="text">
             <div class="px-4 pt-4">
@@ -184,17 +191,12 @@ definePageMeta({
                     &nbsp; {{ profile?.locale ?? '' }}
                   </div>
                 </v-list-item>
-                <v-list-item class="px-0 border-radius-sm">
-                  <div class="text-body text-sm">
-                    <strong class="text-dark">{{ t('profile.social') }}:</strong>
-                    &nbsp;
-                    <!-- Social Icons if available -->
-                  </div>
-                </v-list-item>
               </v-list>
             </div>
           </v-card>
         </v-col>
+
+        <!-- Conversations -->
         <v-col lg="4" md="4" cols="12">
           <v-card rounded="xl" class="h-100" variant="text">
             <div class="px-4 pt-4">
@@ -203,28 +205,30 @@ definePageMeta({
             <hr class="horizontal dark mt-2 mb-1" />
             <div class="px-4 py-4">
               <v-list class="bg-transparent" elevation="0">
-                <v-list-item-group class="border-radius-sm">
-                  <v-list-item v-for="conversation in conversations" :key="conversation.user" class="px-0 border-radius-sm mb-2">
-                    <div class="d-flex align-center">
-                      <v-avatar width="48" height="48" class="shadow border-radius-lg me-4">
-                        <NuxtImg width="48" height="48" :src="conversation.avatar" alt="Avatar" class="border-radius-lg" />
-                      </v-avatar>
-                      <div>
-                        <h6 class="mb-0 text-sm text-typo font-weight-bold">
-                          {{ conversation.user }}
-                        </h6>
-                        <p class="mb-0 text-xs text-body font-weight-light">
-                          {{ conversation.message }}
-                        </p>
-                      </div>
-                      <div class="ms-auto">
-                        <v-btn small variant="text" width="auto" class="text-primary font-weight-bolder">
-                          {{ t('profile.reply') }}
-                        </v-btn>
-                      </div>
+                <v-list-item
+                  v-for="conversation in conversations"
+                  :key="conversation.user"
+                  class="px-0 border-radius-sm mb-2"
+                >
+                  <div class="d-flex align-center">
+                    <v-avatar width="48" height="48" class="shadow border-radius-lg me-4">
+                      <NuxtImg width="48" height="48" :src="conversation.avatar" alt="Avatar" class="border-radius-lg" />
+                    </v-avatar>
+                    <div>
+                      <h6 class="mb-0 text-sm text-typo font-weight-bold">
+                        {{ conversation.user }}
+                      </h6>
+                      <p class="mb-0 text-xs text-body font-weight-light">
+                        {{ conversation.message }}
+                      </p>
                     </div>
-                  </v-list-item>
-                </v-list-item-group>
+                    <div class="ms-auto">
+                      <v-btn small variant="text" width="auto" class="text-primary font-weight-bolder">
+                        {{ t('profile.reply') }}
+                      </v-btn>
+                    </div>
+                  </div>
+                </v-list-item>
               </v-list>
             </div>
           </v-card>

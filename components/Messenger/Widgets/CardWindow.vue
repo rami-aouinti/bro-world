@@ -45,7 +45,12 @@
 import { defineProps } from 'vue'
 const { user } = useUserSession()
 import GlowingAvatar from "~/components/App/GlowingAvatar.vue";
-const props = defineProps<{ conversation: any[] }>()
+const props = defineProps<{
+  conversation: {
+    type: Object,
+    required: true
+  }
+}>()
 </script>
 <style>
 .v-sheet--offset {

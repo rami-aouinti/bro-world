@@ -90,7 +90,11 @@
     "settings": {
       "title": "Platform Settings",
       "account": "Account",
-      "application": "Application"
+      "application": "Application",
+      "emailWhenFollow": "Email me when someone follows me",
+      "emailWhenAnswer": "Email me when someone answers on my post",
+      "newProjects": "New launches and projects",
+      "monthlyUpdates": "Monthly product updates"
     },
     "info": {
       "title": "Profile Information",

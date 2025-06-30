@@ -51,55 +51,57 @@
         </v-col>
       </v-row>
     </v-sheet>
-    <v-list style="height: 380px; background-color: transparent; overflow-x: hidden;">
-      <v-list-item-group v-model="selectedId" color="primary">
-        <v-list-item
-          v-for="conversation in filteredConversations"
-          :key="conversation.id"
-          :value="conversation.id"
-          @click="selectConversation(conversation)"
-          class="chat-list-item"
-          rounded="xl"
-        >
-          <template v-slot:append>
-            <div v-if="isOnline" class="online-badge" />
-            <div v-else class="offline-badge" />
-            <v-badge
-              v-if="conversation.unreadCount > 0"
-              :content="conversation.unreadCount"
-              color="secondary"
-              class="mx-2"
-              overlap
-            ></v-badge>
-          </template>
-          <template #default>
-            <v-list-item-content>
-              <ConversationListItem :conversation="conversation" />
-            </v-list-item-content>
-          </template>
-        </v-list-item>
-      </v-list-item-group>
+    <v-list
+      v-model:selected="selectedId"
+      style="height: 380px; background-color: transparent; overflow-x: hidden;"
+    >
+      <v-list-item
+        v-for="conversation in filteredConversations"
+        :key="conversation.id"
+        :value="conversation.id"
+        @click="selectConversation(conversation)"
+        class="chat-list-item"
+        rounded="xl"
+      >
+        <template #append>
+          <div v-if="isOnline(conversation)" class="online-badge" />
+          <div v-else class="offline-badge" />
+          <v-badge
+            v-if="conversation.unreadCount > 0"
+            :content="conversation.unreadCount"
+            color="secondary"
+            class="mx-2"
+            overlap
+          />
+        </template>
+
+        <!-- Contenu principal -->
+        <ConversationListItem :conversation="conversation" />
+      </v-list-item>
     </v-list>
   </v-card>
 </template>
 
 <script setup lang="ts">
 import { ref, defineProps, defineEmits, computed } from 'vue'
-import CompositeImage from '~/components/App/CompositeImage.vue'
-import ConversationListItem
-  from "~/components/Messenger/Widgets/ConversationListItem.vue";
+import ConversationListItem from '~/components/Messenger/Widgets/ConversationListItem.vue'
 
 const { user } = useUserSession()
-const props = defineProps<{ conversations: any[] }>()
+
+const props = defineProps<{
+  conversations: any[] // ✅ conversations (au pluriel)
+}>()
+
 const emit = defineEmits(['select'])
+
 const friends = ref([])
 const selectedId = ref<string | null>(null)
 const search = ref('')
 
 const filteredConversations = computed(() =>
-  props.conversations.filter((c) =>
+  props.conversations?.filter((c) =>
     c.title?.toLowerCase().includes(search.value.toLowerCase())
-  )
+  ) ?? []
 )
 
 function selectConversation(conversation: any) {
@@ -108,12 +110,11 @@ function selectConversation(conversation: any) {
 }
 
 function isOnline(conversation: any): boolean {
-  return conversation.participants.some(p => p.online && p.id !== user.id)
+  return conversation.participants?.some(p => p.online && p.id !== user.value?.id) ?? false
 }
 </script>
 
 <style scoped>
-
 .v-sheet--offset {
   z-index: 2;
   top: -55px;
@@ -136,11 +137,6 @@ function isOnline(conversation: any): boolean {
   background: var(--v-theme-primary);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-
-.chat-list-item.v-item--active .v-list-item-title,
-.chat-list-item.v-item--active .v-list-item-subtitle {
-}
-
 
 .online-badge {
   width: 12px;
