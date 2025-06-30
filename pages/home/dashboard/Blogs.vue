@@ -22,19 +22,10 @@
             </v-col>
             <v-col cols="6">
               <div class="d-flex align-center">
-            <span class="avatar-group d-flex ms-auto">
-                  <v-tooltip
-                    bottom
-                    v-for="avatar in avatars"
-                    :key="avatar.name"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-avatar
-                        v-bind="attrs"
-                        v-on="on"
-                        size="24"
-                        class="border border-primary"
-                      >
+                <span class="avatar-group d-flex ms-auto">
+                  <v-tooltip bottom v-for="avatar in avatars" :key="avatar.name">
+                    <template #activator="{ props }">
+                      <v-avatar v-bind="props" size="24" class="border border-primary">
                         <v-img :src="avatar.image" alt="Avatar" />
                       </v-avatar>
                     </template>
@@ -98,7 +89,7 @@ function redirectToWorld(slug) {
 
 
 const fetchBlogs = async () => {
-  const { data } = await useFetch('/api/profile/blogs')
+  const { data } = await $fetch('/api/profile/blogs')
   blogs.value = data.value
   showCard.value = false
 }

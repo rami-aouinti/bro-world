@@ -5,7 +5,7 @@ export const useCachedFetch = async <T>(
   fetcher: () => Promise<T>,
   ttl = 300
 ): Promise<T> => {
-  const { data: cached } = await useFetch(`/api/cache/${key}`);
+  const { data: cached } = await $fetch(`/api/cache/${key}`);
 
   if (cached.value) {
     return cached.value as T;

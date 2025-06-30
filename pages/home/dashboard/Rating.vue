@@ -107,7 +107,7 @@ const isSubmitting = ref(false)
 
 const fetchStats = async () => {
   if (loggedIn) {
-    const { data, error } = await useFetch('/api/review/get/')
+    const { data, error } = await $fetch('/api/review/get/')
     if (error.value) {
       readyRating.value = false
       console.error('Failed to load reviews:', error.value)

@@ -1,31 +1,36 @@
 <script setup lang="ts">
-import { ref, onMounted, watchEffect, mergeProps, computed } from 'vue'
+import { ref, onMounted, watch, mergeProps, computed } from 'vue'
+import { useMercureInbox } from '~/composables/useMercureInbox'
+import RelativeTime from "~/components/App/RelativeTime.vue"
 
 const loadConversation = ref(true)
 const conversations = ref<any[]>([])
 const activeConversation = ref<any | null>(null)
+const selectedId = ref<string | null>(null)
+const search = ref('')
+
+// ✅ Abonne à Mercure dès que conversations sont chargées
+const isMercureReady = ref(false)
+watch(isMercureReady, (ready) => {
+  if (ready) {
+    useMercureInbox(conversations, updateConversationPreview)
+  }
+})
 
 const setActiveConversation = (conv: any) => {
   activeConversation.value = conv
 }
 
-import { useMercureInbox } from '~/composables/useMercureInbox'
-import RelativeTime from "~/components/App/RelativeTime.vue";
-
 const updateConversationPreview = (message: any, convId: string) => {
   const conv = conversations.value.find(c => c.id === convId)
   if (!conv) return
 
-  // mise à jour du contenu
   conv.lastMessage = message.content
-  conv.typing = false // facultatif
+  conv.typing = false
   conv.updatedAt = message.createdAt
 
-  // s’il est actif, tu peux ignorer (car ChatWindow s’en occupe)
   if (activeConversation.value?.id !== convId) {
-    // notifier par son ou visuel
     playSound()
-    // conv.unreadCount = (conv.unreadCount || 0) + 1 // facultatif
   }
 }
 
@@ -34,38 +39,39 @@ const playSound = () => {
   audio.play().catch(() => {})
 }
 
-
 const fetchConversations = async () => {
-  const { data } = await useFetch('/api/messenger/conversations')
+  try {
+    const { data, error } = await useFetch('/api/messenger/conversations')
 
-  if (data.value) {
-    const unique = Array.from(
-      new Map(data.value.map((c: any) => [c.id, c])).values()
-    )
-    conversations.value = unique.map(c => ({ ...c, loaded: true, unreadCount: 0  }))
-    useMercureInbox(conversations, updateConversationPreview)
-    // auto-select la première conversation
-    if (!activeConversation.value && unique.length > 0) {
-      activeConversation.value = unique[0]
+    if (error.value) {
+      console.error('Erreur API:', error.value)
+      return
     }
 
-    loadConversation.value = false
+    if (data.value) {
+      const unique = Array.from(
+        new Map(data.value.map((c: any) => [c.id, c])).values()
+      )
+      conversations.value = unique.map(c => ({ ...c, loaded: true, unreadCount: 0 }))
+
+      if (!activeConversation.value && unique.length > 0) {
+        activeConversation.value = unique[0]
+      }
+
+      isMercureReady.value = true
+      loadConversation.value = false
+    }
+  } catch (e) {
+    console.error('Erreur fetchConversations:', e)
   }
 }
-const selectedId = ref<string | null>(null)
-const search = ref('')
 
 function selectConversation(conversation: any) {
   selectedId.value = conversation.id
   setActiveConversation(conversation)
 }
-// remplace le `watch` par `watchEffect` comme recommandé
-watchEffect(() => {
-  if (loadConversation.value) {
-    fetchConversations()
-  }
-})
 
+// ✅ déclenche uniquement une fois, au montage
 onMounted(fetchConversations)
 
 const lastMessages = [
@@ -119,28 +125,28 @@ const lastMessages = [
         @click="selectConversation(conversation)"
         class="pa-3 list-item-hover-active d-flex align-center border-radius-md"
       >
-          <v-row align="center" class="pa-0 ma-0">
-            <!-- Avatar -->
-            <v-col cols="auto">
-              <v-avatar size="36" class="me-1">
-                <NuxtImg
-                  width="36"
-                  height="36"
-                  :src="conversation?.avatar"
-                  :alt="`Avatar ${conversation.id}`"
-                  cover
-                />
-              </v-avatar>
-            </v-col>
-            <v-col cols="auto">
-              <div>
-                <h6 class="text-sm font-weight-normal text-typo mb-1">
-                  {{ conversation.title }}
-                </h6>
-                <RelativeTime :date="conversation.createdAt" />
-              </div>
-            </v-col>
-          </v-row>
+        <v-row align="center" class="pa-0 ma-0">
+          <!-- Avatar -->
+          <v-col cols="auto">
+            <v-avatar size="36" class="me-1">
+              <NuxtImg
+                width="36"
+                height="36"
+                :src="conversation?.avatar"
+                :alt="`Avatar ${conversation.id}`"
+                cover
+              />
+            </v-avatar>
+          </v-col>
+          <v-col cols="auto">
+            <div>
+              <h6 class="text-sm font-weight-normal text-typo mb-1">
+                {{ conversation.title }}
+              </h6>
+              <RelativeTime :date="conversation.createdAt" />
+            </div>
+          </v-col>
+        </v-row>
       </v-list-item>
     </v-list>
   </v-menu>

@@ -44,7 +44,7 @@ import { useCachedFetch } from '@/composables/useCachedFetch'; // ou '~/composab
 
 const getWeather = async(place) => {
   const result = await useCachedFetch('my-weather', async () => {
-    const { data } = await useFetch('https://api.weatherapi.com/v1/current.json', {
+    const { data } = await $fetch('https://api.weatherapi.com/v1/current.json', {
       query: {
         key: runtimeConfig.public.weatherKey,
         q: place,
@@ -62,19 +62,10 @@ const getWeatherFromGroq = async (latitude: number, longitude: number) => {
       lat: latitude,
       lng: longitude
     })
-    const messageWeather = t('dashboard.groq.weather', {
-      lat: latitude,
-      lng: longitude
-    })
 
     const placeRaw = await askGroq(messagePlace)
-    const weatherRaw = await askGroq(messageWeather)
-
     const place = placeRaw?.trim().split('\n')[0] ?? 'Unknown location'
-    const temperatureMatch = weatherRaw?.match(/-?\d+(\.\d+)?\s*\u00b0[CF]/i)
-    const temperature = temperatureMatch ? temperatureMatch[0] : 'N/A'
 
-    city.value = place
     await getWeather(place)
     showCard.value = true
 
