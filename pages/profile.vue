@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoaderProfile from "~/components/App/Loader/Profile/LoaderProfile.vue";
 const { t } = useI18n()
@@ -19,7 +19,7 @@ const loadProfile = async () => {
   pending.value = false
 }
 
-watch(user.value.username, () => {
+watch(() => user.value?.username, () => {
   loadProfile()
 }, { immediate: true })
 

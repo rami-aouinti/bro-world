@@ -1,5 +1,4 @@
-// composables/useMercureInbox.ts
-import { onMounted, onUnmounted, watch } from 'vue'
+import { getCurrentInstance, onMounted, onUnmounted, watch } from 'vue'
 
 export function useMercureInbox(conversations: Ref<any[]>, onMessage: (data: any, convId: string) => void) {
   let eventSource: EventSource | null = null
@@ -28,7 +27,6 @@ export function useMercureInbox(conversations: Ref<any[]>, onMessage: (data: any
     }
   }
 
-  // surveille quand la liste est prête
   watch(conversations, (val) => {
     if (val.length > 0) {
       const ids = val.map(c => c.id)
@@ -36,7 +34,11 @@ export function useMercureInbox(conversations: Ref<any[]>, onMessage: (data: any
     }
   }, { immediate: true })
 
-  onUnmounted(() => {
-    eventSource?.close()
-  })
+  if (getCurrentInstance()) {
+    onUnmounted(() => {
+      eventSource?.close()
+    })
+  } else {
+    console.warn('onUnmounted skipped: not in setup() context')
+  }
 }
