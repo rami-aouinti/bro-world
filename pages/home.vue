@@ -91,10 +91,15 @@ watch(loadingPlugin, () => {
 watch(newPostsLoaded, init, { immediate: false })
 
 onMounted(async () => {
-  await init()
-  await fetchPlugins
-  await nextTick()
-  loadingUser.value = false
+  try {
+    await init()
+    await fetchPlugins()
+    await nextTick()
+  } catch (e) {
+    console.error('Erreur dans onMounted de home.vue:', e)
+  } finally {
+    loadingUser.value = false
+  }
 })
 
 </script>

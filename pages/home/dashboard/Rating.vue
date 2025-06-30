@@ -102,25 +102,19 @@ const distribution = ref<Record<string, number>>({
 })
 
 const newRating = ref(0)
-const readyRating = ref(true)
 const isSubmitting = ref(false)
 
 const fetchStats = async () => {
-  if (loggedIn) {
-    const { data, error } = await $fetch('/api/review/get/')
-    if (error.value) {
-      readyRating.value = false
-      console.error('Failed to load reviews:', error.value)
-      return
-    }
+  if (!loggedIn) return
 
-    if (data.value) {
-      readyRating.value = false
-      averageRating.value = data.value.average_rating ?? 0
-      totalReviews.value = data.value.total_reviews ?? 0
-      distribution.value = data.value.distribution ?? distribution.value
-    }
-
+  try {
+    const response = await $fetch('/api/review/get/')
+    averageRating.value = response?.average_rating ?? 0
+    totalReviews.value = response?.total_reviews ?? 0
+    distribution.value = response?.distribution ?? distribution.value
+  } catch (error) {
+    console.error('Erreur lors du chargement des reviews :', error)
+  } finally {
     loading.value = false
   }
 }
@@ -129,20 +123,20 @@ const submitRating = async () => {
   if (newRating.value > 0) {
     isSubmitting.value = true
 
-    await $fetch('/api/review/post/', {
-      method: 'POST',
-      body: { rating: newRating.value },
-    })
-
-    newRating.value = 0
-    await fetchStats()
-
-    isSubmitting.value = false
+    try {
+      await $fetch('/api/review/post/', {
+        method: 'POST',
+        body: { rating: newRating.value },
+      })
+      newRating.value = 0
+      await fetchStats()
+    } catch (error) {
+      console.error('Erreur lors de la soumission du rating :', error)
+    } finally {
+      isSubmitting.value = false
+    }
   }
 }
-watch(readyRating, () => {
-  fetchStats()
-}, { immediate: true })
 
 onMounted(fetchStats)
 </script>

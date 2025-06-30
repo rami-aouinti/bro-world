@@ -1,30 +1,29 @@
-import { isRef, toRaw } from 'vue';
-
-export const useCachedFetch = async <T>(
+// ~/composables/useCachedFetch.ts
+export async function useCachedFetch<T = any>(
   key: string,
-  fetcher: () => Promise<T>,
+  callback: () => Promise<T>,
   ttl = 300
-): Promise<T> => {
-  const { data: cached } = await $fetch(`/api/cache/${key}`);
+): Promise<T> {
+  const cacheKey = `cache_${key}`
+  const cached = sessionStorage.getItem(cacheKey)
 
-  if (cached.value) {
-    return cached.value as T;
+  if (cached) {
+    try {
+      const { data, expires } = JSON.parse(cached)
+      if (Date.now() < expires) {
+        return data
+      }
+    } catch (e) {
+      console.warn('Cache parsing error:', e)
+    }
   }
 
-  let freshData = await fetcher();
+  const result = await callback()
 
-  // Sécurité : enlever réactivité
-  if (isRef(freshData)) {
-    freshData = toRaw(freshData.value);
-  }
+  sessionStorage.setItem(cacheKey, JSON.stringify({
+    data: result,
+    expires: Date.now() + ttl * 1000,
+  }))
 
-  await $fetch(`/api/cache/${key}`, {
-    method: 'POST',
-    body: {
-      value: freshData,
-      ttl,
-    },
-  });
-
-  return freshData;
-};
+  return result
+}
