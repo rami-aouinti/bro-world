@@ -17,23 +17,25 @@ const props = defineProps<{
 
 const showReplies = ref(false)
 const newReply = ref('')
+const loadingReactComment = ref(true)
 const loading = ref(false)
 const isLiking = ref(false)
 const localLikes = ref([...props.comment.likes ?? []])
 const children = ref(props.comment.children)
 const likeId = ref('')
 function hasLiked() {
-  if (localLikes.value && loggedIn) {
+  if (localLikes.value && loggedIn && loadingReactComment) {
     for (const like of localLikes.value) {
       if (like?.user?.id == user?.value?.id) {
         likeId.value = like.id
+        loadingReactComment.value = false;
         return isLiking.value = true;
       }
     }
   }
 }
 
-watch(!localLikes.value, () => {
+watch(loadingReactComment, () => {
   hasLiked()
 }, { immediate: true })
 
