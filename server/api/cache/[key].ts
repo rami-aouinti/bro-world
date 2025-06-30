@@ -1,5 +1,5 @@
 // server/api/cache/[key].ts
-import { getRedisClient } from '~/utils/redis';
+import { getRedisClient } from '~/server/utils/redis';
 
 export default defineEventHandler(async (event) => {
   const redis = await getRedisClient();

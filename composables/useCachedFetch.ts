@@ -1,29 +1,27 @@
-// ~/composables/useCachedFetch.ts
 export async function useCachedFetch<T = any>(
   key: string,
   callback: () => Promise<T>,
   ttl = 300
 ): Promise<T> {
-  const cacheKey = `cache_${key}`
-  const cached = sessionStorage.getItem(cacheKey)
+  if (process.server) {
+    const { getRedisClient } = await import('~/server/utils/redis')
+    const redis = await getRedisClient()
+    const cacheKey = `cache_${key}`
 
-  if (cached) {
-    try {
-      const { data, expires } = JSON.parse(cached)
-      if (Date.now() < expires) {
-        return data
-      }
-    } catch (e) {
-      console.warn('Cache parsing error:', e)
+    const cached = await redis.get(cacheKey)
+    if (cached) {
+      return JSON.parse(cached)
     }
+
+    const result = await callback()
+    await redis.set(cacheKey, JSON.stringify(result), { EX: ttl })
+    return result
   }
 
-  const result = await callback()
+  // Côté client : on demande à l’API cache
+  const data = await $fetch(`/api/cache/${key}`)
+  if (data) return data
 
-  sessionStorage.setItem(cacheKey, JSON.stringify({
-    data: result,
-    expires: Date.now() + ttl * 1000,
-  }))
-
-  return result
+  // Pas en cache => on génère et on laisse le serveur le mettre en cache plus tard
+  return await callback()
 }

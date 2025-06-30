@@ -1,9 +1,9 @@
 // server/api/weather.ts
-import { getRedisClient } from '~/utils/redis';
+import { getRedisClient } from '~/server/utils/redis';
 
 export default defineEventHandler(async (event) => {
   const redis = await getRedisClient();
-  const cacheKey = 'weather:paris';
+  const cacheKey = 'weather:place';
 
   const cached = await redis.get(cacheKey);
   if (cached) {

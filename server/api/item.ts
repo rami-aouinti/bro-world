@@ -1,4 +1,4 @@
-import { getRedisClient } from '~/utils/redis';
+import { getRedisClient } from '~/server/utils/redis';
 
 export default defineEventHandler(async () => {
   const redis = await getRedisClient();
