@@ -43,17 +43,14 @@ export const usePostStore = defineStore('post', {
           limit: limit.toString(),
         })
 
-        const { data, error } = await useFetch(`/api/posts?${query.toString()}`)
+        const response = await $fetch(`/api/posts?${query.toString()}`)
 
-        if (error.value) throw error.value
-
-        if (data.value && Array.isArray(data.value.data)) {
-          // mettre à jour uniquement les métadonnées
-          this.total = data.value.count
+        if (response && Array.isArray(response.data)) {
+          // mise à jour des métadonnées
+          this.total = response.count
           this.page = page
           this.limit = limit
-
-          return data.value.data
+          return response.data
         }
 
         return []

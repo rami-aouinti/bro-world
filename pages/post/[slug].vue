@@ -1,31 +1,36 @@
 <script setup lang="ts">
+import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import Comments from "~/pages/home/post/Comments.vue";
-import ReactPost from "~/pages/home/post/ReactPost.vue";
 import AuthorPost from "~/pages/home/post/AuthorPost.vue";
 import Post from "~/pages/home/post/Post.vue";
 
 const route = useRoute()
-const slug = route.params.slug
+const slug = ref(route.params.slug)
+
 const pending = ref(true)
 const post = ref({})
+
 const loadPost = async () => {
-  const { data } = await useFetch(`/api/posts/post/${slug}`)
-  if (data.value) {
-    post.value = data.value
+  try {
+    const data = await $fetch(`/api/posts/post/${slug.value}`)
+    if (data) {
+      post.value = data
+    }
+  } catch (e) {
+    console.error('Erreur de chargement du post :', e)
+  } finally {
+    pending.value = false
   }
-  pending.value = false
 }
 
-watch(!slug, () => {
+watch(() => route.params.slug, (newSlug) => {
+  slug.value = newSlug
   loadPost()
 }, { immediate: true })
 
-onMounted(async () => {
-  await loadPost()
-})
-
+onMounted(loadPost)
 </script>
+
 <template>
   <v-container fluid>
     <div v-if="pending" class="d-flex justify-center align-center">

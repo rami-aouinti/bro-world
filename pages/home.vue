@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { usePostStore } from '~/stores/usePostStore'
 
@@ -41,7 +41,7 @@ const init = async () => {
       limit: postStore.limit,
       count: postStore.total,
     })
-    hasMore.value = totalPages >= currentPage
+    hasMore.value = totalPages >= currentPage.value
     pending.value = false
     newPostsLoaded.value = false
     loadingPost.value = false
@@ -50,11 +50,10 @@ const init = async () => {
 
 const reloadPosts = async (data: any) => {
   loadingPost.value = true
-  postStore.appendPost({data})
+  postStore.appendPost({ data })
   currentPage.value = 1
   loadingPost.value = false
 }
-
 
 const loadMore = async () => {
   if (isLoading.value || !hasMore.value) return
@@ -70,25 +69,24 @@ const loadMore = async () => {
     currentPage.value = nextPage
     isLoading.value = false
   }
-  hasMore.value = Math.ceil(postStore.total / postStore.limit) > nextPage;
+  hasMore.value = Math.ceil(postStore.total / postStore.limit) > nextPage
   pending.value = false
 }
 
 const plugins = ref<any[]>([])
 
 const fetchPlugins = async () => {
-  const { data } = await useFetch('/api/plugin/profile/get')
-  if (data.value) {
-    plugins.value = data.value
+  try {
+    const data = await $fetch('/api/plugin/profile/get')
+    if (data) {
+      plugins.value = data
+      loadingPlugin.value = false
+    }
+  } catch (e) {
+    console.error('Erreur lors du fetch des plugins:', e)
     loadingPlugin.value = false
   }
 }
-
-watch(loadingPlugin, () => {
-  fetchPlugins()
-}, { immediate: true })
-
-watch(newPostsLoaded, init, { immediate: false })
 
 onMounted(async () => {
   try {
@@ -101,7 +99,6 @@ onMounted(async () => {
     loadingUser.value = false
   }
 })
-
 </script>
 
 <template>
