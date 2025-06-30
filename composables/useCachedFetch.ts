@@ -3,25 +3,30 @@ export async function useCachedFetch<T = any>(
   callback: () => Promise<T>,
   ttl = 300
 ): Promise<T> {
+  const cacheKey = `cache:${key}`
+
   if (process.server) {
     const { getRedisClient } = await import('~/server/utils/redis')
     const redis = await getRedisClient()
-    const cacheKey = `cache_${key}`
 
     const cached = await redis.get(cacheKey)
-    if (cached) {
-      return JSON.parse(cached)
-    }
+    if (cached) return JSON.parse(cached)
 
     const result = await callback()
     await redis.set(cacheKey, JSON.stringify(result), { EX: ttl })
     return result
   }
 
-  // Côté client : on demande à l’API cache
-  const data = await $fetch(`/api/cache/${key}`)
+  // Côté client : on tente de récupérer le cache
+  const data = await $fetch(`/api/cache/${key}`).catch(() => null)
   if (data) return data
 
-  // Pas en cache => on génère et on laisse le serveur le mettre en cache plus tard
-  return await callback()
+  // Pas trouvé → on génère + on enregistre en POST
+  const result = await callback()
+  await $fetch(`/api/cache/${key}`, {
+    method: 'POST',
+    body: { value: result, ttl },
+  })
+
+  return result
 }
