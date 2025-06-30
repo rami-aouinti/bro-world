@@ -1,7 +1,8 @@
 <template>
-  <p class="text-xs text-secondary d-flex align-center">
-  <v-icon size="14" class="me-1">mdi-clock</v-icon>
+  <p class="text-xs text-medium-emphasis d-flex align-center">
+
   {{ relativeDate }}
+    <v-icon size="14" class="mx-1">mdi-clock</v-icon>
   </p>
 </template>
 
