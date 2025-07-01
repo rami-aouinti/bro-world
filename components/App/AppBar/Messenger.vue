@@ -6,20 +6,18 @@ import RelativeTime from "~/components/App/RelativeTime.vue"
 const loadConversation = ref(true)
 const conversations = ref<any[]>([])
 const activeConversation = ref<any | null>(null)
-const selectedId = ref<string | null>(null)
 const search = ref('')
+const localePath = useLocalePath()
+const path = ref('/inbox')
+const pathMessenger = ref('/user/messenger/')
 
-// ✅ Abonne à Mercure dès que conversations sont chargées
 const isMercureReady = ref(false)
+
 watch(isMercureReady, (ready) => {
   if (ready) {
     useMercureInbox(conversations, updateConversationPreview)
   }
 })
-
-const setActiveConversation = (conv: any) => {
-  activeConversation.value = conv
-}
 
 const updateConversationPreview = (message: any, convId: string) => {
   const conv = conversations.value.find(c => c.id === convId)
@@ -41,56 +39,24 @@ const playSound = () => {
 
 const fetchConversations = async () => {
   try {
-    const { data, error } = await $fetch('/api/messenger/conversations')
+    const data = await $fetch('/api/messenger/conversations')
+    if (!Array.isArray(data)) return
 
-    if (error.value) {
-      console.error('Erreur API:', error.value)
-      return
+    const unique = Array.from(new Map(data.map((c: any) => [c.id, c])).values())
+    conversations.value = unique.map(c => ({ ...c, loaded: true, unreadCount: 0 }))
+
+    if (!activeConversation.value && unique.length > 0) {
+      activeConversation.value = unique[0]
     }
 
-    if (data.value) {
-      const unique = Array.from(
-        new Map(data.value.map((c: any) => [c.id, c])).values()
-      )
-      conversations.value = unique.map(c => ({ ...c, loaded: true, unreadCount: 0 }))
-
-      if (!activeConversation.value && unique.length > 0) {
-        activeConversation.value = unique[0]
-      }
-
-      isMercureReady.value = true
-      loadConversation.value = false
-    }
-  } catch (e) {
-    console.error('Erreur fetchConversations:', e)
+    isMercureReady.value = true
+    loadConversation.value = false
+  } catch (error) {
+    console.error('Erreur fetchConversations:', error)
   }
 }
 
-function selectConversation(conversation: any) {
-  selectedId.value = conversation.id
-  setActiveConversation(conversation)
-}
-
-// ✅ déclenche uniquement une fois, au montage
 onMounted(fetchConversations)
-
-const lastMessages = [
-  {
-    avatar: '/img/bruce-mars.jpg',
-    message: 'Check new messages',
-    time: '13 minutes ago',
-  },
-  {
-    avatar: '/img/bruce-mars.jpg',
-    message: 'Manage podcast session',
-    time: '1 day ago',
-  },
-  {
-    avatar: '/img/bruce-mars.jpg',
-    message: 'Payment successfull..',
-    time: '2 days ago',
-  },
-]
 </script>
 
 <template>
@@ -104,9 +70,9 @@ const lastMessages = [
         class="opacity-80 ml-0"
       >
         <v-badge
-          v-if="lastMessages.length > 0"
+          v-if="conversations.length > 0"
           color="primary"
-          :content="lastMessages.length"
+          :content="conversations.length"
         >
           <template #default>
             <v-icon>mdi-message</v-icon>
@@ -122,8 +88,8 @@ const lastMessages = [
         v-for="conversation in conversations"
         :key="conversation.id"
         :value="conversation.id"
-        @click="selectConversation(conversation)"
-        class="pa-3 list-item-hover-active d-flex align-center border-radius-md"
+        :to="localePath(pathMessenger + conversation.id)"
+        class="pa-1 list-item-hover-active d-flex align-center border-radius-md"
       >
         <v-row align="center" class="pa-0 ma-0">
           <!-- Avatar -->
@@ -132,7 +98,7 @@ const lastMessages = [
               <NuxtImg
                 width="36"
                 height="36"
-                :src="conversation?.avatar"
+                :src="conversation?.avatar || '/img/person.png'"
                 :alt="`Avatar ${conversation.id}`"
                 cover
               />
@@ -143,10 +109,28 @@ const lastMessages = [
               <h6 class="text-sm font-weight-normal text-typo mb-1">
                 {{ conversation.title }}
               </h6>
-              <RelativeTime :date="conversation.createdAt" />
+              <RelativeTime :date="conversation?.createdAt" />
             </div>
           </v-col>
         </v-row>
+      </v-list-item>
+      <v-divider />
+      <v-list-item
+        v-if="conversations.length > 0"
+        :to="localePath(path)"
+        class="pa-1 list-item-hover-active d-flex align-center justify-center text-center border-radius-md"
+      >
+        <h6 class="text-sm font-weight-normal text-typo mb-1">
+          All Messages
+        </h6>
+      </v-list-item>
+      <v-list-item
+        v-else
+        class="pa-1 list-item-hover-active d-flex align-center justify-center text-center border-radius-md"
+      >
+        <h6 class="text-sm font-weight-normal text-typo mb-1">
+          No Message
+        </h6>
       </v-list-item>
     </v-list>
   </v-menu>

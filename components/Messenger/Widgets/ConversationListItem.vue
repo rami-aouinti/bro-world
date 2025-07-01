@@ -16,7 +16,7 @@
         </div>
         <CompositeImage
           :avatars="getAvatars(conversation)"
-          :isActive="selectedId === conversation.id"
+          :isActive="props.selectedId === conversation.id"
           :isOnline="isOnline(conversation)"
           :size="56"
           :loading="!conversation.loaded"
@@ -35,7 +35,8 @@ const props = defineProps<{
   conversation: {
     type: Object,
     required: true
-  }
+  },
+  selectedId: String
 }>()
 const emit = defineEmits(['select'])
 

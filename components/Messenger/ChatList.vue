@@ -76,7 +76,7 @@
         </template>
 
         <!-- Contenu principal -->
-        <ConversationListItem :conversation="conversation" />
+        <ConversationListItem :selectedId="selectedId" :conversation="conversation" />
       </v-list-item>
     </v-list>
   </v-card>

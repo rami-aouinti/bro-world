@@ -16,9 +16,10 @@ dayjs.extend(relativeTime)
 const props = defineProps({
   date: {
     type: [String, Date],
-    required: true
-  }
+    required: true,
+    default: () => new Date().toISOString(), // sécurité
+  },
 })
 
-const relativeDate = computed(() => dayjs(props.date).fromNow())
+const relativeDate = computed(() => dayjs(props?.date)?.fromNow())
 </script>

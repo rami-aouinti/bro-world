@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import UserAvatar from "~/components/App/UserAvatar.vue";
 import { useRoute } from 'vue-router'
-import LoaderProfile from "~/components/App/Loader/Profile/LoaderProfile.vue";
 import LoaderUser from "~/components/App/Loader/Profile/LoaderUser.vue";
 
 const route = useRoute()
