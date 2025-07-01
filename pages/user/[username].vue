@@ -16,7 +16,7 @@ const loadProfile = async () => {
   pending.value = true
   const data  = await userStore.fetchProfile(null, username)
   if (data) {
-    avatarUrl.value = data?.photo ?? '/img/person.png'
+    avatarUrl.value = data?.photo ?? 'https://bro-world-space.com/img/person.png'
     profile.value = data
     isOwnProfile.value = user?.username === profile.value.username
     if (!isOwnProfile.value) await checkFollowStatus()

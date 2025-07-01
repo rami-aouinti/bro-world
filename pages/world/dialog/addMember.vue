@@ -38,7 +38,7 @@
               <template v-slot:item="{ props, item }">
                 <v-list-item
                   v-bind="props"
-                  :prepend-avatar="item.raw?.profile?.photo ?? `/img/person.png`"
+                  :prepend-avatar="item.raw?.profile?.photo ?? `https://bro-world-space.com/img/person.png`"
                   :subtitle="item.raw?.profile?.description"
                   :title="item.raw.firstName + ` ` +  item.raw.lastName"
                 ></v-list-item>

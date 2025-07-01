@@ -19,7 +19,7 @@ const loadProfile = async () => {
     const data = await userStore.fetchProfile(user.value.id, user.value.username)
     if (data) {
       profile.value = data
-      avatarUrl.value = data?.photo ?? '/img/person.png'
+      avatarUrl.value = data?.photo ?? 'https://bro-world-space.com/img/person.png'
     }
   }
   pending.value = false

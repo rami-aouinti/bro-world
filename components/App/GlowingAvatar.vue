@@ -23,7 +23,7 @@ import { computed } from 'vue'
 import { useTheme } from 'vuetify'
 
 const props = defineProps({
-  src: { type: String, default: '/img/person.png' },
+  src: { type: String, default: 'https://bro-world-space.com/img/person.png' },
   alt: { type: String, default: 'Avatar' },
   size: { type: Number, default: 48 },
 })

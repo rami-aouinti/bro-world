@@ -22,15 +22,15 @@ export function useConversationUtils() {
     const participants = conversation?.participants ?? []
 
     if (participants.length > 2) {
-      return '/img/person.png'
+      return 'https://bro-world-space.com/img/person.png'
     }
 
     if (participants.length === 2) {
       const other = participants.find((p: any) => p.id !== user.value?.id)
-      return other?.avatar ?? '/img/person.png'
+      return other?.avatar ?? 'https://bro-world-space.com/img/person.png'
     }
 
-    return '/img/person.png'
+    return 'https://bro-world-space.com/img/person.png'
   }
 
   return {

@@ -51,7 +51,7 @@
           >
             <div class="px-4">
               <GlowingAvatar
-                :src="message?.sender?.avatar ?? '/img/person.png'"
+                :src="message?.sender?.avatar ?? 'https://bro-world-space.com/img/person.png'"
                 :size="46"
                 class="shrink-0 py-3"
                 :online="true"
@@ -140,7 +140,7 @@ useMercureConversation(conversationId, (newMessage) => {
   const message = {
     sender: {
       firstName: newMessage.title || 'Unknown',
-      avatar: newMessage.subtitle || '/img/person.png',
+      avatar: newMessage.subtitle || 'https://bro-world-space.com/img/person.png',
       id: newMessage?.sender?.id || '111111111111111',
     },
     text: newMessage?.content || '',
