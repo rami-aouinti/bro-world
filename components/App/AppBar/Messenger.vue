@@ -41,7 +41,7 @@ const playSound = () => {
 
 const fetchConversations = async () => {
   try {
-    const { data, error } = await useFetch('/api/messenger/conversations')
+    const { data, error } = await $fetch('/api/messenger/conversations')
 
     if (error.value) {
       console.error('Erreur API:', error.value)

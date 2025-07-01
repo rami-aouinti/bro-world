@@ -76,7 +76,7 @@ async function sendActivation() {
   validating.value = true
   try {
     const { data } = await useFetch(`/api/auth/${otp.value}/activate`)
-    success.value = data.value
+    success.value = !data.value
     validating.value = false
   } catch (e) {
     error.value = true
