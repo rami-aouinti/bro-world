@@ -9,9 +9,9 @@
     <v-row>
       <v-col md="10">
         <div class="d-flex align-items-center">
-          <GlowingAvatar :src="user?.profile?.photo ?? '/img/person.png'" :size="56" :online="true" />
+          <GlowingAvatar :src="getConversationAvatar(conversation)" :size="56" :online="true" />
           <div class="ms-3">
-            <h6 class="mb-0 text-h6 d-block">{{ conversation?.title || 'Unnamed' }}</h6>
+            <h6 class="mb-0 text-h6 d-block">{{ getConversationTitle(conversation) }}</h6>
             <span class="text-sm opacity-8">last seen recently</span>
           </div>
         </div>
@@ -45,12 +45,46 @@
 import { defineProps } from 'vue'
 const { user } = useUserSession()
 import GlowingAvatar from "~/components/App/GlowingAvatar.vue";
+import {truncate} from "~/utils/stringUtils";
 const props = defineProps<{
   conversation: {
     type: Object,
     required: true
   }
 }>()
+
+
+function getConversationTitle(conversation: any): string {
+  const participants = conversation?.participants ?? []
+
+  if (participants.length > 2) {
+    return conversation.title
+  }
+
+  if (participants.length === 2) {
+    const other = participants.find(p => p.id !== user.value?.id)
+    return truncate(other?.firstName + ' ' + other?.firstName  ?? conversation.title, 20)
+  }
+
+  // fallback
+  return conversation.title
+}
+
+function getConversationAvatar(conversation: any): string {
+  const participants = conversation?.participants ?? []
+
+  if (participants.length > 2) {
+    return '/img/person.png'
+  }
+
+  if (participants.length === 2) {
+    const other = participants.find(p => p.id !== user.value?.id)
+    return other?.avatar ?? '/img/person.png'
+  }
+
+  // fallback
+  return '/img/person.png'
+}
 </script>
 <style>
 .v-sheet--offset {

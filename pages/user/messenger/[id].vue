@@ -17,6 +17,7 @@ const setActiveConversation = (conv: any) => {
 }
 
 import { useMercureInbox } from '~/composables/useMercureInbox'
+import ChatListSelected from "~/components/Messenger/ChatListSelected.vue";
 
 const updateConversationPreview = (message: any, convId: string) => {
   const conv = conversations.value.find(c => c.id === convId)
@@ -107,8 +108,9 @@ onMounted(async () => {
             />
           </v-card>
         </template>
-        <ChatList
+        <ChatListSelected
           v-else
+          :conversationId="conversationId"
           :conversations="conversations"
           @select="setActiveConversation"
         />

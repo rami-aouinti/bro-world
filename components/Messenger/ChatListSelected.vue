@@ -87,15 +87,13 @@ import { ref, defineProps, defineEmits, computed } from 'vue'
 import ConversationListItem from '~/components/Messenger/Widgets/ConversationListItem.vue'
 
 const { user } = useUserSession()
-
-const props = defineProps<{
-  conversations: any[] // ✅ conversations (au pluriel)
-}>()
-
-const emit = defineEmits(['select'])
-
-const friends = ref([])
 const selectedId = ref<string | null>(null)
+const props = defineProps<{
+  conversations: any[],
+  conversationId: String
+}>()
+selectedId.value = props.conversationId
+const friends = ref([])
 const search = ref('')
 
 const filteredConversations = computed(() =>
@@ -103,12 +101,11 @@ const filteredConversations = computed(() =>
     c.title?.toLowerCase().includes(search.value.toLowerCase())
   ) ?? []
 )
-
+const emit = defineEmits(['select'])
 function selectConversation(conversation: any) {
   selectedId.value = conversation.id
   emit('select', conversation)
 }
-
 function isOnline(conversation: any): boolean {
   return conversation.participants?.some(p => p.online && p.id !== user.value?.id) ?? false
 }
