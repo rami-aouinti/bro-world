@@ -290,7 +290,7 @@ watch(
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
               </div>
-              <img :src="imageUrl" alt="preview" style="max-width: 100%; max-height: 300px" />
+              <v-img :src="imageUrl" alt="preview" style="max-width: 100%; max-height: 300px" />
             </div>
           </v-card-text>
         </v-card>

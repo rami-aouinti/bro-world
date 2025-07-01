@@ -91,7 +91,7 @@ const isFetched = computed(() => fetchStatus.value === 'success' || fetchStatus.
             @click="resetState"
           >
             <div class="flex items-center">
-              <img
+              <v-img
                 :src="getImagePath(node.featuredImage?.url)"
                 :alt="
                   node.featuredImage?.altText || node.seo.title || node.title

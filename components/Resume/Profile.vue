@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-center py-1">
-    <img
+    <v-img
       :src="image"
       :alt="name"
       class="profile-image"
