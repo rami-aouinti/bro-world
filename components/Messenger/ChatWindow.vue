@@ -16,7 +16,7 @@
     v-else
     class="pt-12 px-1 shadow-blur fade-in overflow-visible"
     style="margin-top: 20px;"
-    max-height="520"
+    max-height="510"
     rounded="xl"
     variant="text"
   >
@@ -28,7 +28,7 @@
     <div
       ref="messageContainer"
       class="overflow-y-auto px-2 pt-2"
-      style="height: 300px;  overflow-x: hidden;"
+      style="height: 270px;  overflow-x: hidden;"
       @dragover.prevent
       @drop.prevent="onDrop"
     >
@@ -205,11 +205,6 @@ onMounted(async () => {
 })
 
 const { current } = useTheme()
-
-const computedGlow = computed(() => {
-  const primary = current.value.colors.primary || '#e91e63'
-  return `radial-gradient(circle, ${primary} 0%, transparent 70%)`
-})
 </script>
 
 <style scoped>

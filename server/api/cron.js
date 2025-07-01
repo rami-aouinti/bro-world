@@ -1,3 +1,4 @@
 export default function handler(req, res) {
-  res.end('Hello Cron!');
+  console.log(req);
+  console.log(res);
 }

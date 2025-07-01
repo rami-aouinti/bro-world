@@ -1,9 +1,9 @@
 export async function useCachedFetch<T = any>(
   key: string,
   callback: () => Promise<T>,
-  ttl = 300
+  ttl = 31536000
 ): Promise<T> {
-  const cacheKey = `cache:${key}`
+  const cacheKey = `${key}`
 
   if (process.server) {
     const { getRedisClient } = await import('~/server/utils/redis')

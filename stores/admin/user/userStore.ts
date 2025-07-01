@@ -1,5 +1,6 @@
 // stores/userStore.ts
 import {defineStore} from 'pinia'
+import {useCachedFetch} from "~/composables/useCachedFetch";
 
 interface User {
   id: string
@@ -26,8 +27,10 @@ export const useUserStore = defineStore('user', {
     async fetchUsers() {
       try {
         this.loading = true
-        const response = await $fetch('/api/admin/user/users')
-        this.users = Array.isArray(response) ? response : []
+        const response = await useCachedFetch(`pFenRpPsbw:all_users`, async () => {
+          return await $fetch('/api/admin/user/users')
+        }, 31536000)
+        this.users = response ?? []
       } catch (error) {
         console.error('Error fetching users:', error)
       } finally {

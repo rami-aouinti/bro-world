@@ -52,7 +52,7 @@ const weatherInfo = ref('')
 const city = ref('')
 
 const getWeather = async (place: string) => {
-  const result = await useCachedFetch('my-weather', async () => {
+  const result = await useCachedFetch('cache:my-weather', async () => {
     const data = await $fetch('https://api.weatherapi.com/v1/current.json', {
       query: {
         key: runtimeConfig.public.weatherKey,

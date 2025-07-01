@@ -2,6 +2,8 @@
 import { ref, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoaderProfile from '~/components/App/Loader/Profile/LoaderProfile.vue'
+import { useUserStore } from '~/stores/useUserStore'
+
 
 const { t } = useI18n()
 const { user } = await useUserSession()
@@ -9,13 +11,15 @@ const profile = ref<any>(null)
 const pending = ref(true)
 const avatarUrl = ref('')
 
+const userStore = useUserStore()
+
 const loadProfile = async () => {
   pending.value = true
   if (user.value.username) {
-    const data = await $fetch(`/api/profile/${user.value.username}`)
+    const data = await userStore.fetchProfile(user.value.id, user.value.username)
     if (data) {
       profile.value = data
-      avatarUrl.value = data?.profile?.photo ?? '/person.png'
+      avatarUrl.value = data?.photo ?? '/img/person.png'
     }
   }
   pending.value = false

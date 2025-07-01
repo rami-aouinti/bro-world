@@ -5,7 +5,7 @@
       :width="size"
       :height="size"
       :alt="props.user?.username"
-      :src="props.user?.profile?.photo ?? '/person.png'"
+      :src="props.user?.photo ?? '/person.png'"
       cover
     >
     </NuxtImg>

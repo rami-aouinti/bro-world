@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import UserAvatar from "~/components/App/UserAvatar.vue";
 import { useRoute } from 'vue-router'
 import LoaderUser from "~/components/App/Loader/Profile/LoaderUser.vue";
+import {useUserStore} from "~/stores/useUserStore";
 
 const route = useRoute()
 const { user } = useUserSession()
@@ -10,13 +10,14 @@ const isFollowing = ref<boolean | null>(null)
 const isOwnProfile = ref(false)
 const pending = ref(false)
 const username = route.params.username
-
+const avatarUrl = ref('')
+const userStore = useUserStore()
 const loadProfile = async () => {
   pending.value = true
-  const { data } = await useFetch(`/api/profile/${username}`)
-  if (data.value) {
-
-    profile.value = data.value
+  const data  = await userStore.fetchProfile(null, username)
+  if (data) {
+    avatarUrl.value = data?.photo ?? '/img/person.png'
+    profile.value = data
     isOwnProfile.value = user?.username === profile.value.username
     if (!isOwnProfile.value) await checkFollowStatus()
     isOwnProfile.value = user?.username === profile.value.username
@@ -110,7 +111,9 @@ definePageMeta({
             <v-row align="center" class="pa-0 ma-0">
               <!-- Avatar -->
               <v-col cols="auto">
-                <UserAvatar :user="profile" />
+                <v-avatar size="50" class="border-primary border-lg rounded-circle">
+                  <NuxtImg width="50" height="50" :src="avatarUrl" alt="Avatar" />
+                </v-avatar>
               </v-col>
 
               <!-- Nom et Type -->

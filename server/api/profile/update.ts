@@ -26,6 +26,7 @@ export default defineEventHandler(async (event) => {
       firstName: user.firstName,
       lastName: user.lastName,
       enabled: user.enabled,
+      photo: user?.profile.photo,
       profile: user?.profile,
       roles: user.roles,
     },

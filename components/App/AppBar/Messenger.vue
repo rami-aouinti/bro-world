@@ -2,8 +2,6 @@
 import { ref, onMounted, watch, mergeProps, computed } from 'vue'
 import { useMercureInbox } from '~/composables/useMercureInbox'
 import RelativeTime from "~/components/App/RelativeTime.vue"
-import {truncate} from "~/utils/stringUtils";
-
 const loadConversation = ref(true)
 const conversations = ref<any[]>([])
 const activeConversation = ref<any | null>(null)
@@ -13,7 +11,9 @@ const path = ref('/inbox')
 const pathMessenger = ref('/user/messenger/')
 const { user } = useUserSession()
 const isMercureReady = ref(false)
+import { useConversationUtils } from '~/composables/useConversationUtils'
 
+const { getConversationTitle, getConversationAvatar } = useConversationUtils()
 watch(isMercureReady, (ready) => {
   if (ready) {
     useMercureInbox(conversations, updateConversationPreview)
@@ -60,39 +60,6 @@ const fetchConversations = async () => {
     console.error('Erreur fetchConversations:', error)
   }
 }
-
-function getConversationTitle(conversation: any): string {
-  const participants = conversation?.participants ?? []
-
-  if (participants.length > 2) {
-    return conversation.title
-  }
-
-  if (participants.length === 2) {
-    const other = participants.find(p => p.id !== user.value?.id)
-    return truncate(other?.firstName + ' ' + other?.firstName  ?? conversation.title, 20)
-  }
-
-  // fallback
-  return conversation.title
-}
-
-function getConversationAvatar(conversation: any): string {
-  const participants = conversation?.participants ?? []
-
-  if (participants.length > 2) {
-    return '/img/person.png'
-  }
-
-  if (participants.length === 2) {
-    const other = participants.find(p => p.id !== user.value?.id)
-    return other?.avatar ?? '/img/person.png'
-  }
-
-  // fallback
-  return '/img/person.png'
-}
-
 onMounted(fetchConversations)
 </script>
 

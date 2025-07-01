@@ -41,7 +41,7 @@ const init = async () => {
       limit: postStore.limit,
       count: postStore.total,
     })
-    hasMore.value = totalPages >= currentPage.value
+    hasMore.value = totalPages.value >= currentPage.value
     pending.value = false
     newPostsLoaded.value = false
     loadingPost.value = false
@@ -55,7 +55,7 @@ const reloadPosts = async (data: any) => {
   loadingPost.value = false
 }
 
-const loadMore = async () => {
+const loadMore = async ({ done }) => {
   if (isLoading.value || !hasMore.value) return
 
   isLoading.value = true
@@ -68,6 +68,7 @@ const loadMore = async () => {
     postStore.appendPosts(newPosts)
     currentPage.value = nextPage
     isLoading.value = false
+    done('ok')
   }
   hasMore.value = Math.ceil(postStore.total / postStore.limit) > nextPage
   pending.value = false
@@ -132,19 +133,24 @@ onMounted(async () => {
           </v-col>
         </template>
         <template v-else>
-          <HomePosts
-            v-if="postStore.posts.length > 0"
-            v-for="post in postStore.posts"
-            :key="post.id"
-            @post-updated="reloadPosts"
-            @post-deleted="reloadPosts"
-            :post="post"
-          />
-          <div class="d-flex justify-center mt-4" v-if="hasMore && !pending && postStore.posts.length > 0">
-            <v-btn color="primary" :loading="isLoading" @click="loadMore">
-              Load more
-            </v-btn>
-          </div>
+          <v-infinite-scroll :items="postStore.posts" mode="manual" @load="loadMore">
+            <template v-for="(item, index) in postStore.posts" :key="item.id">
+              <HomePosts
+                @post-updated="reloadPosts"
+                @post-deleted="reloadPosts"
+                :post="item"
+              />
+            </template>
+            <template v-slot:load-more="{ props }">
+              <v-btn
+                v-if="hasMore"
+                icon="mdi-refresh"
+                class="text-primary"
+                variant="text"
+                v-bind="props"
+              ></v-btn>
+            </template>
+          </v-infinite-scroll>
         </template>
       </v-col>
 

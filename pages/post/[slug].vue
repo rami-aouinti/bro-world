@@ -3,7 +3,9 @@ import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import AuthorPost from "~/pages/home/post/AuthorPost.vue";
 import Post from "~/pages/home/post/Post.vue";
+import { usePostStore } from "~/stores/usePostStore"
 
+const postStore = usePostStore()
 const route = useRoute()
 const slug = ref(route.params.slug)
 
@@ -12,9 +14,11 @@ const post = ref({})
 
 const loadPost = async () => {
   try {
-    const data = await $fetch(`/api/posts/post/${slug.value}`)
-    if (data) {
-      post.value = data
+    if (slug?.value) {
+      const postData = await postStore.fetchPost(slug.value)
+      if (postData) {
+        post.value = postData
+      }
     }
   } catch (e) {
     console.error('Erreur de chargement du post :', e)
@@ -23,12 +27,14 @@ const loadPost = async () => {
   }
 }
 
-watch(() => route.params.slug, (newSlug) => {
+watch(() => route.params.slug, async (newSlug) => {
   slug.value = newSlug
-  loadPost()
+  await loadPost()
 }, { immediate: true })
 
-onMounted(loadPost)
+onMounted(() => {
+  loadPost()
+})
 </script>
 
 <template>

@@ -2,7 +2,7 @@
   <v-card
     class="pt-12 px-1 shadow-blur fade-in overflow-visible"
     style="margin-top: 20px;"
-    max-height="520"
+    max-height="510"
     rounded="xl"
     variant="text"
   >
@@ -16,44 +16,52 @@
       <v-row>
         <v-col cols="12">
           <div class="d-flex align-items-center text-center">
-            <v-autocomplete
-              :search="search"
-              v-model="friends"
+            <v-combobox
+              v-model="selectedUsers"
+              v-model:search="search"
               :items="filteredConversations"
+              item-title="title"
+              item-value="id"
               color="blue-grey-lighten-2"
-              item-title="name"
-              item-value="name"
+              hide-selected
               hide-details
-              label="Search contact"
               rounded="xl"
               chips
+              clearable
               density="compact"
-              closable-chips
-              multiple
+              label="Search contact"
+              variant="solo"
+              :custom-filter="customFilter"
             >
-              <template v-slot:chip="{ props, item }">
+              <!-- Affichage des chips sélectionnées -->
+              <template v-slot:chip="{ item, props }">
                 <v-chip
                   v-bind="props"
-                  :prepend-avatar="item.raw.avatar"
-                  :text="item.raw.title"
-                ></v-chip>
+                  :prepend-avatar="getConversationAvatar(item.raw)"
+                  :text="getConversationTitle(item.raw)"
+                />
               </template>
 
-              <template v-slot:item="{ props, item }">
+              <!-- Affichage des résultats de recherche -->
+              <template v-slot:item="{ item, props }">
                 <v-list-item
                   v-bind="props"
-                  :prepend-avatar="item.raw.avatar"
+                  :prepend-avatar="getConversationAvatar(item.raw)"
                   :subtitle="item.raw.group"
-                  :title="item.raw.title"
-                ></v-list-item>
+                  :title="getConversationTitle(item.raw)"
+                  @click="handleSelect(item.raw)"
+                />
               </template>
-            </v-autocomplete>
+            </v-combobox>
           </div>
         </v-col>
       </v-row>
     </v-sheet>
+
+    <!-- Liste des conversations -->
     <v-list
       v-model:selected="selectedId"
+      class="d-none d-md-block"
       style="height: 380px; background-color: transparent; overflow-x: hidden;"
     >
       <v-list-item
@@ -75,7 +83,6 @@
             overlap
           />
         </template>
-        <!-- Contenu principal -->
         <ConversationListItem :selectedId="selectedId" :conversation="conversation" />
       </v-list-item>
     </v-list>
@@ -85,30 +92,46 @@
 <script setup lang="ts">
 import { ref, defineProps, defineEmits, computed } from 'vue'
 import ConversationListItem from '~/components/Messenger/Widgets/ConversationListItem.vue'
-
 const { user } = useUserSession()
 
 const props = defineProps<{
-  conversations: any[] // ✅ conversations (au pluriel)
+  conversations: any[]
 }>()
 
 const emit = defineEmits(['select'])
+import { useConversationUtils } from '~/composables/useConversationUtils'
 
-const friends = ref([])
+const { getConversationTitle, getConversationAvatar } = useConversationUtils()
+const selectedUsers = ref<any[]>([])
 const selectedId = ref<string | null>(null)
 const search = ref('')
 
+// Recherche personnalisée (empêche création d’élément inconnu)
+function customFilter(itemTitle: string, query: string, item: any) {
+  return itemTitle.toLowerCase().includes(query.toLowerCase())
+}
+
+// Conversations filtrées par recherche
 const filteredConversations = computed(() =>
   props.conversations?.filter((c) =>
     c.title?.toLowerCase().includes(search.value.toLowerCase())
   ) ?? []
 )
 
+// Lorsqu'un utilisateur est sélectionné
+function handleSelect(user: any) {
+  selectedUsers.value = user
+  search.value = ''
+  selectConversation(user)
+}
+
+// Sélection d’une conversation
 function selectConversation(conversation: any) {
   selectedId.value = conversation.id
   emit('select', conversation)
 }
 
+// Vérifie si un participant est en ligne (hors utilisateur actuel)
 function isOnline(conversation: any): boolean {
   return conversation.participants?.some(p => p.online && p.id !== user.value?.id) ?? false
 }
