@@ -112,7 +112,7 @@ const handleAction = async () => {
     formData.append('title', postContent.value.trim())
   }
   try {
-    const {data, error} = await useFetch('/api/posts/post/posts', {
+    const {data, error} = await $fetch('/api/posts/post/posts', {
       method: 'POST',
       body: formData,
     })

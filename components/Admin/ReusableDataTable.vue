@@ -144,7 +144,7 @@ function handleDelete(item: any) {
     v-model="dialog"
     :title="dialogMode === 'create' ? 'Create' : dialogMode === 'edit' ? 'Edit' : 'Details'"
     :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (dialog = false) }]"
-    :saveButton="dialogMode !== 'view' ? [{ text: 'Save', color: 'primary', action: url }] : []"
+    :saveButton="dialogMode !== 'view' ? [{ text: 'Save', color: 'primary', action: () => url.value }] : []"
     :forms="formFields"
     @success="() => emit('refresh')"
     @error="() => emit('refresh')"

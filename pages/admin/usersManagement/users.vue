@@ -30,12 +30,15 @@ const headers: DataTableHeaders = [
 const users = computed(() => userStore.users)
 
 async function fetchUsers() {
-  loading.value = true
-  await userStore.fetchUsers()
-  loading.value = false
+  try {
+    await userStore.fetchUsers()
+    loading.value = false
+  } catch (e) {
+    console.error('Erreur lors de la récupération des utilisateurs :', e)
+  }
 }
-watch(loading, fetchUsers, { immediate: true })
-onMounted(await fetchUsers)
+
+onMounted(fetchUsers)
 </script>
 
 <template>

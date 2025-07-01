@@ -26,7 +26,8 @@ export const useUserStore = defineStore('user', {
     async fetchUsers() {
       try {
         this.loading = true
-        this.users = await $fetch('/api/admin/user/users')
+        const response = await $fetch('/api/admin/user/users')
+        this.users = Array.isArray(response) ? response : []
       } catch (error) {
         console.error('Error fetching users:', error)
       } finally {
