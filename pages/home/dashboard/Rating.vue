@@ -58,7 +58,7 @@
         </v-list-item>
       </v-list>
 
-      <v-divider class="my-4" />
+      <v-divider v-if="loggedIn" class="my-4" />
 
       <div v-if="loggedIn" class="d-flex align-center justify-center ga-3 mb-4">
         <v-rating
@@ -105,21 +105,20 @@ const newRating = ref(0)
 const isSubmitting = ref(false)
 
 const fetchStats = async () => {
-  if (!loggedIn) return
-
   try {
     const response = await $fetch('/api/review/get/')
     averageRating.value = response?.average_rating ?? 0
     totalReviews.value = response?.total_reviews ?? 0
     distribution.value = response?.distribution ?? distribution.value
   } catch (error) {
-    console.error('Erreur lors du chargement des reviews :', error)
+    console.error('Failed to load reviews :', error)
   } finally {
     loading.value = false
   }
 }
 
 const submitRating = async () => {
+  if (!loggedIn) return
   if (newRating.value > 0) {
     isSubmitting.value = true
 

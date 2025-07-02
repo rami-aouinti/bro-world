@@ -1,12 +1,12 @@
-import {defineEventHandler, getQuery} from 'h3'
+import {defineEventHandler} from 'h3'
 import {requestWithRetry} from '~/server/utils/requestWithRetry'
-import {getUserToken} from "~/server/utils/getUserToken";
+import {useCachedFetch} from "~/composables/useCachedFetch";
 
 export default defineEventHandler(async (event) => {
-  const token = await getUserToken(event)
-
   const config = useRuntimeConfig()
   const apiUrl = `${config.public.apiBase}/api/reviews/stats`
-
-  return await requestWithRetry('get', apiUrl, token)
+  const cached = await useCachedFetch(`reviews:stats`, async () => {
+    return await requestWithRetry('get', apiUrl)
+  }, 3600)
+  if (cached) return cached
 })

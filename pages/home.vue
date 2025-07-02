@@ -77,6 +77,7 @@ const loadMore = async ({ done }) => {
 const plugins = ref<any[]>([])
 
 const fetchPlugins = async () => {
+  if (!loggedIn) return
   try {
     const data = await $fetch('/api/plugin/profile/get')
     if (data) {

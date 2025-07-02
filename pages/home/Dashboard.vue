@@ -3,7 +3,7 @@
   <Blogs v-if="loggedIn"/>
   <News />
   <Quiz />
-  <Rating v-if="loggedIn" />
+  <Rating />
 </template>
 
 <script setup lang="ts">
