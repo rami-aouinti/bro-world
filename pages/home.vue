@@ -11,15 +11,19 @@ import Dashboard from '~/pages/home/Dashboard.vue'
 import LoaderStatusBanner from '~/components/App/Loader/Home/LoaderStatusBanner.vue'
 import LoaderPost from '~/components/App/Loader/Home/LoaderPost.vue'
 import CreateWorldDialog from "~/components/App/Home/CreateWorldDialog.vue";
+import { useStoryStore } from '~/stores/useStoryStore'
 
 const { locale } = useI18n()
 const { user, loggedIn } = useUserSession()
+const stories = ref<any[]>([])
 
+const storyStore = useStoryStore()
 const postStore = usePostStore()
 
 const dialogCreateWorld = ref(false)
 const loadingUser = ref(true)
 const loadingPost = ref(true)
+const loadingStory = ref(true)
 const loadingPlugin = ref(true)
 const isLoading = ref(false)
 const hasMore = ref(true)
@@ -89,12 +93,33 @@ const fetchPlugins = async () => {
     loadingPlugin.value = false
   }
 }
+const reloadStories = async (data: any) => {
+  console.log(data)
+  loadingStory.value = true
+  await loadStories()
+  loadingStory.value = false
+  Notify.success("Story created!")
+}
 
+async function loadStories() {
+  if (!loggedIn.value) return
+  try {
+    if (user.value.id) {
+      const data = await storyStore.fetchStories(user.value.id)
+      if (data) {
+        stories.value = data
+      }
+    }
+  } catch (e) {
+    console.error('Failed to load stories:', e)
+  }
+}
 onMounted(async () => {
   try {
     await init()
     await fetchPlugins()
     await nextTick()
+    await loadStories()
   } catch (e) {
     console.error('Erreur dans onMounted de home.vue:', e)
   } finally {
@@ -119,8 +144,8 @@ onMounted(async () => {
         </template>
 
         <template v-else>
-          <NewPost @post-created="reloadPosts" v-if="loggedIn" />
-          <HomeStories v-if="loggedIn" />
+          <NewPost @post-created="reloadPosts" @story-created="reloadStories" v-if="loggedIn" />
+          <HomeStories :stories="stories" v-if="loggedIn" />
         </template>
 
         <template v-if="loadingPost || loadingUser">

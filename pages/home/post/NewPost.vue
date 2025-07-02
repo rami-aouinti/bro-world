@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, defineEmits } from 'vue'
+import {computed, defineEmits, ref} from 'vue'
 import UserAvatar from '~/components/App/UserAvatar.vue'
 import Camera from '~/components/App/Blog/Camera.vue'
 import BaseDialog from '~/components/BaseDialog.vue'
 import Editor from "~/components/App/Editor.vue";
+import {useStoryStore} from '~/stores/useStoryStore'
+
 const runtimeConfig = useRuntimeConfig()
 const apiKey = runtimeConfig.public.tinyMceApiKey
 const dialog = ref(false)
@@ -13,7 +15,7 @@ const video = ref(false)
 const loading = ref(false)
 const loadingText = ref(false)
 const files = ref<File[]>([])
-const emit = defineEmits(['post-created'])
+const emit = defineEmits(['post-created', 'story-created'])
 const postContent = ref('')
 const youtubeId = ref<string | null>(null)
 const imageUrl = ref<string | null>(null)
@@ -21,6 +23,8 @@ const fileInput = ref()
 const newStory = ref<File | null>(null)
 
 const { user } = await useUserSession()
+
+const storyStore = useStoryStore()
 
 function detectLinks() {
   if (youtubeId.value || imageUrl.value) return // Empêcher la redétection
@@ -87,23 +91,22 @@ async function handleFileUpload(file: File) {
   formData.append('file', file)
 
   try {
-    const response = await $fetch('/api/profile/story', {
-      method: 'POST',
-      body: formData,
-      credentials: 'include',
-    })
-
-    const data = response.data.value
+    const data = await storyStore.createStory(user.value.id, formData)
 
     if (data?.mediaPath) {
-      handleSuccess(data)
+      handleStorySuccess(data)
     }
   } catch (e) {
     console.error('Upload error', e)
     handleError(e)
   }
 }
-
+const handleStorySuccess = (data: any) => {
+  data.userId = user.value.id
+  data.username = user.value.username
+  data.stories = data
+  emit('story-created', data)
+}
 
 const handleAction = async () => {
   loadingText.value = true

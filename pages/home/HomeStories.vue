@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { ref, defineProps, onBeforeUnmount, nextTick } from 'vue'
 import { useIntervalFn } from '@vueuse/core'
-
 const { user } = await useUserSession()
 
-const stories = ref<any[]>([])
+const props = defineProps({
+  stories: {
+    type: Object,
+    required: false,
+  },
+})
 
 const storyViewerVisible = ref(false)
 const currentUserStories = ref<any[]>([])
@@ -46,34 +50,6 @@ function resetProgress() {
   }, intervalDelay / 50) // 50 steps
 }
 
-async function loadStories() {
-  try {
-    const data = await $fetch('/api/profile/stories')
-    if (Array.isArray(data)) {
-      stories.value = data
-    } else {
-      console.warn('Invalid response format:', data)
-    }
-  } catch (e) {
-    console.error('Failed to load stories:', e)
-  }
-}
-
-// 🔁 Recharger si stories est vide
-watch(
-  () => stories.value.length === 0,
-  (isEmpty) => {
-    if (isEmpty) loadStories()
-  },
-  { immediate: true }
-)
-
-onMounted(() => {
-  if (stories.value.length === 0) {
-    loadStories()
-  }
-})
-
 onBeforeUnmount(() => {
   pause()
   if (progressTimer) clearInterval(progressTimer)
@@ -112,12 +88,12 @@ function sendMessage() {
 </script>
 
 <template>
-  <v-row v-if="stories.length">
+  <v-row v-if="props.stories.length">
     <v-col cols="12">
       <v-card rounded="xl" class="overflow-x-auto mx-3 min-h-stories" variant="text" elevation="10">
         <div class="d-flex align-center justify-center">
           <v-col
-            v-for="userStories in stories"
+            v-for="userStories in props.stories"
             :key="userStories.userId"
             lg="1"
             md="2"
