@@ -131,7 +131,6 @@ const playSound = () => {
 
 
 import { useMercureConversation } from '~/composables/useMercureConversation'
-import Social from "~/components/Auth/Social.vue";
 import RelativeTime from "~/components/App/RelativeTime.vue";
 import CardWindow from "~/components/Messenger/Widgets/CardWindow.vue";
 
@@ -163,8 +162,6 @@ const fetchMessages = async () => {
     conversationLoaded.value = false
   }
 }
-
-const formatTime = (datetime: string) => new Date(datetime).toLocaleTimeString()
 
 const scrollToBottom = async () => {
   await nextTick()

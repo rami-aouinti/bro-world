@@ -105,6 +105,7 @@ onMounted(async () => {
 </script>
 <template>
   <v-card
+    elevation="10"
     id="basic"
     class="py-4"
     rounded="xl"

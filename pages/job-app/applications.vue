@@ -22,7 +22,7 @@
         :key="job.id"
         cols="12"
       >
-        <v-card rounded="xl" variant="text" class="pa-4 mb-2">
+        <v-card rounded="xl" variant="text" class="pa-4 mb-2" elevation="10">
           <Header :job="job" />
           <v-card-text>
             <Skills :job="job" />
@@ -36,7 +36,7 @@
                     :key="application.id"
                   >
                     <v-list-item-content>
-                      <v-card rounded="xl" variant="text" class="pa-4 mb-4">
+                      <v-card rounded="xl" variant="text" class="pa-4 mb-4" elevation="10">
                         <v-row align="center" justify="center">
                           <v-col cols="12" md="4">
                             <div class="text-h6 font-weight-bold px-3">

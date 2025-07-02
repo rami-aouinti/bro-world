@@ -24,7 +24,7 @@
         md="6"
         lg="6"
       >
-        <v-card rounded="xl" class="pa-2 mx-3" variant="text">
+        <v-card rounded="xl" class="pa-2 mx-3" variant="text" elevation="10">
           <v-row no-gutters>
             <v-col cols="3" class="d-flex align-center justify-center">
               <v-avatar size="48">

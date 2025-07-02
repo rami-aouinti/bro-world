@@ -15,6 +15,7 @@ definePageMeta({
 const userStore = useUserStore()
 const loading = ref(true)
 const search = ref('')
+const users = ref<any[]>([])
 
 const headers: DataTableHeaders = [
   { title: 'ID', key: 'id', type: 'text', list: false, show: true ,create: false, edit: false },
@@ -27,17 +28,20 @@ const headers: DataTableHeaders = [
   { title: '', key: 'actions', list: false, show: false ,create: false, edit: false,  sortable: false, align: 'end' },
 ]
 
-const users = computed(() => userStore.users)
-
 async function fetchUsers() {
   try {
-    await userStore.fetchUsers()
+    const data = await userStore.fetchUsers()
+    if (data) {
+      users.value = data
+    }
     loading.value = false
   } catch (e) {
     console.error('Erreur lors de la récupération des utilisateurs :', e)
   }
 }
-
+watch(loading, () => {
+  fetchUsers()
+}, { immediate: true })
 onMounted(fetchUsers)
 </script>
 

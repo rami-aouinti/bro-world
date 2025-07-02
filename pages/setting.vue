@@ -6,7 +6,7 @@
           <LoaderSetting />
         </div>
         <div v-else>
-          <v-card rounded="xl" class="py-4" variant="text">
+          <v-card rounded="xl" class="py-4" variant="text" elevation="10">
             <div class="px-5">
               <v-row align="center" class="pa-0 ma-0">
                 <v-col cols="auto">

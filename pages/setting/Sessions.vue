@@ -1,5 +1,6 @@
 <template>
   <v-card
+    elevation="10"
     id="sessions"
     class="py-4"
     rounded="xl"

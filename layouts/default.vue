@@ -2,6 +2,7 @@
   <v-app>
     <AppDrawer :right="isRtl" />
     <AppBar :rtl="isRtl" @toggleSettingsDrawer="showSettingsDrawer = $event" />
+    <div ref="topAnchor" />
     <v-main>
       <NuxtPage />
     </v-main>
@@ -33,9 +34,10 @@ const { $vuetify } = useNuxtApp()
 
 const rtlLanguages = ['ar']
 const isRtl = computed(() => rtlLanguages.includes(locale.value))
-
+const topAnchor = ref<HTMLElement | null>(null)
 const updateHtmlAttrs = () => {
   if (process.client) {
+    scrollToTop()
     document.documentElement.setAttribute('lang', locale.value)
     document.documentElement.setAttribute('dir', isRtl.value ? 'rtl' : 'ltr')
     document.body.classList.toggle('rtl', isRtl.value)
@@ -46,7 +48,10 @@ const updateHtmlAttrs = () => {
     }
   }
 }
-
+const scrollToTop = async () => {
+  await nextTick()
+  topAnchor.value?.scrollIntoView({ behavior: 'auto' })
+}
 onMounted(updateHtmlAttrs)
 watch(locale, updateHtmlAttrs)
 

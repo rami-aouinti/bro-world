@@ -1,5 +1,6 @@
 <template>
   <v-card
+    elevation="10"
     id="account"
     class="py-4"
     rounded="xl"

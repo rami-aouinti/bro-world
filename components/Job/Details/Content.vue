@@ -39,7 +39,7 @@ const { t } = useI18n()
 <template>
   <!-- Tabs -->
   <v-card rounded="xl"
-          variant="text">
+          variant="text" elevation="10">
     <v-tabs v-model="tab" bg-color="secondary" align-tabs="center" color="default" slider-color="primary">
       <v-tab value="details">{{ t('job.details') }}</v-tab>
       <v-tab value="requirements">{{ t('job.work') }}</v-tab>

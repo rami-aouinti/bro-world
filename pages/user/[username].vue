@@ -106,7 +106,7 @@ definePageMeta({
     </div>
     <v-row v-else >
       <v-col lg="12">
-        <v-card rounded="xl" class="py-4" variant="text">
+        <v-card rounded="xl" class="py-4" variant="text" elevation="10">
           <div class="px-5">
             <v-row align="center" class="pa-0 ma-0">
               <!-- Avatar -->
@@ -165,7 +165,7 @@ definePageMeta({
         </v-card>
       </v-col>
       <v-col lg="12" md="12" cols="12" class="position-relative">
-        <v-card rounded="xl" class="h-100" variant="text">
+        <v-card rounded="xl" class="h-100" variant="text" elevation="10">
           <div class="px-4 pt-4">
             <h6 class="mb-0 text-h6 text-typo">Profile Information</h6>
           </div>

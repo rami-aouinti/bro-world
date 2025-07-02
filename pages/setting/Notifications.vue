@@ -1,5 +1,6 @@
 <template>
   <v-card
+    elevation="10"
     id="notifications"
     class="py-4"
     rounded="xl"

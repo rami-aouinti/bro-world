@@ -14,19 +14,19 @@ export default defineOAuthGitHubEventHandler({
 
       await setUserSession(event, {
         user: {
-          id: user.id,
-          name: user.username,
-          username: user.username,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          friends: user?.friends,
-          stories: user?.stories,
-          profile: user?.profile,
-          enabled: user.enabled,
-          photo: user?.photo,
-          token: user.token,
-          roles: user.roles,
+          id: profile.id,
+          name: profile.username,
+          username: profile.username,
+          firstName: profile.firstName,
+          lastName: profile.lastName,
+          email: profile.email,
+          friends: profile?.friends,
+          stories: profile?.stories,
+          profile: profile?.profile,
+          enabled: profile.enabled,
+          photo: profile?.photo,
+          token: profile.token,
+          roles: profile.roles,
         },
       })
 

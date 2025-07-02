@@ -57,7 +57,7 @@ onMounted(async () => {
         :key="job.id"
         cols="12"
       >
-        <v-card rounded="xl" variant="text" class="pa-4 mb-2">
+        <v-card rounded="xl" variant="text" class="pa-4 mb-2" elevation="10">
           <Header :job="job" />
           <v-card-text>
             <Skills :job="job" />

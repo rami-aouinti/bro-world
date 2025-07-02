@@ -30,7 +30,7 @@ export const useUserStore = defineStore('user', {
         const response = await useCachedFetch(`pFenRpPsbw:all_users`, async () => {
           return await $fetch('/api/admin/user/users')
         }, 31536000)
-        this.users = response ?? []
+        return  response ?? []
       } catch (error) {
         console.error('Error fetching users:', error)
       } finally {

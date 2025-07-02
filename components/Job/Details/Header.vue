@@ -80,7 +80,7 @@ const jobInfos = computed(() => {
 </script>
 
 <template>
-  <v-card rounded="xl" variant="text" class="pa-4 mb-4">
+  <v-card rounded="xl" variant="text" class="pa-4 mb-4" elevation="10">
     <v-row align="center">
       <!-- Logo entreprise -->
       <v-col cols="2" class="d-flex align-center justify-center">

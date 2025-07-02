@@ -19,7 +19,7 @@
             <v-combobox
               v-model="selectedUsers"
               v-model:search="search"
-              :items="filteredConversations"
+              :items="users"
               item-title="title"
               item-value="id"
               color="blue-grey-lighten-2"
@@ -37,8 +37,8 @@
               <template v-slot:chip="{ item, props }">
                 <v-chip
                   v-bind="props"
-                  :prepend-avatar="getConversationAvatar(item.raw)"
-                  :text="getConversationTitle(item.raw)"
+                  :prepend-avatar="item.raw?.profile?.photo ?? 'https://bro-world-space.com/img/person.png'"
+                  :text="item.raw?.firstName + ' ' + item.raw?.lastName"
                 />
               </template>
 
@@ -46,9 +46,8 @@
               <template v-slot:item="{ item, props }">
                 <v-list-item
                   v-bind="props"
-                  :prepend-avatar="getConversationAvatar(item.raw)"
-                  :subtitle="item.raw.group"
-                  :title="getConversationTitle(item.raw)"
+                  :prepend-avatar="item.raw?.profile?.photo ?? 'https://bro-world-space.com/img/person.png'"
+                  :title="item.raw?.firstName + ' ' + item.raw?.lastName"
                   @click="handleSelect(item.raw)"
                 />
               </template>
@@ -90,9 +89,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, defineEmits, computed } from 'vue'
+import { ref, defineProps, defineEmits, computed, watch, onMounted } from 'vue'
 import ConversationListItem from '~/components/Messenger/Widgets/ConversationListItem.vue'
-const { user } = useUserSession()
+const { user } = await useUserSession()
 
 const props = defineProps<{
   conversations: any[]
@@ -100,12 +99,13 @@ const props = defineProps<{
 
 const emit = defineEmits(['select'])
 import { useConversationUtils } from '~/composables/useConversationUtils'
-
+import {useUserStore} from "~/stores/admin/user/userStore";
+const users = ref<any[]>([])
 const { getConversationTitle, getConversationAvatar } = useConversationUtils()
 const selectedUsers = ref<any[]>([])
 const selectedId = ref<string | null>(null)
 const search = ref('')
-
+const userStore = useUserStore()
 // Recherche personnalisée (empêche création d’élément inconnu)
 function customFilter(itemTitle: string, query: string, item: any) {
   return itemTitle.toLowerCase().includes(query.toLowerCase())
@@ -122,8 +122,29 @@ const filteredConversations = computed(() =>
 function handleSelect(user: any) {
   selectedUsers.value = user
   search.value = ''
-  selectConversation(user)
+  createConversation(user)
 }
+
+
+const loading = ref(true)
+
+async function createConversation(participant: any) {
+
+  const newConversation = await $fetch(`/api/messenger/conversations/create`, {
+    method: 'POST',
+    body: JSON.stringify({
+      title: 'nothing',
+      isGroup: false,
+      participants: [`${user.value.id}`, `${participant.id}`],
+    }),
+  })
+
+  console.log(newConversation)
+  if (newConversation) {
+    selectConversation(newConversation)
+  }
+}
+
 
 // Sélection d’une conversation
 function selectConversation(conversation: any) {
@@ -131,6 +152,22 @@ function selectConversation(conversation: any) {
   emit('select', conversation)
 }
 
+async function fetchUsers() {
+  try {
+    const data = await userStore.fetchUsers()
+    if (data) {
+      users.value = data
+    }
+    loading.value = false
+  } catch (e) {
+    console.error('Erreur lors de la récupération des utilisateurs :', e)
+  }
+}
+
+watch(loading, () => {
+  fetchUsers()
+}, { immediate: true })
+onMounted(fetchUsers)
 // Vérifie si un participant est en ligne (hors utilisateur actuel)
 function isOnline(conversation: any): boolean {
   return conversation.participants?.some(p => p.online && p.id !== user.value?.id) ?? false
