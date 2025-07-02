@@ -1,11 +1,13 @@
 export interface Notification {
   show: boolean
+  read: boolean
   type: 'info' | 'error' | 'success' | 'warning' | 'primary'
   title: string
   subtitle: string
   content: string
   time: Date
   id: number
+  new: boolean
 }
 
 export const useNotificationStore = defineStore('notification', {
@@ -17,23 +19,28 @@ export const useNotificationStore = defineStore('notification', {
   actions: {
     async fetchNotifications() {
       try {
-        const { data } = await $fetch<{ value: any[] }>('/api/profile/notifications')
+        const data = await $fetch('/api/profile/notifications')
+        const notificationsRaw = Object.values(data)
 
-        if (data?.value) {
-          for (const notif of data.value) {
+        for (const notif of notificationsRaw) {
+          if (notif.channel === 'PUSH') {
             this.notifications.push({
               id: this.notificationCount++,
-              title: notif.pushTitle || 'No title',
-              content: notif.pushSubtitle || '',
-              subtitle: notif.pushContent || '',
+              title: notif.pushTitle ?? 'No title',
+              subtitle: notif.pushSubtitle ?? '',
+              content: notif.pushContent ?? '',
               type: 'primary',
-              time: new Date(),
-              show: true,
+              time: notif.completedAt ? new Date(notif.completedAt) : new Date(),
+              show: false,
+              read: false,
+              new: false
             })
           }
         }
+        return this.notifications
       } catch (error) {
         console.error('Error fetching notifications:', error)
+        return []
       }
     },
 
@@ -46,6 +53,8 @@ export const useNotificationStore = defineStore('notification', {
         type,
         time: new Date(),
         show: true,
+        read: true,
+        new: true
       })
     },
 

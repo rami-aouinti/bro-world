@@ -8,11 +8,11 @@ const notificationStore = useNotificationStore()
 const { notifications } = storeToRefs(notificationStore)
 
 const notificationsShown = computed(() =>
-  notifications.value.filter(n => n.show).reverse()
+  notifications.value.filter(n => n.read).reverse()
 )
 
 const showAll = ref(false)
-const timeout = computed(() => (showAll.value ? -1 : 5000))
+const timeout = computed(() => (showAll.read ? -1 : 5000))
 
 function deleteNotification(id: number) {
   notificationStore.delNotification(id)
@@ -24,7 +24,7 @@ function emptyNotifications() {
 
 function toggleAll() {
   showAll.value = !showAll.value
-  notifications.value.forEach(n => (n.show = showAll.value))
+  notifications.value.forEach(n => (n.read = showAll.value))
 }
 </script>
 
@@ -46,7 +46,7 @@ function toggleAll() {
     <teleport to="body">
       <v-card
         elevation="6"
-        width="300"
+        width="350"
         class="d-flex flex-column notification-card"
         :class="{ 'notification-card--open': showAll }"
       >
@@ -95,7 +95,7 @@ function toggleAll() {
             class="notification-item-wrapper"
           >
             <AppNotificationItem
-              v-model="notification.show"
+              v-model="notification.read"
               :notification="notification"
               :timeout="timeout"
               class="notification-item"

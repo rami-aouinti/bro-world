@@ -2,7 +2,10 @@
 import { computed, toRef, watch } from 'vue'
 import { useTimeoutFn } from '@vueuse/core'
 import type { Notification } from '~/stores/notification'
-
+import RelativeTime from "~/components/App/RelativeTime.vue";
+import { useLocalePath } from '#i18n'
+const { t, locale } = useI18n()
+const localePath = useLocalePath()
 const props = defineProps<{
   timeout: number
   notification: Notification
@@ -37,14 +40,26 @@ const isPersistent = computed(() => timeoutRef.value === -1)
     :theme="isPersistent ? undefined : 'dark'"
     :elevation="isPersistent ? 0 : 3"
     :type="notificationRef.type"
-    :text="notificationRef.title"
-    :title="new Date(notificationRef.time).toLocaleString()"
   >
     <template #prepend>
-      <v-avatar size="36">
+      <v-avatar size="48">
         <v-img :src="notificationRef.subtitle" />
       </v-avatar>
     </template>
+
+    <template #default>
+      <NuxtLink
+        :to="localePath(notificationRef.content)"
+        class="notification-link text-decoration-none text-sm"
+        style="color: inherit;"
+      >
+        <h6 class="text-sm font-weight-normal mb-1">
+          {{ notificationRef.title }}
+        </h6>
+      </NuxtLink>
+      <RelativeTime :date="notificationRef.time" />
+    </template>
+
     <template #close>
       <v-tooltip text="Close alert" location="top">
         <template #activator="{ props }">
@@ -62,9 +77,18 @@ const isPersistent = computed(() => timeoutRef.value === -1)
 </template>
 
 <style scoped>
+.notification-link {
+  color: inherit;
+}
+
+.notification-link:hover {
+  text-decoration: none;
+}
+
 :deep(.v-alert-title) {
-  line-height: 1.25rem;
-  font-size: 14px;
-  font-weight: 300;
+  line-height: 1rem;
+  font-size: 12px;
+  font-weight: 200;
 }
 </style>
+

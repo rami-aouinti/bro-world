@@ -295,6 +295,10 @@
   "changePassword": "Change Password",
   "updateProfile": "Update Profile",
   "notifications": "Notifications",
+  "notification": {
+    "showMore": "Show more",
+    "empty": "No new notifications"
+  },
   "language": "Language",
   "theme": "Theme",
   "darkMode": "Dark Mode",
