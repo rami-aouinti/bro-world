@@ -53,7 +53,7 @@ const props = defineProps<{
   conversation: {
     type: Object,
     required: true
-  }
+  },
 }>()
 
 </script>

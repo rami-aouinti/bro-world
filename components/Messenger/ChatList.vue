@@ -139,7 +139,6 @@ async function createConversation(participant: any) {
     }),
   })
 
-  console.log(newConversation)
   if (newConversation) {
     selectConversation(newConversation)
   }

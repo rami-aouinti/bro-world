@@ -41,7 +41,7 @@
           'justify-start text-start': message?.sender?.id !== user.id
         }"
       >
-        <v-col md="10">
+        <v-col v-if="message.text" md="10">
           <div
             class="d-flex align-items-center"
             :class="{

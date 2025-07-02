@@ -78,12 +78,12 @@ const fetchConversations = async () => {
     const unique = Array.from(
       new Map(data.value.map((c: any) => [c.id, c])).values()
     )
-    conversations.value = unique.map(c => ({ ...c, loaded: true, unreadCount: 0  }))
+    conversations.value = unique.map(c => ({ ...c, loaded: true, unreadCount: 0  })).reverse()
 
     useMercureInbox(conversations, updateConversationPreview)
     // auto-select la première conversation
     if (!activeConversation.value && unique.length > 0) {
-      activeConversation.value = unique[0]
+      activeConversation.value = unique[unique.length - 1]
     }
 
     loadConversation.value = false
