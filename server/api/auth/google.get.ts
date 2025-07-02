@@ -23,9 +23,9 @@ export default defineOAuthGoogleEventHandler({
           friends: profile?.friends,
           stories: profile?.stories,
           profile: profile?.profile,
-          enabled: profile.enabled,
+          enabled: userGoogle.enabled,
           photo: profile?.photo,
-          token: profile.token,
+          token: userGoogle.token,
           roles: profile.roles,
         },
       })
