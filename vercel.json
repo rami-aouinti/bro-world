@@ -1,6 +1,12 @@
 {
-  "crons": [{
+  "crons": [
+    {
     "path": "/api/cron",
     "schedule": "* * * * *"
-  }]
+    },
+    {
+      "path": "/api/cron/grok-news",
+      "schedule": "*/5 * * * *"
+    }
+  ]
 }

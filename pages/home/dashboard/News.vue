@@ -37,36 +37,27 @@ const { t, locale } = useI18n()
 const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
 
 const { loggedIn } = useUserSession()
-const { askGroq } = useGroq()
+
 
 const news = ref<string[]>([])
 const loadingNews = ref(true)
-const tasks: Promise<any>[] = []
 
-const fetchNewsFromGroq = async () => {
-  try {
+onMounted(async () => {
+  loadingNews.value = true
+  news.value = await useCachedFetch('grok:news', async () => {
+    const { askGroq } = useGroq()
     const message = t('dashboard.groq.news')
     const response = await askGroq(message)
 
-    if (response) {
-      news.value = response
-        .split('\n')
-        .map(line => line.trim())
-        .filter(line =>
-          line.length > 0 &&
-          !line.toLowerCase().includes('news headlines') &&
-          !line.toLowerCase().startsWith('here are')
-        )
-    }
-  } catch (e) {
-    console.error('Groq News error:', e)
-    news.value = [t('dashboard.news.error')]
-  } finally {
-    loadingNews.value = false
-  }
-}
-
-onMounted(async () => {
-  tasks.push(fetchNewsFromGroq())
+    return response
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line =>
+        line.length > 0 &&
+        !line.toLowerCase().includes('news headlines') &&
+        !line.toLowerCase().startsWith('here are')
+      )
+  }, 300) // 5 min TTL
+  loadingNews.value = false
 })
 </script>

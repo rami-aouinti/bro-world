@@ -18,12 +18,15 @@ const emit = defineEmits(['post-delete', 'post-updated'])
 
 const { t } = useI18n()
 const localePath = useLocalePath()
-const { user } = useUserSession()
+const { user } = await useUserSession()
 const router = useRouter()
 const route = useRoute()
 
 const isFollowing = ref<boolean | null>(null)
-const loading = ref(false)
+const isFollower = ref<boolean | null>(null)
+const isFriend = ref<boolean | null>(null)
+
+const loading = ref(true)
 const deletePost = ref(false)
 const editPost = ref(false)
 
@@ -93,9 +96,27 @@ const handleEdit = async (id: string | number) => {
 }
 
 const checkFollowStatus = async (userId: string) => {
-  loading.value = true
+
   try {
-    isFollowing.value = await $fetch(`/api/follow/status/${userId}`)
+    for (let friend in user.value.friends) {
+
+      console.log(friend.value)
+      if (friend.user === userId) {
+        if (friend.status == 1) {
+          isFollowing.value = true
+        }
+        if (friend.status == 2) {
+          isFollower.value = true
+        }
+        if (friend.status == 3) {
+          isFriend.value = true
+        }
+        else {
+          isFollowing.value = false
+        }
+      }
+      loading.value = false
+    }
   } catch (error) {
     console.error('Error checking follow status:', error)
   }
@@ -156,6 +177,7 @@ watch(
   },
   { immediate: true }
 )
+
 </script>
 
 <template>
