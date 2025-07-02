@@ -1,9 +1,9 @@
 export interface Notification {
   show: boolean
-  type: 'info' | 'error' | 'success' | 'warning'
-  pushTitle: string
-  pushContent: string
-  pushSubtitle: string
+  type: 'info' | 'error' | 'success' | 'warning' | 'primary'
+  title: string
+  subtitle: string
+  content: string
   time: Date
   id: number
 }
@@ -23,10 +23,10 @@ export const useNotificationStore = defineStore('notification', {
           for (const notif of data.value) {
             this.notifications.push({
               id: this.notificationCount++,
-              pushTitle: notif.pushTitle || 'No title',
-              pushContent: notif.pushContent || '',
-              pushSubtitle: notif.pushSubtitle || '',
-              type: 'info',
+              title: notif.pushTitle || 'No title',
+              content: notif.pushSubtitle || '',
+              subtitle: notif.pushContent || '',
+              type: 'primary',
               time: new Date(),
               show: true,
             })
@@ -37,12 +37,12 @@ export const useNotificationStore = defineStore('notification', {
       }
     },
 
-    addNotification(pushTitle: string, type: Notification['type'] = 'info') {
+    addNotification(title: string, subtitle: string, content: string, type: Notification['type'] = 'info') {
       this.notifications.push({
         id: this.notificationCount++,
-        pushTitle,
-        pushContent: '',
-        pushSubtitle: '',
+        title,
+        subtitle,
+        content,
         type,
         time: new Date(),
         show: true,
@@ -59,21 +59,24 @@ export const useNotificationStore = defineStore('notification', {
 })
 
 export const Notify = {
-  info: (pushTitle: string) =>
-    useNotificationStore().addNotification(pushTitle, 'info'),
-  success: (pushTitle: string) =>
-    useNotificationStore().addNotification(pushTitle, 'success'),
-  warning: (pushTitle: string) =>
-    useNotificationStore().addNotification(pushTitle, 'warning'),
+  info: (title: string, subtitle: string, content: string) =>
+    useNotificationStore().addNotification(title, subtitle, content, 'primary'),
+
+  success: (title: string, subtitle: string, content: string) =>
+    useNotificationStore().addNotification(title, subtitle, content, 'success'),
+
+  warning: (title: string, subtitle: string, content: string) =>
+    useNotificationStore().addNotification(title, subtitle, content, 'warning'),
+
   error: (val: unknown) => {
-    let pushTitle = ''
+    let title = ''
     if (typeof val === 'string') {
-      pushTitle = val
+      title = val
     } else if (val instanceof Error) {
-      pushTitle = val.message
+      title = val.message
     } else {
-      pushTitle = JSON.stringify(val)
+      title = JSON.stringify(val)
     }
-    useNotificationStore().addNotification(pushTitle, 'error')
+    useNotificationStore().addNotification(title, '', '', 'error')
   },
 }

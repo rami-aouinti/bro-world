@@ -37,9 +37,14 @@ const isPersistent = computed(() => timeoutRef.value === -1)
     :theme="isPersistent ? undefined : 'dark'"
     :elevation="isPersistent ? 0 : 3"
     :type="notificationRef.type"
-    :text="notificationRef.text"
+    :text="notificationRef.title"
     :title="new Date(notificationRef.time).toLocaleString()"
   >
+    <template #prepend>
+      <v-avatar size="36">
+        <v-img :src="notificationRef.subtitle" />
+      </v-avatar>
+    </template>
     <template #close>
       <v-tooltip text="Close alert" location="top">
         <template #activator="{ props }">

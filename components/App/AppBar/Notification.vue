@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, computed , mergeProps } from 'vue'
 import { storeToRefs } from 'pinia'
-
+import { useLocalePath } from '#i18n'
+const { t, locale } = useI18n()
+const localePath = useLocalePath()
 import { useNotificationStore } from '~/stores/notification'
+import RelativeTime from "~/components/App/RelativeTime.vue";
 const loading = ref(true)
 const notificationStore = useNotificationStore()
 const { notifications } = storeToRefs(notificationStore)
@@ -49,10 +52,31 @@ onMounted(await fetchNotifications)
         :key="notification.id"
         class="py-2 px-3 d-flex align-center list-item-hover-active border-radius-md"
       >
-        <v-icon size="20" class="me-3 text-body">mdi-bell-outline</v-icon>
-        <span class="text-sm font-weight-normal text-typo">
-          {{ notification.pushTitle }}
-        </span>
+
+        <v-row align="center" class="pa-0 ma-0">
+          <!-- Avatar -->
+          <v-col cols="auto">
+            <v-avatar size="36" class="me-1">
+              <NuxtImg
+                width="36"
+                height="36"
+                :src="notification?.subtitle"
+                :alt="`Avatar ${notification?.id}`"
+                cover
+              />
+            </v-avatar>
+          </v-col>
+          <v-col cols="auto">
+            <div>
+              <NuxtLink :to="localePath(notification?.content)" class="text-primary text-decoration-none text-sm">
+                <h6 class="text-sm font-weight-normal text-typo mb-1">
+                  {{ notification?.title }}
+                </h6>
+              </NuxtLink>
+              <RelativeTime :date="notification?.createdAt" />
+            </div>
+          </v-col>
+        </v-row>
       </v-list-item>
       <v-list-item
         v-else
