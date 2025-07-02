@@ -13,7 +13,7 @@ import LoaderPost from '~/components/App/Loader/Home/LoaderPost.vue'
 import CreateWorldDialog from "~/components/App/Home/CreateWorldDialog.vue";
 
 const { locale } = useI18n()
-const { loggedIn, user } = useUserSession()
+const { user, loggedIn } = useUserSession()
 
 const postStore = usePostStore()
 
@@ -77,7 +77,7 @@ const loadMore = async ({ done }) => {
 const plugins = ref<any[]>([])
 
 const fetchPlugins = async () => {
-  if (!loggedIn) return
+  if (!loggedIn.value) return
   try {
     const data = await $fetch('/api/plugin/profile/get')
     if (data) {
