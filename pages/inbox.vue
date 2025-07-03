@@ -92,7 +92,7 @@ const fetchConversations = async () => {
 
 // remplace le `watch` par `watchEffect` comme recommandé
 watchEffect(() => {
-  if (loadConversation.value) {
+  if (loadConversation) {
     fetchConversations()
   }
 })
