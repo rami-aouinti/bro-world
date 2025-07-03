@@ -1,15 +1,44 @@
+<script setup lang="ts">
+import AppDrawerItem from "~/components/App/AppDrawerItem.vue";
+import { mergeProps, ref, computed, onMounted } from 'vue'
+const currentYear = new Date().getFullYear()
+const router = useRouter()
+const routes = router.getRoutes().filter((r) => r.path.lastIndexOf('/') === 0)
+const drawerState = useState('drawer', () => true)
+const { locale } = useI18n()
+const isRtl = computed(() => locale.value === 'ar')
+const localePath = useLocalePath()
+const { mobile, lgAndUp, width } = useDisplay()
+const drawer = computed({
+  get() {
+    return drawerState.value || !mobile.value
+  },
+  set(val: boolean) {
+    drawerState.value = val
+  },
+})
+const rail = computed(() => !drawerState.value && !mobile.value)
+routes.sort((a, b) => (a.meta?.drawerIndex ?? 99) - (b.meta?.drawerIndex ?? 98))
+
+drawerState.value = lgAndUp.value && width.value !== 1280
+const isClientMounted = ref(false)
+onMounted(() => {
+  isClientMounted.value = true
+  drawerState.value = !mobile.value // Ouvert si desktop
+
+  // Auto fermeture en mode rail après 2 secondes
+  setTimeout(() => {
+    drawerState.value = false
+  }, 3000)
+})
+</script>
+
 <template>
   <v-navigation-drawer
-    app
-    :model-value="drawer"
-    @update:model-value="val => drawer = val"
-    :location="right ? 'right' : 'left'"
-    :temporary="mobile"
+    v-model="drawer"
     :expand-on-hover="rail"
     :rail="rail"
     floating
-    aria-label="Main Navigation Drawer"
-    role="navigation"
   >
     <template #prepend>
       <v-list role="navigation" aria-label="Brand">
@@ -27,22 +56,17 @@
               color="primary"
             />
           </template>
-          <v-list-item-title class="text-h6 font-weight-bold">Bro <span class="text-primary">World</span></v-list-item-title>
+          <!-- Affiche texte seulement si drawer est ouvert -->
+          <v-list-item-title class="text-h6 font-weight-bold" v-if="drawer">
+            Bro <span class="text-primary">World</span>
+          </v-list-item-title>
         </v-list-item>
       </v-list>
     </template>
-
-    <v-list nav density="default" role="list" aria-label="Main Menu">
-      <AppDrawerItem
-        v-for="route in filteredRoutes"
-        :key="route.name"
-        :item="route"
-        class="mb-2"
-      />
+    <v-list nav density="compact">
+      <AppDrawerItem v-for="route in routes" :key="route.name" :item="route" />
     </v-list>
-
     <v-spacer />
-
     <template #append>
       <v-list-item v-if="!rail" class="drawer-footer px-0 d-flex flex-column justify-center">
         <div class="text-caption pt-6 pt-md-0 text-center text-no-wrap">
@@ -53,75 +77,63 @@
   </v-navigation-drawer>
 </template>
 
-<script setup lang="ts">
-import AppDrawerItem from './AppDrawerItem.vue'
-import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
-import { computed, ref, defineProps, onMounted } from 'vue'
-import { useLocalePath } from '#i18n'
-
-const props = defineProps({
-  right: Boolean,
-  mobile: Boolean
-})
-
-const drawerState = useState('drawer', () => false)
-const isClientMounted = ref(false)
-onMounted(() => { isClientMounted.value = true })
-
-const drawer = computed({
-  get: () => isClientMounted.value && (drawerState.value || !props.mobile),
-  set: (val: boolean) => { if (isClientMounted.value) drawerState.value = val }
-})
-
-const rail = computed(() => !drawerState.value && !props.mobile)
-
-const { locale } = useI18n()
-const isRtl = computed(() => locale.value === 'ar')
-const localePath = useLocalePath()
-
-const { user } = useUserSession()
-const router = useRouter()
-
-const filteredRoutes = computed(() => {
-  return router.getRoutes()
-    .filter(r => r.path.lastIndexOf('/') === 0 && (!r.meta?.requiredRoles || user.value?.roles?.some(role => r.meta.requiredRoles.includes(role))))
-    .sort((a, b) => (a.meta?.drawerIndex ?? 99) - (b.meta?.drawerIndex ?? 98))
-})
-
-const currentYear = new Date().getFullYear()
-</script>
-
-<style scoped>
+<style>
 .v-navigation-drawer {
+  transition-property: box-shadow, transform, visibility, width, height, left,
+  right, top, bottom, border-radius !important;
   overflow: hidden;
-}
-
-.drawer-header {
-  display: flex;
-  align-items: center;
-}
-
-.rtl-fix {
-  direction: rtl;
-}
-
-.rtl-fix .v-list-item__prepend {
-  order: 2;
-  margin-inline-start: 12px;
-  margin-inline-end: 0;
-}
-
-.rtl-fix .v-list-item__content {
-  order: 1;
-  text-align: right;
-}
-
-.drawer-footer {
-  min-height: 30px;
-}
-
-.drawer-header-icon {
-  margin-right: 5px;
+  &.v-navigation-drawer--rail {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    &.v-navigation-drawer--is-hovering {
+      border-top-right-radius: 15px;
+      border-bottom-right-radius: 15px;
+      box-shadow:
+        0px 1px 2px 0px rgb(0 0 0 / 30%),
+        0px 1px 3px 1px rgb(0 0 0 / 15%);
+    }
+    &:not(.v-navigation-drawer--is-hovering) {
+      .drawer-footer {
+        transform: translateX(-160px);
+      }
+      .drawer-header-icon {
+        height: 1em !important;
+        width: 1em !important;
+      }
+      .v-list-group {
+        --list-indent-size: 0px;
+        --prepend-width: 0px;
+      }
+    }
+  }
+  .v-navigation-drawer__content {
+    overflow-y: hidden;
+    @supports (scrollbar-gutter: stable) {
+      scrollbar-gutter: stable;
+      > .v-list--nav {
+        padding-right: 0;
+      }
+    }
+    &:hover {
+      overflow-y: overlay;
+    }
+  }
+  .drawer-footer {
+    transition: all 0.2s;
+    min-height: 30px;
+  }
+  .drawer-header-icon {
+    opacity: 1 !important;
+    height: 1.2em !important;
+    width: 1.2em !important;
+    transition: all 0.2s;
+    margin-right: -10px;
+  }
+  .v-list-group {
+    --prepend-width: 10px;
+  }
+  .v-list-item {
+    transition: all 0.2s;
+  }
 }
 </style>

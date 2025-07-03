@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref, defineProps, onBeforeUnmount, nextTick } from 'vue'
+import { ref, onBeforeUnmount, nextTick } from 'vue'
 import { useIntervalFn } from '@vueuse/core'
 const { user } = await useUserSession()
 
 const props = defineProps({
   stories: {
-    type: Object,
+    type: Array,
     required: false,
+    default: () => [],
   },
 })
 
@@ -17,7 +18,7 @@ const currentStoryIndex = ref(0)
 const progress = ref(0)
 const message = ref('')
 
-const intervalDelay = 5000 // 5 secondes
+const intervalDelay = 5000 // 5 seconds
 let progressTimer: ReturnType<typeof setInterval> | null = null
 
 const { pause, resume } = useIntervalFn(() => {
@@ -47,7 +48,7 @@ function resetProgress() {
     if (progress.value < 100) {
       progress.value += 2
     }
-  }, intervalDelay / 50) // 50 steps
+  }, intervalDelay / 50)
 }
 
 onBeforeUnmount(() => {
@@ -76,24 +77,22 @@ function closeStoryViewer() {
 
 function sendHeart() {
   console.log('❤️ Heart sent for story:', currentUserStories.value[currentStoryIndex.value])
-  // TODO: Envoyer à l’API
 }
 
 function sendMessage() {
   if (!message.value.trim()) return
   console.log('💬 Message sent:', message.value)
-  // TODO: Envoyer à l’API
   message.value = ''
 }
 </script>
 
 <template>
-  <v-row v-if="props.stories.length">
+  <v-row v-if="stories.length">
     <v-col cols="12">
       <v-card rounded="xl" class="overflow-x-auto mx-3 min-h-stories" variant="text" elevation="10">
         <div class="d-flex align-center justify-center">
           <v-col
-            v-for="userStories in props.stories"
+            v-for="userStories in stories"
             :key="userStories.userId"
             lg="1"
             md="2"
@@ -106,12 +105,10 @@ function sendMessage() {
               role="button"
               tabindex="0"
               aria-label="Open story"
-              style="cursor: pointer"
+              class="border-md rounded-circle px-1 py-1"
+              :class="userStories.username === user.username ? 'border-success' : 'border-primary'"
               size="50"
-              :class="[
-                'border-md rounded-circle px-1 py-1',
-                userStories.username === user.username ? 'border-success' : 'border-primary'
-              ]"
+              style="cursor: pointer"
             >
               <NuxtImg
                 :alt="`story-${userStories.username}`"
@@ -149,6 +146,7 @@ function sendMessage() {
           color="primary"
           style="top: 50%; transform: translateY(-50%); z-index: 10;"
           @click="goToPreviousStory"
+          aria-label="Previous story"
         >
           <v-icon size="48">mdi-chevron-left</v-icon>
         </v-btn>
@@ -160,13 +158,14 @@ function sendMessage() {
           class="position-absolute right-0"
           style="top: 50%; transform: translateY(-50%); z-index: 10;"
           @click="goToNextStory"
+          aria-label="Next story"
         >
           <v-icon size="48">mdi-chevron-right</v-icon>
         </v-btn>
       </div>
 
       <div class="d-flex align-center justify-space-between px-4 py-2">
-        <v-btn variant="text" icon @click="sendHeart">
+        <v-btn variant="text" icon @click="sendHeart" aria-label="Send heart">
           <v-icon>mdi-heart</v-icon>
         </v-btn>
         <v-text-field
@@ -178,11 +177,18 @@ function sendMessage() {
           density="compact"
           style="flex-grow: 1;"
           @keyup.enter="sendMessage"
+          aria-label="Send message"
         />
-        <v-btn variant="text" icon @click="sendMessage">
+        <v-btn variant="text" icon @click="sendMessage" aria-label="Send message button">
           <v-icon>mdi-send</v-icon>
         </v-btn>
       </div>
     </v-card>
   </v-dialog>
 </template>
+
+<style scoped>
+.min-h-stories {
+  min-height: 100px;
+}
+</style>

@@ -57,7 +57,7 @@
             Verification Code
           </p>
           <div
-            class="pa-2 border border-radius-md text-xs text-body bg-white w-25"
+            class="pa-2 border border-radius-md text-xs text-body w-25"
           >
             1172913
           </div>

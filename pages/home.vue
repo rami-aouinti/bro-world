@@ -131,7 +131,7 @@ onMounted(async () => {
 
     <v-row>
       <!-- LEFT: POSTS -->
-      <v-col cols="12" lg="8">
+      <v-col cols="12" lg="8" style="min-height: 600px;">
         <!-- TOP -->
         <template v-if="loading.user">
           <LoaderPost />
@@ -144,7 +144,7 @@ onMounted(async () => {
 
         <!-- POSTS -->
         <template v-if="loading.post">
-          <v-col cols="12" v-for="n in 2" :key="n">
+          <v-col cols="12" v-for="n in 2" :key="n" style="min-height: 200px;">
             <v-skeleton-loader type="card" class="pa-4 rounded-xl" height="200" />
           </v-col>
         </template>
@@ -168,8 +168,8 @@ onMounted(async () => {
       </v-col>
 
       <!-- RIGHT SIDEBAR -->
-      <v-col cols="12" lg="4">
-        <v-card class="mx-3 mt-2 mb-4" rounded="xl" variant="text" elevation="10">
+      <v-col cols="12" lg="4" style="min-height: 600px;">
+        <v-card class="mx-3 mt-2 mb-4" rounded="xl" variant="text" elevation="10" style="min-height: 120px;">
           <div class="d-flex justify-center">
             <v-btn
               class="font-weight-bold w-100"
@@ -188,7 +188,12 @@ onMounted(async () => {
         <CreateWorldDialog v-model="dialogCreateWorld" :plugins="plugins" />
 
         <ClientOnly>
-          <Dashboard />
+          <template v-if="loading.plugin">
+            <v-skeleton-loader type="card" class="mx-3 rounded-xl" height="300" />
+          </template>
+          <template v-else>
+            <Dashboard />
+          </template>
         </ClientOnly>
       </v-col>
     </v-row>

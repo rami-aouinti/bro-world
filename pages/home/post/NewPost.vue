@@ -1,36 +1,32 @@
 <script setup lang="ts">
-import {computed, defineEmits, ref} from 'vue'
+import { ref, computed, defineEmits, nextTick } from 'vue'
 import UserAvatar from '~/components/App/UserAvatar.vue'
-import Camera from '~/components/App/Blog/Camera.vue'
+import Editor from '~/components/App/Editor.vue'
 import BaseDialog from '~/components/BaseDialog.vue'
-import Editor from "~/components/App/Editor.vue";
-import {useStoryStore} from '~/stores/useStoryStore'
+import Camera from '~/components/App/Blog/Camera.vue'
+import { useStoryStore } from '~/stores/useStoryStore'
 
-const runtimeConfig = useRuntimeConfig()
-const apiKey = runtimeConfig.public.tinyMceApiKey
 const dialog = ref(false)
 const dialogFile = ref(false)
 const dialogText = ref(false)
 const video = ref(false)
-const loading = ref(false)
 const loadingText = ref(false)
 const files = ref<File[]>([])
-const emit = defineEmits(['post-created', 'story-created'])
 const postContent = ref('')
 const youtubeId = ref<string | null>(null)
 const imageUrl = ref<string | null>(null)
-const fileInput = ref()
 const newStory = ref<File | null>(null)
-
-const { user } = await useUserSession()
+const emit = defineEmits(['post-created', 'story-created'])
 
 const storyStore = useStoryStore()
 
-function detectLinks() {
-  if (youtubeId.value || imageUrl.value) return // Empêcher la redétection
+const { user } = await useUserSession()
 
-  const ytRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^\s&]+)/;
-  const imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/;
+function detectLinks() {
+  if (youtubeId.value || imageUrl.value) return
+
+  const ytRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^\s&]+)/
+  const imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/
 
   const ytMatch = postContent.value.match(ytRegex)
   const imgMatch = postContent.value.match(imgRegex)
@@ -65,81 +61,53 @@ const formPayload = computed(() => {
   return payload
 })
 
-
-const handleSuccess = (data: any) => {
-  data.title = postContent.value
-  data.user = user.value
-  postContent.value = ''
-  imageUrl.value = null
-  youtubeId.value = null
-  Notify.success("Post created!")
-  emit('post-created', data)
-}
-
-const handleError = (error: any) => {
-  Notify.error("Post failed!")
-  console.error('Failed:', error)
-}
-
-function triggerFileInput() {
-  const input = fileInput.value?.$el?.querySelector('input[type="file"]')
-  if (input) input.click()
+async function handleAction() {
+  loadingText.value = true
+  try {
+    const { data } = await $fetch('/api/posts/post/posts', {
+      method: 'POST',
+      body: formPayload.value,
+    })
+    if (data) {
+      Notify.success("Post created!", user.photo ?? "https://bro-world-space.com", "/post/" + data.slug)
+      emit('post-created', data)
+      postContent.value = ''
+      clearPreview()
+      dialogText.value = false
+    }
+  } catch (err) {
+    Notify.error("Post failed!")
+    console.error(err)
+  } finally {
+    loadingText.value = false
+  }
 }
 
 async function handleFileUpload(file: File) {
   const formData = new FormData()
   formData.append('file', file)
-
   try {
     const data = await storyStore.createStory(user.value.id, formData)
-
     if (data?.mediaPath) {
-      handleStorySuccess(data)
+      emit('story-created', data)
     }
   } catch (e) {
-    console.error('Upload error', e)
-    handleError(e)
+    Notify.error("Upload failed!")
+    console.error(e)
   }
 }
-const handleStorySuccess = (data: any) => {
-  data.userId = user.value.id
-  data.username = user.value.username
-  data.stories = data
-  emit('story-created', data)
+
+function triggerFileInput() {
+  const input = document.querySelector('input[type="file"]')
+  input?.click()
 }
-
-const handleAction = async () => {
-  loadingText.value = true
-  const formData = new FormData()
-  if (postContent.value.trim()) {
-    formData.append('title', postContent.value.trim())
-  }
-  try {
-    const {data, error} = await $fetch('/api/posts/post/posts', {
-      method: 'POST',
-      body: formData,
-    })
-
-  } catch (err) {
-    Notify.error('error')
-  }
-  finally {
-    postContent.value = ''
-    Notify.success("Post created!")
-    dialogText.value = false
-    emit('post-created')
-  }
-  loadingText.value = false
-}
-
-
 </script>
 
 <template>
   <div class="py-3">
     <v-card rounded="xl" class="mx-3" variant="text" elevation="10">
       <v-card-text>
-        <div class="d-flex align-center" style="max-width: 100%; flex-wrap: nowrap; overflow: hidden">
+        <div class="d-flex align-center" style="max-width: 100%; flex-wrap: nowrap; overflow: hidden;">
           <button class="btn-reset mx-2" @click="dialog = true" aria-label="User avatar" style="flex-shrink: 0">
             <UserAvatar :user="user" size="48" color="primary" />
           </button>
@@ -153,10 +121,16 @@ const handleAction = async () => {
           >
             <span>Hello {{ user?.firstName }}, new post?</span>
           </v-btn>
-          <v-card v-else rounded="xl" class="mx-3 w-100" variant="text">
-            <div class="px-3 py-2 font-weight-bold justify-start" style="width: 100%; flex-wrap: nowrap; overflow: hidden">
-              <Editor v-model="postContent" :api-key="apiKey" />
-            </div>
+          <v-card
+            v-else
+            rounded="xl"
+            class="mx-3 w-100"
+            variant="text"
+            style="overflow: hidden; max-height: 300px; transition: max-height 0.3s ease;"
+          >
+            <v-card-text>
+              <Editor v-model="postContent" :api-key="''" />
+            </v-card-text>
             <v-card-actions>
               <v-spacer />
               <v-btn
@@ -176,7 +150,7 @@ const handleAction = async () => {
       <v-card-actions class="d-flex align-center text-center">
         <v-row>
           <v-col cols="6" md="3">
-            <v-btn @click="video = true" :loading="loading" icon class="flex-grow-1" height="48">
+            <v-btn @click="video = true" icon class="flex-grow-1" height="48">
               <v-icon class="mx-1" color="primary">mdi-video</v-icon>
               Video
             </v-btn>
@@ -188,15 +162,13 @@ const handleAction = async () => {
             </v-btn>
           </v-col>
           <v-col cols="6" md="3">
-            <v-btn @click="dialogFile = true" :loading="loading" icon class="flex-grow-1" height="48">
+            <v-btn @click="dialogFile = true" icon class="flex-grow-1" height="48">
               <v-icon class="mx-1" color="primary">mdi-image-multiple</v-icon>
               Photo
             </v-btn>
           </v-col>
           <v-col cols="6" md="3">
-            <v-btn icon :loading="loading" class="flex-grow-1" height="48"
-                   @click="triggerFileInput"
-                   @keydown.enter="triggerFileInput">
+            <v-btn icon class="flex-grow-1" height="48" @click="triggerFileInput" @keydown.enter="triggerFileInput">
               <v-icon class="mx-1" color="primary">mdi-camera-enhance</v-icon>
               Story
             </v-btn>
@@ -204,29 +176,27 @@ const handleAction = async () => {
         </v-row>
       </v-card-actions>
     </v-card>
-    <!-- Upload d’un fichier story -->
+
     <v-file-input
-      ref="fileInput"
       v-model="newStory"
       label="Upload Story"
       outlined
       required
       show-size
-      v-show="false"
+      style="display: none"
       @update:modelValue="handleFileUpload"
     />
 
-    <!-- BaseDialog pour création de post -->
     <BaseDialog
       v-model="dialogFile"
       title="New Post"
       color="primary"
-      :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (dialog = false) }]"
+      :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (dialogFile.value = false) }]"
       :saveButton="[{ text: 'Save', color: 'primary', action: '/api/posts/post/posts' }]"
       :files="files"
       :forms="formPayload"
-      @success="handleSuccess"
-      @error="handleError"
+      @success="emit('post-created')"
+      @error="Notify.error('Error creating post')"
     >
       <v-card rounded="xl">
         <v-card-text>
@@ -242,13 +212,10 @@ const handleAction = async () => {
                 @input="detectLinks"
               />
 
-              <!-- Aperçu YouTube -->
               <div v-if="youtubeId" class="my-4 text-center">
-                <div class="d-flex justify-end">
-                  <v-btn icon @click="clearPreview" variant="text" size="small">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
-                </div>
+                <v-btn icon @click="clearPreview" variant="text" size="small">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
                 <iframe
                   :src="`https://www.youtube.com/embed/${youtubeId}`"
                   width="560"
@@ -256,19 +223,17 @@ const handleAction = async () => {
                   frameborder="0"
                   allowfullscreen
                   style="max-width: 100%"
-                ></iframe>
+                />
               </div>
 
-              <!-- Aperçu Image -->
               <div v-if="imageUrl" class="my-4 text-center">
-                <div class="d-flex justify-end">
-                  <v-btn icon @click="clearPreview" variant="text" size="small">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
-                </div>
+                <v-btn icon @click="clearPreview" variant="text" size="small">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
                 <v-img :src="imageUrl" alt="preview" style="max-width: 100%; max-height: 300px" />
               </div>
             </v-col>
+
             <v-col cols="12">
               <v-file-upload
                 icon="mdi-upload"
@@ -286,16 +251,17 @@ const handleAction = async () => {
         </v-card-text>
       </v-card>
     </BaseDialog>
+
     <BaseDialog
       v-model="dialog"
       title="New Post"
       color="primary"
-      :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (dialog = false) }]"
+      :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (dialog.value = false) }]"
       :saveButton="[{ text: 'Save', color: 'primary', action: '/api/posts/post/posts' }]"
       :files="files"
       :forms="formPayload"
-      @success="handleSuccess"
-      @error="handleError"
+      @success="emit('post-created')"
+      @error="Notify.error('Error creating post')"
     >
       <v-card rounded="xl">
         <v-card-text>
@@ -309,13 +275,10 @@ const handleAction = async () => {
             @input="detectLinks"
           />
 
-          <!-- Aperçu YouTube -->
           <div v-if="youtubeId" class="my-4 text-center">
-            <div class="d-flex justify-end">
-              <v-btn icon @click="clearPreview" variant="text" size="small">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </div>
+            <v-btn icon @click="clearPreview" variant="text" size="small">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
             <iframe
               :src="`https://www.youtube.com/embed/${youtubeId}`"
               width="560"
@@ -323,23 +286,19 @@ const handleAction = async () => {
               frameborder="0"
               allowfullscreen
               style="max-width: 100%"
-            ></iframe>
+            />
           </div>
 
-          <!-- Aperçu Image -->
           <div v-if="imageUrl" class="my-4 text-center">
-            <div class="d-flex justify-end">
-              <v-btn icon @click="clearPreview" variant="text" size="small">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </div>
+            <v-btn icon @click="clearPreview" variant="text" size="small">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
             <v-img :src="imageUrl" alt="preview" style="max-width: 100%; max-height: 300px" />
           </div>
         </v-card-text>
       </v-card>
     </BaseDialog>
 
-    <!-- Caméra vidéo -->
     <v-dialog v-model="video" max-width="500">
       <v-card rounded="xl">
         <Camera />

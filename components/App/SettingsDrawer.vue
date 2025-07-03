@@ -65,7 +65,6 @@ onBeforeUnmount(() => {
   right: -400px;
   height: calc(100vh - 64px);
   width: 360px;
-  background-color: white;
   transition: right 0.3s ease;
   z-index: 2100;
   overflow-y: auto;

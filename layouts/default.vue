@@ -7,7 +7,7 @@
     <AppDrawer :right="isRtl" :mobile="mobile" aria-label="Main navigation" role="navigation" />
     <AppBar :rtl="isRtl" @toggleSettingsDrawer="showSettingsDrawer = $event" aria-label="Top application bar" role="banner" />
 
-    <v-main class="main-content" role="main" aria-label="Main content">
+    <v-main role="main" aria-label="Main content">
       <v-container fluid class="pa-0">
         <Suspense>
           <template #default>
@@ -84,10 +84,23 @@ function stopLoading() {
 
 <style>
 html, body, #__nuxt, .v-application {
-  height: 100%;
   margin: 0;
 }
-
+.v-main {
+  padding-top: 0;
+  padding-bottom: 0;
+  /* https://github.com/vuetifyjs/vuetify/issues/15202 */
+  margin-top: 64px;
+  margin-bottom: 32px;
+  height: calc(100vh - 64px - 32px);
+  /* margin-top: var(--v-layout-top);
+  margin-bottom: var(--v-layout-bottom);
+  height: calc(100vh - var(--v-layout-top) - var(--v-layout-bottom)); */
+  overflow-y: auto;
+  transition-property: padding;
+  padding-left: 256px;
+  transition: padding-left 0.3s ease;
+}
 .v-application--wrap {
   display: flex;
   flex-direction: column;
