@@ -88,6 +88,7 @@ onMounted(fetchNotifications)
                     height="48"
                     :src="notification.subtitle"
                     :alt="`Avatar ${notification.id}`"
+                    :lazy-src="'/img/person.png'"
                     format="webp" loading="lazy" cover
                   />
                 </v-avatar>

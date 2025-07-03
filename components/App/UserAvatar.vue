@@ -1,20 +1,18 @@
 <template>
-  <v-avatar :size="size"
-            class="border-primary border-md rounded-circle">
-    <NuxtImg
-      :width="size"
-      :height="size"
-      :alt="props.user?.username"
-      :src="props.user?.photo ?? 'https://placehold.net/avatar-5.svg'"
-      format="webp"
-      cover
-    >
-    </NuxtImg>
-  </v-avatar>
+  <NuxtImg
+    :width="size"
+    :height="size"
+    class="border border-radius-xl border-secondary border-md shadow-xxl shadow-primary rounded-circle object-cover"
+    :alt="props.user?.username"
+    :src="props.user?.photo ?? '/img/person.png'"
+    :lazy-src="'/img/person.png'"
+    format="webp"
+    loading="lazy"
+  >
+  </NuxtImg>
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue'
 const props = defineProps({
   user: {
     type: Object,

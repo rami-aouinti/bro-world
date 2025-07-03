@@ -3,6 +3,7 @@
     <v-card rounded="xl" :loading="isUpdating">
       <template #loader="{ isActive }">
         <v-progress-linear
+          aria-label="Add Member"
           :active="isActive"
           color="primary"
           height="4"
@@ -38,7 +39,7 @@
               <template v-slot:item="{ props, item }">
                 <v-list-item
                   v-bind="props"
-                  :prepend-avatar="item.raw?.profile?.photo ?? `https://bro-world-space.com/img/person.png`"
+                  :prepend-avatar="item.raw?.profile?.photo ?? `/img/person.png`"
                   :subtitle="item.raw?.profile?.description"
                   :title="item.raw.firstName + ` ` +  item.raw.lastName"
                 ></v-list-item>
@@ -63,7 +64,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed, defineProps, defineEmits} from 'vue'
+import { ref, onMounted, computed} from 'vue'
 import {useUserStore} from "~/stores/admin/user/userStore";
 
 const props = defineProps({ modelValue: Boolean, users: Array, blogId: String })

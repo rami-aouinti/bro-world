@@ -112,7 +112,7 @@ definePageMeta({
               <!-- Avatar -->
               <v-col cols="auto">
                 <v-avatar size="50" class="border-primary border-lg rounded-circle">
-                  <NuxtImg format="webp" loading="lazy" cover width="50" height="50" :src="avatarUrl" alt="Avatar" />
+                  <NuxtImg :lazy-src="'/img/person.png'" format="webp" loading="lazy" cover width="50" height="50" :src="avatarUrl" alt="Avatar" />
                 </v-avatar>
               </v-col>
 

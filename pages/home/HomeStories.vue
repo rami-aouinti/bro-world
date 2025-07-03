@@ -126,7 +126,7 @@ function sendMessage() {
 
   <v-dialog v-model="storyViewerVisible" max-width="500" @click:outside="closeStoryViewer">
     <v-card class="pa-0">
-      <v-progress-linear :model-value="progress" height="4" color="primary" stream />
+      <v-progress-linear aria-label="Stories" :model-value="progress" height="4" color="primary" stream />
 
       <div class="position-relative d-flex align-center justify-center" style="height: 500px; background-color: black;">
         <NuxtImg
@@ -190,6 +190,6 @@ function sendMessage() {
 
 <style scoped>
 .min-h-stories {
-  min-height: 100px;
+  min-height: 75px;
 }
 </style>

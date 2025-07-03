@@ -80,6 +80,7 @@ const truncate = (str, maxLength = 20) => {
           <template v-slot:loader="{ isActive }">
             <v-progress-linear
               :active="isActive"
+              aria-label="Template"
               color="deep-purple"
               height="4"
               indeterminate

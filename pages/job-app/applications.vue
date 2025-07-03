@@ -46,7 +46,7 @@
 
                           <v-col cols="12" md="4" class="d-flex flex-column align-center">
                             <h4 class="text-subtitle-2 font-weight-bold mb-2">Check</h4>
-                            <v-progress-linear color="primary" model-value="50" :height="12" style="width: 100%"></v-progress-linear>
+                            <v-progress-linear aria-label="Add Application" color="primary" model-value="50" :height="12" style="width: 100%"></v-progress-linear>
                           </v-col>
 
                           <v-col cols="12" md="4" class="d-flex justify-center align-center gap-2">

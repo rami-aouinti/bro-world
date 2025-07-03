@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps, defineEmits } from 'vue'
+import { ref } from 'vue'
 const loading = ref(false)
 const valid = ref(false)
 const props = defineProps({

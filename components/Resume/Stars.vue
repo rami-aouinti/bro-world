@@ -3,6 +3,7 @@
     <span class="text-body-2">{{ label }}</span>
     <div class="d-flex">
       <v-progress-linear
+        aria-label="Score"
         :model-value="score"
         height="6"
         rounded

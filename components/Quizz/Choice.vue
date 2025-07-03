@@ -133,7 +133,7 @@
   </section>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const currentIndex = ref(0)
 const currentPic = computed(() => picsRef.value[currentIndex.value])
 const imgContainer = ref(null)

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AuthorPost from "~/pages/home/post/AuthorPost.vue";
 import Post from "~/pages/home/post/Post.vue";
-import { ref, defineProps, defineEmits } from 'vue'
 const emit = defineEmits(['post-updated', 'post-deleted'])
 const props = defineProps({
   post: {

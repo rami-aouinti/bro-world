@@ -52,7 +52,9 @@
                   height="200"
                   class="card-image"
                   :preload="true"
-                  format="webp" loading="lazy" cover
+                  format="webp"
+                  loading="lazy"
+                  cover
                   fetchpriority="high"
                 />
               </div>

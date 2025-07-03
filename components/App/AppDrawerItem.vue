@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import type { RouteRecordRaw } from 'vue-router'
-import { computed, toRef, defineProps } from 'vue'
+import { computed, toRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useLocalePath } from '#i18n'
 

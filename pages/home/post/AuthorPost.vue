@@ -2,7 +2,6 @@
 import UserAvatar from "~/components/App/UserAvatar.vue";
 import RelativeTime from "~/components/App/RelativeTime.vue";
 import DeleteDialog from "~/components/DeleteDialog.vue";
-import {defineEmits, defineProps, mergeProps} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useLocalePath} from '#i18n'
 import BaseDialog from "~/components/BaseDialog.vue";
@@ -312,7 +311,7 @@ watch(
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
               </div>
-              <NuxtImg :src="imageUrl" alt="preview" format="webp" loading="lazy" cover style="max-width: 100%; max-height: 300px" />
+              <NuxtImg :lazy-src="'/img/person.png'" :src="imageUrl" alt="preview" format="webp" loading="lazy" cover style="max-width: 100%; max-height: 300px" />
             </div>
           </v-card-text>
         </v-card>

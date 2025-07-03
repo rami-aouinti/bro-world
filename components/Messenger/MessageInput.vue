@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick, defineProps, defineEmits } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const props = defineProps<{ conversationId: string }>()
 const emit = defineEmits(['sent'])

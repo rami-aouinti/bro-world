@@ -52,6 +52,7 @@
 
           <v-progress-linear
             :model-value="getRatingPercent(i)"
+            aria-label="Rating"
             height="20"
             color="primary"
             rounded

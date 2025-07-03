@@ -11,6 +11,7 @@ import HomePosts from '~/pages/home/HomePosts.vue'
 import Dashboard from '~/pages/home/Dashboard.vue'
 import LoaderStatusBanner from '~/components/App/Loader/Home/LoaderStatusBanner.vue'
 import LoaderPost from '~/components/App/Loader/Home/LoaderPost.vue'
+
 const CreateWorldDialog = defineAsyncComponent(() => import('~/components/App/Home/CreateWorldDialog.vue'))
 
 const { locale } = useI18n()
@@ -139,7 +140,12 @@ onMounted(async () => {
 
         <template v-else>
           <NewPost v-if="loggedIn" @post-created="reloadPosts" @story-created="reloadStories" />
-          <HomeStories v-if="loggedIn" :stories="stories" />
+          <ClientOnly>
+            <template v-if="loading.story">
+              <v-skeleton-loader type="avatar" class="mx-2" style="width: 50px; height: 50px;" />
+            </template>
+            <HomeStories v-else-if="loggedIn" :stories="stories" />
+          </ClientOnly>
         </template>
 
         <!-- POSTS -->
@@ -165,6 +171,7 @@ onMounted(async () => {
                 class="text-primary"
                 variant="text"
                 v-bind="props"
+                aria-label="Load more posts"
               />
             </template>
           </v-infinite-scroll>
@@ -181,6 +188,7 @@ onMounted(async () => {
               height="80"
               variant="text"
               @click="dialogCreateWorld = true"
+              aria-label="Build your World Bro"
             >
               <h6 class="text-h6 font-weight-bolder mb-0">
                 Build your World Bro
@@ -196,7 +204,9 @@ onMounted(async () => {
             <v-skeleton-loader type="card" class="mx-3 rounded-xl" height="300" />
           </template>
           <template v-else>
-            <Dashboard />
+            <NuxtLazyHydrate when-visible once>
+              <Dashboard />
+            </NuxtLazyHydrate>
           </template>
         </ClientOnly>
       </v-col>

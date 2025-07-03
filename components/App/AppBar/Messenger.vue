@@ -114,6 +114,7 @@ onMounted(fetchConversations)
                 width="36"
                 height="36"
                 :src="getConversationAvatar(conversation)"
+                :lazy-src="'/img/person.png'"
                 :alt="`Avatar ${conversation.id}`"
                 format="webp" loading="lazy" cover
               />

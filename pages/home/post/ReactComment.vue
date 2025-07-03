@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Comment from "~/pages/home/post/Comment.vue";
-import { computed, ref, defineEmits} from 'vue'
+import { computed, ref} from 'vue'
 const emit = defineEmits(['comment-commented'])
 const { user, loggedIn } = await useUserSession()
 const sendingComment = ref(false)

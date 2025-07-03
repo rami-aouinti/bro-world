@@ -94,7 +94,6 @@
 
 <script lang="ts" setup>
 
-import { defineProps } from 'vue'
 import Stars from "~/components/Resume/Stars.vue";
 import Language from "~/components/Resume/Language.vue";
 import Contact from "~/components/Resume/Contact.vue";

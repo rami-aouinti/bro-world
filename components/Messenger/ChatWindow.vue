@@ -84,7 +84,7 @@
                   width="200"
                   format="webp"
                   cover
-                  :lazy-src="'https://bro-world-space.com/img/loading.svg'"
+                  :lazy-src="'/img/world-logo.svg'"
                 ></NuxtImg>
 
                 <NuxtImg
@@ -95,7 +95,7 @@
                   cover
                   width="200"
                   class="rounded-lg mb-2"
-                  :placeholder="'https://bro-world-space.com/img/loading.svg'"
+                  :placeholder="'/img/world-logo.svg'"
                 />
                 <RelativeTime :date="message?.createdAt" />
               </v-card>
@@ -111,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, defineProps, nextTick, computed, watchEffect } from 'vue'
+import { ref, onMounted, watch, nextTick, computed, watchEffect } from 'vue'
 import MessageInput from './MessageInput.vue'
 import GlowingAvatar from '~/components/App/GlowingAvatar.vue'
 import { useTheme } from 'vuetify'

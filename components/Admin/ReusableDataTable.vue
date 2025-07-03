@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, defineProps, defineEmits } from 'vue'
+import { ref, computed } from 'vue'
 import BaseDialog from '~/components/BaseDialog.vue'
 
 const props = defineProps<{

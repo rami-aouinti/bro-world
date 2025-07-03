@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps } from 'vue'
+import { ref } from 'vue'
 const valid = ref(false)
 const showTemplateSelect = ref(false)
 const loading = ref(false)

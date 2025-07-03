@@ -60,7 +60,7 @@ import Switch from "~/components/App/AppBar/Switch.vue"
 
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { computed, defineProps, defineEmits } from 'vue'
+import { computed } from 'vue'
 import { useShopifyCart } from "~/modules/shopify/composables/useShopifyCart"
 
 const props = defineProps({ rtl: Boolean })

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, defineEmits, mergeProps, defineProps } from 'vue'
+import { computed, ref } from 'vue'
 import UserAvatar from '~/components/App/UserAvatar.vue'
 import RelativeTime from '~/components/App/RelativeTime.vue'
 import ReactComment from '~/pages/home/post/ReactComment.vue'

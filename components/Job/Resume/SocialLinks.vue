@@ -187,7 +187,7 @@
     </v-row>
   </base-form-section>
 </template>
-<script setup>
+<script lang="ts" setup>
 const props = defineProps([
   "facebook",
   "twitter",

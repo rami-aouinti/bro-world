@@ -89,7 +89,7 @@
   </FormSection>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import FormSection from "~/components/Job/Resume/FormSection.vue";
 
 const props = defineProps(["name", "desc", "image", "email", "whatsapp"]);

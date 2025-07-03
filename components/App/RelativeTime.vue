@@ -6,7 +6,7 @@
   </p>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { computed } from 'vue'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'

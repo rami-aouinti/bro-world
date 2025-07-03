@@ -44,6 +44,7 @@
               <div class="d-flex align-center justify-end">
                 <span class="avatar-group d-flex me-3">
                   <v-tooltip
+                    text="Blogs"
                     bottom
                     v-for="avatar in avatars"
                     :key="avatar.name"
@@ -95,10 +96,10 @@ const showCard = ref(true)
 const blogs = ref<any[]>([])
 
 const avatars = [
-  { image: 'https://bro-world-space.com/img/team-1.jpg', name: 'Elena Morison' },
-  { image: 'https://bro-world-space.com/img/team-2.jpg', name: 'Ryan Milly' },
-  { image: 'https://bro-world-space.com/img/team-5.jpg', name: 'Nick Daniel' },
-  { image: 'https://bro-world-space.com/img/team-4.jpg', name: 'Peterson' }
+  { image: '/img/team-1.jpg', name: 'Elena Morison' },
+  { image: '/img/team-2.jpg', name: 'Ryan Milly' },
+  { image: '/img/team-5.jpg', name: 'Nick Daniel' },
+  { image: '/img/team-4.jpg', name: 'Peterson' }
 ]
 
 const redirectToWorld = (slug: string) => {

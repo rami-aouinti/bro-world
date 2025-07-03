@@ -1,7 +1,10 @@
 <template>
   <div class="d-flex justify-center py-1">
     <NuxtImg
-      format="webp" loading="lazy" cover
+      format="webp"
+      :lazy-src="'/img/person.png'"
+      loading="lazy"
+      cover
       :src="image"
       :alt="name"
       class="profile-image"

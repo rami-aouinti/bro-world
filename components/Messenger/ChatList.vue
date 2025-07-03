@@ -89,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, defineEmits, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import ConversationListItem from '~/components/Messenger/Widgets/ConversationListItem.vue'
 const { user } = await useUserSession()
 

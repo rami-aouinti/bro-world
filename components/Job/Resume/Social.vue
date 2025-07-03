@@ -33,7 +33,7 @@
   </FormSection>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref, computed } from "vue";
 import FormSection from "~/components/Job/Resume/FormSection.vue";
 
