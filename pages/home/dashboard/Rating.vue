@@ -6,7 +6,7 @@
         v-for="i in 5"
         :key="'rate-skeleton-' + i"
         type="list-item-two-line"
-        class="mx-1 mb-2 rounded-xl"
+        class="mx-3 mb-2 rounded-xl"
       />
     </template>
 
@@ -42,7 +42,7 @@
         <v-list-item
           v-for="i in 5"
           :key="'dist-' + i"
-          class="px-3"
+          class="px-1"
           aria-label="Rating bar"
         >
           <template #prepend>

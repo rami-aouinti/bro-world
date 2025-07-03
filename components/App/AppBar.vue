@@ -49,10 +49,11 @@
 </template>
 
 <script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
 import Navigation from "~/components/App/AppBar/Navigation.vue"
 import Screen from "~/components/App/AppBar/Screen.vue"
-import Notification from "~/components/App/AppBar/Notification.vue"
-import Messenger from "~/components/App/AppBar/Messenger.vue"
+const Notification = defineAsyncComponent(() => import("~/components/App/AppBar/Notification.vue"))
+const Messenger = defineAsyncComponent(() => import("~/components/App/AppBar/Messenger.vue"))
 import User from "~/components/App/AppBar/User.vue"
 import Language from "~/components/App/AppBar/Language.vue"
 import Switch from "~/components/App/AppBar/Switch.vue"

@@ -29,7 +29,7 @@ onMounted(() => {
   // Auto fermeture en mode rail après 2 secondes
   setTimeout(() => {
     drawerState.value = false
-  }, 3000)
+  }, 1000)
 })
 </script>
 
