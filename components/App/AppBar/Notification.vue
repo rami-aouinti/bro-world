@@ -57,6 +57,7 @@ onMounted(fetchNotifications)
         icon
         title="Notification"
         aria-label="notification"
+        color="secondary"
         v-bind="menu"
         class="opacity-80 ml-0"
       >

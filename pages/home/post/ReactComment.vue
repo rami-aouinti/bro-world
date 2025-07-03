@@ -57,7 +57,7 @@ const handleLike = async () => {
       })
       likeId.value = data.value.id
       isLiking.value = true
-      Notify.success('Comment is liked !')
+      Notify.success('Comment is liked by me', user.photo, 'https://bro-world-space.com/post/' + props.post.slug)
     } catch (err) {
       Notify.error('Error : ' + err)
     }
@@ -70,7 +70,7 @@ const handleLike = async () => {
         like => like.user?.id !== user.value.id
       )
       isLiking.value = false
-      Notify.success('Comment is disliked !')
+      Notify.success('Comment is disliked by me', user.photo, 'https://bro-world-space.com/post/' + props.post.slug)
     } catch (err) {
       Notify.error('Error : ' + err)
     }
@@ -106,7 +106,8 @@ const sendComment = async () => {
     <v-icon
       size="20"
       v-if="!loading"
-      class="material-icons-round me-1 cursor-pointer"
+      class="me-1 cursor-pointer"
+      :aria-label="isLiking ? 'Unlike comment' : 'Like comment'"
       :color="isLiking ? 'primary' : 'secondary'"
       @click="handleLike"
     >mdi-thumb-up</v-icon
@@ -122,11 +123,12 @@ const sendComment = async () => {
         </span>
     <v-icon
       size="20"
+      aria-label="Show replies"
       class="material-icons-round me-1 text-body cursor-pointer"
       @click="showReplies = !showReplies"
     >mdi-comment-processing</v-icon
     >
-    <span @click="showReplies = !showReplies" class="text-sm me-2 text-body">{{ props.comment.children?.length || '' }}</span>
+    <span aria-label="Number of replies" @click="showReplies = !showReplies" class="text-sm me-2 text-body">{{ props.comment.children?.length || '' }}</span>
   </div>
   </v-card-actions>
   <!-- Replies + Input -->
@@ -145,6 +147,7 @@ const sendComment = async () => {
       rounded
       class="mx-0 w-100"
       label="Write your comment"
+      :aria-label="sendingComment ? 'Sending comment...' : 'Send comment'"
       row-height="10"
       rows="1"
       variant="outlined"

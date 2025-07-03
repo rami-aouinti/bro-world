@@ -58,7 +58,7 @@ const handleLike = async () => {
 
       likeId.value = data.id
       isLiking.value = true
-      Notify.success('Post is liked !')
+      Notify.success('Post is liked !', user.photo, 'https://bro-world-space.com/post/' + props.post.slug)
     } else {
       await $fetch(`/api/posts/${likeId.value}/post`, {
         method: 'POST',
@@ -69,7 +69,7 @@ const handleLike = async () => {
       )
 
       isLiking.value = false
-      Notify.success('Post is disliked !')
+      Notify.success('Post is disliked !', user.photo, 'https://bro-world-space.com/post/' + props.post.slug)
     }
   } catch (err) {
     Notify.error('Error : ' + err)
@@ -86,6 +86,7 @@ const handleLike = async () => {
         v-if="!loading"
         size="24"
         class="me-1 cursor-pointer"
+        :aria-label="isLiking ? 'Unlike comment' : 'Like comment'"
         :color="isLiking ? 'primary' : 'secondary'"
         @click="handleLike"
       >
@@ -109,12 +110,14 @@ const handleLike = async () => {
       <div class="d-flex align-center ms-auto">
         <v-icon
           size="24"
+          aria-label="Show replies"
           class="me-1 cursor-pointer text-body"
           @click="showReplies = !showReplies"
         >
           mdi-comment-processing
         </v-icon>
         <span
+          aria-label="Number of replies"
           @click="showReplies = !showReplies"
           v-if="props.post?.comments?.length > 0"
           class="text-sm text-body me-4"

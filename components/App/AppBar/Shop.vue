@@ -11,6 +11,7 @@ const lastMessages = [
     <v-btn
       icon
       title="Shopping"
+      color="secondary"
       aria-label="shopping"
       class="opacity-80 ml-0"
       @click="emit('toggleSettingsDrawer', true)"

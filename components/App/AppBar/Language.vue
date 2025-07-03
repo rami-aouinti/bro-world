@@ -29,11 +29,13 @@ const changeLanguage = async (code: string) => {
       <v-btn
         icon
         title="Language"
+        variant="text"
+        color="secondary"
         aria-label="Language"
         v-bind="mergeProps(menu)"
         class="mx-2"
       >
-        <span class="border border-radius-xl border-secondary border-md shadow-xxl shadow-primary rounded-circle object-cover" :class="`fi ${currentLanguage.icon}`" style="width: 32px; height:28px;" />
+        <span class="border border-radius-xl shadow-2xl shadow-primary object-cover" :class="`fi ${currentLanguage.icon}`" style="width: 32px; height:26px;" />
       </v-btn>
     </template>
 
@@ -44,7 +46,7 @@ const changeLanguage = async (code: string) => {
         @click="changeLanguage(lang.code)"
       >
         <template #prepend>
-          <span :class="`fi ${lang.icon}`" style="font-size: 20px" />
+          <span class="border border-radius-xl shadow-2xl shadow-primary object-cover" :class="`fi ${lang.icon}`" style="width: 32px; height:26px;" />
         </template>
         <v-list-item-title class="ms-2">
           {{ lang.name }}

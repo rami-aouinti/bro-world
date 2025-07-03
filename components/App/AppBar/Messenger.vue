@@ -70,6 +70,7 @@ onMounted(fetchConversations)
         icon
         title="Messenger"
         aria-label="Messenger"
+        color="secondary"
         v-bind="mergeProps(menu)"
         class="opacity-80 ml-0"
       >

@@ -2,7 +2,7 @@
   <NuxtImg
     :width="size"
     :height="size"
-    class="border border-radius-xl border-secondary border-md shadow-xxl shadow-primary rounded-circle object-cover"
+    class="border border-radius-xl border-secondary border-md shadow-2xl shadow-primary rounded-circle object-cover"
     :alt="props.user?.username"
     :src="props.user?.photo ?? '/img/person.png'"
     :lazy-src="'/img/person.png'"

@@ -15,7 +15,8 @@
 
     <v-breadcrumbs
       :items="breadcrumbs"
-      class="mx-2"
+      color="secondary"
+      class="mx-2 d-none"
       :aria-label="rtl ? 'المسار الحالي' : 'Breadcrumb'"
     />
 
@@ -28,6 +29,7 @@
 
     <v-btn
       icon
+      color="secondary"
       aria-label="Settings"
       title="Settings"
       @click="emit('toggleSettingsDrawer', true)"

@@ -24,12 +24,13 @@
       <v-divider />
 
       <v-card-text>
-        <v-list class="bg-transparent">
+        <v-list class="bg-transparent" role="list">
           <v-list-item
             v-for="(item, index) in news"
             :key="index"
             class="px-0 py-1"
             aria-label="News item"
+            role="listitem"
           >
             <template v-if="isRtl" #append>
               <v-icon color="primary" class="ms-2">mdi-newspaper-variant-outline</v-icon>
