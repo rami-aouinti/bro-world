@@ -151,7 +151,7 @@ onMounted(async () => {
             </template>
             <template  v-else-if="loggedIn">
               <NuxtLazyHydrate when-visible once>
-                <HomeStories  stories="stories"  />
+                <HomeStories  :stories="stories"  />
               </NuxtLazyHydrate>
             </template>
           </ClientOnly>
