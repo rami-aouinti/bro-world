@@ -12,7 +12,7 @@
                 <v-col cols="auto">
                   <div class="avatar-wrapper">
                     <v-avatar size="50" class="border-primary border-lg rounded-circle">
-                      <NuxtImg width="50" height="50" :src="avatarUrl" alt="Avatar" />
+                      <NuxtImg format="webp" width="50" height="50" :src="avatarUrl" alt="Avatar" />
                     </v-avatar>
                     <v-btn icon size="15" class="upload-btn" @click="triggerUpload">
                       <v-icon>mdi-camera</v-icon>

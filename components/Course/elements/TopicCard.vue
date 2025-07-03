@@ -13,6 +13,7 @@ const props = defineProps<{ topic: any }>()
       }"
     >
       <NuxtImg
+        format="webp"
         v-if="props.topic.image && props.topic.image !== '/img/nuxt3.svg'"
         :src="props.topic.image"
         alt="Topic image"

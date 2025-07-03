@@ -71,6 +71,7 @@ const localePath = useLocalePath()
         </div>
         <v-sheet v-else-if="isImageUrl(props.post?.url)" color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
         <NuxtImg
+          format="webp"
           :alt="`image-${props.post.slug}`"
           :src="props.post.url"
           style="width: 100%;"
@@ -83,6 +84,7 @@ const localePath = useLocalePath()
         </v-sheet>
         <v-sheet v-else-if="props.post?.medias?.length > 0 && isImageUrl(props.post?.medias[0]?.path)" color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
           <NuxtImg
+            format="webp"
             v-if="props.post?.medias?.length > 1"
             :alt="`image-${props.post.slug}`"
             :src="props.post?.medias[currentPostIndex]?.path"
@@ -95,6 +97,7 @@ const localePath = useLocalePath()
           />
           <NuxtImg
             v-else
+            format="webp"
             :alt="`image-${props.post.slug}`"
             :src="props.post?.medias[0]?.path"
             style="width: 100%;"

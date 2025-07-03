@@ -6,6 +6,7 @@ const { user, pending } = useUserSession()
   <v-col cols="auto" class="mt-3 mx-3">
     <v-avatar size="72" class="shadow border-radius-lg">
       <NuxtImg
+        format="webp"
         width="72" height="72"
         src="/img/bruce-mars.jpg"
         alt="Avatar"

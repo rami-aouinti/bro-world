@@ -6,6 +6,7 @@
       :height="size"
       :alt="props.user?.username"
       :src="props.user?.photo ?? '/person.png'"
+      format="webp"
       cover
     >
     </NuxtImg>
@@ -13,6 +14,7 @@
 </template>
 
 <script lang="ts" setup>
+import { defineProps } from 'vue'
 const props = defineProps({
   user: {
     type: Object,

@@ -56,6 +56,7 @@ const links = [
               media="(min-width: 768px)"
             >
             <NuxtImg
+              format="webp"
               src="/logo.svg"
               alt="Nuxt Commerce Logo"
               class="w-8 h-8 md:h-6 md:w-[176px] lg:w-[13.5rem] lg:h-[1.75rem]"

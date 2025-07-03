@@ -50,6 +50,7 @@
           :src="currentPic.src"
           width="400"
           height="200"
+          format="webp"
           class="rounded mx-auto object-contain w-full"
           :class="quizz.small ? 'h-[33vh]' : 'h-[53vh]'"
           :alt="currentPic.name"

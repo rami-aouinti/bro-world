@@ -88,6 +88,7 @@
                 <NuxtImg
                   v-else-if="message.mediaUrl"
                   :src="message.mediaUrl"
+                  format="webp"
                   width="200"
                   class="rounded-lg mb-2"
                   :placeholder="'/img/loading.svg'"

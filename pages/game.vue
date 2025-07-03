@@ -53,6 +53,7 @@
                   class="card-image"
                   :preload="true"
                   loading="eager"
+                  format="webp"
                   fetchpriority="high"
                 />
               </div>

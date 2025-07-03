@@ -31,6 +31,7 @@ function debouncedUpdateQuantity(newQuantity: number) {
           @click="isCartOpen = false"
         >
           <NuxtImg
+            format="webp"
             :src="item.merchandise.product.featuredImage?.url"
             width="62"
             height="62"

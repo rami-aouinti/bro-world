@@ -88,6 +88,7 @@ onMounted(fetchNotifications)
                     height="48"
                     :src="notification.subtitle"
                     :alt="`Avatar ${notification.id}`"
+                    format="webp"
                     cover
                   />
                 </v-avatar>

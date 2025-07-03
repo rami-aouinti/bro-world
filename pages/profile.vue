@@ -88,7 +88,7 @@ definePageMeta({
               <v-row align="center" class="pa-0 ma-0">
                 <v-col cols="auto">
                   <v-avatar size="50" class="border-primary border-lg rounded-circle">
-                    <NuxtImg width="50" height="50" :src="avatarUrl" alt="Avatar" />
+                    <NuxtImg format="webp" width="50" height="50" :src="avatarUrl" alt="Avatar" />
                   </v-avatar>
                 </v-col>
                 <v-col cols="auto">
@@ -216,7 +216,7 @@ definePageMeta({
                 >
                   <div class="d-flex align-center">
                     <v-avatar width="48" height="48" class="shadow border-radius-lg me-4">
-                      <NuxtImg width="48" height="48" :src="conversation.avatar" alt="Avatar" class="border-radius-lg" />
+                      <NuxtImg format="webp" width="48" height="48" :src="conversation.avatar" alt="Avatar" class="border-radius-lg" />
                     </v-avatar>
                     <div>
                       <h6 class="mb-0 text-sm text-typo font-weight-bold">

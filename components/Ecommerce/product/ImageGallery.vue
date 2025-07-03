@@ -18,6 +18,7 @@ defineProps<{ images: string[], productTitle?: string }>()
       :key="index"
     >
       <NuxtImg
+        format="webp"
         :src="getImagePath(item)"
         :alt="`Image ${index + 1} of - ${productTitle}`"
         :preload="index === 0"

@@ -40,7 +40,7 @@ onMounted(async () => {
             <v-row align="center" class="pa-0 ma-0">
               <v-col cols="auto">
                 <v-avatar size="50" class="border-primary border-lg rounded-circle">
-                  <NuxtImg width="50" height="50" :src="blog.logo" alt="Avatar" />
+                  <NuxtImg format="webp" width="50" height="50" :src="blog.logo" alt="Avatar" />
                 </v-avatar>
               </v-col>
               <v-col cols="auto">
