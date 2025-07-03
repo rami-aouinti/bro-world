@@ -21,16 +21,6 @@ const rail = computed(() => !drawerState.value && !mobile.value)
 routes.sort((a, b) => (a.meta?.drawerIndex ?? 99) - (b.meta?.drawerIndex ?? 98))
 
 drawerState.value = lgAndUp.value && width.value !== 1280
-const isClientMounted = ref(false)
-onMounted(() => {
-  isClientMounted.value = true
-  drawerState.value = !mobile.value // Ouvert si desktop
-
-  // Auto fermeture en mode rail après 2 secondes
-  setTimeout(() => {
-    drawerState.value = false
-  }, 1000)
-})
 </script>
 
 <template>

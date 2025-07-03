@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick, defineAsyncComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { usePostStore } from '~/stores/usePostStore'
 import { useStoryStore } from '~/stores/useStoryStore'
@@ -11,7 +11,7 @@ import HomePosts from '~/pages/home/HomePosts.vue'
 import Dashboard from '~/pages/home/Dashboard.vue'
 import LoaderStatusBanner from '~/components/App/Loader/Home/LoaderStatusBanner.vue'
 import LoaderPost from '~/components/App/Loader/Home/LoaderPost.vue'
-import CreateWorldDialog from '~/components/App/Home/CreateWorldDialog.vue'
+const CreateWorldDialog = defineAsyncComponent(() => import('~/components/App/Home/CreateWorldDialog.vue'))
 
 const { locale } = useI18n()
 const { user, loggedIn } = useUserSession()

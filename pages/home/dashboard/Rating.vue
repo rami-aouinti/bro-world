@@ -42,7 +42,7 @@
         <v-list-item
           v-for="i in 5"
           :key="'dist-' + i"
-          class="px-1"
+          class="px-3"
           aria-label="Rating bar"
         >
           <template #prepend>
@@ -64,12 +64,12 @@
         </v-list-item>
       </v-list>
 
-      <v-divider v-if="loggedIn" class="my-4" />
+      <v-divider v-if="loggedIn" class="my-2" />
 
       <!-- Formulaire d’évaluation -->
       <div
         v-if="loggedIn"
-        class="d-flex align-center justify-center gap-1 mb-2"
+        class="d-flex align-center justify-center gap-1 mb-1 px-1 mx-1"
       >
         <v-rating
           v-model="newRating"
@@ -81,11 +81,14 @@
         <v-btn
           color="primary"
           variant="text"
+          icon
           :loading="isSubmitting"
           :disabled="newRating === 0"
           @click="submitRating"
         >
-          {{ t('dashboard.rating.submit') }}
+          <v-icon>
+            mdi-send
+          </v-icon>
         </v-btn>
       </div>
     </v-card>
