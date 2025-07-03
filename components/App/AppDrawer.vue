@@ -119,21 +119,21 @@ onMounted(() => {
     }
   }
   .drawer-footer {
-    transition: all 0.2s;
+    transition: all 0.3s;
     min-height: 30px;
   }
   .drawer-header-icon {
     opacity: 1 !important;
     height: 1.2em !important;
     width: 1.2em !important;
-    transition: all 0.2s;
+    transition: all 0.3s;
     margin-right: -10px;
   }
   .v-list-group {
     --prepend-width: 10px;
   }
   .v-list-item {
-    transition: all 0.2s;
+    transition: all 0.3s;
   }
 }
 </style>

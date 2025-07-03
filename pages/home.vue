@@ -169,12 +169,12 @@ onMounted(async () => {
 
       <!-- RIGHT SIDEBAR -->
       <v-col cols="12" lg="4" style="min-height: 600px;">
-        <v-card class="mx-3 mt-2 mb-4" rounded="xl" variant="text" elevation="10" style="min-height: 120px;">
+        <v-card class="mx-3 mt-2 mb-4" rounded="xl" variant="text" elevation="10" style="min-height: 80px;">
           <div class="d-flex justify-center">
             <v-btn
               class="font-weight-bold w-100"
               color="primary"
-              height="50"
+              height="80"
               variant="text"
               @click="dialogCreateWorld = true"
             >

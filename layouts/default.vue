@@ -98,7 +98,6 @@ html, body, #__nuxt, .v-application {
   height: calc(100vh - var(--v-layout-top) - var(--v-layout-bottom)); */
   overflow-y: auto;
   transition-property: padding;
-  padding-left: 256px;
   transition: padding-left 0.3s ease;
 }
 .v-application--wrap {
