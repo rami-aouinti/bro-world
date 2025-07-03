@@ -25,14 +25,14 @@
             </h6>
           </v-col>
           <v-col cols="4" class="text-end">
-            <v-img
+            <NuxtImg
               alt="weather icon"
               src="/img/small-logos/icon-sun-cloud.png"
               class="w-50 ms-auto"
               width="48"
               height="48"
-              :lazy-src="'/img/placeholder.png'"
-              loading="lazy"
+              :lazy-src="'https://placehold.net/7.png'"
+              format="webp" loading="lazy" cover
             />
             <h6 class="mb-0 text-h6 text-end me-1">
               {{ t('dashboard.weather.condition') }}

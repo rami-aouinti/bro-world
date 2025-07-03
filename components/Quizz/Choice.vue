@@ -13,7 +13,7 @@
         class="border border-primary mx-2 py-1"
         @click="currentIndex = (quizz.timer && !end) ? currentIndex : i"
       >
-        <v-img
+        <NuxtImg
           loading="lazy"
           :alt="`question-${pic.answer}`"
           :src="pic.src"

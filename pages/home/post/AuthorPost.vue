@@ -232,13 +232,13 @@ watch(
 
     <div class="text-end ms-auto" v-if="props.post.user?.id === user?.id">
       <v-menu location="bottom" max-width="68">
-        <template #activator="{ props: menu }">
+        <template #activator="slotProps">
           <v-btn
             icon
             variant="text"
             size="small"
             class="text-primary"
-            v-bind="mergeProps(menu)"
+            v-bind="slotProps.props"
           >
             <v-icon icon="mdi-dots-vertical" size="20" />
           </v-btn>
@@ -312,7 +312,7 @@ watch(
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
               </div>
-              <v-img :src="imageUrl" alt="preview" loading="lazy" style="max-width: 100%; max-height: 300px" />
+              <NuxtImg :src="imageUrl" alt="preview" format="webp" loading="lazy" cover style="max-width: 100%; max-height: 300px" />
             </div>
           </v-card-text>
         </v-card>

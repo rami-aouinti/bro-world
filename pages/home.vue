@@ -106,7 +106,7 @@ const reloadPosts = (post: any) => {
 
 const reloadStories = async () => {
   await loadStories()
-  Notify.success("Story created!", user?.photo ?? '/img/person.png', `/user/${user.username}`)
+  Notify.success("Story created!", user?.photo ?? 'https://placehold.net/avatar-5.svg', `/user/${user.username}`)
 }
 
 onMounted(async () => {
@@ -151,9 +151,13 @@ onMounted(async () => {
 
         <template v-else>
           <v-infinite-scroll :items="postStore.posts" mode="manual" @load="loadMore">
-            <template v-for="(item, index) in postStore.posts" :key="item.id">
-              <HomePosts :post="item" @post-updated="reloadPosts" @post-deleted="reloadPosts" />
-            </template>
+            <HomePosts
+              v-for="(item, index) in postStore.posts"
+              :key="item.id"
+              :post="item"
+              @post-updated="reloadPosts"
+              @post-deleted="reloadPosts"
+            />
             <template #load-more="{ props }">
               <v-btn
                 v-if="hasMore"

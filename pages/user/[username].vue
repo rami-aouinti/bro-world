@@ -16,7 +16,7 @@ const loadProfile = async () => {
   pending.value = true
   const data  = await userStore.fetchProfile(null, username)
   if (data) {
-    avatarUrl.value = data?.photo ?? 'https://bro-world-space.com/img/person.png'
+    avatarUrl.value = data?.photo ?? 'https://placehold.net/avatar-5.svg'
     profile.value = data
     isOwnProfile.value = user?.username === profile.value.username
     if (!isOwnProfile.value) await checkFollowStatus()
@@ -112,7 +112,7 @@ definePageMeta({
               <!-- Avatar -->
               <v-col cols="auto">
                 <v-avatar size="50" class="border-primary border-lg rounded-circle">
-                  <NuxtImg format="webp" width="50" height="50" :src="avatarUrl" alt="Avatar" />
+                  <NuxtImg format="webp" loading="lazy" cover width="50" height="50" :src="avatarUrl" alt="Avatar" />
                 </v-avatar>
               </v-col>
 

@@ -115,8 +115,7 @@ onMounted(fetchConversations)
                 height="36"
                 :src="getConversationAvatar(conversation)"
                 :alt="`Avatar ${conversation.id}`"
-                format="webp"
-                cover
+                format="webp" loading="lazy" cover
               />
             </v-avatar>
           </v-col>

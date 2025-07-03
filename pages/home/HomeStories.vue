@@ -111,12 +111,11 @@ function sendMessage() {
               style="cursor: pointer"
             >
               <NuxtImg
-                format="webp"
+                format="webp" loading="lazy" cover
                 :alt="`story-${userStories.username}`"
                 :src="userStories.stories[0]?.mediaPath"
                 width="58"
                 height="58"
-                cover
               />
             </v-avatar>
           </v-col>
@@ -131,7 +130,7 @@ function sendMessage() {
 
       <div class="position-relative d-flex align-center justify-center" style="height: 500px; background-color: black;">
         <NuxtImg
-          format="webp"
+          format="webp" loading="lazy" cover
           v-if="currentUserStories[currentStoryIndex]"
           :src="currentUserStories[currentStoryIndex].mediaPath"
           :alt="`story-${currentStoryIndex}`"

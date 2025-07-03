@@ -5,7 +5,7 @@
       :width="size"
       :height="size"
       :alt="props.user?.username"
-      :src="props.user?.photo ?? '/person.png'"
+      :src="props.user?.photo ?? 'https://placehold.net/avatar-5.svg'"
       format="webp"
       cover
     >

@@ -51,7 +51,7 @@
           >
             <div class="px-4">
               <GlowingAvatar
-                :src="message?.sender?.avatar ?? 'https://bro-world-space.com/img/person.png'"
+                :src="message?.sender?.avatar ?? 'https://placehold.net/avatar-5.svg'"
                 :size="46"
                 class="shrink-0 py-3"
                 :online="true"
@@ -76,23 +76,26 @@
               >
                 <p v-if="message?.text" class="mb-2">{{ message?.text }}</p>
 
-                <v-img
+                <NuxtImg
                   v-if="message.mediaUrl && !message.text"
                   :src="message.mediaUrl"
                   class="rounded-lg mb-2"
                   loading="lazy"
                   width="200"
-                  eager
-                  :lazy-src="'/img/loading.svg'"
-                ></v-img>
+                  format="webp"
+                  cover
+                  :lazy-src="'https://bro-world-space.com/img/loading.svg'"
+                ></NuxtImg>
 
                 <NuxtImg
                   v-else-if="message.mediaUrl"
                   :src="message.mediaUrl"
                   format="webp"
+                  loading="lazy"
+                  cover
                   width="200"
                   class="rounded-lg mb-2"
-                  :placeholder="'/img/loading.svg'"
+                  :placeholder="'https://bro-world-space.com/img/loading.svg'"
                 />
                 <RelativeTime :date="message?.createdAt" />
               </v-card>
@@ -141,7 +144,7 @@ useMercureConversation(conversationId, (newMessage) => {
   const message = {
     sender: {
       firstName: newMessage.title || 'Unknown',
-      avatar: newMessage.subtitle || 'https://bro-world-space.com/img/person.png',
+      avatar: newMessage.subtitle || 'https://placehold.net/avatar-5.svg',
       id: newMessage?.sender?.id || '111111111111111',
     },
     text: newMessage?.content || '',

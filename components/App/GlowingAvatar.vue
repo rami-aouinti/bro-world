@@ -12,7 +12,8 @@
     />
     <v-avatar :size="size" class="overflow-hidden z-10">
       <slot>
-        <v-img :src="src" :alt="alt" />
+        <NuxtImg format="webp"
+                 cover :src="src" :alt="alt" />
       </slot>
     </v-avatar>
   </div>
@@ -23,7 +24,7 @@ import { computed } from 'vue'
 import { useTheme } from 'vuetify'
 
 const props = defineProps({
-  src: { type: String, default: 'https://bro-world-space.com/img/person.png' },
+  src: { type: String, default: 'https://placehold.net/avatar-5.svg' },
   alt: { type: String, default: 'Avatar' },
   size: { type: Number, default: 48 },
 })

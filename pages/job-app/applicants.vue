@@ -28,7 +28,7 @@
           <v-row no-gutters>
             <v-col cols="3" class="d-flex align-center justify-center">
               <v-avatar size="48">
-                <v-img
+                <NuxtImg
                   loading="lazy"
                   :src="applicant.user?.photo || '/default-avatar.png'"
                   alt="Avatar"

@@ -40,7 +40,7 @@
               :size="picture.found ? '2xl' : 'md'"
               class="w-full bg-blue-400/20 rounded-xl"
             >
-              <v-img loading="lazy" v-bind="imgProperties(picture.src)" />
+              <NuxtImg loading="lazy" v-bind="imgProperties(picture.src)" />
             </v-chip>
           </li>
         </TransitionGroup>

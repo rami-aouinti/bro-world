@@ -43,7 +43,7 @@ const isPersistent = computed(() => timeoutRef.value === -1)
   >
     <template #prepend>
       <v-avatar size="48">
-        <v-img width="48" heigth="48" loading="lazy" :alt="notificationRef.id" :src="notificationRef.subtitle" />
+        <NuxtImg width="48" heigth="48" loading="lazy" :alt="notificationRef.id" :src="notificationRef.subtitle" />
       </v-avatar>
     </template>
 

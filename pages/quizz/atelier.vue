@@ -63,11 +63,12 @@
         :key="item.creatrice.value"
         class="hover:scale-105 transition-transform"
       >
-        <v-img
+        <NuxtImg
           :src="item.image?.value || 'https://logo.clearbit.com/wikipedia.org'"
           loading="lazy"
           :alt="item.creatriceLabel?.value"
           height="200"
+          format="webp"
           cover
         />
         <v-card-title>

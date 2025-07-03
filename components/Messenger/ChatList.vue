@@ -37,7 +37,7 @@
               <template v-slot:chip="{ item, props }">
                 <v-chip
                   v-bind="props"
-                  :prepend-avatar="item.raw?.profile?.photo ?? 'https://bro-world-space.com/img/person.png'"
+                  :prepend-avatar="item.raw?.profile?.photo ?? 'https://placehold.net/avatar-5.svg'"
                   :text="item.raw?.firstName + ' ' + item.raw?.lastName"
                 />
               </template>
@@ -46,7 +46,7 @@
               <template v-slot:item="{ item, props }">
                 <v-list-item
                   v-bind="props"
-                  :prepend-avatar="item.raw?.profile?.photo ?? 'https://bro-world-space.com/img/person.png'"
+                  :prepend-avatar="item.raw?.profile?.photo ?? 'https://placehold.net/avatar-5.svg'"
                   :title="item.raw?.firstName + ' ' + item.raw?.lastName"
                   @click="handleSelect(item.raw)"
                 />

@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-center py-1">
-    <v-img
-      loading="lazy"
+    <NuxtImg
+      format="webp" loading="lazy" cover
       :src="image"
       :alt="name"
       class="profile-image"

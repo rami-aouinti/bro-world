@@ -14,7 +14,7 @@ const props = defineProps<{ topic: any }>()
     >
       <NuxtImg
         format="webp"
-        v-if="props.topic.image && props.topic.image !== '/img/nuxt3.svg'"
+        v-if="props.topic.image && props.topic.image !== 'https://bro-world-space.com/img/nuxt3.svg'"
         :src="props.topic.image"
         alt="Topic image"
         width="400"

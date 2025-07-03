@@ -91,7 +91,7 @@ const isFetched = computed(() => fetchStatus.value === 'success' || fetchStatus.
             @click="resetState"
           >
             <div class="flex items-center">
-              <v-img
+              <NuxtImg
                 loading="lazy"
                 :src="getImagePath(node.featuredImage?.url)"
                 :alt="
@@ -99,6 +99,8 @@ const isFetched = computed(() => fetchStatus.value === 'success' || fetchStatus.
                 "
                 width="48"
                 height="48"
+                format="webp"
+                cover
               >
               <p class="ml-2 text-xs truncate w-20">
                 {{ node.title }}

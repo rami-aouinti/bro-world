@@ -26,7 +26,9 @@
             <v-col cols="6">
               <div class="d-flex align-center">
                 <v-avatar>
-                  <v-img loading="lazy" :src="blog.logo" alt="Blog logo" />
+                  <NuxtImg format="webp"
+                           loading="lazy"
+                           cover :src="blog.logo" alt="Blog logo" />
                 </v-avatar>
                 <div class="ms-2 my-auto">
                   <p class="mb-0 text-typo font-weight-bold">
@@ -52,7 +54,7 @@
                         size="24"
                         class="border border-primary"
                       >
-                        <v-img loading="lazy" :src="avatar.image" alt="Avatar" />
+                        <NuxtImg format="webp" loading="lazy" cover :src="avatar.image" alt="Avatar" />
                       </v-avatar>
                     </template>
                     <span>{{ avatar.name }}</span>
@@ -93,10 +95,10 @@ const showCard = ref(true)
 const blogs = ref<any[]>([])
 
 const avatars = [
-  { image: '/img/team-1.jpg', name: 'Elena Morison' },
-  { image: '/img/team-2.jpg', name: 'Ryan Milly' },
-  { image: '/img/team-5.jpg', name: 'Nick Daniel' },
-  { image: '/img/team-4.jpg', name: 'Peterson' }
+  { image: 'https://bro-world-space.com/img/team-1.jpg', name: 'Elena Morison' },
+  { image: 'https://bro-world-space.com/img/team-2.jpg', name: 'Ryan Milly' },
+  { image: 'https://bro-world-space.com/img/team-5.jpg', name: 'Nick Daniel' },
+  { image: 'https://bro-world-space.com/img/team-4.jpg', name: 'Peterson' }
 ]
 
 const redirectToWorld = (slug: string) => {

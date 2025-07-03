@@ -19,6 +19,7 @@ defineProps<{ images: string[], productTitle?: string }>()
     >
       <NuxtImg
         format="webp"
+        cover
         :src="getImagePath(item)"
         :alt="`Image ${index + 1} of - ${productTitle}`"
         :preload="index === 0"

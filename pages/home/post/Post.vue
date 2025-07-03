@@ -71,20 +71,19 @@ const localePath = useLocalePath()
         </div>
         <v-sheet v-else-if="isImageUrl(props.post?.url)" color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
         <NuxtImg
-          format="webp"
+          format="webp" loading="lazy" cover
           :alt="`image-${props.post.slug}`"
           :src="props.post.url"
           style="width: 100%;"
           height="315"
           class="border-radius-lg shadow-lg"
           :preload="true"
-          loading="eager"
           fetchpriority="high"
         />
         </v-sheet>
         <v-sheet v-else-if="props.post?.medias?.length > 0 && isImageUrl(props.post?.medias[0]?.path)" color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
           <NuxtImg
-            format="webp"
+            format="webp" loading="lazy" cover
             v-if="props.post?.medias?.length > 1"
             :alt="`image-${props.post.slug}`"
             :src="props.post?.medias[currentPostIndex]?.path"
@@ -92,19 +91,17 @@ const localePath = useLocalePath()
             height="315"
             class="border-radius-lg shadow-lg"
             :preload="true"
-            loading="eager"
             fetchpriority="high"
           />
           <NuxtImg
             v-else
-            format="webp"
+            format="webp" loading="lazy" cover
             :alt="`image-${props.post.slug}`"
             :src="props.post?.medias[0]?.path"
             style="width: 100%;"
             height="315"
             class="border-radius-lg shadow-lg"
             :preload="true"
-            loading="eager"
             fetchpriority="high"
           />
           <v-btn

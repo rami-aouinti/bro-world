@@ -15,14 +15,14 @@
     <template v-else>
       <template v-if="avatars.length === 1">
         <v-avatar :size="size">
-          <v-img :src="avatars[0]" />
+          <NuxtImg :src="avatars[0]" />
         </v-avatar>
       </template>
 
       <template v-else-if="avatars.length === 2">
         <div class="two-avatars">
           <v-avatar v-for="(img, i) in avatars" :key="i" :size="size / 1.5">
-            <v-img :src="img" />
+            <NuxtImg :src="img" />
           </v-avatar>
         </div>
       </template>
@@ -34,7 +34,7 @@
             :key="i"
             :size="size / 2.2"
           >
-            <v-img :src="img" />
+            <NuxtImg :src="img" />
           </v-avatar>
         </div>
       </template>

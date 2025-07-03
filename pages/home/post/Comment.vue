@@ -104,13 +104,13 @@ const createdComment = () => {
           <!-- Actions -->
           <div v-if="isOwner" class="d-flex align-center gap-2 me-2">
             <v-menu location="bottom" max-width="68">
-              <template #activator="{ props: menu }">
+              <template #activator="slotProps">
                 <v-btn
                   icon
                   variant="text"
                   size="small"
                   class="text-primary"
-                  v-bind="mergeProps(menu)"
+                  v-bind="slotProps.props"
                 >
                   <v-icon icon="mdi-dots-vertical" size="20" />
                 </v-btn>
