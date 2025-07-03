@@ -1,23 +1,77 @@
 <template>
-  <Weather />
-  <Blogs v-if="loggedIn"/>
-  <News />
-  <Quiz />
-  <Rating />
+  <Suspense>
+    <template #default>
+      <Weather />
+    </template>
+    <template #fallback>
+      <v-skeleton-loader
+        type="card"
+        class="rounded-xl mx-3 mb-3"
+        height="140"
+      />
+    </template>
+  </Suspense>
+
+  <Suspense>
+    <template #default>
+      <Blogs v-if="loggedIn" />
+    </template>
+    <template #fallback>
+      <v-skeleton-loader
+        type="card"
+        class="rounded-xl mx-3 mb-3"
+        height="140"
+      />
+    </template>
+  </Suspense>
+
+  <Suspense>
+    <template #default>
+      <News />
+    </template>
+    <template #fallback>
+      <v-skeleton-loader
+        type="card"
+        class="rounded-xl mx-3 mb-3"
+        height="140"
+      />
+    </template>
+  </Suspense>
+
+  <Suspense>
+    <template #default>
+      <Quiz />
+    </template>
+    <template #fallback>
+      <v-skeleton-loader
+        type="card"
+        class="rounded-xl mx-3 mb-3"
+        height="140"
+      />
+    </template>
+  </Suspense>
+
+  <Suspense>
+    <template #default>
+      <Rating />
+    </template>
+    <template #fallback>
+      <v-skeleton-loader
+        type="card"
+        class="rounded-xl mx-3 mb-3"
+        height="140"
+      />
+    </template>
+  </Suspense>
 </template>
 
 <script setup lang="ts">
-import Weather from "~/pages/home/dashboard/Weather.vue";
-import Rating from "~/pages/home/dashboard/Rating.vue";
-import Quiz from "~/pages/home/dashboard/Quiz.vue";
-import News from "~/pages/home/dashboard/News.vue";
-import Blogs from "~/pages/home/dashboard/Blogs.vue";
-
+import { defineAsyncComponent } from 'vue'
 const { loggedIn } = await useUserSession()
-</script>
 
-<style scoped>
-.min-h-section {
-  min-height: 280px;
-}
-</style>
+const Weather = defineAsyncComponent(() => import('~/pages/home/dashboard/Weather.vue'))
+const Blogs = defineAsyncComponent(() => import('~/pages/home/dashboard/Blogs.vue'))
+const News = defineAsyncComponent(() => import('~/pages/home/dashboard/News.vue'))
+const Quiz = defineAsyncComponent(() => import('~/pages/home/dashboard/Quiz.vue'))
+const Rating = defineAsyncComponent(() => import('~/pages/home/dashboard/Rating.vue'))
+</script>

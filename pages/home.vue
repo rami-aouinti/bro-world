@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { usePostStore } from '~/stores/usePostStore'
+import { useStoryStore } from '~/stores/useStoryStore'
 
 import UserStatusBanner from '~/components/App/UserStatusBanner.vue'
 import HomeStories from '~/pages/home/HomeStories.vue'
@@ -10,178 +11,165 @@ import HomePosts from '~/pages/home/HomePosts.vue'
 import Dashboard from '~/pages/home/Dashboard.vue'
 import LoaderStatusBanner from '~/components/App/Loader/Home/LoaderStatusBanner.vue'
 import LoaderPost from '~/components/App/Loader/Home/LoaderPost.vue'
-import CreateWorldDialog from "~/components/App/Home/CreateWorldDialog.vue";
-import { useStoryStore } from '~/stores/useStoryStore'
+import CreateWorldDialog from '~/components/App/Home/CreateWorldDialog.vue'
 
 const { locale } = useI18n()
 const { user, loggedIn } = useUserSession()
-const stories = ref<any[]>([])
-
-const storyStore = useStoryStore()
 const postStore = usePostStore()
+const storyStore = useStoryStore()
 
 const dialogCreateWorld = ref(false)
-const loadingUser = ref(true)
-const loadingPost = ref(true)
-const loadingStory = ref(true)
-const loadingPlugin = ref(true)
+const currentPage = ref(1)
 const isLoading = ref(false)
 const hasMore = ref(true)
-const pending = ref(true)
-const currentPage = ref(1)
-const newPostsLoaded = ref(true)
+const stories = ref<any[]>([])
+const plugins = ref<any[]>([])
+
+const loading = ref({
+  user: true,
+  post: true,
+  story: true,
+  plugin: true,
+})
 
 const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
 const totalPages = computed(() =>
   Math.ceil(postStore.total / postStore.limit)
 )
 
-const init = async () => {
-  const newPosts = await postStore.fetchPosts(1, postStore.limit)
-  if (newPosts) {
-    postStore.setPosts({
-      data: newPosts,
-      page: 1,
-      limit: postStore.limit,
-      count: postStore.total,
-    })
-    hasMore.value = totalPages.value >= currentPage.value
-    pending.value = false
-    newPostsLoaded.value = false
-    loadingPost.value = false
+const loadInitialPosts = async () => {
+  try {
+    const newPosts = await postStore.fetchPosts(1, postStore.limit)
+    if (newPosts) {
+      postStore.setPosts({
+        data: newPosts,
+        page: 1,
+        limit: postStore.limit,
+        count: postStore.total,
+      })
+      hasMore.value = totalPages.value >= currentPage.value
+    }
+  } catch (e) {
+    console.error('Erreur fetch posts:', e)
+  } finally {
+    loading.value.post = false
   }
-}
-
-const reloadPosts = async (data: any) => {
-  loadingPost.value = true
-  postStore.appendPost({ data })
-  currentPage.value = 1
-  loadingPost.value = false
 }
 
 const loadMore = async ({ done }) => {
   if (isLoading.value || !hasMore.value) return
-
   isLoading.value = true
-  pending.value = true
 
   const nextPage = currentPage.value + 1
   const newPosts = await postStore.fetchPosts(nextPage, postStore.limit)
 
-  if (newPosts.length > 0) {
+  if (newPosts?.length) {
     postStore.appendPosts(newPosts)
     currentPage.value = nextPage
-    isLoading.value = false
     done('ok')
+  } else {
+    done('empty')
   }
-  hasMore.value = Math.ceil(postStore.total / postStore.limit) > nextPage
-  pending.value = false
-}
 
-const plugins = ref<any[]>([])
+  hasMore.value = totalPages.value > nextPage
+  isLoading.value = false
+}
 
 const fetchPlugins = async () => {
-  if (!loggedIn.value) return
   try {
+    if (!loggedIn.value) return
     const data = await $fetch('/api/plugin/profile/get')
-    if (data) {
-      plugins.value = data
-      loadingPlugin.value = false
-    }
+    if (data) plugins.value = data
   } catch (e) {
-    console.error('Erreur lors du fetch des plugins:', e)
-    loadingPlugin.value = false
+    console.error('Erreur fetch plugins:', e)
+  } finally {
+    loading.value.plugin = false
   }
-}
-const reloadStories = async (data: any) => {
-  console.log(data)
-  loadingStory.value = true
-  await loadStories()
-  loadingStory.value = false
-  Notify.success("Story created!")
 }
 
-async function loadStories() {
-  if (!loggedIn.value) return
+const loadStories = async () => {
   try {
-    if (user.value.id) {
+    if (loggedIn.value && user.value?.id) {
       const data = await storyStore.fetchStories(user.value.id)
-      if (data) {
-        stories.value = data
-      }
+      stories.value = data ?? []
     }
   } catch (e) {
-    console.error('Failed to load stories:', e)
+    console.error('Erreur fetch stories:', e)
+  } finally {
+    loading.value.story = false
   }
 }
+
+const reloadPosts = (post: any) => {
+  postStore.appendPost({ data: post })
+}
+
+const reloadStories = async () => {
+  await loadStories()
+  Notify.success("Story created!", user?.photo ?? '/img/person.png', `/user/${user.username}`)
+}
+
 onMounted(async () => {
   try {
-    await init()
+    await loadInitialPosts()
     await fetchPlugins()
     await nextTick()
     await loadStories()
   } catch (e) {
-    console.error('Erreur dans onMounted de home.vue:', e)
+    console.error('Erreur onMounted:', e)
   } finally {
-    loadingUser.value = false
+    loading.value.user = false
   }
 })
 </script>
 
 <template>
   <v-container fluid :dir="isRtl ? 'rtl' : 'ltr'">
-    <template v-if="loadingUser">
-      <LoaderStatusBanner />
-    </template>
-    <template v-else>
-      <UserStatusBanner v-if="loggedIn && !user?.enabled" />
-    </template>
+    <!-- STATUS BANNER -->
+    <LoaderStatusBanner v-if="loading.user" />
+    <UserStatusBanner v-else-if="loggedIn && !user?.enabled" />
 
     <v-row>
+      <!-- LEFT: POSTS -->
       <v-col cols="12" lg="8">
-        <template v-if="loadingUser">
+        <!-- TOP -->
+        <template v-if="loading.user">
           <LoaderPost />
         </template>
 
         <template v-else>
-          <NewPost @post-created="reloadPosts" @story-created="reloadStories" v-if="loggedIn" />
-          <HomeStories :stories="stories" v-if="loggedIn" />
+          <NewPost v-if="loggedIn" @post-created="reloadPosts" @story-created="reloadStories" />
+          <HomeStories v-if="loggedIn" :stories="stories" />
         </template>
 
-        <template v-if="loadingPost || loadingUser">
-          <v-col cols="12" md="12" lg="12" v-for="n in 2" :key="n">
-            <v-skeleton-loader
-              type="card"
-              class="pa-4 rounded-xl"
-              height="200"
-              rounded="xl"
-            />
+        <!-- POSTS -->
+        <template v-if="loading.post">
+          <v-col cols="12" v-for="n in 2" :key="n">
+            <v-skeleton-loader type="card" class="pa-4 rounded-xl" height="200" />
           </v-col>
         </template>
+
         <template v-else>
           <v-infinite-scroll :items="postStore.posts" mode="manual" @load="loadMore">
             <template v-for="(item, index) in postStore.posts" :key="item.id">
-              <HomePosts
-                @post-updated="reloadPosts"
-                @post-deleted="reloadPosts"
-                :post="item"
-              />
+              <HomePosts :post="item" @post-updated="reloadPosts" @post-deleted="reloadPosts" />
             </template>
-            <template v-slot:load-more="{ props }">
+            <template #load-more="{ props }">
               <v-btn
                 v-if="hasMore"
                 icon="mdi-refresh"
                 class="text-primary"
                 variant="text"
                 v-bind="props"
-              ></v-btn>
+              />
             </template>
           </v-infinite-scroll>
         </template>
       </v-col>
 
+      <!-- RIGHT SIDEBAR -->
       <v-col cols="12" lg="4">
-        <v-card rounded="xl" class="mx-3 mt-2 mb-4" variant="text" elevation="10">
+        <v-card class="mx-3 mt-2 mb-4" rounded="xl" variant="text" elevation="10">
           <div class="d-flex justify-center">
             <v-btn
               class="font-weight-bold w-100"
@@ -190,11 +178,15 @@ onMounted(async () => {
               variant="text"
               @click="dialogCreateWorld = true"
             >
-              <h6 class="text-h6 font-weight-bolder mb-0">Build your World Bro</h6>
+              <h6 class="text-h6 font-weight-bolder mb-0">
+                Build your World Bro
+              </h6>
             </v-btn>
           </div>
         </v-card>
-        <CreateWorldDialog :plugins="plugins" v-model="dialogCreateWorld" />
+
+        <CreateWorldDialog v-model="dialogCreateWorld" :plugins="plugins" />
+
         <ClientOnly>
           <Dashboard />
         </ClientOnly>

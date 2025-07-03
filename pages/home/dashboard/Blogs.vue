@@ -1,5 +1,6 @@
 <template>
   <div :dir="isRtl ? 'rtl' : 'ltr'">
+    <!-- Skeleton au chargement -->
     <template v-if="showCard">
       <v-skeleton-loader
         type="card"
@@ -7,21 +8,25 @@
         height="120"
       />
     </template>
+
+    <!-- Liste des blogs -->
     <div v-else>
       <v-card
+        v-for="(blog, i) in blogs"
+        :key="blog.slug || i"
         rounded="xl"
         class="mx-3 mb-4"
         variant="text"
         elevation="10"
-        v-for="(blog, i) in blogs"
-        :key="i"
+        aria-label="Blog card"
       >
         <div class="d-flex align-center px-4 py-4">
           <v-row>
+            <!-- Infos blog -->
             <v-col cols="6">
               <div class="d-flex align-center">
                 <v-avatar>
-                  <v-img :src="blog.logo" />
+                  <v-img :src="blog.logo" alt="Blog logo" />
                 </v-avatar>
                 <div class="ms-2 my-auto">
                   <p class="mb-0 text-typo font-weight-bold">
@@ -31,10 +36,16 @@
                 </div>
               </div>
             </v-col>
+
+            <!-- Actions -->
             <v-col cols="6">
-              <div class="d-flex align-center">
-                <span class="avatar-group d-flex ms-auto">
-                  <v-tooltip bottom v-for="avatar in avatars" :key="avatar.name">
+              <div class="d-flex align-center justify-end">
+                <span class="avatar-group d-flex me-3">
+                  <v-tooltip
+                    bottom
+                    v-for="avatar in avatars"
+                    :key="avatar.name"
+                  >
                     <template #activator="{ props }">
                       <v-avatar
                         v-bind="props"
@@ -47,13 +58,15 @@
                     <span>{{ avatar.name }}</span>
                   </v-tooltip>
                 </span>
+
                 <v-btn
                   variant="text"
                   color="primary"
+                  size="small"
                   @click="redirectToWorld(blog.slug)"
-                  small
+                  aria-label="Open blog"
                 >
-                  Open
+                  {{ t('dashboard.blog.open') || 'Open' }}
                 </v-btn>
               </div>
             </v-col>
@@ -65,34 +78,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import RelativeTime from '~/components/App/RelativeTime.vue'
 
 const { t, locale } = useI18n()
-const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
-
-const { loggedIn } = useUserSession()
 const router = useRouter()
+
+const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
+const { loggedIn } = useUserSession()
 
 const showCard = ref(true)
 const blogs = ref<any[]>([])
 
 const avatars = [
-  { image: "/img/team-1.jpg", name: "Elena Morison" },
-  { image: "/img/team-2.jpg", name: "Ryan Milly" },
-  { image: "/img/team-5.jpg", name: "Nick Daniel" },
-  { image: "/img/team-4.jpg", name: "Peterson" },
+  { image: '/img/team-1.jpg', name: 'Elena Morison' },
+  { image: '/img/team-2.jpg', name: 'Ryan Milly' },
+  { image: '/img/team-5.jpg', name: 'Nick Daniel' },
+  { image: '/img/team-4.jpg', name: 'Peterson' }
 ]
 
 const redirectToWorld = (slug: string) => {
-  router.push(`/world/${slug}`)
+  if (slug) router.push(`/world/${slug}`)
 }
 
 const fetchBlogs = async () => {
   try {
-    const data = await $fetch('/api/profile/blogs') // ✅ $fetch retourne directement les données
+    const data = await $fetch('/api/profile/blogs')
     blogs.value = data ?? []
   } catch (error) {
     console.error('Erreur lors du chargement des blogs :', error)
@@ -103,8 +116,4 @@ const fetchBlogs = async () => {
 }
 
 onMounted(fetchBlogs)
-
-watch(showCard, () => {
-  if (showCard.value) fetchBlogs()
-}, { immediate: true })
 </script>

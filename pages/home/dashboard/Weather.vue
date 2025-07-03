@@ -1,13 +1,19 @@
 <template>
   <div :dir="isRtl ? 'rtl' : 'ltr'">
-    <template v-if="showCard">
-      <v-skeleton-loader
-        type="card"
-        class="mx-3 mb-4 rounded-xl"
-        height="120"
-      />
-    </template>
-    <v-card v-else rounded="xl" class="mx-3 mb-4" variant="text" elevation="10">
+    <v-skeleton-loader
+      v-if="loading"
+      type="card"
+      class="mx-3 mb-4 rounded-xl"
+      height="120"
+    />
+
+    <v-card
+      v-else
+      rounded="xl"
+      class="mx-3 mb-4"
+      variant="text"
+      elevation="10"
+    >
       <div class="px-4 py-4">
         <v-row>
           <v-col cols="8" class="my-auto">
@@ -20,9 +26,13 @@
           </v-col>
           <v-col cols="4" class="text-end">
             <v-img
-              alt="weather image"
+              alt="weather icon"
               src="/img/small-logos/icon-sun-cloud.png"
               class="w-50 ms-auto"
+              width="48"
+              height="48"
+              :lazy-src="'/img/placeholder.png'"
+              loading="lazy"
             />
             <h6 class="mb-0 text-h6 text-end me-1">
               {{ t('dashboard.weather.condition') }}
@@ -47,56 +57,55 @@ const { loggedIn } = useUserSession()
 const runtimeConfig = useRuntimeConfig()
 const { askGroq } = useGroq()
 
-const showCard = ref(true)
+const loading = ref(true)
 const weatherInfo = ref('')
 const city = ref('')
 
-const getWeather = async (place: string) => {
-  const result = await useCachedFetch('cache:my-weather', async () => {
-    const data = await $fetch('https://api.weatherapi.com/v1/current.json', {
-      query: {
-        key: runtimeConfig.public.weatherKey,
-        q: place,
-      },
-    })
-    return toRaw(data)
-  }, 600)
+async function getWeather(place: string) {
+  try {
+    const result = await useCachedFetch('cache:my-weather', async () => {
+      return await $fetch('https://api.weatherapi.com/v1/current.json', {
+        query: {
+          key: runtimeConfig.public.weatherKey,
+          q: place,
+        },
+      })
+    }, 600)
 
-  weatherInfo.value = result?.current?.temp_c ?? ''
-  city.value = result?.location?.name ?? ''
+    weatherInfo.value = result?.current?.temp_c ?? 'N/A'
+    city.value = result?.location?.name ?? 'Unknown'
+  } catch (error) {
+    console.error('Weather API error:', error)
+    city.value = t('dashboard.weather.unavailable')
+    weatherInfo.value = '--'
+  } finally {
+    loading.value = false
+  }
 }
 
-const getWeatherFromGroq = async (latitude: number, longitude: number) => {
+async function resolveCityFromLocation(lat: number, lng: number) {
   try {
-    const messagePlace = t('dashboard.groq.place', {
-      lat: latitude,
-      lng: longitude,
-    })
-
-    const placeRaw = await askGroq(messagePlace)
-    const place = placeRaw?.trim().split('\n')[0] ?? 'Unknown location'
-
+    const message = t('dashboard.groq.place', { lat, lng })
+    const location = await askGroq(message)
+    const place = location?.split('\n')[0]?.trim() || 'Berlin'
     await getWeather(place)
-  } catch (e) {
-    console.error('Groq error:', e)
-  } finally {
-    showCard.value = false
+  } catch (error) {
+    console.error('Geolocation/Groq error:', error)
+    await getWeather('Berlin')
   }
 }
 
 onMounted(() => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
-      ({ coords }) => {
-        getWeatherFromGroq(coords.latitude, coords.longitude)
-      },
-      (error) => {
-        console.warn('Geolocation error:', error.message)
-        showCard.value = false
+      ({ coords }) => resolveCityFromLocation(coords.latitude, coords.longitude),
+      () => {
+        console.warn('Geolocation permission denied')
+        getWeather('Berlin')
       }
     )
   } else {
-    showCard.value = false
+    getWeather('Berlin')
   }
 })
 </script>
