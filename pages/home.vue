@@ -128,7 +128,12 @@ onMounted(async () => {
   <v-container fluid :dir="isRtl ? 'rtl' : 'ltr'">
     <!-- STATUS BANNER -->
     <LoaderStatusBanner v-if="loading.user" />
-    <UserStatusBanner v-else-if="loggedIn && !user?.enabled" />
+    <template v-else-if="loggedIn && !user?.enabled">
+      <NuxtLazyHydrate when-visible once>
+        <UserStatusBanner />
+      </NuxtLazyHydrate>
+    </template>
+
 
     <v-row>
       <!-- LEFT: POSTS -->
@@ -144,7 +149,11 @@ onMounted(async () => {
             <template v-if="loading.story">
               <v-skeleton-loader type="avatar" class="mx-2" style="width: 50px; height: 50px;" />
             </template>
-            <HomeStories v-else-if="loggedIn" :stories="stories" />
+            <template  v-else-if="loggedIn">
+              <NuxtLazyHydrate when-visible once>
+                <HomeStories  stories="stories"  />
+              </NuxtLazyHydrate>
+            </template>
           </ClientOnly>
         </template>
 
@@ -196,9 +205,9 @@ onMounted(async () => {
             </v-btn>
           </div>
         </v-card>
-
-        <CreateWorldDialog v-model="dialogCreateWorld" :plugins="plugins" />
-
+        <NuxtLazyHydrate when-visible once>
+          <CreateWorldDialog v-model="dialogCreateWorld" :plugins="plugins" />
+        </NuxtLazyHydrate>
         <ClientOnly>
           <template v-if="loading.plugin">
             <v-skeleton-loader type="card" class="mx-3 rounded-xl" height="300" />
