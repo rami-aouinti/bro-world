@@ -4,7 +4,7 @@
         :class = "{'template_loading' : loading, 'invalidInput' : invalidInput}"
         ref = "currentTemplate" >
     <span class = "row inline items-center">
-        <v-img v-if = "image" class = "my-api-img" :src="image" :alt="api">
+        <v-img loading="lazy" v-if = "image" class = "my-api-img" :src="image" :alt="api">
         <q-radio v-for = "option in filterOptions"
             size="xs"
             v-model="modelSelect"

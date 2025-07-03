@@ -94,6 +94,7 @@ const truncate = (str, maxLength = 20) => {
             <div class="mt-3 py-2">
               <div class="font-weight-bold d-flex justify-center">
                 <v-img
+                  loading="lazy"
                   :alt="`${template.name} avatar`"
                   :src="getFlagUrl(template.locale)"
                   max-width="20px"

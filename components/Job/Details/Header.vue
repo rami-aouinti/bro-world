@@ -85,7 +85,7 @@ const jobInfos = computed(() => {
       <!-- Logo entreprise -->
       <v-col cols="2" class="d-flex align-center justify-center">
         <v-avatar class="border-primary border-md rounded-circle" size="56" v-if="job.company?.logo">
-          <v-img :src="job.company.logo" alt="Company Logo" />
+          <v-img width="56" heigth="56" :src="job.company.logo" loading="lazy" alt="Company Logo" />
         </v-avatar>
         <v-avatar class="border-primary border-md rounded-circle" size="56" v-else>
           <v-icon size="32">mdi-domain</v-icon>

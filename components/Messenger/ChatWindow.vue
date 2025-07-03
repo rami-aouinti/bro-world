@@ -80,6 +80,7 @@
                   v-if="message.mediaUrl && !message.text"
                   :src="message.mediaUrl"
                   class="rounded-lg mb-2"
+                  loading="lazy"
                   width="200"
                   eager
                   :lazy-src="'/img/loading.svg'"

@@ -26,7 +26,7 @@
             <v-col cols="6">
               <div class="d-flex align-center">
                 <v-avatar>
-                  <v-img :src="blog.logo" alt="Blog logo" />
+                  <v-img loading="lazy" :src="blog.logo" alt="Blog logo" />
                 </v-avatar>
                 <div class="ms-2 my-auto">
                   <p class="mb-0 text-typo font-weight-bold">
@@ -52,7 +52,7 @@
                         size="24"
                         class="border border-primary"
                       >
-                        <v-img :src="avatar.image" alt="Avatar" />
+                        <v-img loading="lazy" :src="avatar.image" alt="Avatar" />
                       </v-avatar>
                     </template>
                     <span>{{ avatar.name }}</span>

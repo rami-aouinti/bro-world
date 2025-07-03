@@ -65,6 +65,7 @@
       >
         <v-img
           :src="item.image?.value || 'https://logo.clearbit.com/wikipedia.org'"
+          loading="lazy"
           :alt="item.creatriceLabel?.value"
           height="200"
           cover

@@ -29,6 +29,7 @@
             <v-col cols="3" class="d-flex align-center justify-center">
               <v-avatar size="48">
                 <v-img
+                  loading="lazy"
                   :src="applicant.user?.photo || '/default-avatar.png'"
                   alt="Avatar"
                 />

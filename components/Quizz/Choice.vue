@@ -14,6 +14,7 @@
         @click="currentIndex = (quizz.timer && !end) ? currentIndex : i"
       >
         <v-img
+          loading="lazy"
           :alt="`question-${pic.answer}`"
           :src="pic.src"
           width="58"
