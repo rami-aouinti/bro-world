@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue'
 import { useFetch } from '#app'
 import Comments from '~/pages/home/post/Comments.vue'
+import ReactionPicker from "~/components/App/ReactionPicker.vue";
 
 const { user, loggedIn } = await useUserSession()
 const showReplies = ref(false)
@@ -31,7 +32,10 @@ function hasLiked() {
   }
   isLiking.value = false
 }
-
+function handleReaction(reaction) {
+  console.log('Réaction choisie :', reaction)
+  // ici tu peux appeler une API : POST /api/posts/:id/reactions
+}
 watch(localLikes, () => {
   hasLiked()
 }, { immediate: true })

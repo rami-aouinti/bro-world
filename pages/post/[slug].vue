@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import AuthorPost from "~/pages/home/post/AuthorPost.vue";
 import Post from "~/pages/home/post/Post.vue";
@@ -9,32 +9,14 @@ const postStore = usePostStore()
 const route = useRoute()
 const slug = ref(route.params.slug)
 
-const pending = ref(true)
-const post = ref({})
-
-const loadPost = async () => {
-  try {
-    if (slug?.value) {
-      const postData = await postStore.fetchPost(slug.value)
-      if (postData) {
-        post.value = postData
-      }
-    }
-  } catch (e) {
-    console.error('Erreur de chargement du post :', e)
-  } finally {
-    pending.value = false
+const { data: post, pending, error, refresh } = await useAsyncData(
+  'post-' + slug.value,
+  () => postStore.fetchPost(slug.value),
+  {
+    watch: [() => slug.value],
+    server: true
   }
-}
-
-watch(() => route.params.slug, async (newSlug) => {
-  slug.value = newSlug
-  await loadPost()
-}, { immediate: true })
-
-onMounted(() => {
-  loadPost()
-})
+)
 </script>
 
 <template>

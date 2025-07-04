@@ -19,7 +19,6 @@
         </Suspense>
       </v-container>
     </v-main>
-
     <AppFooter aria-label="Application footer" role="contentinfo" />
     <SettingsDrawer
       :show-settings-drawer="showSettingsDrawer"
@@ -36,7 +35,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useNuxtApp } from '#app'
-import { onMounted, watch, ref, computed } from 'vue'
+import {shallowRef, ref, watch, computed, onMounted} from 'vue'
 import { useDisplay } from 'vuetify'
 import AppFooter from '~/components/App/AppFooter.vue'
 import AppDrawer from '~/components/App/AppDrawer.vue'
@@ -44,7 +43,6 @@ import AppBar from '~/components/App/AppBar.vue'
 import SettingsDrawer from '~/components/App/SettingsDrawer.vue'
 import { Analytics } from '@vercel/analytics/vue'
 import { SpeedInsights } from '@vercel/speed-insights/nuxt'
-
 const { locale } = useI18n()
 const { $vuetify } = useNuxtApp()
 const rtlLanguages = ['ar']
@@ -52,6 +50,7 @@ const isRtl = computed(() => rtlLanguages.includes(locale.value))
 const showSettingsDrawer = ref(false)
 const { mobile } = useDisplay()
 const isLoading = ref(true)
+
 
 function updateHtmlAttrs() {
   if (!process.client) return
