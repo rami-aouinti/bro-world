@@ -11,7 +11,7 @@
     </template>
 
     <!-- Card -->
-    <v-card v-else rounded="xl" class="mx-3" variant="text" elevation="10" aria-label="Rating">
+    <v-card v-else rounded="xl" class="mx-3 my-5" variant="text" elevation="10" aria-label="Rating">
       <v-card-title class="d-flex justify-center text-h5">
         <span class="text-h6">{{ t('dashboard.rating.title') }}</span>
       </v-card-title>

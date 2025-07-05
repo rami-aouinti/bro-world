@@ -126,18 +126,17 @@ onMounted(async () => {
 
 <template>
   <v-container fluid :dir="isRtl ? 'rtl' : 'ltr'">
-    <!-- STATUS BANNER -->
-    <LoaderStatusBanner v-if="loading.user" />
-    <template v-else-if="loggedIn && !user?.enabled">
-      <NuxtLazyHydrate when-visible once>
-        <UserStatusBanner />
-      </NuxtLazyHydrate>
-    </template>
-
-
     <v-row>
       <!-- LEFT: POSTS -->
-      <v-col cols="12" lg="8" style="min-height: 600px;">
+      <v-col cols="12" lg="8" style="min-height: 600px; position: relative;">
+        <!-- STATUS BANNER -->
+        <LoaderStatusBanner v-if="loading.user" />
+        <template v-else-if="loggedIn && !user?.enabled">
+          <NuxtLazyHydrate when-visible once>
+            <UserStatusBanner />
+          </NuxtLazyHydrate>
+        </template>
+
         <!-- TOP -->
         <template v-if="loading.user">
           <LoaderPost />
@@ -188,36 +187,42 @@ onMounted(async () => {
       </v-col>
 
       <!-- RIGHT SIDEBAR -->
-      <v-col cols="12" lg="4" style="min-height: 600px;">
-        <v-card class="mx-3 mt-2 mb-4" rounded="xl" variant="text" elevation="10" style="min-height: 80px;">
-          <div class="d-flex justify-center">
-            <v-btn
-              class="font-weight-bold w-100"
-              color="primary"
-              height="80"
-              variant="text"
-              @click="dialogCreateWorld = true"
-              aria-label="Build your World Bro"
-            >
-              <h6 class="text-h6 font-weight-bolder mb-0">
-                Build your World Bro
-              </h6>
-            </v-btn>
-          </div>
-        </v-card>
-        <NuxtLazyHydrate when-visible once>
-          <CreateWorldDialog v-model="dialogCreateWorld" :plugins="plugins" />
-        </NuxtLazyHydrate>
-        <ClientOnly>
-          <template v-if="loading.plugin">
-            <v-skeleton-loader type="card" class="mx-3 rounded-xl" height="300" />
-          </template>
-          <template v-else>
-            <NuxtLazyHydrate when-visible once>
-              <Dashboard />
-            </NuxtLazyHydrate>
-          </template>
-        </ClientOnly>
+      <v-col cols="12" lg="4" class="d-none d-lg-block" style="position: relative;">
+        <div
+          style="position: fixed; top: 80px; right: 16px; width: 400px; bottom: 10px; max-height: calc(100vh - 100px); overflow-y: auto;"
+        >
+          <v-card class="mx-3 mt-2 mb-4" rounded="xl" variant="text" elevation="10" style="min-height: 80px;">
+            <div class="d-flex justify-center">
+              <v-btn
+                class="font-weight-bold w-100"
+                color="primary"
+                height="80"
+                variant="text"
+                @click="dialogCreateWorld = true"
+                aria-label="Build your World Bro"
+              >
+                <h6 class="text-h6 font-weight-bolder mb-0">
+                  Build your World Bro
+                </h6>
+              </v-btn>
+            </div>
+          </v-card>
+
+          <NuxtLazyHydrate when-visible once>
+            <CreateWorldDialog v-model="dialogCreateWorld" :plugins="plugins" />
+          </NuxtLazyHydrate>
+
+          <ClientOnly>
+            <template v-if="loading.plugin">
+              <v-skeleton-loader type="card" class="mx-3 rounded-xl" height="300" />
+            </template>
+            <template v-else>
+              <NuxtLazyHydrate when-visible once>
+                <Dashboard />
+              </NuxtLazyHydrate>
+            </template>
+          </ClientOnly>
+        </div>
       </v-col>
     </v-row>
   </v-container>
