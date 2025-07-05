@@ -58,6 +58,7 @@ const props = defineProps<{
   modelValue: boolean
   title?: string
   color?: string
+  method?: string
   forms?: Record<string, any> | string
   files?: File[]
   closeButton?: DialogButton[]
@@ -75,17 +76,21 @@ const isOpen = computed({
 })
 
 const handleAction = async (action: string | (() => void)) => {
-  // 👉 Si l'action est une fonction personnalisée
   if (typeof action === 'function') {
     try {
-      action() // laisse la fonction décider si elle ferme le dialogue ou non
+      action()
     } catch (err) {
-      console.error('Error during custom action:', err)
+      console.error('Custom action error:', err)
+      emit('error', err)
     }
     return
   }
 
-  // 👉 Sinon on part sur un appel API avec POST multipart
+  if (!action || typeof action !== 'string') {
+    console.warn('No valid action provided for BaseDialog')
+    return
+  }
+
   try {
     isUpdating.value = true
 
@@ -104,7 +109,7 @@ const handleAction = async (action: string | (() => void)) => {
     }
 
     const { data, error } = await useFetch(action, {
-      method: 'POST',
+      method: props.method ?? 'POST',
       body: formData,
     })
 
@@ -123,5 +128,5 @@ const handleAction = async (action: string | (() => void)) => {
     console.error('Unexpected error:', err)
   }
 }
-</script>
 
+</script>

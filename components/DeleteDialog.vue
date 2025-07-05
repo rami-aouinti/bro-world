@@ -36,12 +36,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, defineEmits, defineProps } from "vue";
+import { computed, ref } from "vue";
 
 const props = defineProps({
   modelValue: Boolean,
   deleteUrl: String,
-  itemId: [String, Number],
 });
 
 const emit = defineEmits(["update:modelValue", "deleted"]);
@@ -57,12 +56,12 @@ const confirmDelete = async () => {
   isUpdating.value = true;
   try {
     console.log(`${props.deleteUrl}/${props.itemId}`)
-    const { data, error } = await useFetch(`${props.deleteUrl}/${props.itemId}`, {
+    const { data, error } = await useFetch(`${props.deleteUrl}`, {
       method: "DELETE",
     });
 
     if (!error.value) {
-      emit("deleted", props.itemId);
+      emit("deleted");
       isOpen.value = false;
     } else {
       console.error("Error remove :", error.value);
