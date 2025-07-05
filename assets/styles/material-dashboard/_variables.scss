@@ -631,7 +631,7 @@ $section-height: map.merge(
 $kanban-padding: 10px !default;
 
 // Fixed Plugin
-$fixed-plugin-bottom: 40px !default;
+$fixed-plugin-bottom: 20px !default;
 $fixed-plugin-right: $fixed-plugin-bottom !default;
 $fixed-plugin-bottom-education: 100px !default;
 $fixed-plugin-right-education: $fixed-plugin-bottom-education !default;
@@ -641,7 +641,7 @@ $fixed-plugin-bottom-language: 220px !default;
 $fixed-plugin-right-language: $fixed-plugin-bottom-language !default;
 $fixed-plugin-bottom-hobby: 280px !default;
 $fixed-plugin-right-hobby: $fixed-plugin-bottom-hobby !default;
-$fixed-plugin-z-index: 990 !default;
+$fixed-plugin-z-index: 1008 !default;
 
 // Navbar vertical
 $navbar-vertical-hover-bg-color: rgba(199, 199, 199, 0.2) !default;

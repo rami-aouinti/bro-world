@@ -31,8 +31,8 @@ const notLoggedUser = ref([
   <v-menu location="bottom" transition="slide-y-transition" offset-y offset-x width="220">
     <template #activator="{ props: menu }">
       <v-btn aria-label="account" title="account" color="secondary" icon v-bind="mergeProps(menu)" class="ml-0">
-        <v-icon v-if="!loggedIn" icon="mdi-account-circle" size="30" />
-        <UserAvatar v-if="loggedIn && !pending" :user="user" size="30" color="primary" />
+        <v-icon v-if="!loggedIn" icon="mdi-account-circle" size="26" />
+        <UserAvatar v-if="loggedIn && !pending" :user="user" size="26" color="primary" />
       </v-btn>
     </template>
 

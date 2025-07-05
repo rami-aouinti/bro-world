@@ -25,6 +25,7 @@ definePageMeta({
   >
     <span class="mask bg-gradient-default opacity-6" />
     <v-card
+      :loading="isRedirecting"
       class="border-radius-xl overflow-visible"
       max-width="450"
       min-width="350"

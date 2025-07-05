@@ -526,6 +526,7 @@ svg.text-dark {
   bottom: $fixed-plugin-bottom;
   right: $fixed-plugin-right;
   z-index: $fixed-plugin-z-index;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
 .fixed-plugin-button-education {
