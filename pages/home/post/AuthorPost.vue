@@ -2,264 +2,264 @@
 import UserAvatar from "~/components/App/UserAvatar.vue";
 import RelativeTime from "~/components/App/RelativeTime.vue";
 import DeleteDialog from "~/components/DeleteDialog.vue";
-import {useI18n} from 'vue-i18n'
-import {useLocalePath} from '#i18n'
 import BaseDialog from "~/components/BaseDialog.vue";
+import { useI18n } from 'vue-i18n';
+import { useLocalePath } from '#i18n';
+import { useUserStore } from "~/stores/useUserStore";
 
-const props = defineProps<{
-  post: {
-    type: Object,
-    required: true,
-  },
-}>()
+const props = defineProps<{ post: any }>();
+const emit = defineEmits(['post-delete', 'post-updated']);
 
-const emit = defineEmits(['post-delete', 'post-updated'])
+const { t } = useI18n();
+const localePath = useLocalePath();
+const { user } = await useUserSession();
+const router = useRouter();
+const route = useRoute();
+const userStore = useUserStore();
 
-const { t } = useI18n()
-const localePath = useLocalePath()
-const { user } = await useUserSession()
-const router = useRouter()
-const route = useRoute()
-
-const isFollowing = ref<boolean | null>(null)
-const isFollower = ref<boolean | null>(null)
-const isFriend = ref<boolean | null>(null)
-
-const loading = ref(true)
-const deletePost = ref(false)
-const editPost = ref(false)
-
-const postContent = ref('')
-const youtubeId = ref<string | null>(null)
-const imageUrl = ref<string | null>(null)
+const relationStatus = ref<number | null>(null); // 0: none, 1: follower, 2: following, 3: friend
+const loading = ref(true);
+const loadingReject = ref(false);
+const deletePost = ref(false);
+const editPost = ref(false);
+const postContent = ref('');
+const youtubeId = ref<string | null>(null);
+const imageUrl = ref<string | null>(null);
+const files = ref<File[]>([]);
 
 function detectLinks() {
-  if (youtubeId.value || imageUrl.value) return // Empêcher la redétection
+  if (youtubeId.value || imageUrl.value) return;
 
   const ytRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^\s&]+)/;
   const imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/;
 
-  const ytMatch = postContent.value.match(ytRegex)
-  const imgMatch = postContent.value.match(imgRegex)
+  const ytMatch = postContent.value.match(ytRegex);
+  const imgMatch = postContent.value.match(imgRegex);
 
   if (ytMatch) {
-    youtubeId.value = ytMatch[1]
-    postContent.value = ''
+    youtubeId.value = ytMatch[1];
+    postContent.value = '';
   } else if (imgMatch) {
-    imageUrl.value = imgMatch[1]
-    postContent.value = ''
+    imageUrl.value = imgMatch[1];
+    postContent.value = '';
   }
 }
 
 function clearPreview() {
-  youtubeId.value = null
-  imageUrl.value = null
+  youtubeId.value = null;
+  imageUrl.value = null;
 }
 
 const formPayload = computed(() => {
-  const payload: Record<string, any> = {}
-
-  if (youtubeId.value) {
-    payload.url = `https://www.youtube.com/watch?v=${youtubeId.value}`
-  } else if (imageUrl.value) {
-    payload.url = imageUrl.value
-  }
-
-  if (postContent.value.trim()) {
-    payload.title = postContent.value.trim()
-  }
-
-  return payload
-})
-
+  const payload: Record<string, any> = {};
+  if (youtubeId.value) payload.url = `https://www.youtube.com/watch?v=${youtubeId.value}`;
+  else if (imageUrl.value) payload.url = imageUrl.value;
+  if (postContent.value.trim()) payload.title = postContent.value.trim();
+  return payload;
+});
 
 const handleSuccess = (data: any) => {
-  postContent.value = ''
-  imageUrl.value = null
-  youtubeId.value = null
-  Notify.success("Post updated!")
-  emit('post-updated', data)
-}
+  postContent.value = '';
+  imageUrl.value = null;
+  youtubeId.value = null;
+  Notify.success("Post updated!", user.photo ?? "", "/post/" + data.slug);
+  emit('post-updated', data);
+};
+
+const handleSuccessDelete = () => {
+  Notify.success("Post deleted!", user.photo ?? "", "");
+  emit('post-delete', props.post.id);
+};
 
 const handleError = (error: any) => {
-  Notify.error("Post failed!")
-  console.error('Failed:', error)
-}
+  Notify.error("Post failed!");
+  console.error('Failed:', error);
+};
 
+const handleEdit = () => {
+  postContent.value = props.post.title;
+  editPost.value = true;
+};
 
+const handleDelete = () => {
+  deletePost.value = true;
+};
 
+const refreshUser = async (userId: string, userName: string) => {
+  await useAsyncData('pFenRpPsbw:user_profile_' + userId, () => userStore.fetchProfile(userId, userName), {
+    watch: [() => userId],
+    server: true
+  });
+};
 
-const handleEdit = async (id: string | number) => {
-  postContent.value = props.post.title
-  editPost.value = true
-}
+const changeFollowStatus = async (val) => {
+  relationStatus.value = val
+};
 
-const checkFollowStatus = async (userId: string) => {
-
+const checkFollowStatus = async () => {
+  loading.value = true;
   try {
-    for (let friend in user.value.friends) {
-
-      console.log(friend.value)
-      if (friend.user === userId) {
-        if (friend.status == 1) {
-          isFollowing.value = true
-        }
-        if (friend.status == 2) {
-          isFollower.value = true
-        }
-        if (friend.status == 3) {
-          isFriend.value = true
-        }
-        else {
-          isFollowing.value = false
-        }
-      }
-      loading.value = false
-    }
-  } catch (error) {
-    console.error('Error checking follow status:', error)
+    relationStatus.value = props.post.status;
+  } catch (e) {
+    console.error("Error checking follow status:", e);
+    relationStatus.value = 0;
+  } finally {
+    loading.value = false;
   }
-  loading.value = false
-}
+};
 
 const toggleFollow = async (userId: string) => {
-  if (!user.value) {
-    return redirectToLogin()
-  }
-
-  loading.value = true
+  if (!user.value) return redirectToLogin();
+  loading.value = true;
   try {
-    await $fetch(`/api/follow/follow/${userId}`, {
-      method: 'POST',
-    })
-    isFollowing.value = true
+    await $fetch(`/api/follow/follow/${userId}`, { method: 'POST' });
+    await refreshUser(props.post.user.id, props.post.user.username);
+    await refreshUser(user.value.id, user.value.username);
   } catch (error) {
-    console.error('Error following:', error)
+    console.error('Error following:', error);
   }
-  loading.value = false
-}
+  loading.value = false;
+};
 
 const toggleUnFollow = async (userId: string) => {
-  if (!user.value) {
-    return redirectToLogin()
-  }
-
-  loading.value = true
+  if (!user.value) return redirectToLogin();
+  loading.value = true;
   try {
-    await $fetch(`/api/follow/unfollow/${userId}`, {
-      method: 'POST',
-    })
-    isFollowing.value = false
+    await $fetch(`/api/follow/unfollow/${userId}`, { method: 'POST' });
+    loading.value = false;
+    await refreshUser(props.post.user.id, props.post.user.username);
+    await refreshUser(user.value.id, user.value.username);
   } catch (error) {
-    console.error('Error unfollowing:', error)
+    console.error('Error unfollowing:', error);
   }
-  loading.value = false
-}
+};
+
+const toggleReject = async (userId: string) => {
+  if (!user.value) return redirectToLogin();
+  loadingReject.value = true;
+  try {
+    await $fetch(`/api/follow/unfollow/${userId}`, { method: 'POST' });
+    loadingReject.value = false;
+    await refreshUser(props.post.user.id, props.post.user.username);
+    await refreshUser(user.value.id, user.value.username);
+  } catch (error) {
+    console.error('Error unfollowing:', error);
+  }
+};
+
+const rejectRelationAction = () => {
+  changeFollowStatus(0);
+  toggleReject(props.post.user.id);
+};
+
+const handleRelationAction = () => {
+  switch (relationStatus.value) {
+    case 0:
+      changeFollowStatus(2);
+      toggleFollow(props.post.user.id);
+    break;
+    case 3:
+      changeFollowStatus(1);
+      toggleFollow(props.post.user.id);
+      break;
+    case 2:
+      changeFollowStatus(0);
+      toggleUnFollow(props.post.user.id);
+    break;
+    case 1:
+      changeFollowStatus(0);
+      toggleUnFollow(props.post.user.id);
+    break;
+  }
+};
 
 const redirectToLogin = () => {
-  router.push({
-    path: '/login',
-    query: { redirect: route.fullPath }
-  })
-}
+  router.push({ path: '/login', query: { redirect: route.fullPath } });
+};
 
-const handleDelete = (id: string | number) => {
-  deletePost.value = true
-}
-const files = ref<File[]>([])
 watch(
   () => props.post.user?.id,
   () => {
     if (user.value && props.post.user?.id) {
-      checkFollowStatus(props.post.user.id)
+      checkFollowStatus(props.post.user.id);
     }
   },
   { immediate: true }
-)
-
+);
 </script>
 
 <template>
   <div class="d-flex align-center px-4 py-4">
     <div class="d-flex align-center">
-      <a
-        :href="props.post?.user?.username === user?.username
-          ? '/profile'
-          : `/user/${props.post?.user?.username}`"
-        class="text-decoration-none"
-      >
-        <UserAvatar :user="props.post?.user" color="primary" size="48" />
+      <a :href="props.post.user?.username === user?.username ? '/profile' : `/user/${props.post.user.username}`">
+        <UserAvatar :user="props.post.user" color="primary" size="48" />
       </a>
       <div class="mx-4">
         <NuxtLink
-          :to="props.post?.user?.username === user?.username
-            ? localePath('/profile')
-            : localePath(`/user/${props.post?.user?.username}`)"
+          :to="props.post.user?.username === user?.username ? localePath('/profile') : localePath(`/user/${props.post.user.username}`)"
           class="text-dark font-weight-600 text-sm text-decoration-none"
         >
-          {{ props.post?.user?.firstName }} {{ props.user?.lastName }}
+          {{ props.post.user?.firstName }} {{ props.user?.lastName }}
         </NuxtLink>
-        <RelativeTime :date="props.post?.publishedAt" />
+        <RelativeTime :date="props.post.publishedAt" />
       </div>
     </div>
 
-    <div class="text-end ms-auto" v-if="isFollowing === false && props.post.user?.id !== user?.id">
+    <div class="text-end ms-auto" v-if="props.post.user?.id !== user?.id">
       <v-btn
-        icon
-        :loading="loading"
+        :loading="loadingReject"
         variant="text"
         size="small"
         class="text-primary"
-        @click="toggleFollow(props.post.user?.id)"
+        @click="rejectRelationAction"
       >
-        <v-icon>mdi-account-plus</v-icon>
+        <template #default>
+          <v-icon v-if="relationStatus === 3">mdi-account-minus</v-icon>
+          <span class="ms-2 text-caption">
+            {{
+                    relationStatus === 3 ? 'Reject' : ''
+            }}
+          </span>
+        </template>
       </v-btn>
-    </div>
-
-    <div class="text-end ms-auto" v-if="isFollowing === true && props.post.user?.id !== user?.id">
       <v-btn
-        icon
         :loading="loading"
         variant="text"
         size="small"
         class="text-primary"
-        @click="toggleUnFollow(props.post.user?.id)"
+        @click="handleRelationAction"
       >
-        <v-icon>mdi-account-minus</v-icon>
+        <template #default>
+          <v-icon v-if="relationStatus === 0">mdi-account-plus</v-icon>
+          <v-icon v-if="relationStatus === 3">mdi-account-check</v-icon>
+          <v-icon v-if="relationStatus === 2">mdi-clock</v-icon>
+          <v-icon v-if="relationStatus === 1">mdi-account-multiple-check</v-icon>
+          <span class="ms-2 text-caption">
+            {{
+              relationStatus === 0 ? 'Follow' :
+                relationStatus === 1 ? 'Friend' :
+                  relationStatus === 2 ? 'Requested' :
+                    relationStatus === 3 ? 'Accept' : ''
+            }}
+          </span>
+        </template>
       </v-btn>
     </div>
 
     <div class="text-end ms-auto" v-if="props.post.user?.id === user?.id">
       <v-menu location="bottom" max-width="68">
-        <template #activator="slotProps">
-          <v-btn
-            icon
-            variant="text"
-            size="small"
-            class="text-primary"
-            v-bind="slotProps.props"
-          >
+        <template #activator="{ props }">
+          <v-btn icon variant="text" size="small" class="text-primary" v-bind="props">
             <v-icon icon="mdi-dots-vertical" size="20" />
           </v-btn>
         </template>
 
         <v-list class="pa-2">
           <v-list-item>
-            <v-icon
-              size="small"
-              icon="mdi-pencil"
-              color="warning"
-              @click="handleEdit(props.post.id)"
-            />
+            <v-icon size="small" icon="mdi-pencil" color="warning" @click="handleEdit()" />
           </v-list-item>
           <v-list-item>
-            <v-icon
-              size="small"
-              color="error"
-              @click="handleDelete(props.post.id)"
-            >
-              mdi-delete
-            </v-icon>
+            <v-icon size="small" color="error" @click="handleDelete()">mdi-delete</v-icon>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -268,8 +268,8 @@ watch(
         v-model="editPost"
         title="Edit Post"
         color="primary"
-        :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (editPost = false) }]"
-        :saveButton="[{ text: 'Save', color: 'primary', action: '/api/posts/post/edit/' + props.post.id }]"
+        :closeButton="[{ text: 'Cancel', action: 'close' }]"
+        :saveButton="[{ text: 'Post', color: 'primary', action: '/api/posts/post/edit/' + props.post.id }]"
         :files="files"
         :forms="formPayload"
         @success="handleSuccess"
@@ -282,17 +282,12 @@ watch(
               label="Post Title"
               variant="outlined"
               rounded
-              outlined
               required
               @input="detectLinks"
             />
-
-            <!-- Aperçu YouTube -->
             <div v-if="youtubeId" class="my-4 text-center">
               <div class="d-flex justify-end">
-                <v-btn icon @click="clearPreview" variant="text" size="small">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
+                <v-btn icon @click="clearPreview" variant="text" size="small"><v-icon>mdi-close</v-icon></v-btn>
               </div>
               <iframe
                 :src="`https://www.youtube.com/embed/${youtubeId}`"
@@ -303,25 +298,21 @@ watch(
                 style="max-width: 100%"
               ></iframe>
             </div>
-
-            <!-- Aperçu Image -->
             <div v-if="imageUrl" class="my-4 text-center">
               <div class="d-flex justify-end">
-                <v-btn icon @click="clearPreview" variant="text" size="small">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
+                <v-btn icon @click="clearPreview" variant="text" size="small"><v-icon>mdi-close</v-icon></v-btn>
               </div>
-              <NuxtImg :lazy-src="'/img/person.png'" :src="imageUrl" alt="preview" format="webp" loading="lazy" cover style="max-width: 100%; max-height: 300px" />
+              <NuxtImg :src="imageUrl" alt="preview" format="webp" loading="lazy" cover style="max-width: 100%; max-height: 300px" />
             </div>
           </v-card-text>
         </v-card>
       </BaseDialog>
 
       <DeleteDialog
-        @deleted="emit('post-delete')"
-        :model-value="deletePost"
-        delete-url="/api/posts/post/delete"
-        :item-id="props.post.id"
+        v-model="deletePost"
+        :deleteUrl="`/api/posts/post/delete/${props.post.id}`"
+        :closeButton="[{ text: 'Cancel', color: 'grey', action: 'close' }]"
+        @deleted="handleSuccessDelete"
       />
     </div>
   </div>

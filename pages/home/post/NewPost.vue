@@ -191,11 +191,11 @@ function triggerFileInput() {
       v-model="dialogFile"
       title="New Post"
       color="primary"
-      :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (dialogFile.value = false) }]"
-      :saveButton="[{ text: 'Save', color: 'primary', action: '/api/posts/post/posts' }]"
+      :closeButton="[{ text: 'Cancel', action: 'close' }]"
+      :saveButton="[{ text: 'Send', action: '/api/posts/post/posts' }]"
       :files="files"
       :forms="formPayload"
-      @success="emit('post-created')"
+      @success="(post) => emit('post-created', post)"
       @error="Notify.error('Error creating post')"
     >
       <v-card rounded="xl">
@@ -256,11 +256,11 @@ function triggerFileInput() {
       v-model="dialog"
       title="New Post"
       color="primary"
-      :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (dialog.value = false) }]"
-      :saveButton="[{ text: 'Save', color: 'primary', action: '/api/posts/post/posts' }]"
+      :closeButton="[{ text: 'Cancel', action: 'close' }]"
+      :saveButton="[{ text: 'Send', action: '/api/posts/post/posts' }]"
       :files="files"
       :forms="formPayload"
-      @success="emit('post-created')"
+      @success="(post) => emit('post-created', post)"
       @error="Notify.error('Error creating post')"
     >
       <v-card rounded="xl">

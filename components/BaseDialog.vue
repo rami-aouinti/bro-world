@@ -21,13 +21,11 @@
       <v-card-actions>
         <v-spacer />
         <template v-for="btn in closeButton" :key="btn.text">
-          <v-btn
-            :color="btn.color || 'grey'"
-            @click="handleAction(btn.action)"
-          >
+          <v-btn :color="btn.color || 'grey'" @click="handleAction(btn.action)">
             {{ btn.text }}
           </v-btn>
         </template>
+
         <template v-for="btn in saveButton" :key="btn.text">
           <v-btn
             :color="btn.color || color"
@@ -64,7 +62,11 @@ const props = defineProps<{
   saveButton?: DialogButton[]
 }>()
 
-const emit = defineEmits(['update:modelValue', 'success', 'error'])
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: boolean): void
+  (e: 'success', result: any): void
+  (e: 'error', err: any): void
+}>()
 
 const isUpdating = ref(false)
 const autoUpdate = ref(false)
@@ -75,20 +77,25 @@ const isOpen = computed({
 })
 
 const handleAction = async (action: string | (() => void)) => {
-  // 👉 Si l'action est une fonction personnalisée
+  // 👉 Cas fonction personnalisée
   if (typeof action === 'function') {
     try {
-      action() // laisse la fonction décider si elle ferme le dialogue ou non
+      action()
     } catch (err) {
-      console.error('Error during custom action:', err)
+      console.error('[BaseDialog] Erreur dans la fonction personnalisée :', err)
     }
     return
   }
 
-  // 👉 Sinon on part sur un appel API avec POST multipart
+  // 👉 Cas d'action spéciale : 'close'
+  if (action === 'close') {
+    isOpen.value = false
+    return
+  }
+
+  // 👉 Cas d'appel API
   try {
     isUpdating.value = true
-
     const formData = new FormData()
 
     if (props.files?.length) {
@@ -103,24 +110,18 @@ const handleAction = async (action: string | (() => void)) => {
       formData.append('title', props.forms)
     }
 
-    const  data = await $fetch(action, {
+    const result = await $fetch(action, {
       method: 'POST',
       body: formData,
     })
 
-    isUpdating.value = false
-    if (data) {
-      emit('success', data)
-      isOpen.value = false
-    } else {
-      emit('error', new Error('No data returned from action'))
-      console.error('Error:', 'No data returned from action')
-    }
+    emit('success', result)
+    isOpen.value = false
   } catch (err) {
-    isUpdating.value = false
     emit('error', err)
-    console.error('Unexpected error:', err)
+    console.error('[BaseDialog] Unexpected error:', err)
+  } finally {
+    isUpdating.value = false
   }
 }
 </script>
-

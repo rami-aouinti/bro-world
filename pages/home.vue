@@ -12,6 +12,7 @@ import Dashboard from '~/pages/home/Dashboard.vue'
 import LoaderStatusBanner from '~/components/App/Loader/Home/LoaderStatusBanner.vue'
 import LoaderPost from '~/components/App/Loader/Home/LoaderPost.vue'
 import DrawerManager from "~/components/App/AppBar/DrawerManager.vue";
+import {useUserStore} from "~/stores/useUserStore";
 
 
 const { locale } = useI18n()
@@ -23,6 +24,8 @@ const currentPage = ref(1)
 const isLoading = ref(false)
 const hasMore = ref(true)
 const stories = ref<any[]>([])
+const profile = ref<any[]>([])
+const userStore = useUserStore();
 
 
 
@@ -38,16 +41,60 @@ const totalPages = computed(() =>
   Math.ceil(postStore.total / postStore.limit)
 )
 
+
+
+const loadProfile = async (): Promise<number> => {
+  if (user?.value) {
+    const  data = await userStore.fetchProfile(user.value.id, user.value.username)
+    if (data) {
+      profile.value = data
+    }
+  }
+}
+
+const checkFollowStatus = async (userId: string): Promise<number> => {
+  try {
+    const friends = profile.value?.friends
+    if (!friends) return 0
+
+    for (const friend of Object.values(friends)) {
+      if (friend.user === userId) return friend.status
+    }
+
+    return 0
+  } catch (e) {
+    console.error("Error checking follow status:", e)
+    return 0
+  }
+}
+
+
+
 const loadInitialPosts = async () => {
   try {
     const newPosts = await postStore.fetchPosts(1, postStore.limit)
-    if (newPosts) {
+
+    if (newPosts && Array.isArray(newPosts)) {
+      // Ajouter status async pour chaque post
+      const postsWithStatus = await Promise.all(
+        newPosts.map(async (post: any) => {
+          if (post.user?.id !== user.value?.id) {
+            post.status = await checkFollowStatus(post.user.id)
+          } else {
+            post.status = 0
+          }
+          return post
+        })
+      )
+
+      console.log(postsWithStatus)
       postStore.setPosts({
-        data: newPosts,
+        data: postsWithStatus,
         page: 1,
         limit: postStore.limit,
         count: postStore.total,
       })
+
       hasMore.value = totalPages.value >= currentPage.value
     }
   } catch (e) {
@@ -89,8 +136,45 @@ const loadStories = async () => {
   }
 }
 
-const reloadPosts = (post: any) => {
+const addPost = (post: any) => {
+  if (!post || typeof post !== 'object' || !post.id) {
+    console.warn('[reloadPosts] Post non valide :', post)
+    return
+  }
+
   postStore.appendPost({ data: post })
+  reloadPosts()
+}
+
+const editPost = (post: any) => {
+  if (!post || typeof post !== 'object' || !post.id) {
+    console.warn('[editPost] Post non valide :', post)
+    return
+  }
+
+  const index = postStore.posts.findIndex((p: any) => p.id === post.id)
+
+  if (index !== -1) {
+    postStore.posts[index] = post
+  } else {
+    console.warn('[editPost] Post non trouvé dans le store, ajout en fallback')
+    postStore.appendPost({ data: post })
+  }
+  reloadPosts()
+}
+
+const deletePost = (postId: string | number) => {
+  if (!postId) {
+    console.warn('[deletePost] postId invalide:', postId)
+    return
+  }
+
+  postStore.posts = postStore.posts.filter((p: any) => p.id !== postId)
+  reloadPosts()
+}
+
+const reloadPosts = () => {
+  postStore.fetchPosts()
 }
 
 const reloadStories = async () => {
@@ -100,6 +184,7 @@ const reloadStories = async () => {
 
 onMounted(async () => {
   try {
+    await loadProfile()
     await loadInitialPosts()
     await nextTick()
     await loadStories()
@@ -135,7 +220,7 @@ onMounted(async () => {
                 <LoaderPost />
               </template>
               <template v-else>
-                <NewPost v-if="loggedIn" @post-created="reloadPosts" @story-created="reloadStories" />
+                <NewPost v-if="loggedIn" @post-created="(post) => addPost(post)" @story-created="reloadStories" />
                 <ClientOnly>
                   <template v-if="loading.story">
                     <v-skeleton-loader type="avatar" class="mx-2" style="width: 50px; height: 50px;" />
@@ -165,8 +250,8 @@ onMounted(async () => {
                     v-for="(item, index) in postStore.posts"
                     :key="item.id"
                     :post="item"
-                    @post-updated="reloadPosts"
-                    @post-deleted="reloadPosts"
+                    @post-updated="(post) => editPost(post)"
+                    @post-deleted="(post) => deletePost(post)"
                   />
                   <template #load-more="{ props }">
                     <v-btn
