@@ -3,9 +3,11 @@ import { ref, watch } from 'vue'
 import { useFetch } from '#app'
 import Comments from '~/pages/home/post/Comments.vue'
 import ReactionPicker from "~/components/App/ReactionPicker.vue";
+import NewComment from "~/pages/home/post/NewComment.vue";
 
 const { user, loggedIn } = await useUserSession()
 const showReplies = ref(false)
+const emit = defineEmits(['post-reload']);
 
 const props = defineProps<{
   post: {
@@ -14,7 +16,7 @@ const props = defineProps<{
     comments?: any[]
   }
 }>()
-
+const comments = ref(props.post.comments)
 const loading = ref(false)
 const isLiking = ref(false)
 const likeId = ref('')
@@ -40,6 +42,13 @@ watch(localLikes, () => {
   hasLiked()
 }, { immediate: true })
 
+const reloadComments = async (data: any) => {
+  showReplies.value = true
+  comments.value.unshift(data.value);
+  emit('post-reload')
+}
+
+
 const handleLike = async () => {
   loading.value = true
 
@@ -63,6 +72,7 @@ const handleLike = async () => {
       likeId.value = data.id
       isLiking.value = true
       Notify.success('Post is liked !', user.photo, 'https://bro-world-space.com/post/' + props.post.slug)
+      emit('post-reload')
     } else {
       await $fetch(`/api/posts/${likeId.value}/post`, {
         method: 'POST',
@@ -74,6 +84,7 @@ const handleLike = async () => {
 
       isLiking.value = false
       Notify.success('Post is disliked !', user.photo, 'https://bro-world-space.com/post/' + props.post.slug)
+      emit('post-reload')
     }
   } catch (err) {
     Notify.error('Error : ' + err)
@@ -132,6 +143,11 @@ const handleLike = async () => {
     </div>
   </div>
   <div v-if="showReplies">
-    <Comments :post="props.post" />
+    <Comments :comments="comments" />
   </div>
+  <NewComment
+    :post="props.post"
+    v-if="loggedIn"
+    @comment-created="reloadComments"
+  />
 </template>

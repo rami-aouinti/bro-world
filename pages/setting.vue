@@ -102,7 +102,7 @@ import Sessions from '~/pages/setting/Sessions.vue'
 import DeleteAccount from '~/pages/setting/DeleteAccount.vue'
 import LoaderSetting from "~/components/App/Loader/Profile/LoaderSetting.vue";
 
-const { user } = await useUserSession()
+const { user, refresh } = await useUserSession()
 const switche = ref(true)
 const pending = ref(true)
 const profile = ref<any>(null)

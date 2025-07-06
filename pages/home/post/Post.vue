@@ -7,7 +7,7 @@ const props = defineProps({
     required: true,
   },
 })
-
+const emit = defineEmits(['post-reload']);
 function isYoutubeUrl(url) {
   return /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)/.test(url)
 }
@@ -139,7 +139,7 @@ const localePath = useLocalePath()
         </v-sheet>
       </div>
 
-    <ReactPost :post="props.post" />
+    <ReactPost @post-reload="emit('post-reload')" :post="props.post" />
   </div>
 
 </template>

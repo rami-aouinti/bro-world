@@ -4,15 +4,16 @@ import Comment from "~/pages/home/post/Comment.vue";
 import { ref } from 'vue'
 import { useLocalePath } from '#i18n'
 const props = defineProps<{
-  post: {
-    id: string
-    comments: any[]
+  comments: {
+    type: any,
+    required: true,
   },
 }>()
+const comments = ref(props.comments)
 
 const localePath = useLocalePath()
 const { loggedIn, user } = useUserSession()
-const comments = ref(props.post.comments)
+
 
 const reloadComments = async (data: any) => {
   comments.value.unshift(data.value);
@@ -26,11 +27,5 @@ const reloadComments = async (data: any) => {
     <div v-for="comment in comments" :key="comment.id" class="d-flex mt-3">
       <Comment @comment-created="reloadComments" @comment-deleted="reloadComments" :comment="comment" />
     </div>
-
-    <NewComment
-      :post="props.post"
-      v-if="loggedIn"
-      @comment-created="reloadComments"
-    />
   </div>
 </template>

@@ -63,7 +63,7 @@ async function saveEdit() {
 
     props.comment.content = editableContent.value
     edit.value = false
-    Notify.success('Comment updated.')
+    Notify.success('Comment updated.', user.value?.photo, localePath(`/post/${props.post.slug}`))
     emit('comment-created')
   } catch (e) {
     console.error(e)
@@ -74,7 +74,7 @@ async function saveEdit() {
 }
 
 const createdComment = () => {
-  Notify.success('Comment created.')
+  Notify.success('Comment created.', user.value?.photo, localePath(`/post/${props.post.slug}`))
 }
 </script>
 

@@ -86,10 +86,7 @@ const handleDelete = () => {
 };
 
 const refreshUser = async (userId: string, userName: string) => {
-  await useAsyncData('pFenRpPsbw:user_profile_' + userId, () => userStore.fetchProfile(userId, userName), {
-    watch: [() => userId],
-    server: true
-  });
+  await userStore.fetchProfile(userId, userName);
 };
 
 const changeFollowStatus = async (val) => {
@@ -181,7 +178,7 @@ watch(
   () => props.post.user?.id,
   () => {
     if (user.value && props.post.user?.id) {
-      checkFollowStatus(props.post.user.id);
+      checkFollowStatus();
     }
   },
   { immediate: true }

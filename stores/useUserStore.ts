@@ -30,6 +30,6 @@ export const useUserStore = defineStore('user', {
         console.error('Failed to fetch posts', e)
         return []
       }
-    },
+    }
   },
 })

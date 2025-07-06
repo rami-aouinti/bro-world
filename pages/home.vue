@@ -87,7 +87,6 @@ const loadInitialPosts = async () => {
         })
       )
 
-      console.log(postsWithStatus)
       postStore.setPosts({
         data: postsWithStatus,
         page: 1,
@@ -110,9 +109,18 @@ const loadMore = async ({ done }) => {
 
   const nextPage = currentPage.value + 1
   const newPosts = await postStore.fetchPosts(nextPage, postStore.limit)
-
-  if (newPosts?.length) {
-    postStore.appendPosts(newPosts)
+  const postsWithStatus = await Promise.all(
+    newPosts.map(async (post: any) => {
+      if (post.user?.id !== user.value?.id) {
+        post.status = await checkFollowStatus(post.user.id)
+      } else {
+        post.status = 0
+      }
+      return post
+    })
+  )
+  if (postsWithStatus?.length) {
+    postStore.appendPosts(postsWithStatus)
     currentPage.value = nextPage
     done('ok')
   } else {
@@ -250,6 +258,7 @@ onMounted(async () => {
                     v-for="(item, index) in postStore.posts"
                     :key="item.id"
                     :post="item"
+                    @post-reload="reloadPosts"
                     @post-updated="(post) => editPost(post)"
                     @post-deleted="(post) => deletePost(post)"
                   />

@@ -28,18 +28,13 @@ export default defineEventHandler(async (event) => {
 
   const url = 'https://bro-world.org/api/v1/avatar'
 
-  const user = await requestWithRetry('post', url, token, formData, true)
+  const profile = await requestWithRetry('post', url, token, formData, true)
 
   await setUserSession(event, {
     user: {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      enabled: user.enabled,
-      photo: user?.profile.photo,
-      profile: user?.profile,
-      roles: user.roles,
+      photo: profile?.photo,
     },
   })
 
-  return user
+  return profile
 })

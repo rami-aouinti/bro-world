@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthorPost from "~/pages/home/post/AuthorPost.vue";
 import Post from "~/pages/home/post/Post.vue";
-const emit = defineEmits(['post-updated', 'post-deleted'])
+const emit = defineEmits(['post-updated', 'post-deleted', 'post-reload'])
 const props = defineProps({
   post: {
     type: Object,
@@ -15,7 +15,7 @@ const props = defineProps({
   <div class="py-3">
     <v-card rounded="xl" class="mx-3" variant="text" elevation="10">
       <AuthorPost @post-updated="(data) => emit('post-updated', data)" @post-delete="(data) => emit('post-deleted', data)" :post="props.post"></AuthorPost>
-      <Post :post="props.post"></Post>
+      <Post @post-reload="emit('post-reload')" :post="props.post"></Post>
     </v-card>
   </div>
 </template>
