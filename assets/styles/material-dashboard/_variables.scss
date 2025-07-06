@@ -630,18 +630,19 @@ $section-height: map.merge(
 // Kanban
 $kanban-padding: 10px !default;
 
+$fixed-plugin-bottom: 10px !default;
 // Fixed Plugin
-$fixed-plugin-bottom: 20px !default;
-$fixed-plugin-right: $fixed-plugin-bottom !default;
-$fixed-plugin-bottom-education: 100px !default;
-$fixed-plugin-right-education: $fixed-plugin-bottom-education !default;
-$fixed-plugin-bottom-skill: 160px !default;
-$fixed-plugin-right-skill: $fixed-plugin-bottom-skill !default;
-$fixed-plugin-bottom-language: 220px !default;
-$fixed-plugin-right-language: $fixed-plugin-bottom-language !default;
-$fixed-plugin-bottom-hobby: 280px !default;
-$fixed-plugin-right-hobby: $fixed-plugin-bottom-hobby !default;
-$fixed-plugin-z-index: 1008 !default;
+$fixed-plugin-bottom-news: 30px !default;
+$fixed-plugin-right-news: $fixed-plugin-bottom !default;
+$fixed-plugin-bottom-theme: 90px !default;
+$fixed-plugin-right-theme: $fixed-plugin-bottom !default;
+$fixed-plugin-bottom-world: 150px !default;
+$fixed-plugin-right-world: $fixed-plugin-bottom !default;
+$fixed-plugin-bottom-media: 210px !default;
+$fixed-plugin-right-media: $fixed-plugin-bottom !default;
+$fixed-plugin-bottom-hobby: 270px !default;
+$fixed-plugin-right-hobby: $fixed-plugin-bottom !default;
+$fixed-plugin-z-index: 1021 !default;
 
 // Navbar vertical
 $navbar-vertical-hover-bg-color: rgba(199, 199, 199, 0.2) !default;

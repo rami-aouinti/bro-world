@@ -9,7 +9,7 @@
     <v-defaults-provider
       :defaults="{ VBtn: { variant: 'text', size: 'x-small' } }"
     >
-      <AppSettings />
+
     </v-defaults-provider>
   </v-footer>
 </template>

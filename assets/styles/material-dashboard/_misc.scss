@@ -522,36 +522,33 @@ svg.text-dark {
 }
 
 // Fixed Plugin
-.fixed-plugin-button {
-  bottom: $fixed-plugin-bottom;
-  right: $fixed-plugin-right;
+.fixed-plugin-button-news {
+  bottom: $fixed-plugin-bottom-news;
+  right: $fixed-plugin-right-news;
+  z-index: $fixed-plugin-z-index;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+.fixed-plugin-button-theme {
+  bottom: $fixed-plugin-bottom-theme;
+  right: $fixed-plugin-right-theme;
+  z-index: $fixed-plugin-z-index;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+.fixed-plugin-button-world {
+  bottom: $fixed-plugin-bottom-world;
+  right: $fixed-plugin-right-world;
   z-index: $fixed-plugin-z-index;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
-.fixed-plugin-button-education {
-  bottom: $fixed-plugin-bottom-education;
-  right: $fixed-plugin-right;
+.fixed-plugin-button-media {
+  bottom: $fixed-plugin-bottom-media;
+  right: $fixed-plugin-right-media;
   z-index: $fixed-plugin-z-index;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
-.fixed-plugin-button-skill {
-  bottom: $fixed-plugin-bottom-skill;
-  right: $fixed-plugin-right;
-  z-index: $fixed-plugin-z-index;
-}
 
-.fixed-plugin-button-language {
-  bottom: $fixed-plugin-bottom-language;
-  right: $fixed-plugin-right;
-  z-index: $fixed-plugin-z-index;
-}
-
-.fixed-plugin-button-hobby {
-  bottom: $fixed-plugin-bottom-hobby;
-  right: $fixed-plugin-right;
-  z-index: $fixed-plugin-z-index;
-}
 
 // Image Fluid
 .img-fluid {

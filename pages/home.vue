@@ -1,5 +1,5 @@
 <script setup lang="ts" xmlns="http://www.w3.org/1999/html">
-import { ref, computed, onMounted, nextTick, defineAsyncComponent } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { usePostStore } from '~/stores/usePostStore'
 import { useStoryStore } from '~/stores/useStoryStore'
@@ -11,21 +11,20 @@ import HomePosts from '~/pages/home/HomePosts.vue'
 import Dashboard from '~/pages/home/Dashboard.vue'
 import LoaderStatusBanner from '~/components/App/Loader/Home/LoaderStatusBanner.vue'
 import LoaderPost from '~/components/App/Loader/Home/LoaderPost.vue'
+import DrawerManager from "~/components/App/AppBar/DrawerManager.vue";
 
-const CreateWorldDialog = defineAsyncComponent(() => import('~/components/App/Home/CreateWorldDialog.vue'))
 
 const { locale } = useI18n()
 const { user, loggedIn } = useUserSession()
 const postStore = usePostStore()
 const storyStore = useStoryStore()
 
-const dialogCreateWorld = ref(false)
 const currentPage = ref(1)
 const isLoading = ref(false)
 const hasMore = ref(true)
 const stories = ref<any[]>([])
-const plugins = ref<any[]>([])
-const rightDrawer = ref(false)
+
+
 
 const loading = ref({
   user: true,
@@ -77,18 +76,6 @@ const loadMore = async ({ done }) => {
   isLoading.value = false
 }
 
-const fetchPlugins = async () => {
-  try {
-    if (!loggedIn.value) return
-    const data = await $fetch('/api/plugin/profile/get')
-    if (data) plugins.value = data
-  } catch (e) {
-    console.error('Erreur fetch plugins:', e)
-  } finally {
-    loading.value.plugin = false
-  }
-}
-
 const loadStories = async () => {
   try {
     if (loggedIn.value && user.value?.id) {
@@ -110,15 +97,12 @@ const reloadStories = async () => {
   await loadStories()
   Notify.success("Story created!", user?.photo ?? 'https://placehold.net/avatar-5.svg', `/user/${user.username}`)
 }
-const drawerWidth = ref('calc(100vw - 100px)')
 
 onMounted(async () => {
   try {
     await loadInitialPosts()
-    drawerWidth.value = `calc(100vw - 100px)`
     await nextTick()
     await loadStories()
-    await fetchPlugins()
   } catch (e) {
     console.error('Erreur onMounted:', e)
   } finally {
@@ -129,10 +113,7 @@ onMounted(async () => {
 
 <template>
   <v-container fluid :dir="isRtl ? 'rtl' : 'ltr'" class="pa-0">
-    <!-- ✅ Flex container principal -->
     <div class="d-flex" style="min-height: 100vh;">
-
-      <!-- ✅ Contenu principal qui s’adapte automatiquement -->
       <div
         class="flex-grow-1"
         :style="$vuetify.display.lgAndUp ? 'padding-right: 400px;' : ''"
@@ -203,32 +184,12 @@ onMounted(async () => {
           </v-row>
         </v-container>
       </div>
-
-      <!-- ✅ Colonne droite fixe -->
       <div
         class="d-none d-lg-block"
         style="position: fixed; top: 80px; right: 0; width: 400px; height: calc(100vh - 100px); overflow-y: auto; padding: 0 8px;"
       >
-        <v-card class="mx-3 mb-4" rounded="xl" variant="text" elevation="10">
-          <div class="d-flex justify-center">
-            <v-btn
-              class="font-weight-bold w-100"
-              color="primary"
-              height="80"
-              variant="text"
-              @click="dialogCreateWorld = true"
-            >
-              <h6 class="text-h6 font-weight-bolder mb-0">
-                Build your World Bro
-              </h6>
-            </v-btn>
-          </div>
-        </v-card>
-
-        <CreateWorldDialog v-model="dialogCreateWorld" :plugins="plugins" />
-
         <ClientOnly>
-          <template v-if="loading.plugin">
+          <template v-if="loading.user">
             <v-skeleton-loader type="card" class="mx-3 rounded-xl" height="300" />
           </template>
           <template v-else>
@@ -237,64 +198,6 @@ onMounted(async () => {
         </ClientOnly>
       </div>
     </div>
-    <!-- ✅ Drawer mobile pour sidebar droite -->
-    <v-navigation-drawer
-      v-model="rightDrawer"
-      location="right"
-      :width="rightDrawer ? drawerWidth : 0"
-      temporary
-      touchless="false"
-      scrim="rgba(0, 0, 0, 0.4)"
-      class="d-lg-none"
-      style="
-    top: 70px;
-    height: calc(100vh - 120px);
-    border-top-left-radius: 65px;
-    border-bottom-left-radius: 65px;
-    overflow: hidden;
-  "
-    >
-      <!-- ✅ Contenu scrollable -->
-      <div style="height: 100%; overflow-y: auto; padding: 16px;">
-        <v-card class="mx-3 mb-4" rounded="xl" variant="text" elevation="10">
-          <div class="d-flex justify-center">
-            <v-btn
-              class="font-weight-bold w-100"
-              color="primary"
-              height="80"
-              variant="text"
-              @click="dialogCreateWorld = true"
-            >
-              <h6 class="text-h6 font-weight-bolder mb-0">
-                Build your World Bro
-              </h6>
-            </v-btn>
-          </div>
-        </v-card>
-
-        <CreateWorldDialog v-model="dialogCreateWorld" :plugins="plugins" />
-
-        <ClientOnly>
-          <template v-if="loading.plugin">
-            <v-skeleton-loader type="card" class="mx-3 rounded-xl" height="300" />
-          </template>
-          <template v-else>
-            <Dashboard />
-          </template>
-        </ClientOnly>
-      </div>
-    </v-navigation-drawer>
-    <v-btn
-      :icon="rightDrawer ? 'mdi-close' : 'mdi-world'"
-      color="primary"
-      class="
-      d-lg-none my-1
-      fixed-plugin-button
-      position-fixed
-"
-      @click="rightDrawer = !rightDrawer"
-      aria-label="Open sidebar"
-    >
-    </v-btn>
+    <DrawerManager />
   </v-container>
 </template>

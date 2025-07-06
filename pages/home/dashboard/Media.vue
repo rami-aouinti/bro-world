@@ -8,116 +8,92 @@
       />
     </template>
     <div v-else>
-      <v-card
-        v-if="loggedIn"
-        rounded="xl"
-        class="mx-3 mb-1"
-        variant="text"
-        elevation="10"
-        max-height="650"
-        aria-label="Media card"
+      <v-toolbar
+        color="transparent"
       >
-        <v-toolbar
-          color="transparent"
-        >
-          <v-app-bar-nav-icon color="primary"></v-app-bar-nav-icon>
-          <v-toolbar-title text="My files"></v-toolbar-title>
-          <v-btn @click="dialogCreateFolder = true" color="primary" icon="mdi-plus"></v-btn>
-          <v-btn @click="dialogUploadFile = true" color="primary" icon="mdi-upload"></v-btn>
-          <template v-slot:extension>
+        <v-app-bar-nav-icon color="primary"></v-app-bar-nav-icon>
+        <v-toolbar-title text="My files"></v-toolbar-title>
+        <v-btn @click="dialogCreateFolder = true" color="primary" icon="mdi-plus"></v-btn>
+        <v-btn @click="dialogUploadFile = true" color="primary" icon="mdi-upload"></v-btn>
+        <template v-slot:extension>
+          <v-text-field
+            v-model="search"
+            density="compact"
+            outlined
+            rounded="xl"
+            class="px-4 mb-2"
+            dense
+            clear-icon="mdi-close-circle-outline"
+            clearable
+            placeholder="Search"
+            prepend-inner-icon="mdi-magnify"
+            variant="solo"
+            flat
+            hide-details
+            single-line
+          ></v-text-field>
+        </template>
+      </v-toolbar>
+      <FolderTreeView
+        :items="treeItems"
+        :search="search"
+        @update="renameItem"
+        @delete="deleteItem"
+        @upload="addFile"
+        @create="createFolder"
+      />
+
+      <BaseDialog
+        v-model="dialogCreateFolder"
+        title="New Folder"
+        color="primary"
+        :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (dialogCreateFolder.value = false) }]"
+        :saveButton="[{ text: 'Save', color: 'primary', action: '/api/media/folder/folder' }]"
+        :files="[]"
+        :forms="formPayload"
+        @success="loadFolders"
+        @error="Notify.error('Error creating folder')"
+      >
+        <v-card rounded="xl">
+          <v-card-text>
             <v-text-field
-              v-model="search"
-              density="compact"
+              v-model="postContent"
+              label="New Folder"
+              variant="outlined"
+              rounded
               outlined
-              rounded="xl"
-              class="px-4 mb-2"
-              dense
-              clear-icon="mdi-close-circle-outline"
-              clearable
-              placeholder="Search"
-              prepend-inner-icon="mdi-magnify"
-              variant="solo"
-              flat
-              hide-details
-              single-line
-            ></v-text-field>
-          </template>
-        </v-toolbar>
-        <FolderTreeView
-          :items="treeItems"
-          :search="search"
-          @update="renameItem"
-          @delete="deleteItem"
-          @upload="addFile"
-          @create="createFolder"
-        />
-
-        <BaseDialog
-          v-model="dialogCreateFolder"
-          title="New Folder"
-          color="primary"
-          :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (dialogCreateFolder.value = false) }]"
-          :saveButton="[{ text: 'Save', color: 'primary', action: '/api/media/folder/folder' }]"
-          :files="[]"
-          :forms="formPayload"
-          @success="loadFolders"
-          @error="Notify.error('Error creating folder')"
-        >
-          <v-card rounded="xl">
-            <v-card-text>
-              <v-text-field
-                v-model="postContent"
-                label="New Folder"
-                variant="outlined"
-                rounded
-                outlined
-                required
-              />
-            </v-card-text>
-          </v-card>
-        </BaseDialog>
-
-        <UploadDialog
-          v-model="dialogUploadFile"
-          title="New Folder"
-          color="primary"
-          :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (dialogUploadFile.value = false) }]"
-          :saveButton="[{ text: 'Save', color: 'primary', action: '/api/media/upload' }]"
-          :forms="formPayload"
-          :files="files"
-          @success="loadFolders"
-          @error="Notify.error('Error uploading file')"
-        >
-          <v-card rounded="xl">
-            <v-card-text>
-              <v-file-upload
-                icon="mdi-upload"
-                v-model="files"
-                :title="$t('post.files')"
-                multiple
-                density="compact"
-                variant="compact"
-                show-size
-                clearable
-              />
-            </v-card-text>
-          </v-card>
-        </UploadDialog>
-
-      </v-card>
-      <div v-else>
-        <v-card
-          v-if="loggedIn"
-          rounded="xl"
-          class="mx-3 mb-1"
-          variant="text"
-          elevation="10"
-          max-height="650"
-          aria-label="Media card"
-        >
-        <h4> Login to add media</h4>
+              required
+            />
+          </v-card-text>
         </v-card>
-      </div>
+      </BaseDialog>
+
+      <UploadDialog
+        v-model="dialogUploadFile"
+        title="New Folder"
+        color="primary"
+        :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (dialogUploadFile.value = false) }]"
+        :saveButton="[{ text: 'Save', color: 'primary', action: '/api/media/upload' }]"
+        :forms="formPayload"
+        :files="files"
+        @success="loadFolders"
+        @error="Notify.error('Error uploading file')"
+      >
+        <v-card rounded="xl">
+          <v-card-text>
+            <v-file-upload
+              icon="mdi-upload"
+              v-model="files"
+              :title="$t('post.files')"
+              multiple
+              density="compact"
+              variant="compact"
+              show-size
+              clearable
+            />
+          </v-card-text>
+        </v-card>
+      </UploadDialog>
     </div>
   </div>
 </template>

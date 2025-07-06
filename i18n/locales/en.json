@@ -473,6 +473,8 @@
     "continue": "next"
   },
   "messages": {
+    "showMore": "Show more",
+    "empty": "No new messages",
     "jobCreated": "Job offer successfully created.",
     "jobUpdated": "Job offer successfully updated.",
     "applicationSubmitted": "Application submitted successfully.",

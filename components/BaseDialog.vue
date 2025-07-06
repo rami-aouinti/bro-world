@@ -103,19 +103,18 @@ const handleAction = async (action: string | (() => void)) => {
       formData.append('title', props.forms)
     }
 
-    const { data, error } = await useFetch(action, {
+    const  data = await $fetch(action, {
       method: 'POST',
       body: formData,
     })
 
     isUpdating.value = false
-
-    if (data.value) {
-      emit('success', data.value)
+    if (data) {
+      emit('success', data)
       isOpen.value = false
     } else {
-      emit('error', error)
-      console.error('Error:', error)
+      emit('error', new Error('No data returned from action'))
+      console.error('Error:', 'No data returned from action')
     }
   } catch (err) {
     isUpdating.value = false

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, defineEmits, nextTick } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import UserAvatar from '~/components/App/UserAvatar.vue'
 import Editor from '~/components/App/Editor.vue'
 import BaseDialog from '~/components/BaseDialog.vue'
