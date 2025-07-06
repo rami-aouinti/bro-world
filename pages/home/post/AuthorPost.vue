@@ -12,7 +12,7 @@ const emit = defineEmits(['post-delete', 'post-updated']);
 
 const { t } = useI18n();
 const localePath = useLocalePath();
-const { user } = await useUserSession();
+const { user, loggedIn } = await useUserSession();
 const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
@@ -202,7 +202,7 @@ watch(
       </div>
     </div>
 
-    <div class="text-end ms-auto" v-if="props.post.user?.id !== user?.id">
+    <div class="text-end ms-auto" v-if="props.post.user?.id !== user?.id && loggedIn">
       <v-btn
         :loading="loadingReject"
         variant="text"
@@ -243,7 +243,7 @@ watch(
       </v-btn>
     </div>
 
-    <div class="text-end ms-auto" v-if="props.post.user?.id === user?.id">
+    <div class="text-end ms-auto" v-if="props.post.user?.id === user?.id && loggedIn">
       <v-menu location="bottom" max-width="68">
         <template #activator="{ props }">
           <v-btn icon variant="text" size="small" class="text-primary" v-bind="props">

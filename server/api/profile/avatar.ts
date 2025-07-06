@@ -1,9 +1,9 @@
-import { defineEventHandler, createError } from 'h3'
+import {createError, defineEventHandler} from 'h3'
 import formidable from 'formidable'
 import fs from 'fs'
 import FormData from 'form-data'
-import { getUserToken } from '~/server/utils/getUserToken'
-import { requestWithRetry } from '~/server/utils/requestWithRetry'
+import {getUserToken} from '~/server/utils/getUserToken'
+import {requestWithRetry} from '~/server/utils/requestWithRetry'
 
 export default defineEventHandler(async (event) => {
   const token = await getUserToken(event)
@@ -28,13 +28,5 @@ export default defineEventHandler(async (event) => {
 
   const url = 'https://bro-world.org/api/v1/avatar'
 
-  const profile = await requestWithRetry('post', url, token, formData, true)
-
-  await setUserSession(event, {
-    user: {
-      photo: profile?.photo,
-    },
-  })
-
-  return profile
+  return await requestWithRetry('post', url, token, formData, true)
 })
