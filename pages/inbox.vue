@@ -75,29 +75,28 @@ const fetchConversations = async () => {
 
   const data = await $fetch('/api/messenger/conversations')
   loadConversation.value = false
-  if (!Array.isArray(data)) return
 
-  const unique = Array.from(new Map(data.map((c: any) => [c.id, c])).values())
-  conversations.value = unique.map(c => ({ ...c, loaded: true, unreadCount: 0 }))
-  if (!activeConversation.value && unique.length > 0) {
-    activeConversation.value = unique[0]
+  if (data) {
+    const unique = Array.from(new Map(Object.values(data).map((c: any) => [c.id, c])).values())
+    conversations.value = unique.map(c => ({ ...c, loaded: true, unreadCount: 0 }))
+    if (!activeConversation.value && unique.length > 0) {
+      activeConversation.value = unique[0]
+    }
+    useMercureInbox(conversations, updateConversationPreview)
+    // auto-select la première conversation
+    if (!activeConversation.value && unique.length > 0) {
+      activeConversation.value = unique[unique.length - 1]
+    }
   }
-
-  useMercureInbox(conversations, updateConversationPreview)
-  // auto-select la première conversation
-  if (!activeConversation.value && unique.length > 0) {
-    activeConversation.value = unique[unique.length - 1]
-  }
-
 
 }
 
 // remplace le `watch` par `watchEffect` comme recommandé
-watchEffect(() => {
+watchEffect(async () => {
   if (loadConversation) {
-    fetchConversations()
+    await fetchConversations()
   }
 })
 
-onMounted(fetchConversations)
+onMounted(await fetchConversations)
 </script>

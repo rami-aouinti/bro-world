@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import {shallowRef, ref, watch, computed} from 'vue'
+import {onMounted, ref, watch, computed} from 'vue'
 import {useI18n} from 'vue-i18n'
 import LoaderProfile from '~/components/App/Loader/Profile/LoaderProfile.vue'
 import {useUserStore} from '~/stores/useUserStore'
+import Media from "~/pages/home/dashboard/Media.vue";
+import {useMercureInbox} from "~/composables/useMercureInbox";
+import {useConversationUtils} from "~/composables/useConversationUtils";
 const userStore = useUserStore()
 
 const { t } = useI18n()
@@ -57,10 +60,20 @@ const selected = computed(() => {
 
   return users.value.find(user => user.id === id)
 })
+const activeConversation = ref<any | null>(null)
+const conversations = ref<any[]>([])
+const search = ref('')
 
-watch(selected, () => {
-  randomAvatar()
-})
+const fetchConversations = async () => {
+  const data = await $fetch('/api/messenger/conversations')
+  console.log(data)
+  conversations.value = data
+
+  console.log(conversations)
+
+}
+const { getConversationTitle, getConversationAvatar } = useConversationUtils()
+
 
 async function fetchUsers (item) {
   await pause(1500)
@@ -74,10 +87,11 @@ async function fetchUsers (item) {
 function randomAvatar () {
   avatar.value = avatars[Math.floor(Math.random() * avatars.length)]
 }
-watch(selected, () => {
+watch(selected, async () => {
+  await fetchConversations()
   randomAvatar()
 })
-
+onMounted(await fetchConversations)
 // 🎯 Traductions via clés courtes
 const accountSettings = ref([
   { text: 'emailWhenFollow', switchState: true },
@@ -89,28 +103,7 @@ const applicationSettings = ref([
   { text: 'monthlyUpdates', switchState: false },
 ])
 
-const conversations = ref([
-  {
-    user: 'John Doe',
-    message: 'Hey, how are you?',
-    avatar: 'https://randomuser.me/api/portraits/men/85.jpg',
-  },
-  {
-    user: 'John Doe',
-    message: 'Hey, how are you?',
-    avatar: 'https://randomuser.me/api/portraits/men/85.jpg',
-  },
-  {
-    user: 'John Doe',
-    message: 'Hey, how are you?',
-    avatar: 'https://randomuser.me/api/portraits/men/85.jpg',
-  },
-  {
-    user: 'John Doe',
-    message: 'Hey, how are you?',
-    avatar: 'https://randomuser.me/api/portraits/men/85.jpg',
-  },
-])
+
 
 definePageMeta({
   layout: 'default',
@@ -303,20 +296,25 @@ definePageMeta({
             <div class="px-4 py-4">
               <v-list class="bg-transparent" elevation="0">
                 <v-list-item
-                  v-for="conversation in conversations"
-                  :key="conversation.user"
+                  v-for="conversation in Object.values(conversations)"
+                  :key="conversation.id"
                   class="px-0 border-radius-sm mb-2"
                 >
                   <div class="d-flex align-center">
                     <v-avatar width="48" height="48" class="shadow border-radius-lg me-4">
-                      <NuxtImg :lazy-src="'/img/person.png'" format="webp" loading="lazy" cover width="48" height="48" :src="conversation.avatar" alt="Avatar" class="border-radius-lg" />
+                      <NuxtImg
+                        :lazy-src="'/img/person.png'"
+                        format="webp"
+                        loading="lazy"
+                        cover
+                        width="48" height="48" :src="getConversationAvatar(conversation)" alt="Avatar" class="border-radius-lg" />
                     </v-avatar>
                     <div>
                       <h6 class="mb-0 text-sm text-typo font-weight-bold">
-                        {{ conversation.user }}
+                        {{ getConversationTitle(conversation) }}
                       </h6>
                       <p class="mb-0 text-xs text-body font-weight-light">
-                        {{ conversation.message }}
+                        {{ conversation.typing ? 'Typing…' : conversation.lastMessage || 'No message yet' }}
                       </p>
                     </div>
                     <div class="ms-auto">
@@ -331,6 +329,11 @@ definePageMeta({
           </v-card>
         </v-col>
 
+        <v-col lg="12" md="12" cols="12">
+          <v-card rounded="xl" class="h-60" variant="text" elevation="10">
+            <Media></Media>
+          </v-card>
+        </v-col>
         <!-- Account & App Settings -->
         <v-col lg="4" md="4" cols="12">
           <v-card rounded="xl" class="h-60" variant="text" elevation="10">

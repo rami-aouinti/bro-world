@@ -41,9 +41,8 @@ function playSound() {
 const fetchConversations = async () => {
   try {
     const data = await $fetch('/api/messenger/conversations')
-    if (!Array.isArray(data)) return
 
-    const unique = Array.from(new Map(data.map((c: any) => [c.id, c])).values())
+    const unique = Array.from(new Map(Object.values(data).map((c: any) => [c.id, c])).values())
     conversations.value = unique.map(c => ({ ...c, loaded: true, unreadCount: 0 }))
     if (!activeConversation.value && unique.length > 0) {
       activeConversation.value = unique[0]
@@ -54,8 +53,8 @@ const fetchConversations = async () => {
   }
 }
 
-onMounted(() => {
-  fetchConversations()
+onMounted(async () => {
+  await fetchConversations()
 })
 
 watch(isMercureReady, (ready) => {

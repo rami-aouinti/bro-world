@@ -151,7 +151,7 @@ function selectConversation(conversation: any) {
   emit('select', conversation)
 }
 
-async function fetchUsers() {
+async function loadUsers() {
   try {
     const data = await userStore.fetchUsers()
     if (data) {
@@ -164,9 +164,9 @@ async function fetchUsers() {
 }
 
 watch(loading, () => {
-  fetchUsers()
+  loadUsers()
 }, { immediate: true })
-onMounted(fetchUsers)
+onMounted(loadUsers)
 // Vérifie si un participant est en ligne (hors utilisateur actuel)
 function isOnline(conversation: any): boolean {
   return conversation.participants?.some(p => p.online && p.id !== user.value?.id) ?? false
