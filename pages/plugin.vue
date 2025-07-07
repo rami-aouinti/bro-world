@@ -7,6 +7,7 @@
       <v-row dense>
         <v-col
           v-for="plugin in plugins"
+          class="mb-2"
           :key="plugin.key"
           cols="12"
           sm="6"

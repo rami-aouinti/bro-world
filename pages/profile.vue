@@ -154,7 +154,46 @@ definePageMeta({
       </v-row>
 
       <v-row>
-
+        <!-- Info -->
+        <v-col lg="4" md="4" cols="12">
+          <v-card rounded="xl" class="h-100" variant="text" elevation="10">
+            <div class="px-4 pt-4">
+              <h6 class="mb-0 text-h6 text-typo">{{ t('profile.information') }}</h6>
+            </div>
+            <hr class="horizontal dark mt-2 mb-1" />
+            <div class="px-4 py-4">
+              <p class="text-sm font-weight-light text-body">
+                {{ profile?.profile?.description }}
+              </p>
+              <v-list class="bg-transparent" elevation="0">
+                <v-list-item class="px-0 border-radius-sm">
+                  <div class="text-body text-sm">
+                    <strong class="text-dark">{{ t('profile.fullName') }}:</strong>
+                    &nbsp; {{ profile?.firstName ?? '' }} {{ profile?.lastName ?? '' }}
+                  </div>
+                </v-list-item>
+                <v-list-item class="px-0 border-radius-sm">
+                  <div class="text-body text-sm">
+                    <strong class="text-dark">{{ t('profile.mobile') }}:</strong>
+                    &nbsp; {{ profile?.profile?.phone ?? '' }}
+                  </div>
+                </v-list-item>
+                <v-list-item class="px-0 border-radius-sm">
+                  <div class="text-body text-sm">
+                    <strong class="text-dark">{{ t('profile.email') }}:</strong>
+                    &nbsp; {{ profile?.email ?? t('profile.notProvided') }}
+                  </div>
+                </v-list-item>
+                <v-list-item class="px-0 border-radius-sm">
+                  <div class="text-body text-sm">
+                    <strong class="text-dark">{{ t('profile.location') }}:</strong>
+                    &nbsp; {{ profile?.locale ?? '' }}
+                  </div>
+                </v-list-item>
+              </v-list>
+            </div>
+          </v-card>
+        </v-col>
         <v-col lg="8" md="8" cols="12">
 
           <v-card rounded="xl" class="h-100" variant="text" elevation="10">
@@ -244,48 +283,48 @@ definePageMeta({
             </v-row>
           </v-card>
         </v-col>
-
-        <!-- Info -->
+        <!-- Account & App Settings -->
         <v-col lg="4" md="4" cols="12">
-          <v-card rounded="xl" class="h-100" variant="text" elevation="10">
+          <v-card rounded="xl" class="h-60" variant="text" elevation="10">
             <div class="px-4 pt-4">
-              <h6 class="mb-0 text-h6 text-typo">{{ t('profile.information') }}</h6>
+              <h6 class="mb-0 text-h6 text-typo">{{ t('profile.platform') }}</h6>
             </div>
             <hr class="horizontal dark mt-2 mb-1" />
             <div class="px-4 py-4">
-              <p class="text-sm font-weight-light text-body">
-                {{ profile?.profile?.description }}
-              </p>
+              <h6 class="text-uppercase text-body text-xs font-weight-bolder">
+                {{ t('profile.account') }}
+              </h6>
               <v-list class="bg-transparent" elevation="0">
-                <v-list-item class="px-0 border-radius-sm">
-                  <div class="text-body text-sm">
-                    <strong class="text-dark">{{ t('profile.fullName') }}:</strong>
-                    &nbsp; {{ profile?.firstName ?? '' }} {{ profile?.lastName ?? '' }}
-                  </div>
+                <v-list-item v-for="setting in accountSettings" :key="setting.text">
+                  <v-row class="d-flex align-center">
+                    <v-col cols="2">
+                      <v-switch v-model="setting.switchState" hide-details class="d-inline-flex mt-0 pt-0 switch ms-auto" />
+                    </v-col>
+                    <v-col cols="10">
+                      <div class="ms-4 text-body text-sm">{{ t(`profile.settings.${setting.text}`) }}</div>
+                    </v-col>
+                  </v-row>
                 </v-list-item>
-                <v-list-item class="px-0 border-radius-sm">
-                  <div class="text-body text-sm">
-                    <strong class="text-dark">{{ t('profile.mobile') }}:</strong>
-                    &nbsp; {{ profile?.profile?.phone ?? '' }}
-                  </div>
-                </v-list-item>
-                <v-list-item class="px-0 border-radius-sm">
-                  <div class="text-body text-sm">
-                    <strong class="text-dark">{{ t('profile.email') }}:</strong>
-                    &nbsp; {{ profile?.email ?? t('profile.notProvided') }}
-                  </div>
-                </v-list-item>
-                <v-list-item class="px-0 border-radius-sm">
-                  <div class="text-body text-sm">
-                    <strong class="text-dark">{{ t('profile.location') }}:</strong>
-                    &nbsp; {{ profile?.locale ?? '' }}
-                  </div>
+              </v-list>
+
+              <h6 class="text-uppercase text-body text-xs font-weight-bolder mt-4">
+                {{ t('profile.application') }}
+              </h6>
+              <v-list class="bg-transparent" elevation="0">
+                <v-list-item v-for="setting in applicationSettings" :key="setting.text">
+                  <v-row class="d-flex align-center">
+                    <v-col cols="2">
+                      <v-switch v-model="setting.switchState" hide-details class="d-inline-flex mt-0 pt-0 switch ms-auto" />
+                    </v-col>
+                    <v-col cols="10">
+                      <div class="ms-4 text-body text-sm">{{ t(`profile.settings.${setting.text}`) }}</div>
+                    </v-col>
+                  </v-row>
                 </v-list-item>
               </v-list>
             </div>
           </v-card>
         </v-col>
-
         <!-- Conversations -->
         <v-col lg="8" md="8" cols="12">
           <v-card rounded="xl" class="h-100" variant="text" elevation="10">
@@ -334,49 +373,6 @@ definePageMeta({
             <Media></Media>
           </v-card>
         </v-col>
-        <!-- Account & App Settings -->
-        <v-col lg="4" md="4" cols="12">
-          <v-card rounded="xl" class="h-60" variant="text" elevation="10">
-            <div class="px-4 pt-4">
-              <h6 class="mb-0 text-h6 text-typo">{{ t('profile.platform') }}</h6>
-            </div>
-            <hr class="horizontal dark mt-2 mb-1" />
-            <div class="px-4 py-4">
-              <h6 class="text-uppercase text-body text-xs font-weight-bolder">
-                {{ t('profile.account') }}
-              </h6>
-              <v-list class="bg-transparent" elevation="0">
-                <v-list-item v-for="setting in accountSettings" :key="setting.text">
-                  <v-row class="d-flex align-center">
-                    <v-col cols="2">
-                      <v-switch v-model="setting.switchState" hide-details class="d-inline-flex mt-0 pt-0 switch ms-auto" />
-                    </v-col>
-                    <v-col cols="10">
-                      <div class="ms-4 text-body text-sm">{{ t(`profile.settings.${setting.text}`) }}</div>
-                    </v-col>
-                  </v-row>
-                </v-list-item>
-              </v-list>
-
-              <h6 class="text-uppercase text-body text-xs font-weight-bolder mt-4">
-                {{ t('profile.application') }}
-              </h6>
-              <v-list class="bg-transparent" elevation="0">
-                <v-list-item v-for="setting in applicationSettings" :key="setting.text">
-                  <v-row class="d-flex align-center">
-                    <v-col cols="2">
-                      <v-switch v-model="setting.switchState" hide-details class="d-inline-flex mt-0 pt-0 switch ms-auto" />
-                    </v-col>
-                    <v-col cols="10">
-                      <div class="ms-4 text-body text-sm">{{ t(`profile.settings.${setting.text}`) }}</div>
-                    </v-col>
-                  </v-row>
-                </v-list-item>
-              </v-list>
-            </div>
-          </v-card>
-        </v-col>
-
       </v-row>
     </div>
   </v-container>
