@@ -1,104 +1,118 @@
 <template>
-  <v-container fluid>
+  <transition name="fade-slide">
     <v-card
-      class="d-flex flex-column justify-space-between mx-3"
+      v-show="visible"
+      class="plugin-card d-flex flex-column"
+      elevation="10"
       rounded="xl"
       variant="text"
-      min-height="180"
+      hover
+      max-width="360"
+      height="550"
     >
-      <v-toolbar :class="{ 'flex-row-reverse': isRtl }">
-        <template #prepend>
-          <div class="d-flex ga-1" v-if="isRtl">
-            <v-btn icon="mdi-apps" />
-          </div>
-        </template>
+      <!-- Image avec ouverture plein écran -->
+      <v-img
+        :src="plugin.logo"
+        height="200"
+        cover
+        class="rounded-t-2xl cursor-pointer"
+        @click="dialog = true"
+      />
 
-        <v-toolbar-title class="flex-grow-1">
-          <div
-            class="d-flex align-center"
-            :class="isRtl ? 'flex-row-reverse text-right' : 'flex-row text-left'"
-          >
-            <v-icon :class="isRtl ? 'ms-2' : 'me-2'">
-              {{ plugin.icon }}
-            </v-icon>
-            <span class="font-weight-medium text-h7">
-              {{ plugin.name }}
-            </span>
-          </div>
-        </v-toolbar-title>
+      <v-card-title class="text-h6 font-weight-bold">
+        <v-icon class="mr-2" :icon="plugin.icon" />
+        {{ plugin.name }}
+      </v-card-title>
 
-        <template #append>
-          <div class="d-flex ga-1" v-if="!isRtl">
-            <v-btn icon="mdi-apps" />
-          </div>
-        </template>
-      </v-toolbar>
+      <v-card-subtitle class="text-grey-darken-1 px-4">
+        {{ plugin.subTitle }}
+      </v-card-subtitle>
 
-      <v-divider />
-
-      <v-card-text class="text-body-2 text-medium-emphasis">
-        {{ truncate(plugin.description, 120) }}
+      <v-card-text class="text-body-2 px-6 py-2">
+        {{ plugin.description }}
       </v-card-text>
 
-      <v-card-actions class="mt-auto d-flex align-center justify-space-between">
-        <v-chip
-          :color="plugin.pricing === t('plugin.pricing.free') ? 'green' : 'deep-purple'"
-          size="small"
-          class="text-uppercase font-weight-bold"
-          label
+      <v-card-actions class="px-6 pb-4">
+        <v-btn
+          :color="plugin.installed ? 'primary' : 'success'"
+          variant="tonal"
+          block
         >
-          {{ plugin.pricing }}
-        </v-chip>
+          {{ plugin.installed ? 'Open' : 'Install' }}
+        </v-btn>
+      </v-card-actions>
 
-        <div class="d-flex align-center gap-2">
-          <v-btn
-            v-if="plugin.installed"
-            color="success"
-            variant="outlined"
-            size="small"
-            :to="plugin.link"
-          >
-            {{ t('plugin.actions.open') }}
-          </v-btn>
-          <v-btn
-            v-else
-            color="primary"
-            variant="outlined"
-            size="small"
-            :loading="loading"
-            @click="installPlugin(plugin)"
-          >
-            {{ t('plugin.actions.install') }}
-          </v-btn>
-        </div>
+      <v-divider class="mx-4" />
+
+      <v-card-actions>
+        <v-btn variant="tonal" color="primary">{{ plugin.pricing }}</v-btn>
+        <v-spacer />
+        <v-btn icon="mdi-heart-outline" variant="text" />
+        <v-btn icon="mdi-share-variant" variant="text" />
       </v-card-actions>
     </v-card>
-  </v-container>
+  </transition>
+
+  <!-- Lightbox plein écran -->
+  <v-dialog v-model="dialog" width="500" height="500" transition="dialog-bottom-transition">
+    <v-card class="d-flex flex-column">
+      <v-toolbar flat color="transparent">
+        <v-spacer />
+        <v-btn icon @click="dialog = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-toolbar>
+
+      <v-img
+        :src="plugin.logo"
+        width="500" height="400"
+        class="flex-grow-1"
+        cover
+        alt="Plugin preview"
+      />
+    </v-card>
+  </v-dialog>
 </template>
 
-<script lang="ts" setup>
-import { ref, computed } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { truncate } from '~/utils/stringUtils'
+<script setup>
+import { ref, onMounted } from 'vue'
 
-const { locale, t } = useI18n()
-const loading = ref(false)
-
-const props = defineProps({
-  plugin: {
-    type: Object,
-    required: true,
-  },
+defineProps({
+  plugin: Object
 })
 
-const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
+const visible = ref(false)
+const dialog = ref(false)
 
-function installPlugin(plugin: any) {
-  loading.value = true
+onMounted(() => {
   setTimeout(() => {
-    plugin.installed = true
-    loading.value = false
-    Notify.success(t('plugin.success.install', { name: plugin.name }))
-  }, 2000)
-}
+    visible.value = true
+  }, Math.random() * 400)
+})
 </script>
+
+<style scoped>
+.plugin-card {
+  border-radius: 24px;
+  overflow: hidden;
+  padding-top: 0;
+  background-color: var(--v-theme-surface);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 10px rgba(220, 9, 160, 0.1);
+}
+.plugin-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 24px rgb(3, 32, 61);
+}
+.fade-slide-enter-active {
+  transition: all 0.4s ease;
+}
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.fade-slide-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>

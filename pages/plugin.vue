@@ -28,7 +28,12 @@ const { t, locale } = useI18n()
 
 const loadingUser = ref(true)
 
-definePageMeta({ layout: 'default', breadcrumb: 'disabled', description: 'Plugin page' })
+definePageMeta({
+  layout: 'default',
+  breadcrumb: 'disabled',
+  title: 'Plugins',
+  description: 'Plugin page'
+})
 
 const plugins = ref<any[]>([])
 const fetchPlugins = async () => {
@@ -44,10 +49,3 @@ watch(!plugins.value, () => {
 
 onMounted(fetchPlugins)
 </script>
-
-<style scoped>
-.text-end {
-  direction: rtl;
-  text-align: right;
-}
-</style>
