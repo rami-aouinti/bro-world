@@ -141,6 +141,7 @@ import CardWindow from "~/components/Messenger/Widgets/CardWindow.vue";
 
 const conversationId = computed(() => props.conversation?.id ?? null)
 useMercureConversation(conversationId, (newMessage) => {
+  console.log(newMessage);
   const message = {
     sender: {
       firstName: newMessage.title || 'Unknown',
@@ -151,6 +152,7 @@ useMercureConversation(conversationId, (newMessage) => {
     createdAt: newMessage?.createdAt,
     mediaUrl: newMessage?.mediaUrl || null,
   }
+
   messages.value.push(message)
   scrollToBottom()
   playSound()

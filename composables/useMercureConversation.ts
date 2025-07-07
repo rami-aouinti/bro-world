@@ -26,14 +26,11 @@ export const useMercureConversation = (conversationId: Ref<string | null>, callb
   }
 
   watch(conversationId, (id, oldId) => {
-    if (es.value) {
-      es.value.close()
-    }
+    if (es.value) es.value.close()
+    if (id) subscribe(id)
+  }, { immediate: true })
 
-    if (id) {
-      subscribe(id)
-    }
-  })
+
 
   onUnmounted(() => {
     es.value?.close()
