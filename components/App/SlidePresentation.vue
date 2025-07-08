@@ -6,19 +6,12 @@
       elevation="4"
       rounded="lg"
     >
-      <!-- Titre et description -->
-      <v-card-title class="text-h5 font-weight-bold">
-        🎓 Présentation Slidev : Vitify Admin
-      </v-card-title>
-      <v-card-subtitle class="text-body-2 mb-4">
-        Découvrez les fonctionnalités de votre back-office en quelques slides dynamiques.
-      </v-card-subtitle>
-
       <!-- Conteneur iframe avec hauteur responsive -->
       <v-sheet
         class="overflow-hidden rounded-lg elevation-2"
         :style="{
-          height: isMobile ? '280px' : '500px'
+          height: isMobile ? '280px' : '450px',
+          width: '900px'
         }"
       >
         <!-- Iframe avec loader -->
