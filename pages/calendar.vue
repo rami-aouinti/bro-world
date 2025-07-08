@@ -7,7 +7,7 @@
             New Event
           </v-card-title>
           <v-card-text>
-            <v-text-field v-model="newEventTitle" label="Event title" />
+            <v-text-field rounded="xl" v-model="newEventTitle" label="Event title" />
             <v-row dense>
               <v-col cols="12" md="6">
                 <v-date-input
@@ -15,6 +15,7 @@
                   color="primary"
                   header-color="primary"
                   max-width="368"
+                  rounded="xl"
                   label="Select a date"
                   prepend-icon=""
                   prepend-inner-icon="$calendar"
@@ -26,6 +27,7 @@
                   color="primary"
                   header-color="primary"
                   max-width="368"
+                  rounded="xl"
                   label="Select a date"
                   prepend-icon=""
                   prepend-inner-icon="$calendar"
@@ -41,7 +43,7 @@
             <v-spacer />
             <v-btn prepend-icon="mdi-delete" :loading="isUpdating"
                    :disabled="isUpdating"
-                   :variant="isUpdating ? 'tonal' : undefined" color="error" @click="newEventDialog.value = false">Close</v-btn>
+                   :variant="isUpdating ? 'tonal' : undefined" color="error" @click="newEventDialog = false">Close</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -116,11 +118,12 @@
                 <v-card-title class="text-h6 text-primary px-6 py-4">Edit: {{ props.eventDialogData.title }}</v-card-title>
 
                 <v-card-text>
-                  <v-text-field v-model="props.eventDialogData.title" label="Event title" />
+                  <v-text-field rounded="xl" v-model="props.eventDialogData.title" label="Event title" />
                   <v-row dense>
                     <v-col cols="12" md="6">
                       <v-date-input
                         v-model="props.eventDialogData.time.start"
+                        rounded="xl"
                         color="primary"
                         header-color="primary"
                         max-width="368"
@@ -133,6 +136,7 @@
                     <v-col cols="12" md="6">
                       <v-date-input
                         v-model="props.eventDialogData.time.end"
+                        rounded="xl"
                         color="primary"
                         header-color="primary"
                         max-width="368"

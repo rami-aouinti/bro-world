@@ -12,6 +12,7 @@ const localePath = useLocalePath()
 const loggedUser = ref([
   { icon: "mdi-account-settings-variant", path: "/setting", title: "setting" },
   { icon: "mdi-network", path: "/plugin", title: "apps" },
+  { icon: "mdi-calendar", path: "/calendar", title: "calendar" },
   { icon: "mdi-help-circle", path: "/help", title: "help" },
   { icon: "mdi-information", path: "/about", title: "about" },
   { icon: "mdi-message", path: "/contact", title: "contact" },
