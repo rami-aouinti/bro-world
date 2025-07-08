@@ -294,6 +294,7 @@ async function save(updated) {
   if (idx !== -1) {
     events.value[idx].title = updated.title
   }
+  await fetchEvents()
   isUpdating.value = false
 }
 

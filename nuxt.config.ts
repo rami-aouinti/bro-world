@@ -1,10 +1,18 @@
 import { aliases } from 'vuetify/iconsets/mdi'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import compression from 'vite-plugin-compression'
+import { resolve } from 'path'
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
-
+  nitro: {
+    publicAssets: [
+      {
+        dir: resolve(__dirname, '../vitify-slide/dist'), // ajuster selon l’emplacement
+        baseURL: '/vitify-slide',
+      },
+    ],
+  },
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/sitemap',
