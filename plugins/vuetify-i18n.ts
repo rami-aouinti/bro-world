@@ -1,6 +1,6 @@
-import { en, fr, de, ar } from 'vuetify/locale'
 import { useNuxtApp } from '#app'
-import { useI18n } from 'vue-i18n'
+import { en, fr, de, ar } from 'vuetify/locale'
+
 
 export default defineNuxtPlugin(() => {
   const { $i18n } = useNuxtApp()

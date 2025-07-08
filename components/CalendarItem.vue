@@ -1,43 +1,41 @@
 <template>
   <v-container fluid>
-    <v-sheet class="d-flex" height="54" tile>
-      <v-select
-        v-model="type"
-        :items="types"
-        class="ma-2"
-        density="compact"
-        label="View Mode"
-        variant="outlined"
-        hide-details
-      />
-      <v-select
-        v-model="weekday"
-        :items="weekdays"
-        class="ma-2"
-        density="compact"
-        label="Weekdays"
-        variant="outlined"
-        hide-details
-      />
-    </v-sheet>
-
-    <v-sheet height="700">
-      <v-calendar
-        ref="calendar"
-        v-model="value"
-        :events="events"
-        :view-mode="type"
-        :weekdays="weekday"
-        event-color="color"
-        event-draggable
-        event-resizable
-        @click:event="editEvent"
-        @click:date="createEvent"
-        @change:event="onEventChange"
-        @event-drop="onEventDrop"
-      />
-    </v-sheet>
-
+    <v-row>
+      <v-col cols="12" md="4" class="mb-3">
+        <v-card>
+          <v-sheet class="d-flex" height="54" tile>
+            <v-select
+              v-model="type"
+              :items="types"
+              class="ma-2"
+              density="compact"
+              label="View Mode"
+              variant="outlined"
+              hide-details
+            />
+          </v-sheet>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="8" class="mb-3">
+        <v-card height="500">
+          <v-sheet height="700">
+            <v-calendar
+              ref="calendar"
+              v-model="value"
+              :events="events"
+              :view-mode="type"
+              event-color="color"
+              event-draggable
+              event-resizable
+              @click:event="editEvent"
+              @click:date="createEvent"
+              @change:event="onEventChange"
+              @event-drop="onEventDrop"
+            />
+          </v-sheet>
+        </v-card>
+      </v-col>
+    </v-row>
     <!-- Dialog -->
     <v-dialog v-model="dialog" max-width="400">
       <v-card>
@@ -97,13 +95,6 @@ import { ref, reactive } from 'vue'
 const calendar = ref(null)
 const type = ref('month')
 const types = ['month', 'week', 'day']
-
-const weekday = ref([0, 1, 2, 3, 4, 5, 6])
-const weekdays = [
-  { title: 'Sun - Sat', value: [0, 1, 2, 3, 4, 5, 6] },
-  { title: 'Mon - Sun', value: [1, 2, 3, 4, 5, 6, 0] },
-  { title: 'Mon - Fri', value: [1, 2, 3, 4, 5] },
-]
 
 const value = ref(new Date())
 

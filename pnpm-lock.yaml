@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@date-io/date-fns':
+        specifier: ^3.2.1
+        version: 3.2.1(date-fns@4.1.0)
       '@fireworks-js/vue':
         specifier: ^2.10.8
         version: 2.10.8(vue@3.5.17(typescript@5.8.3))
@@ -80,9 +83,15 @@ importers:
       bootstrap:
         specifier: ^5.3.7
         version: 5.3.7(@popperjs/core@2.11.8)
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
+      daysjs:
+        specifier: ^1.0.2
+        version: 1.0.2
       default:
         specifier: link:prisma/client/default
         version: link:prisma/client/default
@@ -128,6 +137,9 @@ importers:
       puppeteer:
         specifier: ^24.11.2
         version: 24.11.2(typescript@5.8.3)
+      qalendar:
+        specifier: ^3.9.0
+        version: 3.9.0(vue@3.5.17(typescript@5.8.3))
       redis:
         specifier: ^5.5.6
         version: 5.5.6
@@ -578,6 +590,17 @@ packages:
   '@dabh/diagnostics@2.0.3':
     resolution: {integrity: sha512-hrlQOIi7hAfzsMqlGSFyVucrx38O+j6wiGOf//H2ecvIEqYN4ADBSS2iLMh5UFyDunCNniUIPk/q3riFv45xRA==}
 
+  '@date-io/core@3.2.0':
+    resolution: {integrity: sha512-hqwXvY8/YBsT9RwQITG868ZNb1MVFFkF7W1Ecv4P472j/ZWa7EFcgSmxy8PUElNVZfvhdvfv+a8j6NWJqOX5mA==}
+
+  '@date-io/date-fns@3.2.1':
+    resolution: {integrity: sha512-CtXgTOAamkImI+CmbWRNdBi4ljj9xm/tdoPa+eeeiygduzubJTsXp18vYz+Vs/9yLho1zUOXlxpsfsF7PsXSWQ==}
+    peerDependencies:
+      date-fns: ^3.2.0 || ^4.1.0
+    peerDependenciesMeta:
+      date-fns:
+        optional: true
+
   '@dependents/detective-less@5.0.1':
     resolution: {integrity: sha512-Y6+WUMsTFWE5jb20IFP4YGa5IrGY/+a/FbOSjDF/wz9gepU2hwCYSXRHP/vPwBvwcY3SVMASt4yXxbXNXigmZQ==}
     engines: {node: '>=18'}
@@ -992,6 +1015,28 @@ packages:
 
   '@formkit/auto-animate@0.8.2':
     resolution: {integrity: sha512-SwPWfeRa5veb1hOIBMdzI+73te5puUBHmqqaF1Bu7FjvxlYSz/kJcZKSa9Cg60zL0uRNeJL2SbRxV6Jp6Q1nFQ==}
+
+  '@fortawesome/fontawesome-common-types@6.7.2':
+    resolution: {integrity: sha512-Zs+YeHUC5fkt7Mg1l6XTniei3k4bwG/yo3iFUtZWd/pMx9g3fdvkSK9E0FOC+++phXOka78uJcYb8JaFkW52Xg==}
+    engines: {node: '>=6'}
+
+  '@fortawesome/fontawesome-svg-core@6.7.2':
+    resolution: {integrity: sha512-yxtOBWDrdi5DD5o1pmVdq3WMCvnobT0LU6R8RyyVXPvFRd2o79/0NCuQoCjNTeZz9EzA9xS3JxNWfv54RIHFEA==}
+    engines: {node: '>=6'}
+
+  '@fortawesome/free-regular-svg-icons@6.7.2':
+    resolution: {integrity: sha512-7Z/ur0gvCMW8G93dXIQOkQqHo2M5HLhYrRVC0//fakJXxcF1VmMPsxnG6Ee8qEylA8b8Q3peQXWMNZ62lYF28g==}
+    engines: {node: '>=6'}
+
+  '@fortawesome/free-solid-svg-icons@6.7.2':
+    resolution: {integrity: sha512-GsBrnOzU8uj0LECDfD5zomZJIjrPhIlWU82AHwa2s40FKH+kcxQaBvBo3Z4TxyZHIyX8XTDxsyA33/Vx9eFuQA==}
+    engines: {node: '>=6'}
+
+  '@fortawesome/vue-fontawesome@3.0.8':
+    resolution: {integrity: sha512-yyHHAj4G8pQIDfaIsMvQpwKMboIZtcHTUvPqXjOHyldh1O1vZfH4W03VDPv5RvI9P6DLTzJQlmVgj9wCf7c2Fw==}
+    peerDependencies:
+      '@fortawesome/fontawesome-svg-core': ~1 || ~6
+      vue: '>= 3.0.0 < 4'
 
   '@googlemaps/js-api-loader@1.16.10':
     resolution: {integrity: sha512-c2erv2k7P2ilYzMmtYcMgAR21AULosQuUHJbStnrvRk2dG93k5cqptDrh9A8p+ZNlyhiqEOgHW7N9PAizdUM7Q==}
@@ -3980,8 +4025,14 @@ packages:
     resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
     engines: {node: '>=0.11'}
 
+  date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
+
   dayjs@1.11.13:
     resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
+
+  daysjs@1.0.2:
+    resolution: {integrity: sha512-aata7iSt3gAap32EffH3qM75HY7BbjwpOk55NyAMD42oO55HnG4Q1PGu77A5vd/yry3f7joPQU5LPNKgz1JUMQ==}
 
   db0@0.3.2:
     resolution: {integrity: sha512-xzWNQ6jk/+NtdfLyXEipbX55dmDSeteLFt/ayF+wZUU5bzKgmrDOxmInUTbyVRp46YwnJdkDA1KhB7WIXFofJw==}
@@ -6478,6 +6529,9 @@ packages:
   perfect-debounce@1.0.0:
     resolution: {integrity: sha512-xCy9V055GLEqoFaHoC1SoLIaLmWctgCUaBaWxDZ7/Zx4CTyX7cJQLJOok/orfjZAh9kEYpjJa4d0KcJmCbctZA==}
 
+  perfect-scrollbar@1.5.6:
+    resolution: {integrity: sha512-rixgxw3SxyJbCaSpo1n35A/fwI1r2rdwMKOTCg/AcG+xOEyZcE8UHVjpZMFCVImzsFoCZeJTT+M/rdEIQYO2nw==}
+
   performance-now@2.1.0:
     resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
 
@@ -6843,6 +6897,10 @@ packages:
     resolution: {integrity: sha512-HopdRZWHa5zk0HSwd8hU+GlahQ3fmesTAqMIDHVY9HasCvppcYuHYXyjml0nlm+nbwVCqAQWV+dSmiNCrZGTGQ==}
     engines: {node: '>=18'}
     hasBin: true
+
+  qalendar@3.9.0:
+    resolution: {integrity: sha512-RYjE+a5q+hv3kPh/0GRurFK2J70S6mbR8Bz2+UcmYWW1btboP913k4RbqQy5KnxmLmWYwdBm5ct8cpHjVDfj4g==}
+    engines: {node: '>=16.0.0'}
 
   qs@6.14.0:
     resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
@@ -9013,6 +9071,14 @@ snapshots:
       enabled: 2.0.0
       kuler: 2.0.0
 
+  '@date-io/core@3.2.0': {}
+
+  '@date-io/date-fns@3.2.1(date-fns@4.1.0)':
+    dependencies:
+      '@date-io/core': 3.2.0
+    optionalDependencies:
+      date-fns: 4.1.0
+
   '@dependents/detective-less@5.0.1':
     dependencies:
       gonzales-pe: 4.3.0
@@ -9321,6 +9387,25 @@ snapshots:
       - vue
 
   '@formkit/auto-animate@0.8.2': {}
+
+  '@fortawesome/fontawesome-common-types@6.7.2': {}
+
+  '@fortawesome/fontawesome-svg-core@6.7.2':
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 6.7.2
+
+  '@fortawesome/free-regular-svg-icons@6.7.2':
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 6.7.2
+
+  '@fortawesome/free-solid-svg-icons@6.7.2':
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 6.7.2
+
+  '@fortawesome/vue-fontawesome@3.0.8(@fortawesome/fontawesome-svg-core@6.7.2)(vue@3.5.17(typescript@5.8.3))':
+    dependencies:
+      '@fortawesome/fontawesome-svg-core': 6.7.2
+      vue: 3.5.17(typescript@5.8.3)
 
   '@googlemaps/js-api-loader@1.16.10': {}
 
@@ -13126,7 +13211,11 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.27.6
 
+  date-fns@4.1.0: {}
+
   dayjs@1.11.13: {}
+
+  daysjs@1.0.2: {}
 
   db0@0.3.2: {}
 
@@ -16260,6 +16349,8 @@ snapshots:
 
   perfect-debounce@1.0.0: {}
 
+  perfect-scrollbar@1.5.6: {}
+
   performance-now@2.1.0:
     optional: true
 
@@ -16596,6 +16687,16 @@ snapshots:
       - supports-color
       - typescript
       - utf-8-validate
+
+  qalendar@3.9.0(vue@3.5.17(typescript@5.8.3)):
+    dependencies:
+      '@fortawesome/fontawesome-svg-core': 6.7.2
+      '@fortawesome/free-regular-svg-icons': 6.7.2
+      '@fortawesome/free-solid-svg-icons': 6.7.2
+      '@fortawesome/vue-fontawesome': 3.0.8(@fortawesome/fontawesome-svg-core@6.7.2)(vue@3.5.17(typescript@5.8.3))
+      perfect-scrollbar: 1.5.6
+    transitivePeerDependencies:
+      - vue
 
   qs@6.14.0:
     dependencies:

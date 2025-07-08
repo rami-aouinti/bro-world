@@ -50,8 +50,6 @@ const isRtl = computed(() => rtlLanguages.includes(locale.value))
 const showSettingsDrawer = ref(false)
 const { mobile } = useDisplay()
 const isLoading = ref(true)
-
-
 function updateHtmlAttrs() {
   if (!process.client) return
 
