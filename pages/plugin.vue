@@ -60,5 +60,8 @@ watch(!plugins.value, () => {
   fetchPlugins()
 }, { immediate: true })
 
-onMounted(fetchPlugins)
+onMounted(async () => {
+  window.scrollTo({ top: 0 })
+  await fetchPlugins
+})
 </script>

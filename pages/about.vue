@@ -47,4 +47,7 @@ definePageMeta({
   breadcrumb: 'disabled',
   scrollToTop: true,
 })
+onMounted(async () => {
+  window.scrollTo({ top: 0 })
+})
 </script>

@@ -91,7 +91,11 @@ watch(selected, async () => {
   await fetchConversations()
   randomAvatar()
 })
-onMounted(await fetchConversations)
+
+onMounted(async () => {
+  window.scrollTo({ top: 0 })
+  await fetchConversations
+})
 // 🎯 Traductions via clés courtes
 const accountSettings = ref([
   { text: 'emailWhenFollow', switchState: true },
@@ -102,8 +106,6 @@ const applicationSettings = ref([
   { text: 'newProjects', switchState: true },
   { text: 'monthlyUpdates', switchState: false },
 ])
-
-
 
 definePageMeta({
   layout: 'default',

@@ -209,6 +209,7 @@ const reloadStories = async () => {
 }
 
 onMounted(async () => {
+  window.scrollTo({ top: 0 })
   try {
     await loadProfile()
     await loadInitialPosts()

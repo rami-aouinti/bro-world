@@ -17,6 +17,9 @@ definePageMeta({
   middleware: 'auth',
   scrollToTop: true,
 })
+onMounted(async () => {
+  window.scrollTo({ top: 0 })
+})
 </script>
 <template>
   <NuxtPage />

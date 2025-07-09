@@ -114,6 +114,8 @@ watchEffect(async () => {
     await fetchConversations()
   }
 })
-
-onMounted(await fetchConversations)
+onMounted(async () => {
+  window.scrollTo({ top: 0 })
+  await fetchConversations
+})
 </script>

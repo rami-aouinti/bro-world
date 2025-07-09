@@ -113,6 +113,9 @@ const quizzImg = (quizz) => {
 };
 
 const tags = ['quizz', 'sparql', 'wikipedia', 'wikidata'];
+onMounted(async () => {
+  window.scrollTo({ top: 0 })
+})
 </script>
 
 <style scoped>

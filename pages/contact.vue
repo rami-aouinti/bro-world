@@ -99,7 +99,9 @@ const form = ref({
   subject: '',
   message: '',
 })
-
+onMounted(async () => {
+  window.scrollTo({ top: 0 })
+})
 async function sendMessage() {
   error.value = ''
   loading.value = true
