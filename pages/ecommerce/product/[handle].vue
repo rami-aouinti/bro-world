@@ -1,6 +1,3 @@
-<!-- ✅ COMPOSANT PRINCIPAL DE LA PAGE PRODUIT -->
-<!-- Fichier : pages/shopping/product/[handle].vue -->
-
 <script setup lang="ts">
 import ImageGallery from "~/components/Ecommerce/product/ImageGallery.vue";
 import InfoDetails from "~/components/Ecommerce/product/InfoDetails.vue";

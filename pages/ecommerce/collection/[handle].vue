@@ -1,6 +1,3 @@
-<!-- ✅ COMPOSANT PRINCIPAL DE LA PAGE COLLECTION -->
-<!-- Fichier : pages/shopping/collection/[handle].vue -->
-
 <script setup lang="ts">
 import HeaderSection from "~/components/Ecommerce/shared/HeaderSection.vue";
 import CategorySelector from "~/components/Ecommerce/collection/CategorySelector.vue";

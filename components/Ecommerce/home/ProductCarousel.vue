@@ -13,7 +13,7 @@ defineProps<{ products?: ShopifyProducts, title: string, description: string, li
         <p class="carousel-description">{{ description }}</p>
       </div>
 
-      <NuxtLink :to="link" class="see-all-link">
+      <NuxtLink :to="link" class="text-primary see-all-link">
         See all
         <v-icon class="see-all-icon" size="20">mdi-arrow-right-bold</v-icon>
       </NuxtLink>

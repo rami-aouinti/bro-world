@@ -9,7 +9,7 @@
 
     <v-card
       v-else
-      class="bg-gradient-primary shadow-primary border-radius-lg mx-3 mt-4 mb-4"
+      class="bg-gradient-primary shadow-primary border-radius-lg mx-3 mb-4"
       variant="text"
       elevation="10"
       :class="{ 'text-end': isRtl, 'text-start': !isRtl }"
