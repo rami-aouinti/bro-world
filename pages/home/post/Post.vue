@@ -53,7 +53,7 @@ const localePath = useLocalePath()
 <template>
   <div class="px-4 py-1">
     <NuxtLink :to="localePath(`/post/${props.post.slug}`)" class="text-decoration-none">
-      <div v-if="props.post?.title" v-html="props.post?.title" class="text-default font-weight-bolder px-12 mb-4">
+      <div v-if="props.post?.title" v-html="props.post?.title" class="text-default font-weight-600 text-sm px-12 mb-4">
       </div>
     </NuxtLink>
       <div v-if="props.post?.url || props.post?.medias?.length > 0" class="text-left px-12 mb-6 text-body font-weight-light">

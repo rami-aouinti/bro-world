@@ -35,7 +35,7 @@ const changeLanguage = async (code: string) => {
         v-bind="mergeProps(menu)"
         class="mx-2"
       >
-        <span class="border border-radius-xl shadow-2xl shadow-primary object-cover" :class="`fi ${currentLanguage.icon}`" style="width: 32px; height:26px;" />
+        <span class="border border-radius-xl shadow-2xl shadow-primary object-cover" :class="`fi ${currentLanguage.icon}`" style="width: 28px; height:24px;" />
       </v-btn>
     </template>
 

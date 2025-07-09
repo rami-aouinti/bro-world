@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Comment from "~/pages/home/post/Comment.vue";
 import { computed, ref} from 'vue'
+import UserAvatar from "~/components/App/UserAvatar.vue";
 const emit = defineEmits(['comment-commented'])
 const { user, loggedIn } = await useUserSession()
 const sendingComment = ref(false)
@@ -140,20 +141,28 @@ const sendComment = async () => {
     >
       <Comment :comment="reply"></Comment>
     </div>
-    <v-textarea
-      v-model="newReply"
-      :append-inner-icon="sendingComment ? 'mdi-loading' : 'mdi-send'"
-      :class="{ 'mdi-spin': sendingComment }"
-      rounded
-      class="mx-0 w-100"
-      label="Write your comment"
-      :aria-label="sendingComment ? 'Sending comment...' : 'Send comment'"
-      row-height="10"
-      rows="1"
-      variant="outlined"
-      auto-grow
-      density="compact"
-      @click:append-inner="sendComment"
-    />
+    <div class="d-flex align-center mt-3">
+      <div class="flex-shrink-0" style="padding-bottom: 18px;">
+        <UserAvatar :user="user" size="32" />
+      </div>
+
+      <div class="flex-grow-1 ms-4 d-flex align-center">
+        <v-textarea
+          v-model="newReply"
+          :append-inner-icon="sendingComment ? 'mdi-loading' : 'mdi-send'"
+          :class="{ 'mdi-spin': sendingComment }"
+          rounded
+          class="mx-0 w-100"
+          label="Write your comment"
+          :aria-label="sendingComment ? 'Sending comment...' : 'Send comment'"
+          row-height="10"
+          rows="1"
+          variant="outlined"
+          auto-grow
+          density="compact"
+          @click:append-inner="sendComment"
+        />
+      </div>
+    </div>
   </div>
 </template>

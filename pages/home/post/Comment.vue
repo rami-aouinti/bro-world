@@ -94,7 +94,7 @@ const createdComment = () => {
           <div class="mx-1">
             <NuxtLink
               :to="isOwner ? localePath('/profile') : localePath(`/user/${props.comment.user.username}`)"
-              class="text-dark font-weight-600 text-sm text-decoration-none"
+              class="text-dark font-weight-bolder text-sm text-decoration-none"
             >
               {{ props.comment.user.firstName }} {{ props.comment.user.lastName }}
             </NuxtLink>

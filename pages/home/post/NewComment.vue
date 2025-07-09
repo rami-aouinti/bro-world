@@ -49,7 +49,7 @@ const sendComment = async () => {
         :append-inner-icon="sendingComment ? 'mdi-loading' : 'mdi-send'"
         :class="{ 'mdi-spin': sendingComment }"
         rounded
-        class="mx-2 w-100"
+        class="mx-1 w-100"
         label="Write your comment"
         row-height="10"
         rows="1"

@@ -194,7 +194,7 @@ watch(
       <div class="mx-4">
         <NuxtLink
           :to="props.post.user?.username === user?.username ? localePath('/profile') : localePath(`/user/${props.post.user.username}`)"
-          class="text-dark font-weight-600 text-sm text-decoration-none"
+          class="text-default font-weight-bolder text-decoration-none"
         >
           {{ props.post.user?.firstName }} {{ props.user?.lastName }}
         </NuxtLink>
