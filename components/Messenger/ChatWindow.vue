@@ -204,6 +204,9 @@ watch(messages, async (newVal, oldVal) => {
 })
 
 onMounted(async () => {
+  if (bottomAnchor.value) {
+    bottomAnchor.value.classList.add('bottomAnchor');
+  }
   await fetchMessages()
   await scrollToBottom()
 })
