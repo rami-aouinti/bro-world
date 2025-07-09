@@ -162,6 +162,20 @@ definePageMeta({
   layout: 'default',
   middleware: 'auth',
   breadcrumb: 'disabled',
+  title: 'Settings',
+  description: 'Manage your account settings, profile, and preferences.',
+  meta: [
+    { name: 'description', content: 'Manage your account settings, profile, and preferences.' },
+    { name: 'keywords', content: 'settings, profile, account, preferences' },
+  ],
+  head: {
+    title: 'Settings',
+    meta: [
+      { name: 'description', content: 'Manage your account settings, profile, and preferences.' },
+      { name: 'keywords', content: 'settings, profile, account, preferences' },
+    ],
+  },
+  scrollToTop: true,
 })
 </script>
 

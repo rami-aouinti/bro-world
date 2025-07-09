@@ -21,5 +21,6 @@ definePageMeta({
       { name: 'keywords', content: 'presentation, project, features' },
     ],
   },
+  scrollToTop: true,
 })
 </script>

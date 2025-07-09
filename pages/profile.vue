@@ -122,6 +122,7 @@ definePageMeta({
     ],
   },
   middleware: 'auth',
+  scrollToTop: true,
 })
 </script>
 

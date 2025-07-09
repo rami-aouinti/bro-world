@@ -53,6 +53,7 @@ definePageMeta({
     ],
   },
   breadcrumb: 'disabled',
+  scrollToTop: true,
 })
 const loadConversation = ref(true)
 const conversations = ref<any[]>([])

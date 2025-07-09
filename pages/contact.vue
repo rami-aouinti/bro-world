@@ -88,6 +88,7 @@ definePageMeta({
     ],
   },
   description: 'Contact page',
+  scrollToTop: true,
 })
 const { t } = useI18n()
 const loading = ref(false)

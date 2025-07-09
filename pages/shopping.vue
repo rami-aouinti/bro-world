@@ -5,6 +5,19 @@ definePageMeta({
   layout: 'default',
   description: 'Shopping page',
   breadcrumb: 'disabled',
+  title: 'Shopping',
+  meta: [
+    { name: 'description', content: 'Explore our latest collections and casual things for everyday use.' },
+    { name: 'keywords', content: 'shopping, ecommerce, collections, casual' },
+  ],
+  head: {
+    title: 'Shopping',
+    meta: [
+      { name: 'description', content: 'Explore our latest collections and casual things for everyday use.' },
+      { name: 'keywords', content: 'shopping, ecommerce, collections, casual' },
+    ],
+  },
+  scrollToTop: true,
 })
 const { data: latestStuffCollection } = await useAsyncData('latest-stuff-collection', () => GqlGetCollection({
   handle: 'latest-stuff',

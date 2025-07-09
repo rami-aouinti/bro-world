@@ -29,6 +29,7 @@ definePageMeta({
       { name: 'keywords', content: 'home, posts, stories, social' },
     ],
   },
+  scrollToTop: true,
 })
 
 

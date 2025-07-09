@@ -2,7 +2,24 @@
 import Social from "~/components/Job/Resume/Social.vue";
 import Profile from "~/components/Job/Resume/Profile.vue";
 import Preview from "~/components/Job/Resume/Preview.vue";
-
+definePageMeta({
+  layout: 'default',
+  description: 'Resume page',
+  title: 'Resume Builder',
+  meta: [
+    { name: 'description', content: 'Create and export your resume easily.' },
+    { name: 'keywords', content: 'resume, cv, builder, export' },
+  ],
+  head: {
+    title: 'Resume Builder',
+    meta: [
+      { name: 'description', content: 'Create and export your resume easily.' },
+      { name: 'keywords', content: 'resume, cv, builder, export' },
+    ],
+  },
+  breadcrumb: 'disabled',
+  scrollToTop: true,
+})
 const data = ref({
   n: "",
   d: "",

@@ -99,6 +99,7 @@ definePageMeta({
     ],
   },
   breadcrumb: 'disabled',
+  scrollToTop: true,
 })
 const { data: allQuizz } = await useAsyncData("allQuizz", () =>
   queryContent("/quizz").find()

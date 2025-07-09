@@ -1,10 +1,21 @@
 <script setup lang="ts">
 definePageMeta({
   title: 'Course',
-  icon: 'mdi-airplay',
+  description: 'Course page',
+  meta: [
+    { name: 'description', content: 'Detailed information about the course.' },
+    { name: 'keywords', content: 'course, education, learning' }
+  ],
+  head: {
+    title: 'Course',
+    meta: [
+      { name: 'description', content: 'Detailed information about the course.' },
+      { name: 'keywords', content: 'course, education, learning' }
+    ]
+  },
+  breadcrumb: 'disabled',
   middleware: 'auth',
-  requiredRoles: ['ROLE_USER'],
-  drawerIndex: 3,
+  scrollToTop: true,
 })
 </script>
 <template>

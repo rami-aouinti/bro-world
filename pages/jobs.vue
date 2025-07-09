@@ -86,6 +86,7 @@ definePageMeta({
       { name: 'keywords', content: 'jobs, employment, careers, job listings' },
     ],
   },
+  scrollToTop: true,
 })
 
 

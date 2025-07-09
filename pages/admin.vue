@@ -5,6 +5,7 @@ definePageMeta({
   middleware: 'admin',
   requiredRoles: ['ROLE_ADMIN'],
   breadcrumb: 'disabled',
+  scrollToTop: true,
 })
 
 const { loggedIn } = useUserSession()

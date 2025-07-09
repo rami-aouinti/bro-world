@@ -45,6 +45,7 @@ definePageMeta({
       { name: 'keywords', content: 'plugins, extensions, functionality' },
     ],
   },
+  scrollToTop: true,
 })
 
 const plugins = ref<any[]>([])

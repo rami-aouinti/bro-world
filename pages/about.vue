@@ -45,5 +45,6 @@ definePageMeta({
     ],
   },
   breadcrumb: 'disabled',
+  scrollToTop: true,
 })
 </script>
