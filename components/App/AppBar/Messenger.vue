@@ -75,6 +75,8 @@ const totalUnread = computed(() =>
     :batch-size="4"
     :min-height="200"
     :empty-text="t('messages.empty')"
+    :footer-url="localePath(pathAllMessages)"
+    :footer-text="t('messages.all')"
     color="secondary"
   >
     <template #item="{ item }">
@@ -118,47 +120,10 @@ const totalUnread = computed(() =>
         </v-row>
       </v-list-item>
     </template>
-
-    <!-- Footer personnalisé (facultatif) -->
-    <template #default>
-      <v-divider />
-      <v-list-item
-        :to="localePath(pathAllMessages)"
-        class="pa-1 list-item-hover-active d-flex align-center justify-center text-center border-radius-md"
-      >
-        <h6 class="text-sm font-weight-normal text-typo mb-1">
-          {{ t('messages.all') }}
-        </h6>
-      </v-list-item>
-    </template>
   </ReusablePopoverList>
 </template>
 
 <style scoped>
-.chat-list-item {
-  padding: 12px;
-  margin-bottom: 8px;
-  transition: background 0.3s ease, transform 0.2s;
-  border-radius: 16px;
-}
-.chat-list-item:hover {
-  background-color: rgba(255, 0, 128, 0.05);
-}
-.online-badge,
-.offline-badge {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  animation: onlinePulse 1.5s ease-in-out infinite;
-}
-.online-badge {
-  background: #4caf50;
-  box-shadow: 0 0 4px #4caf50, 0 0 8px #4caf50;
-}
-.offline-badge {
-  background: #e00a1e;
-  box-shadow: 0 0 4px #c51616, 0 0 8px #e00a1e;
-}
 @keyframes onlinePulse {
   0% {
     transform: scale(1);

@@ -10,6 +10,8 @@ interface Props {
   height?: number
   color?: string
   emptyText?: string
+  footerText?: string
+  footerUrl?: string
 }
 
 const props = defineProps<Props>()
@@ -75,10 +77,19 @@ watch(isOpen, (opened) => {
       </v-infinite-scroll>
 
       <v-list-item
-        v-if="!displayed.length"
+        v-if="!displayed.length && emptyText"
         class="d-flex justify-center text-center pa-2"
       >
         <h6 class="text-body-2">{{ emptyText ?? 'No items available' }}</h6>
+      </v-list-item>
+      <v-list-item
+        v-if="footerText"
+        :to="footerUrl"
+        class="d-flex justify-center text-center pa-2"
+      >
+        <h6 class="text-sm font-weight-normal text-typo mb-1">
+          {{ footerText }}
+        </h6>
       </v-list-item>
     </v-list>
   </v-menu>

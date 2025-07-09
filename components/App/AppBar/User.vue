@@ -40,6 +40,7 @@ const notLoggedUser = ref([
     <!-- Menu si connecté -->
     <v-list class="pa-1" v-if="loggedIn">
       <v-list-item
+        class="list-item-hover-active d-flex align-items-center border-radius-md primary-list-item"
         prepend-icon="mdi-face"
         :to="localePath('/profile')"
         :class="{ 'rtl-item': isRtl }"
@@ -60,7 +61,7 @@ const notLoggedUser = ref([
         :key="i"
         :prepend-icon="item.icon"
         :to="localePath(item.path)"
-        class="list-item-hover-active d-flex align-items-center border-radius-md"
+        class="list-item-hover-active d-flex align-items-center border-radius-md primary-list-item"
         :class="{ 'rtl-item': isRtl }"
       >
         <v-list-item-title class="text-body-2 font-weight-600 mb-0">
@@ -77,6 +78,7 @@ const notLoggedUser = ref([
       <v-divider />
 
       <v-list-item
+        class="list-item-hover-active d-flex align-items-center border-radius-md primary-list-item"
         prepend-icon="mdi-logout"
         @click="clear"
         :class="{ 'rtl-item': isRtl }"
@@ -100,7 +102,7 @@ const notLoggedUser = ref([
         :key="i"
         :prepend-icon="item.icon"
         :to="localePath(item.path)"
-        class="list-item-hover-active d-flex align-items-center border-radius-md"
+        class="list-item-hover-active d-flex align-items-center border-radius-md primary-list-item"
         :class="{ 'rtl-item': isRtl }"
       >
         <v-list-item-title class="text-body-2 font-weight-600 mb-0">

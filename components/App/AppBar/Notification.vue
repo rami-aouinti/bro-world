@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
-import { storeToRefs } from 'pinia'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useNotificationStore } from '~/stores/notification'
 import { useI18n } from 'vue-i18n'
 import { useLocalePath } from '#i18n'
@@ -10,16 +9,16 @@ import RelativeTime from '~/components/App/RelativeTime.vue'
 const { t } = useI18n()
 const localePath = useLocalePath()
 const notificationStore = useNotificationStore()
-const { notifications } = storeToRefs(notificationStore)
-
+const isNotificationReady = ref(true)
 const batchSize = 3
-
-const totalHidden = computed(() => notifications.value.filter(n => n.new).length)
+const notifications = ref<any[]>([])
 
 async function fetchNotifications() {
-  await notificationStore.fetchNotifications()
+  notifications.value = await notificationStore.fetchNotifications()
   notifications.value.reverse()
+  isNotificationReady.value = false
 }
+const totalHidden = computed(() => notifications.value.filter(n => n.new).length)
 
 function markAllAsRead() {
   for (const notif of notifications.value) {
@@ -27,8 +26,12 @@ function markAllAsRead() {
     notif.show = false
   }
 }
-
-onMounted(fetchNotifications)
+onMounted(async () => {
+  await fetchNotifications()
+})
+watch(isNotificationReady, async () => {
+  await fetchNotifications()
+})
 </script>
 
 <template>
@@ -44,13 +47,13 @@ onMounted(fetchNotifications)
     @open="markAllAsRead"
   >
     <template #item="{ item }">
-      <v-list-item class="px-2 py-1 list-item-hover-active border-radius-md">
+      <v-list-item class="pa-1 list-item-hover-active d-flex align-center border-radius-md chat-list-item">
         <v-row align="center">
           <v-col cols="3">
-            <v-avatar size="48">
+            <v-avatar size="36">
               <NuxtImg
-                width="48"
-                height="48"
+                width="36"
+                height="36"
                 :src="item.subtitle"
                 format="webp"
                 :lazy-src="'/img/person.png'"

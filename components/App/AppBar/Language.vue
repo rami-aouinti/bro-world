@@ -39,8 +39,9 @@ const changeLanguage = async (code: string) => {
       </v-btn>
     </template>
 
-    <v-list>
+    <v-list :min-width="200">
       <v-list-item
+        class="list-item-hover-active d-flex align-items-center border-radius-md primary-list-item"
         v-for="lang in languages"
         :key="lang.code"
         @click="changeLanguage(lang.code)"

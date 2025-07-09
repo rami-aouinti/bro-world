@@ -97,6 +97,4 @@ body.ltr .text-align-auto {
   text-align: left !important;
   direction: ltr !important;
 }
-
-
 @source "../../../modules";

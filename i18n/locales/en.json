@@ -475,6 +475,7 @@
   },
   "messages": {
     "showMore": "Show more",
+    "all": "All messages",
     "empty": "No new messages",
     "jobCreated": "Job offer successfully created.",
     "jobUpdated": "Job offer successfully updated.",
