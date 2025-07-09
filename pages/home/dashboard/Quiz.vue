@@ -15,15 +15,20 @@
       elevation="10"
     >
       <div class="bg-gradient-primary shadow-primary border-radius-lg px-4 py-2">
-        <v-card-title class="text-h6 font-weight-bold text-center">
-          🏆 {{ t('dashboard.quiz.title') }}
-          <NuxtLink
-            to="/game"
-            class="text-primary text-decoration-none font-weight-bold ml-1"
-          >
-            {{ t('dashboard.quiz.link') }}
-          </NuxtLink>
-        </v-card-title>
+        <v-toolbar
+          color="transparent"
+        >
+          <v-app-bar-nav-icon color="primary">🏆</v-app-bar-nav-icon>
+          <v-toolbar-title to="/game">
+            {{ t('dashboard.quiz.title') }}
+            <NuxtLink
+              to="/game"
+              class="text-primary text-decoration-none font-weight-bold ml-1"
+            >
+              {{ t('dashboard.quiz.link') }}
+            </NuxtLink>
+          </v-toolbar-title>
+        </v-toolbar>
         <v-divider />
         <v-list class="bg-transparent" role="list">
           <v-list-item

@@ -19,10 +19,14 @@
       elevation="10"
       aria-label="Rating">
       <div class="bg-gradient-primary shadow-primary border-radius-lg px-4 py-2">
-        <v-card-title class="d-flex justify-center text-h5">
-          <span class="text-h6">{{ t('dashboard.rating.title') }}</span>
-        </v-card-title>
-
+        <v-toolbar
+          color="transparent"
+        >
+          <v-app-bar-nav-icon color="primary">❤️</v-app-bar-nav-icon>
+          <v-toolbar-title>
+            {{ t('dashboard.rating.title') }}
+          </v-toolbar-title>
+        </v-toolbar>
         <v-divider />
 
         <!-- Note globale -->

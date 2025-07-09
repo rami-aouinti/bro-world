@@ -18,10 +18,14 @@
       aria-labelledby="news-title"
     >
       <div class="bg-gradient-primary shadow-primary border-radius-lg px-4 py-2">
-        <v-card-title id="news-title" class="text-h6 font-weight-bold text-center">
-          🌐 {{ t('dashboard.news.title') }}
-        </v-card-title>
-
+        <v-toolbar
+          color="transparent"
+        >
+          <v-app-bar-nav-icon color="primary">🌐</v-app-bar-nav-icon>
+          <v-toolbar-title>
+            {{ t('dashboard.news.title') }}
+          </v-toolbar-title>
+        </v-toolbar>
         <v-divider />
 
         <v-card-text>
