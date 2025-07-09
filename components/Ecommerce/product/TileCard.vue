@@ -68,8 +68,8 @@ function handleMouseOver(event: MouseEvent) {
         />
       </div>
       <div class="tile-info">
-        <p class="tile-title">{{ product?.title }}</p>
-        <span class="tile-price">{{ computedPrice }}</span>
+        <p class="text-default tile-title">{{ product?.title }}</p>
+        <span class="text-default tile-price">{{ computedPrice }}</span>
       </div>
     </NuxtLink>
   </div>

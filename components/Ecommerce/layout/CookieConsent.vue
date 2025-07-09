@@ -10,7 +10,6 @@ const consent = useCookie('consent', { maxAge: 31536000, path: '/' })
     <v-alert
       v-if="consent !== 'cookie-consent'"
       variant="outline"
-      title="Welcome to Nuxt Commerce"
       description="A high-performance, server-rendered E-commerce app built with Nuxt & Shopify"
       close
       close-icon="i-heroicons-x-mark-20-solid"

@@ -30,10 +30,6 @@ defineProps<{ products?: ShopifyProducts, title: string, description: string, li
 </template>
 
 <style scoped>
-.carousel-wrapper {
-  margin: 64px 0;
-}
-
 .carousel-header {
   display: flex;
   justify-content: space-between;
