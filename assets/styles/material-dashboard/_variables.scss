@@ -502,7 +502,7 @@ $box-shadow-xl:
 // Colored Shadows
 $box-shadow-primary:
   0 4px 20px 0 rgba(0, 0, 0, 0.14),
-  0 7px 10px -5px rgba(233, 30, 99, 0.4) !default;
+  0 8px 8px -5px rgba(var(--v-theme-primary)) !default;
 $box-shadow-secondary:
   0 4px 20px 0 rgba(0, 0, 0, 0.14),
   0 7px 10px -5px rgba(210, 210, 210, 0.4) !default;
