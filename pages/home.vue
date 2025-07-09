@@ -229,72 +229,64 @@ onMounted(async () => {
         class="flex-grow-1"
         :style="$vuetify.display.lgAndUp ? 'padding-right: 400px;' : ''"
       >
-        <v-container fluid>
-          <v-row>
-            <v-col v-if="loggedIn" cols="12">
-              <LoaderStatusBanner v-if="loading.user" />
-              <template v-else-if="loggedIn && !user?.enabled">
+        <v-row justify="center" class="align-center justify-center">
+          <v-col cols="12">
+            <LoaderStatusBanner v-if="loading.user" />
+            <template v-else-if="loggedIn && !user?.enabled">
+              <NuxtLazyHydrate when-visible once>
+                <UserStatusBanner />
+              </NuxtLazyHydrate>
+            </template>
+
+            <template v-if="loading.user">
+              <LoaderPost />
+            </template>
+            <template v-else>
+              <NewPost v-if="loggedIn" @post-created="(post) => addPost(post)" @story-created="reloadStories" />
+            </template>
+            <ClientOnly>
+              <template v-if="loading.story">
+                <v-skeleton-loader type="avatar" class="mx-2" style="width: 50px; height: 50px;" />
+              </template>
+              <template v-else-if="loggedIn">
                 <NuxtLazyHydrate when-visible once>
-                  <UserStatusBanner />
+                  <HomeStories v-if="stories.length" :stories="stories" />
                 </NuxtLazyHydrate>
               </template>
-            </v-col>
-
-            <!-- Haut -->
-            <v-col v-if="loggedIn"  cols="12">
-              <template v-if="loading.user">
-                <LoaderPost />
-              </template>
-              <template v-else>
-                <NewPost v-if="loggedIn" @post-created="(post) => addPost(post)" @story-created="reloadStories" />
-                <ClientOnly>
-                  <template v-if="loading.story">
-                    <v-skeleton-loader type="avatar" class="mx-2" style="width: 50px; height: 50px;" />
-                  </template>
-                  <template v-else-if="loggedIn">
-                    <NuxtLazyHydrate when-visible once>
-                      <HomeStories :stories="stories" />
-                    </NuxtLazyHydrate>
-                  </template>
-                </ClientOnly>
-              </template>
-            </v-col>
-            <!-- Posts -->
-            <v-col cols="12">
-              <template v-if="loading.post">
-                <v-skeleton-loader
-                  type="card"
-                  class="pa-4 rounded-xl mb-4"
-                  height="200"
-                  v-for="n in 2"
-                  :key="n"
+            </ClientOnly>
+            <template v-if="loading.post">
+              <v-skeleton-loader
+                type="card"
+                class="pa-4 rounded-xl mb-4"
+                height="200"
+                v-for="n in 10"
+                :key="n"
+              />
+            </template>
+            <template v-else>
+              <v-infinite-scroll :items="postStore.posts" mode="manual" @load="loadMore">
+                <HomePosts
+                  v-for="(item, index) in postStore.posts"
+                  :key="item.id"
+                  :post="item"
+                  @post-reload="reloadPosts"
+                  @post-updated="(post) => editPost(post)"
+                  @post-deleted="(post) => deletePost(post)"
                 />
-              </template>
-              <template v-else>
-                <v-infinite-scroll :items="postStore.posts" mode="manual" @load="loadMore">
-                  <HomePosts
-                    v-for="(item, index) in postStore.posts"
-                    :key="item.id"
-                    :post="item"
-                    @post-reload="reloadPosts"
-                    @post-updated="(post) => editPost(post)"
-                    @post-deleted="(post) => deletePost(post)"
+                <template #load-more="{ props }">
+                  <v-btn
+                    v-if="hasMore"
+                    icon="mdi-refresh"
+                    class="text-primary"
+                    variant="text"
+                    v-bind="props"
+                    aria-label="Load more posts"
                   />
-                  <template #load-more="{ props }">
-                    <v-btn
-                      v-if="hasMore"
-                      icon="mdi-refresh"
-                      class="text-primary"
-                      variant="text"
-                      v-bind="props"
-                      aria-label="Load more posts"
-                    />
-                  </template>
-                </v-infinite-scroll>
-              </template>
-            </v-col>
-          </v-row>
-        </v-container>
+                </template>
+              </v-infinite-scroll>
+            </template>
+          </v-col>
+         </v-row>
       </div>
       <div
         class="d-none d-lg-block"

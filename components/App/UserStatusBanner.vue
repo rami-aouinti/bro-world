@@ -1,65 +1,63 @@
 <template>
-  <v-row justify="center" class="align-center justify-center">
-    <v-col cols="12">
-      <div class="user-status-banner">
-        <v-card
-          icon="mdi-alert-circle"
-          rounded="xl" class="mx-3 text-center" variant="text" elevation="10"
-        >
-          <template #text>
-            Your account is currently <strong class="text-secondary">not activated</strong>. Please check your email or
-            <span
-              class="text-primary font-weight-medium cursor-pointer"
-              role="button"
-              tabindex="0"
-              @click="requestActivation"
-              @keydown.enter="requestActivation"
-            >
+  <div class="user-status-banner">
+    <div class="py-3">
+    <v-card
+        icon="mdi-alert-circle"
+        rounded="xl" class="mx-3 text-center" variant="text" elevation="10"
+      >
+        <template #text>
+          Your account is currently <strong class="text-secondary">not activated</strong>. Please check your email or
+          <span
+            class="text-primary font-weight-medium cursor-pointer"
+            role="button"
+            tabindex="0"
+            @click="requestActivation"
+            @keydown.enter="requestActivation"
+          >
               request activation
             </span>
-            or contact support.
-          </template>
-        </v-card>
-      </div>
-      <v-dialog v-model="success" max-width="400px">
-        <v-card>
-          <v-card-text class="font-weight-bold d-flex">
-            <v-row>
-              <v-col cols="2">
-                <v-icon color="primary" icon="$success" />
-              </v-col>
-              <v-col cols="10">
-                <div>A code has been sent to {{ truncate(user.email, 3) }}*****</div>
-              </v-col>
-              <v-col cols="12">
-                <v-otp-input
-                  v-model="otp"
-                  :disabled="validating"
-                  color="secondary"
-                  variant="plain"
-                ></v-otp-input>
-              </v-col>
-            </v-row>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              :loading="validating"
-              class="mt-2 text-none"
-              height="30"
-              color="primary"
-              text="Validate"
+          or contact support.
+        </template>
+      </v-card>
+    </div>
+  </div>
+  <v-dialog v-model="success" max-width="400px">
+    <v-card>
+      <v-card-text class="font-weight-bold d-flex">
+        <v-row>
+          <v-col cols="2">
+            <v-icon color="primary" icon="$success" />
+          </v-col>
+          <v-col cols="10">
+            <div>A code has been sent to {{ truncate(user.email, 3) }}*****</div>
+          </v-col>
+          <v-col cols="12">
+            <v-otp-input
+              v-model="otp"
+              :disabled="validating"
+              color="secondary"
               variant="plain"
-              width="135"
-              border
-              rounded
-              @click="sendActivation"
-            ></v-btn>
-            <v-spacer />
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-col>
-  </v-row>
+            ></v-otp-input>
+          </v-col>
+        </v-row>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn
+          :loading="validating"
+          class="mt-2 text-none"
+          height="30"
+          color="primary"
+          text="Validate"
+          variant="plain"
+          width="135"
+          border
+          rounded
+          @click="sendActivation"
+        ></v-btn>
+        <v-spacer />
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup lang="ts">

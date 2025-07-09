@@ -87,43 +87,39 @@ function sendMessage() {
 </script>
 
 <template>
-  <v-row v-if="stories.length">
-    <v-col cols="12">
-      <v-card rounded="xl" class="overflow-x-auto mx-3 min-h-stories" variant="text" elevation="10">
-        <div class="d-flex align-center justify-center">
-          <v-col
-            v-for="userStories in stories"
-            :key="userStories.userId"
-            lg="1"
-            md="2"
-            sm="3"
-            cols="4"
-            class="text-center"
+  <div class="py-3">
+  <v-card rounded="xl" class="overflow-x-auto mx-3 min-h-stories" variant="text" elevation="10">
+      <div class="d-flex align-center justify-center">
+        <v-col
+          v-for="userStories in stories"
+          :key="userStories.userId"
+          lg="1"
+          md="2"
+          sm="3"
+          cols="4"
+          class="text-center"
+        >
+          <v-avatar
+            @click="openStoryViewer(userStories)"
+            role="button"
+            tabindex="0"
+            aria-label="Open story"
+            class="border-md rounded-circle px-1 py-1"
+            :class="userStories.username === user.username ? 'border-success' : 'border-primary'"
+            size="50"
+            style="cursor: pointer"
           >
-            <v-avatar
-              @click="openStoryViewer(userStories)"
-              role="button"
-              tabindex="0"
-              aria-label="Open story"
-              class="border-md rounded-circle px-1 py-1"
-              :class="userStories.username === user.username ? 'border-success' : 'border-primary'"
-              size="50"
-              style="cursor: pointer"
-            >
-              <NuxtImg
-                format="webp" loading="lazy" cover
-                :alt="`story-${userStories.username}`"
-                :src="userStories.stories[0]?.mediaPath"
-                width="58"
-                height="58"
-              />
-            </v-avatar>
-          </v-col>
-        </div>
-      </v-card>
-    </v-col>
-  </v-row>
-
+            <NuxtImg
+              format="webp" loading="lazy" cover
+              :alt="`story-${userStories.username}`"
+              :src="userStories.stories[0]?.mediaPath"
+              width="58"
+              height="58"
+            />
+          </v-avatar>
+        </v-col>
+      </div>
+    </v-card>
   <v-dialog v-model="storyViewerVisible" max-width="500" @click:outside="closeStoryViewer">
     <v-card class="pa-0">
       <v-progress-linear aria-label="Stories" :model-value="progress" height="4" color="primary" stream />
@@ -186,6 +182,7 @@ function sendMessage() {
       </div>
     </v-card>
   </v-dialog>
+  </div>
 </template>
 
 <style scoped>

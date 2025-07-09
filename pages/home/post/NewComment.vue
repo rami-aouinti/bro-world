@@ -40,7 +40,7 @@ const sendComment = async () => {
 <template>
   <div class="d-flex align-center mt-3">
     <div class="flex-shrink-0" style="padding-bottom: 18px;">
-      <UserAvatar :user="user" size="48" />
+      <UserAvatar :user="user" size="32" />
     </div>
 
     <div class="flex-grow-1 ms-4 d-flex align-center">
