@@ -109,6 +109,18 @@ definePageMeta({
   layout: 'default',
   description: 'Profile page',
   breadcrumb: 'disabled',
+  title: 'Profile',
+  meta: [
+    { name: 'description', content: 'User profile page with personal information and settings.' },
+    { name: 'keywords', content: 'profile, user, settings' },
+  ],
+  head: {
+    title: 'Profile',
+    meta: [
+      { name: 'description', content: 'User profile page with personal information and settings.' },
+      { name: 'keywords', content: 'profile, user, settings' },
+    ],
+  },
   middleware: 'auth',
 })
 </script>

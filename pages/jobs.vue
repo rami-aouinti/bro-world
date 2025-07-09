@@ -74,6 +74,18 @@ definePageMeta({
   layout: 'default',
   description: 'Job page',
   breadcrumb: 'disabled',
+  title: 'Jobs',
+  meta: [
+    { name: 'description', content: 'Browse and apply for jobs, or create new job listings.' },
+    { name: 'keywords', content: 'jobs, employment, careers, job listings' },
+  ],
+  head: {
+    title: 'Jobs',
+    meta: [
+      { name: 'description', content: 'Browse and apply for jobs, or create new job listings.' },
+      { name: 'keywords', content: 'jobs, employment, careers, job listings' },
+    ],
+  },
 })
 
 

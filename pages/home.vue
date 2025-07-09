@@ -13,6 +13,23 @@ import LoaderStatusBanner from '~/components/App/Loader/Home/LoaderStatusBanner.
 import LoaderPost from '~/components/App/Loader/Home/LoaderPost.vue'
 import DrawerManager from "~/components/App/AppBar/DrawerManager.vue";
 import {useUserStore} from "~/stores/useUserStore";
+definePageMeta({
+  layout: 'default',
+  breadcrumb: 'disabled',
+  title: 'Home',
+  description: 'Welcome to the home page where you can find the latest posts and stories.',
+  meta: [
+    { name: 'description', content: 'Welcome to the home page where you can find the latest posts and stories.' },
+    { name: 'keywords', content: 'home, posts, stories, social' },
+  ],
+  head: {
+    title: 'Home',
+    meta: [
+      { name: 'description', content: 'Welcome to the home page where you can find the latest posts and stories.' },
+      { name: 'keywords', content: 'home, posts, stories, social' },
+    ],
+  },
+})
 
 
 const { locale } = useI18n()
@@ -197,7 +214,6 @@ onMounted(async () => {
     await nextTick()
     await loadStories()
   } catch (e) {
-    console.error('Erreur onMounted:', e)
   } finally {
     loading.value.user = false
   }

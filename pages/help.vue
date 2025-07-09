@@ -36,6 +36,18 @@ const isRtl = computed(() => locale.value === 'ar')
 definePageMeta({
   layout: 'default',
   description: 'Help page',
+  title: 'Help & Support',
+  meta: [
+    { name: 'description', content: 'Frequently asked questions and support information.' },
+    { name: 'keywords', content: 'help, support, faq' },
+  ],
+  head: {
+    title: 'Help & Support',
+    meta: [
+      { name: 'description', content: 'Frequently asked questions and support information.' },
+      { name: 'keywords', content: 'help, support, faq' },
+    ],
+  },
   breadcrumb: 'disabled',
 })
 </script>

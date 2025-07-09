@@ -7,6 +7,7 @@
           <v-text-field
             v-model="form.name"
             :label="t('contact.name')"
+            rounded="xl"
             required
             outlined
             class="text-align-auto mb-1"
@@ -16,6 +17,7 @@
             v-model="form.email"
             :label="t('contact.email')"
             required
+            rounded="xl"
             type="email"
             outlined
             class="text-align-auto mb-1"
@@ -25,6 +27,7 @@
             v-model="form.subject"
             :label="t('contact.subject')"
             required
+            rounded="xl"
             outlined
             class="text-align-auto mb-1"
           />
@@ -34,6 +37,7 @@
             :label="t('contact.message')"
             required
             auto-grow
+            rounded="xl"
             outlined
             class="text-align-auto mb-1"
           />
@@ -71,8 +75,19 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 definePageMeta({
   layout: 'default',
+  title: 'Contact Us',
+  meta: [
+    { name: 'description', content: 'Contact us for any inquiries or support.' },
+    { name: 'keywords', content: 'contact, support, inquiries' },
+  ],
+  head: {
+    title: 'Contact Us',
+    meta: [
+      { name: 'description', content: 'Contact us for any inquiries or support.' },
+      { name: 'keywords', content: 'contact, support, inquiries' },
+    ],
+  },
   description: 'Contact page',
-  breadcrumb: 'disabled',
 })
 const { t } = useI18n()
 const loading = ref(false)

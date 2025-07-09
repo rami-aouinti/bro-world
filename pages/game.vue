@@ -86,6 +86,18 @@ import Header from '~/components/App/AppQuiz/Header.vue';
 definePageMeta({
   layout: 'default',
   description: 'Game page',
+  title: 'Quizzes',
+  meta: [
+    { name: 'description', content: 'Explore dynamic quizzes generated using Wikidata and SPARQL.' },
+    { name: 'keywords', content: 'quizzes, sparql, wikidata, wikipedia' },
+  ],
+  head: {
+    title: 'Quizzes',
+    meta: [
+      { name: 'description', content: 'Explore dynamic quizzes generated using Wikidata and SPARQL.' },
+      { name: 'keywords', content: 'quizzes, sparql, wikidata, wikipedia' },
+    ],
+  },
   breadcrumb: 'disabled',
 })
 const { data: allQuizz } = await useAsyncData("allQuizz", () =>

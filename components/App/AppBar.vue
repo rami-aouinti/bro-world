@@ -16,7 +16,7 @@
     <v-breadcrumbs
       :items="breadcrumbs"
       color="secondary"
-      class="mx-2 d-none"
+      class="mx-2 d-none d-lg-block"
       :aria-label="rtl ? 'المسار الحالي' : 'Breadcrumb'"
     />
 

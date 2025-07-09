@@ -32,6 +32,18 @@ const { t } = useI18n()
 definePageMeta({
   layout: 'default',
   description: 'About page',
+  title: 'About Us',
+  meta: [
+    { name: 'description', content: 'Learn more about our project and team.' },
+    { name: 'keywords', content: 'about, project, team' },
+  ],
+  head: {
+    title: 'About Us',
+    meta: [
+      { name: 'description', content: 'Learn more about our project and team.' },
+      { name: 'keywords', content: 'about, project, team' },
+    ],
+  },
   breadcrumb: 'disabled',
 })
 </script>

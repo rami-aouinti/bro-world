@@ -33,7 +33,18 @@ definePageMeta({
   layout: 'default',
   breadcrumb: 'disabled',
   title: 'Plugins',
-  description: 'Plugin page'
+  description: 'Explore and manage plugins to enhance your application functionality.',
+  meta: [
+    { name: 'description', content: 'Explore and manage plugins to enhance your application functionality.' },
+    { name: 'keywords', content: 'plugins, extensions, functionality' },
+  ],
+  head: {
+    title: 'Plugins',
+    meta: [
+      { name: 'description', content: 'Explore and manage plugins to enhance your application functionality.' },
+      { name: 'keywords', content: 'plugins, extensions, functionality' },
+    ],
+  },
 })
 
 const plugins = ref<any[]>([])

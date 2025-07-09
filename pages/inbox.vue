@@ -37,7 +37,23 @@
 import { ref, onMounted, watchEffect } from 'vue'
 import ChatList from '~/components/Messenger/ChatList.vue'
 import ChatWindow from '~/components/Messenger/ChatWindow.vue'
-
+definePageMeta({
+  layout: 'default',
+  description: 'Messenger page',
+  title: 'Messenger',
+  meta: [
+    { name: 'description', content: 'Chat with your friends and manage conversations.' },
+    { name: 'keywords', content: 'messenger, chat, conversations' },
+  ],
+  head: {
+    title: 'Messenger',
+    meta: [
+      { name: 'description', content: 'Chat with your friends and manage conversations.' },
+      { name: 'keywords', content: 'messenger, chat, conversations' },
+    ],
+  },
+  breadcrumb: 'disabled',
+})
 const loadConversation = ref(true)
 const conversations = ref<any[]>([])
 const activeConversation = ref<any | null>(null)
