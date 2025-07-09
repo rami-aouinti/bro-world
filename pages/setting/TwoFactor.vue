@@ -2,7 +2,7 @@
   <v-card
     elevation="10"
     id="2fa"
-    class="py-4"
+    class="bg-gradient-primary shadow-primary border-radius-lg py-4"
     rounded="xl"
     variant="text"
   >

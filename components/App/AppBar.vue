@@ -12,20 +12,17 @@
       aria-label="Toggle drawer"
       :title="rtl ? 'إظهار القائمة' : 'Toggle drawer'"
     />
-
     <v-breadcrumbs
       :items="breadcrumbs"
       color="secondary"
       class="mx-2 d-none d-lg-block"
       :aria-label="rtl ? 'المسار الحالي' : 'Breadcrumb'"
     />
-
-    <v-spacer />
-
+    <Switch />
     <Navigation />
     <Screen />
-    <Notification v-if="loggedIn" />
-    <Messenger v-if="loggedIn" />
+
+    <v-spacer />
 
     <v-btn
       icon
@@ -43,10 +40,10 @@
       </v-badge>
       <v-icon v-else>mdi-shopping</v-icon>
     </v-btn>
-
+    <Messenger v-if="loggedIn" />
+    <Notification v-if="loggedIn" />
     <User />
     <Language />
-    <Switch />
   </v-app-bar>
 </template>
 

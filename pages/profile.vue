@@ -136,7 +136,7 @@ definePageMeta({
     <div v-else>
       <v-row>
         <v-col lg="12">
-          <v-card rounded="xl" class="py-4" variant="text" elevation="10">
+          <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg py-4" variant="text" elevation="10">
             <div class="px-5">
               <v-row align="center" class="pa-0 ma-0">
                 <v-col cols="auto">
@@ -171,7 +171,7 @@ definePageMeta({
       <v-row>
         <!-- Info -->
         <v-col lg="4" md="4" cols="12">
-          <v-card rounded="xl" class="h-100" variant="text" elevation="10">
+          <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg h-100" variant="text" elevation="10">
             <div class="px-4 pt-4">
               <h6 class="mb-0 text-h6 text-typo">{{ t('profile.information') }}</h6>
             </div>
@@ -236,7 +236,7 @@ definePageMeta({
 
               <v-col class="d-flex text-center" cols="12" md="7">
                 <v-card
-                  class="text-h6 justify-center align-center flex-1-1 d-flex"
+                  class="bg-gradient-primary shadow-primary border-radius-lg text-h6 justify-center align-center flex-1-1 d-flex"
                   color="surface-light"
                   height="100%"
                   flat
@@ -300,7 +300,7 @@ definePageMeta({
         </v-col>
         <!-- Account & App Settings -->
         <v-col lg="4" md="4" cols="12">
-          <v-card rounded="xl" class="h-60" variant="text" elevation="10">
+          <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg h-60" variant="text" elevation="10">
             <div class="px-4 pt-4">
               <h6 class="mb-0 text-h6 text-typo">{{ t('profile.platform') }}</h6>
             </div>
@@ -342,7 +342,7 @@ definePageMeta({
         </v-col>
         <!-- Conversations -->
         <v-col lg="8" md="8" cols="12">
-          <v-card rounded="xl" class="h-100" variant="text" elevation="10">
+          <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg h-100" variant="text" elevation="10">
             <div class="px-4 pt-4">
               <h6 class="mb-0 text-h6 text-typo">{{ t('profile.conversations.title') }}</h6>
             </div>
@@ -384,7 +384,7 @@ definePageMeta({
         </v-col>
 
         <v-col lg="12" md="12" cols="12">
-          <v-card rounded="xl" class="h-60" variant="text" elevation="10">
+          <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg h-60" variant="text" elevation="10">
             <Media></Media>
           </v-card>
         </v-col>

@@ -9,50 +9,50 @@
 
     <v-card
       v-else
-      class="mx-3 my-4"
+      class="bg-gradient-primary shadow-primary border-radius-lg mx-3 my-4"
       rounded="xl"
       variant="text"
       elevation="10"
     >
-      <v-card-title class="text-h6 font-weight-bold text-center">
-        🏆 {{ t('dashboard.quiz.title') }}
-        <NuxtLink
-          to="/game"
-          class="text-primary text-decoration-none font-weight-bold ml-1"
-        >
-          {{ t('dashboard.quiz.link') }}
-        </NuxtLink>
-      </v-card-title>
-
-      <v-divider />
-
-      <v-list class="bg-transparent" role="list">
-        <v-list-item
-          v-for="(user, index) in topUsers"
-          :key="user.name"
-          variant="text"
-          class="px-4"
-          role="listitem"
-          aria-label="Quiz ranking item"
-        >
-          <template #prepend>
-            <v-avatar size="36">
+      <div class="bg-gradient-primary shadow-primary border-radius-lg px-4 py-2">
+        <v-card-title class="text-h6 font-weight-bold text-center">
+          🏆 {{ t('dashboard.quiz.title') }}
+          <NuxtLink
+            to="/game"
+            class="text-primary text-decoration-none font-weight-bold ml-1"
+          >
+            {{ t('dashboard.quiz.link') }}
+          </NuxtLink>
+        </v-card-title>
+        <v-divider />
+        <v-list class="bg-transparent" role="list">
+          <v-list-item
+            v-for="(user, index) in topUsers"
+            :key="user.name"
+            variant="text"
+            class="px-4"
+            role="listitem"
+            aria-label="Quiz ranking item"
+          >
+            <template #prepend>
+              <v-avatar size="36">
         <span class="text-h6">
           {{ trophies[index] || '🏅' }}
         </span>
-            </v-avatar>
-          </template>
+              </v-avatar>
+            </template>
 
-          <template #default>
-            <div class="d-flex align-center w-100">
-              <span class="font-weight-medium">{{ user.name }}</span>
-              <span class="text-body-2 font-weight-bold ms-auto">
+            <template #default>
+              <div class="d-flex align-center w-100">
+                <span class="font-weight-medium">{{ user.name }}</span>
+                <span class="text-body-2 font-weight-bold ms-auto">
           {{ user.points }} pts
         </span>
-            </div>
-          </template>
-        </v-list-item>
-      </v-list>
+              </div>
+            </template>
+          </v-list-item>
+        </v-list>
+      </div>
     </v-card>
   </div>
 </template>

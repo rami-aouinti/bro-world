@@ -52,7 +52,27 @@ const data = [
   ['2022-07-24', 60],
 ]
 
-const option: ECOption = {
+const option: {
+  backgroundColor: string;
+  yAxis: { type: string };
+  xAxis: { type: string };
+  grid: {
+    top: number;
+    left: string;
+    bottom: string;
+    right: string;
+    containLabel: boolean
+  };
+  series: {
+    showSymbol: boolean;
+    lineStyle: { width: number };
+    name: string;
+    type: string
+  }[];
+  tooltip: { trigger: string };
+  dataset: { source: (string | number)[][] };
+  visualMap: { min: number; max: number; show: boolean; type: string }
+} = {
   backgroundColor: 'transparent',
   dataset: { source: data },
   visualMap: {

@@ -88,8 +88,12 @@ function sendMessage() {
 
 <template>
   <div class="py-3">
-  <v-card rounded="xl" class="overflow-x-auto mx-3 min-h-stories" variant="text" elevation="10">
-      <div class="d-flex align-center justify-center">
+  <v-card
+    rounded="xl"
+    class="bg-gradient-primary shadow-primary border-radius-lg overflow-x-auto mx-3 min-h-stories"
+    variant="text"
+    elevation="10">
+      <div class="bg-gradient-primary shadow-primary border-radius-lg px-4 py-2 d-flex align-center justify-center">
         <v-col
           v-for="userStories in stories"
           :key="userStories.userId"

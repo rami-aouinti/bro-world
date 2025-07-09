@@ -105,76 +105,83 @@ function triggerFileInput() {
 
 <template>
   <div class="py-3">
-  <v-card rounded="xl" class="mx-3" variant="text" elevation="10">
-    <v-card-text>
-      <div class="d-flex align-center" style="max-width: 100%; flex-wrap: nowrap; overflow: hidden;">
-        <button class="btn-reset mx-2" @click="dialog = true" aria-label="User avatar" style="flex-shrink: 0">
-          <UserAvatar :user="user" size="38" color="primary" />
-        </button>
-        <v-btn
-          v-if="!dialogText"
-          class="px-3 py-2 font-weight-bold justify-start"
-          height="40"
-          variant="tonal"
-          @click="dialog = true"
-          style="min-height: 48px; flex-grow: 1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap"
-        >
-          <span>Hello {{ user?.firstName }}, new post?</span>
-        </v-btn>
-        <v-card
-          v-else
-          rounded="xl"
-          class="mx-3 w-100"
-          variant="text"
-          style="overflow: hidden; max-height: 300px; transition: max-height 0.3s ease;"
-        >
-          <v-card-text>
-            <Editor v-model="postContent" :api-key="''" />
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn
-              color="primary"
-              class="mt-4"
-              prepend-icon="mdi-update"
-              :loading="loadingText"
-              @click="handleAction"
-            >
-              Save
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </div>
-    </v-card-text>
+  <v-card
+    rounded="xl"
+    class="bg-gradient-primary shadow-primary border-radius-lg mx-3"
+    variant="text"
+    elevation="10"
+  >
+    <div class="bg-gradient-primary shadow-primary border-radius-lg px-4 py-2">
+      <v-card-text>
+        <div class="d-flex align-center" style="max-width: 100%; flex-wrap: nowrap; overflow: hidden;">
+          <button class="btn-reset mx-2" @click="dialog = true" aria-label="User avatar" style="flex-shrink: 0">
+            <UserAvatar :user="user" size="38" color="primary" />
+          </button>
+          <v-btn
+            v-if="!dialogText"
+            class="px-3 py-2 font-weight-bold justify-start"
+            height="40"
+            variant="tonal"
+            @click="dialog = true"
+            style="min-height: 48px; flex-grow: 1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap"
+          >
+            <span>Hello {{ user?.firstName }}, new post?</span>
+          </v-btn>
+          <v-card
+            v-else
+            rounded="xl"
+            class="mx-3 w-100"
+            variant="text"
+            style="overflow: hidden; max-height: 300px; transition: max-height 0.3s ease;"
+          >
+            <v-card-text>
+              <Editor v-model="postContent" :api-key="''" />
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer />
+              <v-btn
+                color="primary"
+                class="mt-4"
+                prepend-icon="mdi-update"
+                :loading="loadingText"
+                @click="handleAction"
+              >
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </div>
+      </v-card-text>
 
-    <v-card-actions class="d-flex align-center text-center">
-      <v-row>
-        <v-col cols="6" md="3">
-          <v-btn @click="video = true" icon class="flex-grow-1" height="48">
-            <v-icon class="mx-1" color="primary">mdi-video</v-icon>
-            Video
-          </v-btn>
-        </v-col>
-        <v-col cols="6" md="3">
-          <v-btn @click="dialogText = !dialogText" icon class="flex-grow-1" height="48">
-            <v-icon class="mx-1" color="primary">mdi-file-word-box</v-icon>
-            Text
-          </v-btn>
-        </v-col>
-        <v-col cols="6" md="3">
-          <v-btn @click="dialogFile = true" icon class="flex-grow-1" height="48">
-            <v-icon class="mx-1" color="primary">mdi-image-multiple</v-icon>
-            Photo
-          </v-btn>
-        </v-col>
-        <v-col cols="6" md="3">
-          <v-btn icon class="flex-grow-1" height="48" @click="triggerFileInput" @keydown.enter="triggerFileInput">
-            <v-icon class="mx-1" color="primary">mdi-camera-enhance</v-icon>
-            Story
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-card-actions>
+      <v-card-actions class="d-flex align-center text-center">
+        <v-row>
+          <v-col cols="6" md="3">
+            <v-btn @click="video = true" icon class="flex-grow-1" height="48">
+              <v-icon class="mx-1" color="primary">mdi-video</v-icon>
+              Video
+            </v-btn>
+          </v-col>
+          <v-col cols="6" md="3">
+            <v-btn @click="dialogText = !dialogText" icon class="flex-grow-1" height="48">
+              <v-icon class="mx-1" color="primary">mdi-file-word-box</v-icon>
+              Text
+            </v-btn>
+          </v-col>
+          <v-col cols="6" md="3">
+            <v-btn @click="dialogFile = true" icon class="flex-grow-1" height="48">
+              <v-icon class="mx-1" color="primary">mdi-image-multiple</v-icon>
+              Photo
+            </v-btn>
+          </v-col>
+          <v-col cols="6" md="3">
+            <v-btn icon class="flex-grow-1" height="48" @click="triggerFileInput" @keydown.enter="triggerFileInput">
+              <v-icon class="mx-1" color="primary">mdi-camera-enhance</v-icon>
+              Story
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card-actions>
+    </div>
   </v-card>
   </div>
   <v-file-input

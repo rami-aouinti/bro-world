@@ -142,7 +142,6 @@ export default defineNuxtConfig({
       },
     },
   },
-
   echarts: {
     charts: ['LineChart', 'BarChart', 'PieChart', 'RadarChart'],
     renderer: 'svg',

@@ -11,86 +11,93 @@
     </template>
 
     <!-- Card -->
-    <v-card v-else rounded="xl" class="mx-3 my-5" variant="text" elevation="10" aria-label="Rating">
-      <v-card-title class="d-flex justify-center text-h5">
-        <span class="text-h6">{{ t('dashboard.rating.title') }}</span>
-      </v-card-title>
+    <v-card
+      v-else
+      rounded="xl"
+      class="bg-gradient-primary shadow-primary border-radius-lg mx-3 my-5"
+      variant="text"
+      elevation="10"
+      aria-label="Rating">
+      <div class="bg-gradient-primary shadow-primary border-radius-lg px-4 py-2">
+        <v-card-title class="d-flex justify-center text-h5">
+          <span class="text-h6">{{ t('dashboard.rating.title') }}</span>
+        </v-card-title>
 
-      <v-divider />
+        <v-divider />
 
-      <!-- Note globale -->
-      <div class="d-flex flex-column align-center my-4">
-        <div class="text-h2">
-          {{ averageRating.toFixed(1) }}
-          <span class="text-h6 ml-1">/5</span>
-        </div>
-        <v-rating
-          :model-value="averageRating"
-          color="primary"
-          half-increments
-          readonly
-          size="large"
-          aria-label="Average rating"
-        />
-        <div class="text-caption">
-          {{ totalReviews }} {{ t('dashboard.rating.count') }}
-        </div>
-      </div>
-
-      <!-- Détails distribution -->
-      <v-list bg-color="transparent" density="compact">
-        <v-list-item
-          v-for="i in 5"
-          :key="'dist-' + i"
-          class="px-3"
-          aria-label="Rating bar"
-        >
-          <template #prepend>
-            <span>{{ i }}</span>
-            <v-icon class="mx-2" icon="mdi-star" />
-          </template>
-
-          <v-progress-linear
-            :model-value="getRatingPercent(i)"
-            aria-label="Rating"
-            height="20"
+        <!-- Note globale -->
+        <div class="d-flex flex-column align-center my-4">
+          <div class="text-h2">
+            {{ averageRating.toFixed(1) }}
+            <span class="text-h6 ml-1">/5</span>
+          </div>
+          <v-rating
+            :model-value="averageRating"
             color="primary"
-            rounded
-            class="flex-grow-1"
+            half-increments
+            readonly
+            size="large"
+            aria-label="Average rating"
           />
+          <div class="text-caption">
+            {{ totalReviews }} {{ t('dashboard.rating.count') }}
+          </div>
+        </div>
 
-          <template #append>
-            <span class="ml-2">{{ distribution[`${i - 1}-${i}`] ?? 0 }}</span>
-          </template>
-        </v-list-item>
-      </v-list>
+        <!-- Détails distribution -->
+        <v-list bg-color="transparent" density="compact">
+          <v-list-item
+            v-for="i in 5"
+            :key="'dist-' + i"
+            class="px-3"
+            aria-label="Rating bar"
+          >
+            <template #prepend>
+              <span>{{ i }}</span>
+              <v-icon class="mx-2" icon="mdi-star" />
+            </template>
 
-      <v-divider v-if="loggedIn" class="my-2" />
+            <v-progress-linear
+              :model-value="getRatingPercent(i)"
+              aria-label="Rating"
+              height="20"
+              color="primary"
+              rounded
+              class="flex-grow-1"
+            />
 
-      <!-- Formulaire d’évaluation -->
-      <div
-        v-if="loggedIn"
-        class="d-flex align-center justify-center gap-1 mb-1 px-1 mx-1"
-      >
-        <v-rating
-          v-model="newRating"
-          half-increments
-          color="secondary"
-          hover
-          aria-label="Submit your rating"
-        />
-        <v-btn
-          color="primary"
-          variant="text"
-          icon
-          :loading="isSubmitting"
-          :disabled="newRating === 0"
-          @click="submitRating"
+            <template #append>
+              <span class="ml-2">{{ distribution[`${i - 1}-${i}`] ?? 0 }}</span>
+            </template>
+          </v-list-item>
+        </v-list>
+
+        <v-divider v-if="loggedIn" class="my-2" />
+
+        <div
+          v-if="loggedIn"
+          class="d-flex align-center justify-center gap-1 mb-1 px-1 mx-1"
         >
-          <v-icon>
-            mdi-send
-          </v-icon>
-        </v-btn>
+          <v-rating
+            v-model="newRating"
+            half-increments
+            color="secondary"
+            hover
+            aria-label="Submit your rating"
+          />
+          <v-btn
+            color="primary"
+            variant="text"
+            icon
+            :loading="isSubmitting"
+            :disabled="newRating === 0"
+            @click="submitRating"
+          >
+            <v-icon>
+              mdi-send
+            </v-icon>
+          </v-btn>
+        </div>
       </div>
     </v-card>
   </div>

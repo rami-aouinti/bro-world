@@ -1,9 +1,8 @@
 <template>
   <div class="user-status-banner">
-    <div class="py-3">
     <v-card
         icon="mdi-alert-circle"
-        rounded="xl" class="mx-3 text-center" variant="text" elevation="10"
+        rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg mx-3 text-center" variant="text" elevation="10"
       >
         <template #text>
           Your account is currently <strong class="text-secondary">not activated</strong>. Please check your email or
@@ -19,7 +18,6 @@
           or contact support.
         </template>
       </v-card>
-    </div>
   </div>
   <v-dialog v-model="success" max-width="400px">
     <v-card>

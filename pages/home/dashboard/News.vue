@@ -12,39 +12,41 @@
     <v-card
       v-else
       rounded="xl"
-      class="mx-3 mt-4 mb-4"
+      class="bg-gradient-primary shadow-primary border-radius-lg mx-3 mt-4 mb-4"
       variant="text"
       elevation="10"
       aria-labelledby="news-title"
     >
-      <v-card-title id="news-title" class="text-h6 font-weight-bold text-center">
-        🌐 {{ t('dashboard.news.title') }}
-      </v-card-title>
+      <div class="bg-gradient-primary shadow-primary border-radius-lg px-4 py-2">
+        <v-card-title id="news-title" class="text-h6 font-weight-bold text-center">
+          🌐 {{ t('dashboard.news.title') }}
+        </v-card-title>
 
-      <v-divider />
+        <v-divider />
 
-      <v-card-text>
-        <v-list class="bg-transparent" role="list">
-          <v-list-item
-            v-for="(item, index) in news"
-            :key="index"
-            class="px-0 py-1"
-            aria-label="News item"
-            role="listitem"
-          >
-            <template v-if="isRtl" #append>
-              <v-icon color="primary" class="ms-2">mdi-newspaper-variant-outline</v-icon>
-            </template>
-            <template v-else #prepend>
-              <v-icon color="primary" class="mr-2">mdi-newspaper-variant-outline</v-icon>
-            </template>
+        <v-card-text>
+          <v-list class="bg-transparent" role="list">
+            <v-list-item
+              v-for="(item, index) in news"
+              :key="index"
+              class="px-0 py-1"
+              aria-label="News item"
+              role="listitem"
+            >
+              <template v-if="isRtl" #append>
+                <v-icon color="primary" class="ms-2">mdi-newspaper-variant-outline</v-icon>
+              </template>
+              <template v-else #prepend>
+                <v-icon color="primary" class="mr-2">mdi-newspaper-variant-outline</v-icon>
+              </template>
 
-            <template #default>
-              <span class="text-body-2">{{ item }}</span>
-            </template>
-          </v-list-item>
-        </v-list>
-      </v-card-text>
+              <template #default>
+                <span class="text-body-2">{{ item }}</span>
+              </template>
+            </v-list-item>
+          </v-list>
+        </v-card-text>
+      </div>
     </v-card>
   </div>
 </template>

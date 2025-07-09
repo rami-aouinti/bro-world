@@ -9,12 +9,12 @@
 
     <v-card
       v-else
-      rounded="xl"
-      class="mx-3 mb-4"
+      class="bg-gradient-primary shadow-primary border-radius-lg mx-3 mt-4 mb-4"
       variant="text"
       elevation="10"
+      :class="{ 'text-end': isRtl, 'text-start': !isRtl }"
     >
-      <div class="px-4 py-4">
+      <div class="bg-gradient-primary shadow-primary border-radius-lg px-4 py-4">
         <v-row>
           <v-col cols="8" class="my-auto">
             <p class="text-sm mb-0 font-weight-bold opacity-7">
@@ -49,6 +49,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGroq } from '~/composables/useGroq'
 import { useCachedFetch } from '~/composables/useCachedFetch'
+import ChartBar from "~/components/Chart/ChartBar.vue";
 
 const { t, locale } = useI18n()
 const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
@@ -60,7 +61,6 @@ const { askGroq } = useGroq()
 const loading = ref(true)
 const weatherInfo = ref('')
 const city = ref('')
-
 async function getWeather(place: string) {
   try {
     const result = await useCachedFetch('cache:my-weather', async () => {
