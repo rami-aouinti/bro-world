@@ -132,7 +132,7 @@ onMounted(async () => {
         </v-row>
         <v-row>
           <v-col cols="12" sm="4">
-            <v-select variant="outlined" v-model="userData.gender" :items="gender" label="Gender" />
+            <v-select rounded="xl" variant="outlined" v-model="userData.gender" :items="gender" label="Gender" />
           </v-col>
           <v-col cols="12" sm="8">
             <v-date-input
@@ -174,10 +174,10 @@ onMounted(async () => {
         </v-row>
         <v-row>
           <v-col cols="12" md="6">
-            <v-select variant="outlined" v-model="userData.language" :items="languages" label="Language" />
+            <v-select rounded="xl" variant="outlined" v-model="userData.language" :items="languages" label="Language" />
           </v-col>
           <v-col cols="12" md="6">
-            <v-select variant="outlined" v-model="userData.skills" :items="skills" label="Skills" multiple chips />
+            <v-select rounded="xl" variant="outlined" v-model="userData.skills" :items="skills" label="Skills" multiple chips />
           </v-col>
         </v-row>
         <v-row>
