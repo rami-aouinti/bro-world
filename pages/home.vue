@@ -230,7 +230,7 @@ onMounted(async () => {
       >
         <v-container fluid>
           <v-row>
-            <v-col cols="12">
+            <v-col v-if="loggedIn" cols="12">
               <LoaderStatusBanner v-if="loading.user" />
               <template v-else-if="loggedIn && !user?.enabled">
                 <NuxtLazyHydrate when-visible once>
@@ -240,7 +240,7 @@ onMounted(async () => {
             </v-col>
 
             <!-- Haut -->
-            <v-col cols="12">
+            <v-col v-if="loggedIn"  cols="12">
               <template v-if="loading.user">
                 <LoaderPost />
               </template>
