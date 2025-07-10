@@ -1,5 +1,5 @@
 <template>
-  <div class="user-status-banner">
+  <div class="user-status-banner py-3">
     <v-card
         icon="mdi-alert-circle"
         rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg mx-3 text-center" variant="text" elevation="10"
