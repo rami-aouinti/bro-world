@@ -21,7 +21,7 @@ router.afterEach(() => {
       color="secondary"
       :disabled="!canGoBack"
       icon="ph:arrow-left"
-      class="opacity-80 ml-0"
+      class="opacity-80 ml-2"
       @click="back()"
     />
     <v-btn

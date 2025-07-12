@@ -4,10 +4,10 @@ import type { DataTableHeaders } from '~/plugins/vuetify'
 import ReusableDataTable from '~/components/Admin/ReusableDataTable.vue'
 
 definePageMeta({
-  icon: 'mdi-products',
-  title: 'Customer',
+  icon: 'mdi-account',
+  title: 'Payments',
   requiresAdmin: true,
-  drawerIndex: 3,
+  drawerIndex: 0,
 })
 
 const loading = ref(true)
@@ -16,18 +16,16 @@ const products = ref<any[]>([])
 
 // On va chercher le nom en anglais via la clé imbriquée
 const headers: DataTableHeaders = [
-  { title: 'ID', key: '@id', type: 'text', list: false, show: true, create: false, edit: false },
-  { title: 'Image', key: 'images.0.path', type: 'image', list: true, show: true, create: false, edit: false },
-  { title: 'Name (EN)', key: 'translations.en_US.name', type: 'text', list: true, show: true, create: false, edit: false },
-  { title: 'Enabled', key: 'enabled', type: 'boolean', list: true, show: true ,create: true, edit: true },
-  { title: 'Rating', key: 'averageRating', type: 'rating', list: true, show: true, create: false, edit: false },
-  { title: '', key: 'actions', list: false, show: false, create: false, edit: false, sortable: false, align: 'end' },
+  { title: 'Amount', key: 'amount', type: 'number', list: true, show: true, create: false, edit: false },
+  { title: 'State', key: 'state', type: 'chip', color: 'info', list: true, show: true, create: false, edit: false },
+  { title: 'Date', key: 'createdAt', type: 'date', list: true, show: true, create: false, edit: false },
+  { title: '', key: 'actions', list: false, show: false, create: false, edit: false, sortable: false, align: 'end' }
 ]
 
 const loadProducts = async () => {
   loading.value = true
   try {
-    const raw = await $fetch('/api/admin/shop/products/products', { responseType: 'text' })
+    const raw = await $fetch('/api/admin/shop/sales/payments/payments', { responseType: 'text' })
     const fixedRaw = raw.trim().match(/^\{.*\}/s)?.[0]
     if (!fixedRaw) throw new Error('Invalid JSON format')
     const data = JSON.parse(fixedRaw)
@@ -66,12 +64,13 @@ onMounted(async () => {
     </client-only>
 
     <ReusableDataTable
-      label="Products"
+      label="Payments"
       :headers="headers"
       urlCreate="/api/admin/product/create"
       urlEdit="/api/admin/product/edit"
       urlDelete="/api/admin/product/delete"
       :items="products || []"
+      :create="false"
       :loading="loading"
       :search="search"
       @refresh="loadProducts"

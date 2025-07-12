@@ -12,6 +12,7 @@ const props = defineProps<{
   loading: boolean
   searchable?: boolean
   list?: boolean
+  create?: boolean
   search?: string
 }>()
 
@@ -91,6 +92,7 @@ function handleDelete(item: any) {
     <v-card-title class="d-flex justify-space-between align-center">
       <span class="text-h6 px-4">{{ label }}</span>
       <v-btn
+        v-if="create"
         color="primary"
         variant="text"
         icon="mdi-plus"
@@ -105,6 +107,8 @@ function handleDelete(item: any) {
         :headers="safeHeaders"
         :items="props.items"
         :search="props.search"
+        :items-per-page="5"
+        :items-per-page-options="[5, 10, 20, 50, 100]"
         item-value="id"
         density="comfortable"
       >
@@ -122,6 +126,14 @@ function handleDelete(item: any) {
               </template>
               <template v-else-if="header.type === 'icon'">
                 <span class="border border-radius-xl shadow-2xl shadow-primary object-cover" :class="`fi fi-${getNestedValue(item, header.key).toLowerCase()} ${getNestedValue(item, header.key).toLowerCase()}`" style="width: 32px; height:26px;" />
+              </template>
+              <template v-else-if="header.type === 'date'">
+                {{ new Date(getNestedValue(item, header.key)).toISOString().split('T')[0] }}
+              </template>
+              <template v-else-if="header.type === 'chip'">
+                <v-chip :color="header.color">
+                  {{ getNestedValue(item, header.key) }}
+                </v-chip>
               </template>
               <template v-else-if="header.type === 'rating'">
                 <v-rating

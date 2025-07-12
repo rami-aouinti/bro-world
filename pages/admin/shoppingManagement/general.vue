@@ -3,7 +3,7 @@ import {nextTick, onMounted, ref} from 'vue'
 import SalesChart from "~/components/Chart/SalesChart.vue";
 
 definePageMeta({
-  icon: 'mdi-products',
+  icon: 'mdi-chart-bubble',
   title: 'General Settings',
   requiresAdmin: true,
   drawerIndex: 0,

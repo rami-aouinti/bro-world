@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 definePageMeta({
-  icon: 'mdi-shopping',
-  title: 'Sales',
+  icon: 'mdi-account-circle',
+  title: 'Customer',
   requiresAdmin: true,
-  drawerIndex: 4,
+  drawerIndex: 2,
 })
 </script>
 <template>
