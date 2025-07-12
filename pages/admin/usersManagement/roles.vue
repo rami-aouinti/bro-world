@@ -5,7 +5,7 @@ import { useRoleStore } from '~/stores/admin/user/roleStore'
 import ReusableDataTable from "~/components/Admin/ReusableDataTable.vue";
 
 definePageMeta({
-  icon: 'mdi-view-list',
+  icon: 'mdi-account-settings-variant',
   title: 'Role',
   requiresAdmin: true,
   drawerIndex: 3,

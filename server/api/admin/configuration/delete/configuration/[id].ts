@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   const token = await getUserToken(event)
   const id = event.context.params?.id
   const config = useRuntimeConfig()
-  const apiUrl = `${config.public.apiBase}/api/v1/user/${id}`
+  const apiUrl = `https://configuration.bro-world.org/api/v1/admin/configuration/${id}`
 
   return await requestWithRetry('delete', apiUrl, token, false)
 })

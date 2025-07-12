@@ -172,6 +172,7 @@
       "loadingText": "Loading items..."
     },
     "dataTable": {
+      "itemsPerPage": "Rows per page :",
       "itemsPerPageText": "Rows per page:",
       "ariaLabel": {
         "sortDescending": "Sorted descending.",

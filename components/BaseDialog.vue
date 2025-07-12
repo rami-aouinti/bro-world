@@ -77,6 +77,8 @@ const isOpen = computed({
 })
 
 const handleAction = async (action: string | (() => void)) => {
+
+  console.log(action)
   // 👉 Cas fonction personnalisée
   if (typeof action === 'function') {
     try {
@@ -92,8 +94,6 @@ const handleAction = async (action: string | (() => void)) => {
     isOpen.value = false
     return
   }
-
-  // 👉 Cas d'appel API
   try {
     isUpdating.value = true
     const formData = new FormData()

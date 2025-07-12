@@ -3,24 +3,26 @@ import { onMounted, ref, computed, watch } from 'vue'
 import type { DataTableHeaders } from '~/plugins/vuetify'
 import ReusableDataTable from '~/components/Admin/ReusableDataTable.vue'
 definePageMeta({
-  title: 'Configuration Management',
+  title: 'Configuration',
   requiresAdmin: true,
-  icon: 'mdi-access-point-network',
+  icon: 'mdi-settings',
   drawerIndex: 2,
 })
+import { useConfigurationStore } from '~/stores/admin/configuration/configurationStore'
+const configurationStore = useConfigurationStore()
 const loading = ref(true)
 const search = ref('')
 const configurations = ref<any[]>([])
 const headers: DataTableHeaders = [
   { title: 'ID', key: 'id', type: 'text', list: false, show: true ,create: false, edit: false },
-  { title: 'Key', key: 'configurationKey', type: 'text', list: false, show: true ,create: true, edit: false },
+  { title: 'Key', key: 'configurationKey', type: 'text', list: true, show: true ,create: true, edit: true },
   { title: 'Value', key: 'configurationValue', type: 'text', list: true, show: true ,create: true, edit: true },
   { title: 'Context', key: 'contextKey', type: 'text', list: true, show: true ,create: true, edit: true },
   { title: '', key: 'actions', list: false, show: false ,create: false, edit: false,  sortable: false, align: 'end' },
 ]
 async function fetchConfigurations() {
   try {
-    const data = await $fetch('/api/admin/configuration/configurations')
+    const data = await configurationStore.fetchConfigurations()
     if (data) {
       configurations.value = data
     }
@@ -55,7 +57,7 @@ onMounted(fetchConfigurations)
     </client-only>
 
     <ReusableDataTable
-      label="Users"
+      label="Configuration Management"
       :headers="headers"
       urlCreate="/api/admin/configuration/create/configuration"
       urlEdit="/api/admin/configuration/edit/configuration"
@@ -63,7 +65,7 @@ onMounted(fetchConfigurations)
       :items="configurations || []"
       :loading="loading"
       :search="search"
-      @refresh="fetcConfigurations"
+      @refresh="fetchConfigurations"
     />
   </v-container>
 </template>

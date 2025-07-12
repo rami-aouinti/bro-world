@@ -8,7 +8,7 @@ const props = defineProps<{
   urlCreate: string
   urlEdit: string
   urlDelete: string
-  headers: { key: string; title: string; [key: string]: any }[]
+  headers: { key: string; title: string; type?: string; [key: string]: any }[]
   loading: boolean
   searchable?: boolean
   list?: boolean
@@ -23,15 +23,21 @@ const selectedItem = ref<any>(null)
 const formFields = ref<Record<string, any>>({})
 const safeToggleHeaders = ref<any>(null)
 const url = ref('')
-// ✅ Headers sécurisés (exclut les entrées nulles ou sans clé)
-const safeHeaders = computed(() => props.headers.filter(h => h && h.key && h.key !== 'actions' && h.list === true))
 
-// Préparer les champs dynamiques selon selectedItem
+// 🔧 Utilitaire pour lire les clés imbriquées
+function getNestedValue(obj: any, path: string): any {
+  return path.split('.').reduce((acc, key) => acc?.[key], obj)
+}
+
+const safeHeaders = computed(() =>
+  props.headers.filter(h => h && h.key && h.key !== 'actions' && h.list === true)
+)
+
 function prepareFormFields() {
   formFields.value = {}
   for (const header of safeHeaders.value) {
     const key = header.key
-    const value = selectedItem.value?.[key]
+    const value = getNestedValue(selectedItem.value, key)
     formFields.value[key] = typeof value === 'boolean' ? !!value : value ?? ''
   }
 }
@@ -40,7 +46,7 @@ function prepareFormEditFields() {
   formFields.value = {}
   for (const header of props.headers) {
     const key = header.key
-    const value = selectedItem.value?.[key]
+    const value = getNestedValue(selectedItem.value, key)
     formFields.value[key] = typeof value === 'boolean' ? !!value : value ?? ''
   }
 }
@@ -53,21 +59,24 @@ function handleCreate() {
   prepareFormFields()
   dialog.value = true
 }
+
 function handleEdit(item: any) {
   url.value = props.urlEdit + '/' + item.id
-  safeToggleHeaders.value =  props.headers.filter(h => h && h.key && h.key !== 'actions' && h.edit === true)
+  safeToggleHeaders.value = props.headers.filter(h => h && h.key && h.key !== 'actions' && h.edit === true)
   selectedItem.value = { ...item }
   dialogMode.value = 'edit'
   prepareFormEditFields()
   dialog.value = true
 }
+
 function handleView(item: any) {
-  safeToggleHeaders.value =  props.headers.filter(h => h && h.key && h.key !== 'actions' && h.show === true)
+  safeToggleHeaders.value = props.headers.filter(h => h && h.key && h.key !== 'actions' && h.show === true)
   selectedItem.value = { ...item }
   dialogMode.value = 'view'
   prepareFormFields()
   dialog.value = true
 }
+
 function handleDelete(item: any) {
   url.value = props.urlDelete + '/' + item.id
   dialogMode.value = 'delete'
@@ -102,12 +111,47 @@ function handleDelete(item: any) {
         <template #item="{ item }">
           <tr>
             <td v-for="(header, index) in safeHeaders" :key="header.key || index">
-                <template v-if="typeof item[header.key] === 'boolean'">
-                  <v-checkbox :model-value="item[header.key]" color="primary" />
-                </template>
-                <template v-else>
-                  {{ item[header.key] }}
-                </template>
+              <template v-if="header.type === 'image'">
+                <v-img
+                  :src="getNestedValue(item, header.key)"
+                  max-height="64"
+                  max-width="64"
+                  cover
+                  rounded="lg"
+                />
+              </template>
+              <template v-else-if="header.type === 'icon'">
+                <span class="border border-radius-xl shadow-2xl shadow-primary object-cover" :class="`fi fi-${getNestedValue(item, header.key).toLowerCase()} ${getNestedValue(item, header.key).toLowerCase()}`" style="width: 32px; height:26px;" />
+              </template>
+              <template v-else-if="header.type === 'rating'">
+                <v-rating
+                  :model-value="getNestedValue(item, header.key)"
+                  density="compact"
+                  readonly
+                  color="amber"
+                  half-increments
+                  size="small"
+                />
+              </template>
+
+              <template v-else-if="typeof getNestedValue(item, header.key) === 'boolean'">
+                <v-switch
+                  aria-label="dark"
+                  title="dark"
+                  :model-value="getNestedValue(item, header.key)"
+                  color="success"
+                  hide-details
+                  density="compact"
+                  inset
+                  false-icon="mdi-checkbox-multiple-marked-circle-outline"
+                  true-icon="mdi-checkbox-multiple-marked-circle"
+                  class="opacity-80"
+                />
+              </template>
+
+              <template v-else>
+                {{ getNestedValue(item, header.key) }}
+              </template>
             </td>
 
             <td class="text-end">
@@ -139,15 +183,15 @@ function handleDelete(item: any) {
     </v-card-text>
   </v-card>
 
-  <!-- Dialogue dynamique -->
   <BaseDialog
     v-model="dialog"
     :title="dialogMode === 'create' ? 'Create' : dialogMode === 'edit' ? 'Edit' : 'Details'"
+    color="primary"
     :closeButton="[{ text: 'Cancel', color: 'grey', action: () => (dialog = false) }]"
-    :saveButton="dialogMode !== 'view' ? [{ text: 'Save', color: 'primary', action: () => url.value }] : []"
+    :saveButton="dialogMode !== 'view' ? [{ text: 'Save', color: 'primary', action: url }] : []"
     :forms="formFields"
-    @success="() => emit('refresh')"
-    @error="() => emit('refresh')"
+    @success="emit('refresh')"
+    @error="Notify.error('Error creating item')"
   >
     <v-card rounded="xl">
       <v-card-text>
@@ -164,7 +208,6 @@ function handleDelete(item: any) {
               :disabled="dialogMode === 'view'"
               variant="outlined"
               density="comfortable"
-              :color="typeof formFields[header.key] === 'boolean' ? 'primary' : undefined"
             />
             <v-checkbox
               v-else
@@ -173,7 +216,7 @@ function handleDelete(item: any) {
               :disabled="dialogMode === 'view'"
               variant="outlined"
               density="comfortable"
-              :color="typeof formFields[header.key] === 'boolean' ? 'primary' : undefined"
+              color="primary"
             />
           </v-col>
         </v-row>
@@ -184,9 +227,22 @@ function handleDelete(item: any) {
     </v-card>
   </BaseDialog>
 </template>
+
 <style scoped>
 ::v-deep(.v-data-table thead tr th) {
   background-color: transparent !important;
 }
+::v-deep(.v-data-table td .v-input--checkbox) {
+  margin-top: -8px; /* Ajuste selon besoin */
+  vertical-align: middle;
+}
+::v-deep(.v-data-table td .v-input--checkbox .v-checkbox-btn) {
+  align-items: center;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.checkbox-align ::v-deep(.v-input--checkbox .v-checkbox-btn) {
+  align-items: center;
+  margin-top: -6px;
+}
 </style>
-

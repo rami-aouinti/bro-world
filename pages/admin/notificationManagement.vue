@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  title: 'Notification Management',
+  title: 'Notification',
   icon: 'mdi-bell-plus',
   drawerIndex: 7,
 })

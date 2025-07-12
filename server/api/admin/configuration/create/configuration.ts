@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: "No form data received" })
   }
   const config = useRuntimeConfig()
-  const apiUrl = `${config.public.apiBase}/api/v1/user`
+  const apiUrl = `https://configuration.bro-world.org/api/v1/admin/configuration`
   const axiosFormData = new FormData()
   for (const { name, data, filename, type } of formData) {
     if (filename) {

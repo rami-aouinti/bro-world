@@ -6,11 +6,14 @@ export async function requestWithRetry(
   url: string,
   token?: string,
   data: any = null,
-  isMultipart: boolean = false
+  isMultipart: boolean = false,
+  isRawJson: boolean = false
 ) {
   const headers: Record<string, string> = {}
   if (token) headers.Authorization = `Bearer ${token}`
   if (isMultipart) headers['Content-Type'] = 'multipart/form-data'
+  if (isRawJson) headers['Content-Type'] = 'application/ld+json'
+  headers['accept'] = 'application/ld+json'
 
   try {
     const response = await axios({ method, url, headers, data })

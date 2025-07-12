@@ -120,10 +120,11 @@ drawerState.value = lgAndUp.value && width.value !== 1280
     margin-right: -10px;
   }
   .v-list-group {
-    --prepend-width: 10px;
+    --prepend-width: -24px;
   }
   .v-list-item {
     transition: all 0.3s;
   }
 }
+
 </style>

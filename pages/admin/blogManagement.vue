@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  title: 'Blog Management',
+  title: 'Blog',
   icon: 'mdi-access-point-network',
   drawerIndex: 3,
 })

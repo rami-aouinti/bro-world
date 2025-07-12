@@ -22,6 +22,6 @@ const isDark = computed({
     inset
     false-icon="mdi-white-balance-sunny"
     true-icon="mdi-weather-night"
-    class="opacity-80"
+    class="opacity-80 ml-2"
   />
 </template>

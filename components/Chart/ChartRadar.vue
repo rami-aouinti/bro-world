@@ -1,5 +1,36 @@
 <script setup lang="ts">
-const option: ECOption = {
+const option: {
+  backgroundColor: string;
+  radar: {
+    indicator: ({ name: string })[];
+    splitArea: {
+      areaStyle: {
+        shadowOffsetX: number;
+        shadowOffsetY: number;
+        color: string;
+        shadowBlur: number;
+        opacity: number;
+        shadowColor: string
+      }
+    };
+    center: string[];
+    splitNumber: number;
+    radius: string
+  };
+  legend: { data: string[]; left: string; bottom: string };
+  series: {
+    areaStyle: {
+      shadowOffsetX: number;
+      shadowOffsetY: number;
+      shadowBlur: number;
+      opacity: number;
+      shadowColor: string
+    };
+    data: ({ name: string; value: number[] })[];
+    symbolSize: number;
+    type: string
+  }[]
+} = {
   backgroundColor: 'transparent',
   radar: {
     radius: '66%',

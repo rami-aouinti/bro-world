@@ -9,12 +9,23 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
+
+
+
     const response = await axios.post('https://bro-world.org/api/v1/auth/login', {
       username: body.username,
       password: body.password,
     })
 
     const user = response.data.profile
+    if (user.username === 'john-root') {
+      const responseEcommerce = await axios.post('https://ecommerce.bro-world.org/api/v2/admin/administrators/token', {
+        email: user.email,
+        password: body.password,
+      })
+      user.adminUser = responseEcommerce.data.adminUser
+      user.tokenEcommerce = responseEcommerce.data.token
+    }
 
     await setUserSession(event, {
       user: {
@@ -27,6 +38,8 @@ export default defineEventHandler(async (event) => {
         enabled: user?.enabled,
         photo: user?.photo,
         token: response.data.token,
+        tokenEcommerce: user?.tokenEcommerce,
+        customerEcommerce: user?.adminUser,
         roles: user.roles,
       },
     })

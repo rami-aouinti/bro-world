@@ -23,11 +23,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   const currentLocale = useStorage('locale', 'en').value
   nuxtApp.hook('vuetify:configuration', ({ vuetifyOptions }) => {
     // 🧩 Utiliser la locale de Nuxt i18n pour Vuetify
-    vuetifyOptions.locale = {
-      locale: currentLocale,
-      fallback: 'en',
-      messages: { en, fr, de, ar },
-    }
+
 
     vuetifyOptions.date = {
       adapter: DateFnsAdapter,

@@ -68,23 +68,32 @@ const to = computed(() => ({
 </script>
 
 <style scoped>
+/* ✅ Alignement et retrait modéré des sous-éléments */
 .sub-item {
-  padding-left: 16px !important;
+  padding-left: 8px !important;
+  padding-right: 0 !important;
+  margin-left: 4px;
 }
 
+/* ✅ RTL : inverse subtilement le retrait */
 .rtl-fix .sub-item {
   padding-left: 0 !important;
-  padding-right: 16px !important;
+  padding-right: 8px !important;
+  margin-left: 0;
+  margin-right: 4px;
 }
 
+/* ✅ Définir un comportement clair de direction */
 .drawer-item {
   direction: ltr;
 }
 
+/* ✅ RTL fix : inverse les contenus dans les items */
 .rtl-fix {
   direction: rtl;
 }
 
+/* ✅ Gestion des icônes à droite en RTL */
 .rtl-fix .v-list-item__prepend {
   order: 2;
   margin-inline-start: 12px !important;
@@ -95,4 +104,18 @@ const to = computed(() => ({
   order: 1;
   text-align: right;
 }
+
+/* ✅ Améliore la lisibilité des textes longs */
+.sub-item .v-list-item__content {
+  white-space: normal !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ✅ Uniformise le style en hover pour tous les items */
+.drawer-item:hover,
+.sub-item:hover {
+  transition: background-color 0.2s ease;
+}
 </style>
+

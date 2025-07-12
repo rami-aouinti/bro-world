@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  title: 'Job Management',
+  title: 'Job',
   icon: 'mdi-clipboard',
   drawerIndex: 6,
 })

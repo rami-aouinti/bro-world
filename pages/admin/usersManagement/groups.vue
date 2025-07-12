@@ -5,7 +5,7 @@ import { useUserGroupStore } from '~/stores/admin/user/userGroupStore'
 import ReusableDataTable from "~/components/Admin/ReusableDataTable.vue";
 
 definePageMeta({
-  icon: 'mdi-view-list',
+  icon: 'mdi-account-multiple',
   title: 'Groups',
   requiresAdmin: true,
   drawerIndex: 2,

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  title: 'Users Management',
+  title: 'Accounts',
   icon: 'mdi-face',
   drawerIndex: 1,
 })

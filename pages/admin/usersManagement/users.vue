@@ -39,8 +39,8 @@ async function fetchUsers() {
     console.error('Erreur lors de la récupération des utilisateurs :', e)
   }
 }
-watch(loading, () => {
-  fetchUsers()
+watch(loading, async () => {
+  await fetchUsers()
 }, { immediate: true })
 onMounted(fetchUsers)
 </script>

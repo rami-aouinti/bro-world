@@ -21,7 +21,7 @@
     <Switch />
     <Navigation />
     <Screen />
-
+    <div id="app-bar" />
     <v-spacer />
 
     <v-btn

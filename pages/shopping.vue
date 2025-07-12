@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ProductCarousel from "~/components/Ecommerce/home/ProductCarousel.vue";
 import CookieConsent from "~/components/Ecommerce/layout/CookieConsent.vue";
+import { ref, watch, onMounted, nextTick } from 'vue'
 definePageMeta({
   layout: 'default',
   description: 'Shopping page',
@@ -30,6 +31,45 @@ const { data: casualThingsCollection } = await useAsyncData('casual-things-colle
   items: 10,
   variants: 1,
 }), { lazy: true })
+
+const products = ref<any[]>([])
+const loading = ref(true)
+
+const loadProducts = async () => {
+  try {
+    const raw = await $fetch('/api/shopping/products/products', {
+      responseType: 'text'
+    })
+    const fixedRaw = raw.trim().match(/^\{.*}/s)?.[0]
+
+    if (!fixedRaw) {
+      throw new Error('❌ Impossible d’extraire un JSON valide.')
+    }
+
+    const data = JSON.parse(fixedRaw)
+    products.value = data['hydra:member']
+  } catch (e) {
+    console.error('❌ Erreur de chargement des produits:', e)
+  } finally {
+    loading.value = false
+  }
+}
+const headers = [
+  { text: 'Nom', value: 'name' },
+  { text: 'Prix', value: 'defaultVariant.price' }, // tu adapteras si besoin
+  { text: 'Note', value: 'averageRating' },
+]
+watch(loading, async () => {
+  await loadProducts()
+})
+onMounted(async () => {
+  window.scrollTo({ top: 0 })
+  try {
+    await loadProducts()
+    await nextTick()
+  } catch (e) {
+  }
+})
 </script>
 <template>
   <v-container

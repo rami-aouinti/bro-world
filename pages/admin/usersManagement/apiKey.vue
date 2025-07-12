@@ -5,7 +5,7 @@ import ReusableDataTable from "~/components/Admin/ReusableDataTable.vue";
 import type {DataTableHeaders} from "~/plugins/vuetify";
 
 definePageMeta({
-  icon: 'mdi-view-list',
+  icon: 'mdi-account-key',
   title: 'Api Keys',
   requiresAdmin: true,
   drawerIndex: 4,

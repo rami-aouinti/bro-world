@@ -4,7 +4,7 @@ import { requestWithRetry } from '~/server/utils/requestWithRetry'
 
 export default defineEventHandler(async (event) => {
   const token = await getUserToken(event)
-  const url = 'https://configuration.bro-world.org/api/v1/platform/configuration'
+  const url = 'https://configuration.bro-world.org/api/v1/admin/configuration'
 
   return await requestWithRetry('get', url, token)
 })
