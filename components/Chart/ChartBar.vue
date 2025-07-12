@@ -1,85 +1,75 @@
 <script setup lang="ts">
-const option: {
-  backgroundColor: string;
-  yAxis: { axisTick: { show: boolean }; type: string }[];
-  xAxis: {
-    data: string[];
-    axisTick: { alignWithLabel: boolean };
-    type: string
-  }[];
-  grid: {
-    top: number;
-    left: string;
-    bottom: string;
-    right: string;
-    containLabel: boolean
-  };
-  series: ({
-    barWidth: string;
-    stack: string;
-    data: number[];
-    name: string;
-    type: string
-  })[];
-  tooltip: { axisPointer: { type: string }; trigger: string }
-} = {
-  backgroundColor: 'transparent',
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'shadow',
-    },
-  },
-  grid: {
-    top: 20,
-    left: '2%',
-    right: '2%',
-    bottom: '3%',
-    containLabel: true,
-  },
-  xAxis: [
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+} from 'chart.js'
+import { Bar } from 'vue-chartjs'
+
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+
+// Exemple de labels et datasets pour un stacked bar chart
+const chartData = {
+  labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  datasets: [
     {
-      type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      axisTick: {
-        alignWithLabel: true,
-      },
-    },
-  ],
-  yAxis: [
-    {
-      type: 'value',
-      axisTick: {
-        show: false,
-      },
-    },
-  ],
-  series: [
-    {
-      name: 'pageA',
-      type: 'bar',
-      stack: 'vistors',
-      barWidth: '60%',
+      label: 'Page A',
       data: [79, 52, 200, 334, 390, 330, 220],
+      backgroundColor: '#42A5F5',
+      stack: 'visitors',
     },
     {
-      name: 'pageB',
-      type: 'bar',
-      stack: 'vistors',
-      barWidth: '60%',
+      label: 'Page B',
       data: [80, 52, 200, 334, 390, 330, 220],
+      backgroundColor: '#66BB6A',
+      stack: 'visitors',
     },
     {
-      name: 'pageC',
-      type: 'bar',
-      stack: 'vistors',
-      barWidth: '60%',
+      label: 'Page C',
       data: [30, 52, 200, 334, 390, 330, 220],
+      backgroundColor: '#FFA726',
+      stack: 'visitors',
     },
   ],
+}
+
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    tooltip: {
+      mode: 'index',
+      intersect: false,
+    },
+    title: {
+      display: true,
+      text: 'Stacked Visitors per Day',
+    },
+  },
+  interaction: {
+    mode: 'index' as const,
+    intersect: false,
+  },
+  scales: {
+    x: {
+      stacked: true,
+    },
+    y: {
+      stacked: true,
+    },
+  },
 }
 </script>
 
 <template>
-  <v-chart :option="option" autoresize />
+  <v-container fluid style="height: 400px">
+    <Bar :data="chartData" :options="chartOptions" />
+  </v-container>
 </template>

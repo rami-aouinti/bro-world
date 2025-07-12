@@ -1,34 +1,52 @@
 <script setup lang="ts">
-const option: ECOption = {
-  backgroundColor: 'transparent',
-  tooltip: {
-    trigger: 'item',
-  },
-  legend: {
-    left: 'center',
-    bottom: '10',
-    data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts'],
-  },
-  series: [
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+} from 'chart.js'
+import { Pie } from 'vue-chartjs'
+
+ChartJS.register(Title, Tooltip, Legend, ArcElement)
+
+const chartData = {
+  labels: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts'],
+  datasets: [
     {
-      name: 'WEEKLY WRITE ARTICLES',
-      type: 'pie',
-      roseType: 'radius',
-      radius: [15, 95],
-      center: ['50%', '38%'],
-      data: [
-        { value: 320, name: 'Industries' },
-        { value: 240, name: 'Technology' },
-        { value: 149, name: 'Forex' },
-        { value: 100, name: 'Gold' },
-        { value: 59, name: 'Forecasts' },
+      label: 'Weekly Written Articles',
+      data: [320, 240, 149, 100, 59],
+      backgroundColor: [
+        '#42A5F5',
+        '#66BB6A',
+        '#FFA726',
+        '#AB47BC',
+        '#FF7043',
       ],
-      animationEasing: 'cubicInOut',
+      hoverOffset: 10,
     },
   ],
+}
+
+const chartOptions = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'bottom',
+    },
+    title: {
+      display: true,
+      text: 'Weekly Written Articles',
+    },
+    tooltip: {
+      enabled: true,
+    },
+  },
 }
 </script>
 
 <template>
-  <v-chart :option="option" autoresize />
+  <v-container fluid style="max-width: 600px; margin: auto;">
+    <Pie :data="chartData" :options="chartOptions" />
+  </v-container>
 </template>

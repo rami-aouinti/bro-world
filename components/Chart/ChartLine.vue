@@ -1,5 +1,30 @@
 <script setup lang="ts">
-const data = [
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  TimeScale
+} from 'chart.js'
+import { Line } from 'vue-chartjs'
+
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  TimeScale
+)
+
+// Données formatées pour Chart.js
+const rawData = [
   ['2022-06-05', 116],
   ['2022-06-06', 129],
   ['2022-06-07', 135],
@@ -52,64 +77,56 @@ const data = [
   ['2022-07-24', 60],
 ]
 
-const option: {
-  backgroundColor: string;
-  yAxis: { type: string };
-  xAxis: { type: string };
-  grid: {
-    top: number;
-    left: string;
-    bottom: string;
-    right: string;
-    containLabel: boolean
-  };
-  series: {
-    showSymbol: boolean;
-    lineStyle: { width: number };
-    name: string;
-    type: string
-  }[];
-  tooltip: { trigger: string };
-  dataset: { source: (string | number)[][] };
-  visualMap: { min: number; max: number; show: boolean; type: string }
-} = {
-  backgroundColor: 'transparent',
-  dataset: { source: data },
-  visualMap: {
-    show: false,
-    type: 'continuous',
-    min: 0,
-    max: 400,
-  },
-  tooltip: {
-    trigger: 'axis',
-  },
-  grid: {
-    top: 20,
-    left: '2%',
-    right: '2%',
-    bottom: '3%',
-    containLabel: true,
-  },
-  xAxis: {
-    type: 'time',
-  },
-  yAxis: {
-    type: 'value',
-  },
-  series: [
+// Formatage des données pour Chart.js
+const chartData = {
+  labels: rawData.map(([date]) => date),
+  datasets: [
     {
-      name: 'value',
-      type: 'line',
-      showSymbol: false,
-      lineStyle: {
-        width: 4,
-      },
+      label: 'Daily Values',
+      data: rawData.map(([date, value]) => ({ x: date, y: value })),
+      fill: false,
+      borderColor: '#42A5F5',
+      backgroundColor: '#42A5F5',
+      tension: 0.3,
     },
   ],
 }
-</script>
 
+const chartOptions = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    title: {
+      display: true,
+      text: 'Daily Values Over Time',
+    },
+  },
+  scales: {
+    x: {
+      type: 'time',
+      time: {
+        unit: 'day',
+        tooltipFormat: 'PP',
+      },
+      title: {
+        display: true,
+        text: 'Date',
+      },
+    },
+    y: {
+      beginAtZero: true,
+      title: {
+        display: true,
+        text: 'Value',
+      },
+    },
+  },
+}
+</script>
 <template>
-  <v-chart :option="option" autoresize />
+  <v-container fluid style="max-width: 900px; margin: auto;">
+    <Line :data="chartData" :options="chartOptions" />
+  </v-container>
 </template>
