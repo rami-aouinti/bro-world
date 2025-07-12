@@ -14,7 +14,7 @@ import EditPushNotification
   from "~/components/Notification/Edit/EditPushNotification.vue";
 import EditEmailNotification
   from "~/components/Notification/Edit/EditEmailNotification.vue";
-import Templates from "~/pages/admin/notificationManagement/templates.vue";
+import Templates from "~/pages/admin/notification-management/templates.vue";
 import NotificationChannel
   from "~/components/Notification/NotificationChannel.vue";
 
