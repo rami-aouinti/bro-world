@@ -7,8 +7,8 @@ import ChartBar from '~/components/Chart/ChartBar.vue'
 import GoogleMap from "~/components/GoogleMap.vue";
 
 definePageMeta({
-  icon: 'mdi-monitor-dashboard',
   title: 'Dashboard',
+  icon: 'mdi-monitor-dashboard',
   requiresAdmin: true,
   drawerIndex: 0,
 })
