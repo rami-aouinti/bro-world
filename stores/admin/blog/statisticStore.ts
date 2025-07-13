@@ -1,42 +1,71 @@
-// stores/orderStore.ts
+// stores/statisticStore.ts
 import {defineStore} from 'pinia'
-import type {Statistics} from '~/types/blog/statistics'
 import {useCachedFetch} from '~/composables/useCachedFetch'
-import {useBlogApi} from "~/composables/useBlogApi";
 
 export const useStatisticStore = defineStore('statisticStore', () => {
-  const statistics = ref<Statistics[]>([])
+  const stats = ref<any>({
+    statistics: null,
+    blogsCount: 0,
+    postsCount: 0,
+    likesCount: 0,
+  })
   const loading = ref(false)
 
   const fetchStatistics = async () => {
     loading.value = true
     const cacheKey = 'admin:blog:statistics:all'
+
     try {
-      return await useCachedFetch(
+      // Assignation après mise en cache (évite les refs dans le cache)
+      stats.value = await useCachedFetch(
         cacheKey,
         async () => {
+          const [
+            statisticsRes,
+            blogsCountRes,
+            postsCountRes,
+            likesCountRes
+          ] = [
+            await useBlogApi('/api/v1/statistics', {
+              key: 'statistics',
+              immediate: true
+            }),
+            await useBlogApi('/api/v1/blog/count', {
+              key: 'blogsCount',
+              immediate: true
+            }),
+            await useBlogApi('/api/v1/post/count', {
+              key: 'postsCount',
+              immediate: true
+            }),
+            await useBlogApi('/api/v1/like/count', {
+              key: 'likesCount',
+              immediate: true
+            }),
+          ]
 
-          const {data} = await useBlogApi(
-            '/api/v1/statistics',
-            {key: 'statistics', immediate: true}
-          )
-          if (data?.value) {
-            return await data.value
+          return {
+            statistics: statisticsRes?.statistics?.value,
+            blogsCount: blogsCountRes?.blogsCount?.value,
+            postsCount: postsCountRes?.postsCount?.value,
+            likesCount: likesCountRes?.likesCount?.value,
           }
         },
-        31536000
+        31536000 // 1 an en secondes
       )
+      return await stats
+
     } catch (e) {
-      console.error('❌ Erreur de chargement des commandes:', e)
+      console.error('❌ Erreur de chargement des statistiques:', e)
     } finally {
       loading.value = false
     }
 
-    return statistics.value
+    return stats.value
   }
 
   return {
-    statistics,
+    stats,
     loading,
     fetchStatistics
   }

@@ -1,72 +1,102 @@
 <script setup lang="ts">
-import { onMounted, ref, computed, watch } from 'vue'
-import type { DataTableHeaders } from '~/plugins/vuetify'
-import ReusableDataTable from '~/components/Admin/ReusableDataTable.vue'
+import {nextTick, onMounted, ref} from 'vue'
+import {useStatisticStore} from "~/stores/admin/blog/statisticStore";
+import StatsCard from "~/components/StatsCard.vue";
+import ChartLine from "~/components/Chart/ChartLine.vue";
+
 definePageMeta({
-  title: 'Dashboard',
-  icon: 'mdi-settings',
+  icon: 'mdi-chart-bubble',
+  title: 'General Settings',
   requiresAdmin: true,
   drawerIndex: 0,
 })
-import { useConfigurationStore } from '~/stores/admin/configuration/configurationStore'
-const configurationStore = useConfigurationStore()
 const loading = ref(true)
 const search = ref('')
-const configurations = ref<any[]>([])
-const headers: DataTableHeaders = [
-  { title: 'ID', key: 'id', type: 'text', list: false, show: true ,create: false, edit: false },
-  { title: 'Key', key: 'configurationKey', type: 'text', list: true, show: true ,create: true, edit: true },
-  { title: 'Value', key: 'configurationValue', type: 'text', list: true, show: true ,create: true, edit: true },
-  { title: 'Context', key: 'contextKey', type: 'text', list: true, show: true ,create: true, edit: true },
-  { title: '', key: 'actions', list: false, show: false ,create: false, edit: false,  sortable: false, align: 'end' },
-]
-async function fetchConfigurations() {
+const dataStat = ref<any[]>([])
+const statisticStore = useStatisticStore()
+async function loadStatistics() {
   try {
-    const data = await configurationStore.fetchConfigurations()
+    const data = await statisticStore.fetchStatistics()
+    console.log(data)
     if (data) {
-      configurations.value = data
+      dataStat.value = data
+      loading.value = false
     }
-    loading.value = false
   } catch (e) {
-    console.error('Failed to load configurations :', e)
+    console.error('Erreur lors de la récupération des utilisateurs :', e)
   }
 }
-watch(loading, () => {
-  fetchConfigurations()
+watch(loading, async () => {
+  await loadStatistics()
 }, { immediate: true })
-onMounted(fetchConfigurations)
+
+onMounted(async () => {
+  window.scrollTo({ top: 0 })
+  await loadStatistics()
+  await nextTick()
+})
+const stats = ref([
+  {
+    icon: 'mdi-web',
+    title: 'Bandwidth',
+    value: 23,
+    unit: 'GB',
+    color: 'primary',
+    caption: 'Up: 13, Down: 10',
+  },
+  {
+    icon: 'mdi-rss',
+    title: 'Submissions',
+    value: 108,
+    color: 'primary',
+    caption: 'Too young, too naive',
+  },
+  {
+    icon: 'mdi-send',
+    title: 'Requests',
+    value: 1238,
+    color: 'warning',
+    caption: 'Limit: 1320',
+  },
+  {
+    icon: 'mdi-account',
+    title: 'Users',
+    value: 123,
+    color: 'success',
+    caption: 'New users this month',
+  }
+])
 </script>
 <template>
-  <v-container fluid>
-    <client-only>
-      <teleport to="#app-bar">
-        <v-text-field
-          v-model="search"
-          prepend-inner-icon="mdi-magnify"
-          label="Search"
-          single-line
-          hide-details
-          density="compact"
-          class="mr-2"
-          rounded="xl"
-          flat
-          variant="solo"
-          style="width: 250px"
-        />
-      </teleport>
-    </client-only>
-
-    <ReusableDataTable
-      label="Configuration Management"
-      :headers="headers"
-      urlCreate="/api/admin/configuration/create/configuration"
-      urlEdit="/api/admin/configuration/edit/configuration"
-      urlDelete="/api/admin/configuration/delete/configuration"
-      :items="configurations || []"
-      :loading="loading"
-      :create="true"
-      :search="search"
-      @refresh="fetchConfigurations"
-    />
+  <v-container fluid class="py-6">
+    <v-row>
+      <v-col
+        v-for="stat in stats"
+        :key="stat.title"
+        cols="12"
+        sm="6"
+        md="3"
+      >
+        <StatsCard
+          :title="stat.title"
+          :unit="stat.unit"
+          :color="stat.color"
+          :icon="stat.icon"
+          :value="stat.value"
+        >
+          <template #footer>
+            {{ stat.caption }}
+          </template>
+        </StatsCard>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <v-card class="pa-2">
+          <ChartLine />
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
+
