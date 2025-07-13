@@ -2,7 +2,7 @@
 import {defineStore} from 'pinia'
 import {useCachedFetch} from '~/composables/useCachedFetch'
 
-export const useStatisticStore = defineStore('statisticStore', () => {
+export const useStatisticBlogStore = defineStore('statisticStore', () => {
   const stats = ref<any>({
     statistics: null,
     blogsCount: 0,

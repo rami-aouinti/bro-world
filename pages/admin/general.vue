@@ -17,7 +17,6 @@ const statisticStore = useStatisticStore()
 async function loadStatistics() {
   try {
     const data = await statisticStore.fetchStatistics()
-    console.log(data)
     if (data) {
       dataStat.value = data
       loading.value = false
@@ -68,7 +67,7 @@ const stats = ref([
 ])
 </script>
 <template>
-  <v-container fluid class="py-6">
+  <v-container fluid>
     <v-row>
       <v-col
         v-for="stat in stats"
@@ -89,10 +88,8 @@ const stats = ref([
           </template>
         </StatsCard>
       </v-col>
-    </v-row>
-    <v-row>
       <v-col cols="12">
-        <v-card class="pa-2">
+        <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg py-4" variant="text" elevation="10">
           <ChartLine />
         </v-card>
       </v-col>
