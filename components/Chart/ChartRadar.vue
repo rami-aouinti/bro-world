@@ -80,3 +80,8 @@ const chartOptions = {
   },
 }
 </script>
+<template>
+  <v-container fluid style="max-width: 800px; margin: auto;">
+    <Radar :data="chartData" :options="chartOptions" />
+  </v-container>
+</template>

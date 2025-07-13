@@ -18,7 +18,7 @@ router.afterEach(() => {
     <v-btn
       aria-label="can Go Back"
       title="can Go Back"
-      color="secondary"
+      color="primary"
       :disabled="!canGoBack"
       icon="ph:arrow-left"
       class="opacity-80 ml-2"
@@ -26,7 +26,7 @@ router.afterEach(() => {
     />
     <v-btn
       aria-label="refresh"
-      color="secondary"
+      color="primary"
       class="opacity-80 ml-0"
       title="refresh"
       icon="ph:arrow-clockwise" @click="refresh()" />

@@ -10,6 +10,7 @@ import {
   LinearScale,
   TimeScale
 } from 'chart.js'
+import 'chartjs-adapter-date-fns'
 import { Line } from 'vue-chartjs'
 
 ChartJS.register(

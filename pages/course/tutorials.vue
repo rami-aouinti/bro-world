@@ -6,9 +6,7 @@ const { data: rows } = await useFetch('/api/course/topics', { key: route.fullPat
 
 definePageMeta({
   title: 'Tutorials',
-  icon: 'mdi-animation',
   middleware: 'auth',
-  requiredRoles: ['ROLE_USER'],
 })
 </script>
 

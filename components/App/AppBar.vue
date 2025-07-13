@@ -8,13 +8,14 @@
     aria-label="Top navigation bar"
   >
     <v-app-bar-nav-icon
+      color="primary"
       @click="drawer = !drawer"
       aria-label="Toggle drawer"
       :title="rtl ? 'إظهار القائمة' : 'Toggle drawer'"
     />
     <v-breadcrumbs
       :items="breadcrumbs"
-      color="secondary"
+      color="primary"
       class="mx-2 d-none d-lg-block"
       :aria-label="rtl ? 'المسار الحالي' : 'Breadcrumb'"
     />
@@ -26,9 +27,9 @@
 
     <v-btn
       icon
-      color="secondary"
-      aria-label="Settings"
-      title="Settings"
+      color="primary"
+      aria-label="Shop"
+      title="Shop"
       @click="emit('toggleSettingsDrawer', true)"
     >
       <v-badge

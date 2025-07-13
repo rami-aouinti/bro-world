@@ -43,7 +43,7 @@ watch(isNotificationReady, async () => {
     :batch-size="batchSize"
     :height="300"
     :empty-text="t('notification.empty')"
-    color="secondary"
+    color="primary"
     @open="markAllAsRead"
   >
     <template #item="{ item }">

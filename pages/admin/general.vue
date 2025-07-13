@@ -62,9 +62,8 @@ const stats = ref([
 
 <template>
   <v-container fluid class="py-6">
-    <GoogleMap />
     <v-card
-      class="shadow px-2 py-4 mx-5 overflow-hidden border-radius-xl mt-n16"
+      class="shadow px-2 py-4 mx-5 overflow-hidden border-radius-xl"
     >
       <v-row>
         <v-col
@@ -89,6 +88,11 @@ const stats = ref([
         </v-col>
       </v-row>
       <v-row>
+        <v-col cols="12" md="6" lg="12">
+          <v-card class="pa-2">
+            <ChartLine />
+          </v-card>
+        </v-col>
         <v-col cols="12" md="6" lg="4">
           <v-card class="pa-2">
             <ChartRadar />
