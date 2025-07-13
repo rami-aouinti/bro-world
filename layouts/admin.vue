@@ -3,34 +3,30 @@
     <v-overlay :model-value="isLoading" class="z-loader" persistent>
       <v-progress-circular indeterminate color="primary" size="64" />
     </v-overlay>
-    <AppBarHome :rtl="isRtl" @toggleSettingsDrawer="showSettingsDrawer = $event" aria-label="Top application bar" role="banner" />
+
+    <AppDrawer :right="isRtl" :mobile="mobile" aria-label="Main navigation" role="navigation" />
+    <AppBar :rtl="isRtl" @toggleSettingsDrawer="showSettingsDrawer = $event" aria-label="Top application bar" role="banner" />
+
     <v-main role="main" aria-label="Main content">
       <v-container fluid class="pa-0">
-        <div class="d-flex" style="min-height: 100vh;">
-          <MinBar></MinBar>
-          <div
-            style="max-width: 100%"
-            class="flex-grow-1"
-            :style="!mobile ? 'padding-left: 310px;' : ''"
-          >
-            <Suspense>
-              <template #default>
-                <NuxtPage :transition="{ name: 'fade', mode: 'out-in' }" @vue:beforeMount="startLoading" @vue:mounted="stopLoading" />
-              </template>
-              <template #fallback>
-                <v-progress-linear indeterminate color="primary" height="3" aria-label="Loading content" role="progressbar" />
-              </template>
-            </Suspense>
-          </div>
-        </div>
+        <Suspense>
+          <template #default>
+            <NuxtPage :transition="{ name: 'fade', mode: 'out-in' }" @vue:beforeMount="startLoading" @vue:mounted="stopLoading" />
+          </template>
+          <template #fallback>
+            <v-progress-linear indeterminate color="primary" height="3" aria-label="Loading content" role="progressbar" />
+          </template>
+        </Suspense>
       </v-container>
     </v-main>
+    <AppFooter aria-label="Application footer" role="contentinfo" />
     <SettingsDrawer
       :show-settings-drawer="showSettingsDrawer"
       @toggleSettingsDrawer="showSettingsDrawer = $event"
       aria-label="Settings drawer"
       role="complementary"
     />
+
     <Analytics />
     <SpeedInsights />
   </v-app>
@@ -47,13 +43,10 @@ import AppBar from '~/components/App/AppBar.vue'
 import SettingsDrawer from '~/components/App/SettingsDrawer.vue'
 import { Analytics } from '@vercel/analytics/vue'
 import { SpeedInsights } from '@vercel/speed-insights/nuxt'
-import AppBarHome from "~/components/App/AppBarHome.vue";
-import MinBar from "~/components/App/MinBar.vue";
 const { locale } = useI18n()
 const { $vuetify } = useNuxtApp()
 const rtlLanguages = ['ar']
 const isRtl = computed(() => rtlLanguages.includes(locale.value))
-const { loggedIn } =  useUserSession()
 const showSettingsDrawer = ref(false)
 const { mobile } = useDisplay()
 const isLoading = ref(true)

@@ -1,4 +1,4 @@
-<template>
+logged<template>
   <v-card
     elevation="10"
     id="delete"

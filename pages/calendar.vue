@@ -49,7 +49,7 @@
       </v-dialog>
     </v-row>
     <v-row>
-      <v-col cols="12" md="4">
+      <v-col class="d-none d-lg-block" cols="12" md="4">
         <v-card variant="text">
           <div class="d-flex align-center justify-space-between px-4 pt-4">
             <h6 class="text-h6 font-weight-bold text-typo">

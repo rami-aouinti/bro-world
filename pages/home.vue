@@ -224,83 +224,82 @@ onMounted(async () => {
 
 <template>
   <v-container fluid :dir="isRtl ? 'rtl' : 'ltr'" class="pa-0">
-    <div class="d-flex" style="min-height: 100vh;">
-      <div
-        class="flex-grow-1"
-        :style="$vuetify.display.lgAndUp ? 'padding-right: 400px;' : ''"
-      >
-        <v-row justify="center" class="align-center justify-center">
-          <v-col cols="12">
-            <LoaderStatusBanner v-if="loading.user" />
-            <template v-else-if="loggedIn && !user?.enabled">
-              <NuxtLazyHydrate when-visible once>
-                <UserStatusBanner />
-              </NuxtLazyHydrate>
-            </template>
+    <div
+      class="flex-grow-1"
+      style="max-width: 100%"
+      :style="$vuetify.display.lgAndUp ? 'padding-right: 400px;' : ''"
+    >
+      <v-row justify="center" class="align-center justify-center" style="max-width: 100%;">
+        <v-col cols="12">
+          <LoaderStatusBanner v-if="loading.user" />
+          <template v-else-if="loggedIn && !user?.enabled">
+            <NuxtLazyHydrate when-visible once>
+              <UserStatusBanner />
+            </NuxtLazyHydrate>
+          </template>
 
-            <template v-if="loading.user">
-              <LoaderPost />
-            </template>
-            <template v-else>
-              <NewPost v-if="loggedIn" @post-created="(post) => addPost(post)" @story-created="reloadStories" />
-            </template>
-            <ClientOnly>
-              <template v-if="loading.story">
-                <v-skeleton-loader type="avatar" class="mx-2" style="width: 50px; height: 50px;" />
-              </template>
-              <template v-else-if="loggedIn">
-                <NuxtLazyHydrate when-visible once>
-                  <HomeStories v-if="stories.length" :stories="stories" />
-                </NuxtLazyHydrate>
-              </template>
-            </ClientOnly>
-            <template v-if="loading.post">
-              <v-skeleton-loader
-                type="card"
-                class="pa-4 rounded-xl mb-4"
-                height="200"
-                v-for="n in 10"
-                :key="n"
-              />
-            </template>
-            <template v-else>
-              <v-infinite-scroll :items="postStore.posts" mode="manual" @load="loadMore">
-                <HomePosts
-                  v-for="(item, index) in postStore.posts"
-                  :key="item.id"
-                  :post="item"
-                  @post-reload="reloadPosts"
-                  @post-updated="(post) => editPost(post)"
-                  @post-deleted="(post) => deletePost(post)"
-                />
-                <template #load-more="{ props }">
-                  <v-btn
-                    v-if="hasMore"
-                    icon="mdi-refresh"
-                    class="text-primary"
-                    variant="text"
-                    v-bind="props"
-                    aria-label="Load more posts"
-                  />
-                </template>
-              </v-infinite-scroll>
-            </template>
-          </v-col>
-         </v-row>
-      </div>
-      <div
-        class="d-none d-lg-block"
-        style="position: fixed; top: 80px; right: 0; width: 400px; height: calc(100vh - 100px); overflow-y: auto; padding: 0 8px;"
-      >
-        <ClientOnly>
           <template v-if="loading.user">
-            <v-skeleton-loader type="card" class="mx-3 rounded-xl" height="300" />
+            <LoaderPost />
           </template>
           <template v-else>
-            <Dashboard />
+            <NewPost v-if="loggedIn" @post-created="(post) => addPost(post)" @story-created="reloadStories" />
           </template>
-        </ClientOnly>
-      </div>
+          <ClientOnly>
+            <template v-if="loading.story">
+              <v-skeleton-loader type="avatar" class="mx-2" style="width: 50px; height: 50px;" />
+            </template>
+            <template v-else-if="loggedIn">
+              <NuxtLazyHydrate when-visible once>
+                <HomeStories v-if="stories.length" :stories="stories" />
+              </NuxtLazyHydrate>
+            </template>
+          </ClientOnly>
+          <template v-if="loading.post">
+            <v-skeleton-loader
+              type="card"
+              class="pa-4 rounded-xl mb-4"
+              height="200"
+              v-for="n in 10"
+              :key="n"
+            />
+          </template>
+          <template v-else>
+            <v-infinite-scroll :items="postStore.posts" mode="manual" @load="loadMore">
+              <HomePosts
+                v-for="(item, index) in postStore.posts"
+                :key="item.id"
+                :post="item"
+                @post-reload="reloadPosts"
+                @post-updated="(post) => editPost(post)"
+                @post-deleted="(post) => deletePost(post)"
+              />
+              <template #load-more="{ props }">
+                <v-btn
+                  v-if="hasMore"
+                  icon="mdi-refresh"
+                  class="text-primary"
+                  variant="text"
+                  v-bind="props"
+                  aria-label="Load more posts"
+                />
+              </template>
+            </v-infinite-scroll>
+          </template>
+        </v-col>
+      </v-row>
+    </div>
+    <div
+      class="d-none d-lg-block"
+      style="position: fixed; top: 76px; right: 0; width: 400px; height: calc(100vh - 100px); overflow-y: auto; padding: 0 8px;"
+    >
+      <ClientOnly>
+        <template v-if="loading.user">
+          <v-skeleton-loader type="card" class="mx-3 rounded-xl" height="300" />
+        </template>
+        <template v-else>
+          <Dashboard />
+        </template>
+      </ClientOnly>
     </div>
     <DrawerManager />
   </v-container>

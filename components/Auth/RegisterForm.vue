@@ -5,6 +5,7 @@
         <div class="card-padding">
           <v-text-field
             v-model="email"
+            density="compact" rounded="xl"
             :label="t('register.email')"
             :class="isRtl ? 'text-end' : 'text-start'"
             required
@@ -14,6 +15,7 @@
           />
           <v-text-field
             v-model="password"
+            density="compact" rounded="xl"
             :type="showPassword ? 'text' : 'password'"
             :class="isRtl ? 'text-end' : 'text-start'"
             :label="t('register.password')"
@@ -24,6 +26,7 @@
             @click:append-inner="togglePassword"
           />
           <v-text-field
+            density="compact" rounded="xl"
             v-model="repeatPassword"
             :type="showRepeatPassword ? 'text' : 'password'"
             :label="t('register.repeatPassword')"
@@ -41,6 +44,7 @@
           >
             <v-col cols="auto">
               <v-checkbox
+                rounded="xl"
                 v-model="checkbox"
                 hide-details
                 class="ma-0 pa-0"

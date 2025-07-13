@@ -69,6 +69,7 @@
               </td>
               <td>
                 <v-switch
+                  density="compact"
                   v-model="item.switch1"
                   :ripple="false"
                   class="mt-0 pt-0 ms-8 switch"
@@ -77,6 +78,7 @@
               </td>
               <td>
                 <v-switch
+                  density="compact"
                   v-model="item.switch2"
                   :ripple="false"
                   class="mt-0 pt-0 ms-5 switch"
@@ -85,6 +87,7 @@
               </td>
               <td>
                 <v-switch
+                  density="compact"
                   v-model="item.switch3"
                   :ripple="false"
                   class="mt-0 pt-0 ms-5 switch"

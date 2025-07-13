@@ -13,20 +13,21 @@
       <v-row>
         <v-col cols="12">
           <v-text-field rounded="xl" label="Current password"
+                        density="compact"
             color="#e91e63"
             variant="outlined"
             dense
             type="password"
             class="font-size-input input-style py-0"
           />
-          <v-text-field rounded="xl" label="New password"
+          <v-text-field density="compact" rounded="xl" label="New password"
             color="#e91e63"
             variant="outlined"
             dense
             type="password"
             class="font-size-input input-style py-0"
           />
-          <v-text-field rounded="xl" label="Confirm new password"
+          <v-text-field density="compact" rounded="xl" label="Confirm new password"
             color="#e91e63"
             variant="outlined"
             dense

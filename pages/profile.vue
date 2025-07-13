@@ -136,7 +136,7 @@ definePageMeta({
     <div v-else>
       <v-row>
         <v-col lg="12">
-          <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg py-4" variant="text" elevation="10">
+          <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg py-1" variant="text" elevation="10">
             <div class="px-5">
               <v-row align="center" class="pa-0 ma-0">
                 <v-col cols="auto">

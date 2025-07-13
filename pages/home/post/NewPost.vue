@@ -123,7 +123,7 @@ function triggerFileInput() {
             height="40"
             variant="tonal"
             @click="dialog = true"
-            style="min-height: 48px; flex-grow: 1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap"
+            style="min-height: 48px; flex-grow: 1; text-overflow: ellipsis; overflow: hidden; max-width: 100%; white-space: nowrap"
           >
             <span>Hello {{ user?.firstName }}, new post?</span>
           </v-btn>

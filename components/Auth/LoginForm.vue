@@ -1,10 +1,11 @@
 <template>
-  <v-container style="margin-top: -40px;">
+  <v-container>
     <v-card-text class="text-medium-emphasis pa-1">
       <form class="mx-auto" @submit.prevent="handleSubmit">
         <div class="card-padding">
           <v-text-field
             v-model="username"
+            density="compact" rounded="xl"
             :label="t('auth.usernameOrEmail')"
             required
             class="font-size-input input-style"
@@ -13,6 +14,7 @@
             :error="!!error"
           />
           <v-text-field
+            density="compact" rounded="xl"
             v-model="password"
             :type="showPassword ? 'text' : 'password'"
             :label="t('auth.password')"

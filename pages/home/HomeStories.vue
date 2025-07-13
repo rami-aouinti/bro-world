@@ -176,7 +176,7 @@ function sendMessage() {
           hide-details
           flat
           density="compact"
-          style="flex-grow: 1;"
+          style="flex-grow: 1; max-width: 100%;"
           @keyup.enter="sendMessage"
           aria-label="Send message"
         />
