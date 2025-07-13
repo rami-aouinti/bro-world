@@ -49,7 +49,7 @@ const changeLanguage = async (code: string) => {
         <template #prepend>
           <span class="border border-radius-xl shadow-2xl shadow-primary object-cover" :class="`fi ${lang.icon}`" style="width: 32px; height:26px;" />
         </template>
-        <v-list-item-title class="ms-2">
+        <v-list-item-title class="mx-5">
           {{ lang.name }}
         </v-list-item-title>
       </v-list-item>
