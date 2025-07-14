@@ -1,34 +1,34 @@
 <template>
   <div
     class="d-none d-lg-block"
-    style="position: fixed; top: 76px; left: 0; width: 350px; height: calc(100vh - 100px); overflow-y: auto; padding: 0 8px;"
+    style="position: fixed; top: 76px; left: 0; width: 355px; padding: 0 8px;"
   >
     <ClientOnly>
       <template v-if="loading">
         <v-skeleton-loader type="card" class="mx-3 rounded-xl" height="400" />
       </template>
       <template v-else>
-        <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3" variant="text" elevation="10">
-          <v-layout v-if="loggedIn">
-            <v-navigation-drawer width="320" absolute>
-              <v-list>
+        <v-card
+          rounded="xl"
+          class="bg-gradient-primary shadow-primary mx-2"
+          variant="text"
+          elevation="10"
+        >
+          <div class="pa-2">
+            <template v-if="loggedIn">
+              <v-list style="background-color: transparent;">
                 <v-list-item
                   to="/profile"
                   :prepend-avatar="user.photo"
                   :subtitle="user.email"
                   :title="user.firstName + ' ' + user.lastName"
-                >
-                </v-list-item>
+                />
               </v-list>
+              <v-divider class="my-2" />
+              <div id="menu-bar-world" />
+            </template>
 
-              <v-divider></v-divider>
-
-              <div id="menu-bar-world"></div>
-            </v-navigation-drawer>
-            <v-main style="min-height: 100vh;nv"></v-main>
-          </v-layout>
-          <v-layout v-else>
-            <v-navigation-drawer width="320" absolute>
+            <template v-else>
               <v-sheet
                 class="mx-auto"
                 elevation="12"
@@ -44,34 +44,31 @@
                 <Social @redirect="isRedirecting = true" />
               </v-sheet>
               <div style="margin-top: -20px;">
-                <login-form></login-form>
+                <LoginForm />
               </div>
-            </v-navigation-drawer>
-            <v-main style="min-height: 100vh;"></v-main>
-          </v-layout>
+            </template>
+          </div>
         </v-card>
       </template>
     </ClientOnly>
   </div>
 </template>
 
+
 <script setup lang="ts">
 import LoginForm from "~/components/Auth/LoginForm.vue";
-
-const { user, loggedIn } = await useUserSession()
-const isRedirecting = ref(false)
-import { ref, onMounted, nextTick } from 'vue'
 import Social from "~/components/Auth/Social.vue";
+import { ref, onMounted, nextTick } from "vue";
 
-const loading = ref(true)
+const { user, loggedIn } = await useUserSession();
+const isRedirecting = ref(false);
+const loading = ref(true);
+
 onMounted(async () => {
   try {
-    await nextTick()
-  } catch (e) {
+    await nextTick();
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-})
+});
 </script>
-<style scoped>
-</style>

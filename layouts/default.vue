@@ -1,8 +1,10 @@
 <template>
   <v-app>
-    <v-overlay :model-value="isLoading" class="z-loader" persistent>
-      <v-progress-circular indeterminate color="primary" size="64" />
-    </v-overlay>
+    <ClientOnly>
+      <v-overlay :model-value="isLoading" class="z-loader" persistent>
+        <v-progress-circular indeterminate color="primary" size="64" />
+      </v-overlay>
+    </ClientOnly>
     <AppBarHome :mobile="mobile" :rtl="isRtl" @toggleSettingsDrawer="showSettingsDrawer = $event" aria-label="Top application bar" role="banner" />
     <v-main role="main" aria-label="Main content">
       <v-container fluid class="pa-0">
@@ -93,13 +95,9 @@ html, body, #__nuxt, .v-application {
 .v-main {
   padding-top: 0;
   padding-bottom: 0;
-  /* https://github.com/vuetifyjs/vuetify/issues/15202 */
   margin-top: 64px;
   margin-bottom: 32px;
-  height: calc(100vh - 64px - 32px);
-  /* margin-top: var(--v-layout-top);
-  margin-bottom: var(--v-layout-bottom);
-  height: calc(100vh - var(--v-layout-top) - var(--v-layout-bottom)); */
+  /* height: calc(100vh - 64px - 32px); ❌ à supprimer */
   overflow-y: auto;
   transition-property: padding;
   transition: padding-left 0.3s ease;

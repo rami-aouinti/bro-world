@@ -323,9 +323,10 @@ onMounted(async () => {
     </div>
     <div
       class="d-none d-lg-block"
-      style="position: fixed; top: 76px; right: 0; width: 400px; height: calc(100vh - 100px); overflow-y: auto; padding: 0 8px;"
+      style="position: fixed; top: 76px; right: 0; width: 400px; padding: 0 8px; overflow-y: auto; max-height: calc(100vh - 76px);"
     >
-      <ClientOnly>
+
+    <ClientOnly>
         <template v-if="loading.user">
           <v-skeleton-loader type="card" class="mx-3 rounded-xl" height="300" />
         </template>
