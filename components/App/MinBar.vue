@@ -1,14 +1,14 @@
 <template>
   <div
     class="d-none d-lg-block"
-    style="position: fixed; top: 76px; left: 0; width: 310px; height: calc(100vh - 100px); overflow-y: auto; padding: 0 8px;"
+    style="position: fixed; top: 76px; left: 0; width: 350px; height: calc(100vh - 100px); overflow-y: auto; padding: 0 8px;"
   >
     <ClientOnly>
       <template v-if="loading">
         <v-skeleton-loader type="card" class="mx-3 rounded-xl" height="400" />
       </template>
       <template v-else>
-        <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3" variant="text" elevation="10" width="256">
+        <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3" variant="text" elevation="10" width="320">
           <v-layout v-if="loggedIn">
             <v-navigation-drawer absolute>
               <v-list>

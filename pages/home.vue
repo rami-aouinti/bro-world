@@ -260,7 +260,7 @@ onMounted(async () => {
     <div
       class="flex-grow-1"
       style="max-width: 100%"
-      :style="$vuetify.display.lgAndUp ? 'padding-right: 400px;' : ''"
+      :style="$vuetify.display.lgAndUp ? 'padding-right: 360px;' : ''"
     >
       <v-row justify="center" class="align-center justify-center" style="max-width: 100%;">
         <v-col cols="12">

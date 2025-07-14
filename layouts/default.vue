@@ -11,7 +11,7 @@
           <div
             style="max-width: 100%"
             class="flex-grow-1"
-            :style="!mobile ? 'padding-left: 310px;' : ''"
+            :style="!mobile ? 'padding-left: 350px;' : ''"
           >
             <Suspense>
               <template #default>
