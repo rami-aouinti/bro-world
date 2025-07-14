@@ -8,9 +8,9 @@
         <v-skeleton-loader type="card" class="mx-3 rounded-xl" height="400" />
       </template>
       <template v-else>
-        <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3" variant="text" elevation="10" width="320">
+        <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3" variant="text" elevation="10">
           <v-layout v-if="loggedIn">
-            <v-navigation-drawer absolute>
+            <v-navigation-drawer width="320" absolute>
               <v-list>
                 <v-list-item
                   to="/profile"
@@ -25,10 +25,10 @@
 
               <div id="menu-bar-world"></div>
             </v-navigation-drawer>
-            <v-main style="height: 410px;"></v-main>
+            <v-main style="min-height: 100vh;nv"></v-main>
           </v-layout>
           <v-layout v-else>
-            <v-navigation-drawer absolute>
+            <v-navigation-drawer width="320" absolute>
               <v-sheet
                 class="mx-auto"
                 elevation="12"
@@ -47,7 +47,7 @@
                 <login-form></login-form>
               </div>
             </v-navigation-drawer>
-            <v-main style="height: 410px;"></v-main>
+            <v-main style="min-height: 100vh;"></v-main>
           </v-layout>
         </v-card>
       </template>
