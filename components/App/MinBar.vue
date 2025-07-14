@@ -25,7 +25,7 @@
 
               <div id="menu-bar-world"></div>
             </v-navigation-drawer>
-            <v-main style="height: 480px;"></v-main>
+            <v-main style="height: 410px;"></v-main>
           </v-layout>
           <v-layout v-else>
             <v-navigation-drawer absolute>
