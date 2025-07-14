@@ -1,5 +1,36 @@
 <template>
   <v-container fluid>
+    <client-only>
+      <teleport v-if="canTeleport" to="#menu-bar-world">
+        <v-list class="bg-transparent" role="list">
+          <v-list-item
+            v-for="(user, index) in topUsers"
+            :key="user.name"
+            variant="text"
+            class="px-4"
+            role="listitem"
+            aria-label="Quiz ranking item"
+          >
+            <template #prepend>
+              <v-avatar size="36">
+        <span class="text-h6">
+          {{ trophies[index] || '🏅' }}
+        </span>
+              </v-avatar>
+            </template>
+
+            <template #default>
+              <div class="d-flex align-center w-100">
+                <span class="font-weight-medium">{{ user.name }}</span>
+                <span class="text-body-2 font-weight-bold ms-auto">
+          {{ user.points }} pts
+        </span>
+              </div>
+            </template>
+          </v-list-item>
+        </v-list>
+      </teleport>
+    </client-only>
     <div class="my-4 text-center">
       <v-btn
         v-for="(tag, id) in tags"
@@ -76,7 +107,7 @@
 
 <script lang="ts" setup>
 import { truncate } from '~/utils/stringUtils';
-import Header from '~/components/App/AppQuiz/Header.vue';
+import { onMounted, ref, nextTick } from 'vue'
 definePageMeta({
   layout: 'default',
   description: 'Game page',
@@ -98,7 +129,7 @@ definePageMeta({
 const { data: allQuizz } = await useAsyncData("allQuizz", () =>
   queryContent("/quizz").find()
 );
-
+const canTeleport = ref(false)
 const title = "Dynamic quizzes generated using Wikidata and SPARQL.";
 
 const quizzImg = (quizz) => {
@@ -107,8 +138,31 @@ const quizzImg = (quizz) => {
 };
 
 const tags = ['quizz', 'sparql', 'wikipedia', 'wikidata'];
+
+const topUsers = ref<{ name: string; points: number }[]>([])
+const trophies = ['🥇', '🥈', '🥉']
+const loadingQuiz = ref(true)
+
+const fetchQuiz = async () => {
+  try {
+    // API call simulation or real fetch
+    topUsers.value = [
+      { name: 'Alice', points: 1200 },
+      { name: 'Bob', points: 980 },
+      { name: 'Charlie', points: 870 }
+    ]
+  } catch (error) {
+    console.error('Failed to fetch quiz rankings:', error)
+  } finally {
+    loadingQuiz.value = false
+  }
+}
+
 onMounted(async () => {
   window.scrollTo({ top: 0 })
+  await fetchQuiz()
+  await nextTick()
+  canTeleport.value = !!document.getElementById('menu-bar-world')
 })
 </script>
 
