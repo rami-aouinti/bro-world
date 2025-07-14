@@ -9,12 +9,13 @@
 
     <v-card
       v-else
-      class="bg-gradient-primary shadow-primary border-radius-lg mx-3 mb-2"
+      rounded="xl"
+      class="bg-gradient-primary shadow-primary mx-3 mb-2"
       variant="text"
       elevation="10"
       :class="{ 'text-end': isRtl, 'text-start': !isRtl }"
     >
-      <div class="bg-gradient-primary shadow-primary border-radius-lg px-4 py-4">
+      <div class="bg-gradient-primary shadow-primary px-4 py-4">
         <v-row>
           <v-col cols="8" class="my-auto">
             <p class="text-sm mb-0 font-weight-bold opacity-7">

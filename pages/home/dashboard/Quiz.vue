@@ -9,12 +9,12 @@
 
     <v-card
       v-else
-      class="bg-gradient-primary shadow-primary border-radius-lg mx-3 my-4"
+      class="bg-gradient-primary shadow-primary mx-3 my-4"
       rounded="xl"
       variant="text"
       elevation="10"
     >
-      <div class="bg-gradient-primary shadow-primary border-radius-lg px-4 py-2">
+      <div class="bg-gradient-primary shadow-primary px-4 py-2">
         <v-toolbar
           color="transparent"
         >

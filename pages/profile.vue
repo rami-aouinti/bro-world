@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import {onMounted, ref, watch, computed} from 'vue'
+import { onMounted, ref, watch, computed, nextTick } from 'vue'
 import {useI18n} from 'vue-i18n'
 import LoaderProfile from '~/components/App/Loader/Profile/LoaderProfile.vue'
 import {useUserStore} from '~/stores/useUserStore'
 import Media from "~/pages/home/dashboard/Media.vue";
-import {useMercureInbox} from "~/composables/useMercureInbox";
 import {useConversationUtils} from "~/composables/useConversationUtils";
 const userStore = useUserStore()
-
+const canTeleport = ref(false)
 const { t } = useI18n()
 const { user } = await useUserSession()
 const avatarUrl = ref('')
@@ -91,12 +90,12 @@ watch(selected, async () => {
   await fetchConversations()
   randomAvatar()
 })
-
 onMounted(async () => {
   window.scrollTo({ top: 0 })
-  await fetchConversations
+  await fetchConversations()
+  canTeleport.value = !!document.getElementById('menu-bar-world')
 })
-// 🎯 Traductions via clés courtes
+
 const accountSettings = ref([
   { text: 'emailWhenFollow', switchState: true },
   { text: 'emailWhenAnswer', switchState: false },
@@ -130,13 +129,48 @@ definePageMeta({
 
 <template>
   <v-container fluid>
+    <client-only>
+      <teleport v-if="canTeleport" to="#menu-bar-world">
+        <div class="px-4 py-4">
+          <p class="text-sm font-weight-light text-body">
+            {{ profile?.profile?.description }}
+          </p>
+          <v-list class="bg-transparent" elevation="0">
+            <v-list-item class="px-0 border-radius-sm">
+              <div class="text-body text-sm">
+                <strong class="text-dark">{{ t('profile.fullName') }}:</strong>
+                &nbsp; {{ profile?.firstName ?? '' }} {{ profile?.lastName ?? '' }}
+              </div>
+            </v-list-item>
+            <v-list-item class="px-0 border-radius-sm">
+              <div class="text-body text-sm">
+                <strong class="text-dark">{{ t('profile.mobile') }}:</strong>
+                &nbsp; {{ profile?.profile?.phone ?? '' }}
+              </div>
+            </v-list-item>
+            <v-list-item class="px-0 border-radius-sm">
+              <div class="text-body text-sm">
+                <strong class="text-dark">{{ t('profile.email') }}:</strong>
+                &nbsp; {{ profile?.email ?? t('profile.notProvided') }}
+              </div>
+            </v-list-item>
+            <v-list-item class="px-0 border-radius-sm">
+              <div class="text-body text-sm">
+                <strong class="text-dark">{{ t('profile.location') }}:</strong>
+                &nbsp; {{ profile?.locale ?? '' }}
+              </div>
+            </v-list-item>
+          </v-list>
+        </div>
+      </teleport>
+    </client-only>
     <div v-if="pending">
       <LoaderProfile />
     </div>
     <div v-else>
       <v-row>
         <v-col lg="12">
-          <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg py-1" variant="text" elevation="10">
+          <v-card rounded="xl" class="bg-gradient-primary shadow-primary py-1" variant="text" elevation="10">
             <div class="px-5">
               <v-row align="center" class="pa-0 ma-0">
                 <v-col cols="auto">
@@ -171,7 +205,7 @@ definePageMeta({
       <v-row>
         <!-- Info -->
         <v-col lg="4" md="4" cols="12">
-          <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg h-100" variant="text" elevation="10">
+          <v-card rounded="xl" class="bg-gradient-primary shadow-primary h-100" variant="text" elevation="10">
             <div class="px-4 pt-4">
               <h6 class="mb-0 text-h6 text-typo">{{ t('profile.information') }}</h6>
             </div>
@@ -236,7 +270,7 @@ definePageMeta({
 
               <v-col class="d-flex text-center" cols="12" md="7">
                 <v-card
-                  class="bg-gradient-primary shadow-primary border-radius-lg text-h6 justify-center align-center flex-1-1 d-flex"
+                  class="bg-gradient-primary shadow-primary text-h6 justify-center align-center flex-1-1 d-flex"
                   color="surface-light"
                   height="100%"
                   flat
@@ -300,7 +334,7 @@ definePageMeta({
         </v-col>
         <!-- Account & App Settings -->
         <v-col lg="4" md="4" cols="12">
-          <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg h-60" variant="text" elevation="10">
+          <v-card rounded="xl" class="bg-gradient-primary shadow-primary h-60" variant="text" elevation="10">
             <div class="px-4 pt-4">
               <h6 class="mb-0 text-h6 text-typo">{{ t('profile.platform') }}</h6>
             </div>
@@ -342,7 +376,7 @@ definePageMeta({
         </v-col>
         <!-- Conversations -->
         <v-col lg="8" md="8" cols="12">
-          <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg h-100" variant="text" elevation="10">
+          <v-card rounded="xl" class="bg-gradient-primary shadow-primary h-100" variant="text" elevation="10">
             <div class="px-4 pt-4">
               <h6 class="mb-0 text-h6 text-typo">{{ t('profile.conversations.title') }}</h6>
             </div>
@@ -384,7 +418,7 @@ definePageMeta({
         </v-col>
 
         <v-col lg="12" md="12" cols="12">
-          <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg h-60" variant="text" elevation="10">
+          <v-card rounded="xl" class="bg-gradient-primary shadow-primary h-60" variant="text" elevation="10">
             <Media></Media>
           </v-card>
         </v-col>

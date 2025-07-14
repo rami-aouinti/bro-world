@@ -1,11 +1,5 @@
 <template>
   <v-container fluid>
-    <v-row align="center" justify="center" dense>
-      <v-col cols="12">
-        <Header class="mb-6 text-center" :title="title" />
-      </v-col>
-    </v-row>
-
     <div class="my-4 text-center">
       <v-btn
         v-for="(tag, id) in tags"

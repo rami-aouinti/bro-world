@@ -9,12 +9,20 @@
     class="px-4"
   >
     <template #prepend>
-      <NuxtLink :to="localePath('/home')" class="drawer-header-icon">
+      <NuxtLink v-if="!mobile" :to="localePath('/home')" class=" text-h5 font-weight-bold drawer-header-icon text-decoration-none" style="color: inherit;">
         <v-icon
           icon="custom:world-logo"
-          size="x-large"
           color="primary"
         />
+        Bro <span class="text-primary">World</span>
+
+      </NuxtLink>
+      <NuxtLink v-else :to="localePath('/home')" class=" text-h5 font-weight-bold drawer-header-icon text-decoration-none" style="color: inherit;">
+        <v-icon
+          icon="custom:world-logo"
+          color="primary"
+        />
+
       </NuxtLink>
     </template>
 
@@ -61,7 +69,7 @@ import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import { useShopifyCart } from "~/modules/shopify/composables/useShopifyCart"
 
-const props = defineProps({ rtl: Boolean })
+const props = defineProps({ rtl: Boolean, mobile: Boolean })
 const emit = defineEmits(['toggleSettingsDrawer'])
 const localePath = useLocalePath()
 const drawer = useState('drawer')

@@ -8,11 +8,12 @@
         <v-skeleton-loader type="card" class="mx-3 rounded-xl" height="400" />
       </template>
       <template v-else>
-        <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg mx-3" variant="text" elevation="10" width="256">
+        <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3" variant="text" elevation="10" width="256">
           <v-layout v-if="loggedIn">
             <v-navigation-drawer absolute>
               <v-list>
                 <v-list-item
+                  to="/profile"
                   :prepend-avatar="user.photo"
                   :subtitle="user.email"
                   :title="user.firstName + ' ' + user.lastName"
@@ -22,27 +23,9 @@
 
               <v-divider></v-divider>
 
-              <v-list
-                :lines="false"
-                density="compact"
-                nav
-              >
-                <v-list-item
-                  v-for="(item, i) in items"
-                  :to="item.path"
-                  :key="i"
-                  :value="item"
-                  color="primary"
-                >
-                  <template v-slot:prepend>
-                    <v-icon :color="item.color" :icon="item.icon"></v-icon>
-                  </template>
-
-                  <v-list-item-title v-text="item.title"></v-list-item-title>
-                </v-list-item>
-              </v-list>
+              <div id="menu-bar-world"></div>
             </v-navigation-drawer>
-            <v-main style="height: 400px;"></v-main>
+            <v-main style="height: 480px;"></v-main>
           </v-layout>
           <v-layout v-else>
             <v-navigation-drawer absolute>
@@ -64,7 +47,7 @@
                 <login-form></login-form>
               </div>
             </v-navigation-drawer>
-            <v-main style="height: 380px;"></v-main>
+            <v-main style="height: 480px;"></v-main>
           </v-layout>
         </v-card>
       </template>
@@ -79,18 +62,7 @@ const { user, loggedIn } = await useUserSession()
 const isRedirecting = ref(false)
 import { ref, onMounted, nextTick } from 'vue'
 import Social from "~/components/Auth/Social.vue";
-const items = [
-  { title: "Profile", icon: "mdi-account", color: "primary", path: "/profile" },
-  { title: "Settings", icon: "mdi-account-settings-variant", color: "deep-purple", path: "/setting" },
-  { title: "Calendar", icon: "mdi-calendar", color: "amber", path: "/calendar" },
-  { title: "Shop", icon: "mdi-storefront", color: "pink", path: "/shop" },
-  { title: "Jobs", icon: "mdi-briefcase", color: "blue", path: "/jobs" },
-  { title: "CRM", icon: "mdi-database", color: "teal", path: "/crm" },
-  { title: "Courses", icon: "mdi-school", color: "green", path: "/courses" },
-  { title: "Quiz", icon: "mdi-gamepad-variant", color: "indigo", path: "/game" },
-  { title: "My Files", icon: "mdi-folder", color: "orange", path: "/user/channel/media" },
-  { title: "Recent", icon: "mdi-history", color: "cyan", path: "/recent" },
-];
+
 const loading = ref(true)
 onMounted(async () => {
   try {
@@ -101,3 +73,5 @@ onMounted(async () => {
   }
 })
 </script>
+<style scoped>
+</style>

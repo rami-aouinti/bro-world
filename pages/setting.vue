@@ -1,12 +1,38 @@
 <template>
   <v-container fluid>
+    <client-only>
+      <teleport v-if="canTeleport" to="#menu-bar-world">
+        <v-list style="background-color: transparent;"
+                :lines="false"
+                nav>
+          <v-list-item-group class="border-radius-sm">
+            <v-list-item
+              class="px-3 py-1 border-radius-lg mb-2"
+              v-for="item in menu"
+              :key="item.id"
+              :prepend-icon="item.icon"
+            >
+              <a :href="item.id" class="text-decoration-none">
+                <v-list-item-title>
+
+                  <div class="d-flex flex-column">
+                    <span class="text-dark text-sm">{{ item.text }}</span>
+                  </div>
+
+                </v-list-item-title>
+              </a>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </teleport>
+    </client-only>
     <v-row>
       <v-col lg="12">
         <div v-if="pending">
           <LoaderSetting />
         </div>
         <div v-else>
-          <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg py-1" variant="text" elevation="10">
+          <v-card id="profile" rounded="xl" class="bg-gradient-primary shadow-primary py-1" variant="text" elevation="10">
             <div class="px-5">
               <v-row align="center" class="pa-0 ma-0">
                 <v-col cols="auto">
@@ -101,7 +127,7 @@ import Notifications from '~/pages/setting/Notifications.vue'
 import Sessions from '~/pages/setting/Sessions.vue'
 import DeleteAccount from '~/pages/setting/DeleteAccount.vue'
 import LoaderSetting from "~/components/App/Loader/Profile/LoaderSetting.vue";
-
+const canTeleport = ref(false)
 const { user, refresh } = await useUserSession()
 const switche = ref(true)
 const pending = ref(true)
@@ -109,7 +135,48 @@ const profile = ref<any>(null)
 const avatar = ref<File | null>(null)
 const avatarUrl = ref('')
 const fileInput = ref(null)
-
+const menu  = ref ([
+  {
+    icon: "mdi-person",
+    text: "Profile",
+    id: "#profile",
+  },
+  {
+    icon: "mdi-account-card-details",
+    text: "Basic Info",
+    id: "#basic",
+  },
+  {
+    icon: "mdi-lock",
+    text: "Change Password",
+    id: "#change",
+  },
+  {
+    icon: "mdi-security",
+    text: "2FA",
+    id: "#2fa",
+  },
+  {
+    icon: "mdi-badge",
+    text: "Accounts",
+    id: "#account",
+  },
+  {
+    icon: "mdi-bell",
+    text: "Notifications",
+    id: "#notifications",
+  },
+  {
+    icon: "mdi-settings",
+    text: "Sessions",
+    id: "#sessions",
+  },
+  {
+    icon: "mdi-delete",
+    text: "Delete Account",
+    id: "#delete",
+  }
+])
 const triggerUpload = () => {
   fileInput.value?.click()
 }
@@ -156,6 +223,7 @@ watch(user.value.username, () => {
 onMounted(async () => {
   window.scrollTo({ top: 0 })
   await loadProfile()
+  canTeleport.value = !!document.getElementById('menu-bar-world')
 })
 
 definePageMeta({

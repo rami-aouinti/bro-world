@@ -13,8 +13,8 @@ const props = defineProps({
 
 <template>
   <div class="py-3">
-    <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg mx-3" variant="text" elevation="10">
-      <div class="bg-gradient-primary shadow-primary border-radius-lg px-4 py-2">
+    <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3" variant="text" elevation="10">
+      <div class="bg-gradient-primary shadow-primary px-4 py-2">
         <AuthorPost @post-updated="(data) => emit('post-updated', data)" @post-delete="(data) => emit('post-deleted', data)" :post="props.post"></AuthorPost>
         <Post @post-reload="emit('post-reload')" :post="props.post"></Post>
       </div>

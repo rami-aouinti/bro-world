@@ -107,11 +107,11 @@ function triggerFileInput() {
   <div class="py-3">
   <v-card
     rounded="xl"
-    class="bg-gradient-primary shadow-primary border-radius-lg mx-3"
+    class="bg-gradient-primary shadow-primary mx-3"
     variant="text"
     elevation="10"
   >
-    <div class="bg-gradient-primary shadow-primary border-radius-lg px-4 py-2">
+    <div class="bg-gradient-primary shadow-primary px-4 py-2">
       <v-card-text>
         <div class="d-flex align-center" style="max-width: 100%; flex-wrap: nowrap; overflow: hidden;">
           <button class="btn-reset mx-2" @click="dialog = true" aria-label="User avatar" style="flex-shrink: 0">

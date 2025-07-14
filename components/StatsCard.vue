@@ -19,7 +19,7 @@ withDefaults(
 </script>
 
 <template>
-  <v-card rounded="xl" class="stats-card v-alert--border-top bg-gradient-primary shadow-primary border-radius-lg" variant="text" elevation="10">
+  <v-card rounded="xl" class="stats-card v-alert--border-top bg-gradient-primary shadow-primary" variant="text" elevation="10">
     <v-icon
       size="x-large"
       class="stats-icon"

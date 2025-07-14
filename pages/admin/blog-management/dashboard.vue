@@ -89,7 +89,7 @@ const stats = ref([
         </StatsCard>
       </v-col>
       <v-col cols="12">
-        <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg py-4" variant="text" elevation="10">
+        <v-card rounded="xl" class="bg-gradient-primary shadow-primary py-4" variant="text" elevation="10">
           <ChartLine />
         </v-card>
       </v-col>

@@ -9,7 +9,7 @@
         />
       </template>
       <div v-else>
-        <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg mx-3" variant="text" elevation="10">
+        <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3" variant="text" elevation="10">
           <v-toolbar
             color="transparent"
           >

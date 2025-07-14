@@ -12,12 +12,12 @@
     <v-card
       v-else
       rounded="xl"
-      class="bg-gradient-primary shadow-primary border-radius-lg mx-3 mt-4 mb-4"
+      class="bg-gradient-primary shadow-primary mx-3 mt-4 mb-4"
       variant="text"
       elevation="10"
       aria-labelledby="news-title"
     >
-      <div class="bg-gradient-primary shadow-primary border-radius-lg px-4 py-2">
+      <div class="bg-gradient-primary shadow-primary px-4 py-2">
         <v-toolbar
           color="transparent"
         >

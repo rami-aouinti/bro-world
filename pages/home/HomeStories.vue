@@ -90,10 +90,10 @@ function sendMessage() {
   <div class="py-3">
   <v-card
     rounded="xl"
-    class="bg-gradient-primary shadow-primary border-radius-lg overflow-x-auto mx-3 min-h-stories"
+    class="bg-gradient-primary shadow-primary overflow-x-auto mx-3 min-h-stories"
     variant="text"
     elevation="10">
-      <div class="bg-gradient-primary shadow-primary border-radius-lg px-4 py-2 d-flex align-center justify-center">
+      <div class="bg-gradient-primary shadow-primary px-4 py-2 d-flex align-center justify-center">
         <v-col
           v-for="userStories in stories"
           :key="userStories.userId"

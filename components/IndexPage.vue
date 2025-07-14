@@ -21,7 +21,7 @@ const items = computed(() =>
     <div>
       <v-row>
         <v-col v-for="item in items" :key="item.title" cols="12" md="4">
-          <v-card rounded="xl" class="bg-gradient-primary shadow-primary border-radius-lg mx-3" variant="text" elevation="10">
+          <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3" variant="text" elevation="10">
             <v-list-item
               v-bind="item"
               append-icon="mdi-chevron-right"

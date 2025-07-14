@@ -3,7 +3,7 @@
     <v-overlay :model-value="isLoading" class="z-loader" persistent>
       <v-progress-circular indeterminate color="primary" size="64" />
     </v-overlay>
-    <AppBarHome :rtl="isRtl" @toggleSettingsDrawer="showSettingsDrawer = $event" aria-label="Top application bar" role="banner" />
+    <AppBarHome :mobile="mobile" :rtl="isRtl" @toggleSettingsDrawer="showSettingsDrawer = $event" aria-label="Top application bar" role="banner" />
     <v-main role="main" aria-label="Main content">
       <v-container fluid class="pa-0">
         <div class="d-flex" style="min-height: 100vh;">
@@ -86,7 +86,7 @@ function stopLoading() {
 }
 </script>
 
-<style>
+<style scoped>
 html, body, #__nuxt, .v-application {
   margin: 0;
 }

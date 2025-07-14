@@ -106,7 +106,7 @@ async function handleSubmit() {
 
   if (data.value) {
     await refreshSession()
-    await navigateTo('/')
+    await window.location.reload()
   }
 }
 </script>
