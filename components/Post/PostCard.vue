@@ -111,8 +111,8 @@ const localePath = useLocalePath()
           variant="text"
           icon
           class="position-absolute left-0"
-          color="primary"
-          style="top: 58%; transform: translateY(-50%) translateX(25%); z-index: 10;"
+          color="lightgray"
+          style="top: 50%; transform: translateY(-50%) translateX(25%); z-index: 10;"
           @click="goToPreviousPost"
         >
           <v-icon size="48">mdi-chevron-left</v-icon>
@@ -122,9 +122,9 @@ const localePath = useLocalePath()
           v-if="props.post?.medias?.length > 1"
           variant="text"
           icon
-          color="primary"
+          color="lightgray"
           class="position-absolute right-0"
-          style="top: 58%; transform: translateY(-50%) translateX(-25%); z-index: 10;"
+          style="top: 50%; transform: translateY(-50%) translateX(-25%); z-index: 10;"
           @click="goToNextPost"
         >
           <v-icon size="48">mdi-chevron-right</v-icon>

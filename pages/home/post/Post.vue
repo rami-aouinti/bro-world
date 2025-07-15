@@ -53,12 +53,12 @@ const localePath = useLocalePath()
 <template>
   <div class="px-4 py-1">
     <NuxtLink :to="localePath(`/post/${props.post.slug}`)" class="text-decoration-none">
-      <div v-if="props.post?.title" v-html="props.post?.title" class="text-default font-weight-600 text-sm px-12 mb-4">
+      <div v-if="props.post?.title" v-html="props.post?.title" class="text-default font-weight-600 text-sm mb-3">
       </div>
-      <div v-if="props.post?.content" v-html="truncate(props.post?.content, 500)" class="text-default font-weight-600 text-sm px-12 mb-4">
+      <div v-if="props.post?.content" v-html="truncate(props.post?.content, 500)" class="text-default font-weight-600 text-sm mb-3">
       </div>
     </NuxtLink>
-      <div v-if="props.post?.url || props.post?.medias?.length > 0" class="text-left px-12 mb-6 text-body font-weight-light">
+      <div v-if="props.post?.url || props.post?.medias?.length > 0" class="text-left mb-3 text-body font-weight-light">
         <!-- Si c'est une URL YouTube, on affiche la vidéo centrée -->
         <div v-if="isYoutubeUrl(props.post?.url)" class="text-center">
           <v-sheet color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
@@ -111,8 +111,8 @@ const localePath = useLocalePath()
             variant="text"
             icon
             class="position-absolute left-0"
-            color="primary"
-            style="top: 58%; transform: translateY(-50%) translateX(25%); z-index: 10;"
+            color="lightgray"
+            style="top: 50%; transform: translateY(-50%) translateX(25%); z-index: 10;"
             @click="goToPreviousPost"
           >
             <v-icon size="48">mdi-chevron-left</v-icon>
@@ -122,9 +122,9 @@ const localePath = useLocalePath()
             v-if="props.post?.medias?.length > 1"
             variant="text"
             icon
-            color="primary"
+            color="lightgray"
             class="position-absolute right-0"
-            style="top: 58%; transform: translateY(-50%) translateX(-25%); z-index: 10;"
+            style="top: 50%; transform: translateY(-50%) translateX(-25%); z-index: 10;"
             @click="goToNextPost"
           >
             <v-icon size="48">mdi-chevron-right</v-icon>
