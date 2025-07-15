@@ -9,6 +9,7 @@
       </template>
       <template v-else>
         <v-card
+          style="height: calc(100vh - 132px); overflow-y: auto;"
           rounded="xl"
           class="bg-gradient-primary shadow-primary mx-2"
           variant="text"

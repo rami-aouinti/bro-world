@@ -1,5 +1,10 @@
 <template>
   <v-container fluid>
+    <client-only>
+      <teleport v-if="canTeleport" to="#menu-bar-world">
+        <BasisMinibar></BasisMinibar>
+      </teleport>
+    </client-only>
     <v-row>
       <v-col cols="12" md="6">
         <h1 class="text-h6 font-weight-bold mb-2">{{ t('contact.title') }}</h1>
@@ -71,8 +76,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, ref, nextTick } from 'vue'
+
+const canTeleport = ref(false)
+
 import { useI18n } from 'vue-i18n'
+import BasisMinibar from "~/components/App/BasisMinibar.vue";
 definePageMeta({
   layout: 'default',
   title: 'Contact Us',
@@ -101,6 +110,8 @@ const form = ref({
 })
 onMounted(async () => {
   window.scrollTo({ top: 0 })
+  await nextTick()
+  canTeleport.value = !!document.getElementById('menu-bar-world')
 })
 async function sendMessage() {
   error.value = ''

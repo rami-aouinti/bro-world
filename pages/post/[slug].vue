@@ -16,21 +16,12 @@ watch(
 import AuthorPost from "~/pages/home/post/AuthorPost.vue";
 import { usePostStore } from "~/stores/usePostStore"
 import PostCard from "~/components/Post/PostCard.vue";
+import BasisMinibar from "~/components/App/BasisMinibar.vue";
 
 const postStore = usePostStore()
 
 const slug = ref(route.params.slug)
-const items = [
-  { title: "Settings", icon: "mdi-account-settings-variant", color: "deep-purple", path: "/setting" },
-  { title: "Calendar", icon: "mdi-calendar", color: "amber", path: "/calendar" },
-  { title: "Shop", icon: "mdi-storefront", color: "pink", path: "/shop" },
-  { title: "Jobs", icon: "mdi-briefcase", color: "blue", path: "/jobs" },
-  { title: "CRM", icon: "mdi-database", color: "teal", path: "/crm" },
-  { title: "Courses", icon: "mdi-school", color: "green", path: "/courses" },
-  { title: "Quiz", icon: "mdi-gamepad-variant", color: "indigo", path: "/quiz" },
-  { title: "My Files", icon: "mdi-folder", color: "orange", path: "/user/channel/media" },
-  { title: "Recent", icon: "mdi-history", color: "cyan", path: "/recent" },
-];
+
 const { data: post, pending, error, refresh } = await useAsyncData(
   'post-' + slug.value,
   () => postStore.fetchPost(slug.value),
@@ -45,25 +36,7 @@ const { data: post, pending, error, refresh } = await useAsyncData(
   <v-container fluid>
     <client-only>
       <teleport to="#menu-bar-world">
-        <v-list
-          style="background-color: transparent;"
-          :lines="false"
-          nav
-        >
-          <v-list-item
-            v-for="(item, i) in items"
-            :to="item.path"
-            :key="i"
-            :value="item"
-            color="primary"
-          >
-            <template v-slot:prepend>
-              <v-icon :color="item.color" :icon="item.icon"></v-icon>
-            </template>
-
-            <v-list-item-title v-text="item.title"></v-list-item-title>
-          </v-list-item>
-        </v-list>
+        <BasisMinibar></BasisMinibar>
       </teleport>
     </client-only>
     <div v-if="pending" class="d-flex justify-center align-center">

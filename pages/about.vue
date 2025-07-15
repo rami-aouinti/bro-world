@@ -1,7 +1,12 @@
 <template>
-  <v-container class="py-10">
-    <v-row>
-      <v-col cols="12" md="8" offset-md="2">
+  <v-container fluid>
+    <client-only>
+      <teleport v-if="canTeleport" to="#menu-bar-world">
+        <BasisMinibar></BasisMinibar>
+      </teleport>
+    </client-only>
+    <v-row class="py-10">
+      <v-col cols="12">
         <h1 class="text-h4 font-weight-bold mb-6">{{ t('about.title') }}</h1>
 
         <p class="mb-4">
@@ -28,7 +33,11 @@
 
 <script setup>
 import { useI18n } from 'vue-i18n'
+import BasisMinibar from "~/components/App/BasisMinibar.vue";
 const { t } = useI18n()
+import { onMounted, ref, nextTick } from 'vue'
+
+const canTeleport = ref(false)
 definePageMeta({
   layout: 'default',
   description: 'About page',
@@ -49,5 +58,7 @@ definePageMeta({
 })
 onMounted(async () => {
   window.scrollTo({ top: 0 })
+  await nextTick()
+  canTeleport.value = !!document.getElementById('menu-bar-world')
 })
 </script>
