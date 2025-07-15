@@ -30,7 +30,7 @@ const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches
     v-model="content"
     :api-key="apiKey || runtimeConfig.public.tinyMceApiKey"
     :init="{
-      height: 300,
+      height: 600,
       menubar: 'file edit view insert format tools table help',
       branding: false,
       statusbar: false,
