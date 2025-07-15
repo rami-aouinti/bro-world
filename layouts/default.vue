@@ -78,12 +78,39 @@ onMounted(async () => {
 })
 watch(locale, updateHtmlAttrs)
 watch(() => route.fullPath, () => {
-  nextTick(() => {
+  nextTick(async () => {
+    await sleep(300)
     const scrollable = document.querySelector('.v-main')
-    if (scrollable) scrollable.scrollTop = 0
-    else window.scrollTo({ top: 0 })
+    smoothScrollToTop(scrollable || window, 2000) // 2 secondes
   })
 })
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+function smoothScrollToTop(element?: Element | Window, duration = 1000) {
+  const start = element === window ? window.scrollY : element.scrollTop
+  const startTime = performance.now()
+
+  function scrollStep(timestamp) {
+    const elapsed = timestamp - startTime
+    const progress = Math.min(elapsed / duration, 1)
+    const ease = 1 - Math.pow(1 - progress, 3) // easing out cubic
+
+    const scrollTo = start * (1 - ease)
+
+    if (element === window) {
+      window.scrollTo(0, scrollTo)
+    } else {
+      element.scrollTop = scrollTo
+    }
+
+    if (progress < 1) {
+      requestAnimationFrame(scrollStep)
+    }
+  }
+
+  requestAnimationFrame(scrollStep)
+}
 function startLoading() {
   isLoading.value = true
 }
