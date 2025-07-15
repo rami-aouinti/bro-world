@@ -78,8 +78,6 @@ const isOpen = computed({
 
 const handleAction = async (action: string | (() => void)) => {
 
-  console.log(action)
-  // 👉 Cas fonction personnalisée
   if (typeof action === 'function') {
     try {
       action()
@@ -89,7 +87,6 @@ const handleAction = async (action: string | (() => void)) => {
     return
   }
 
-  // 👉 Cas d'action spéciale : 'close'
   if (action === 'close') {
     isOpen.value = false
     return

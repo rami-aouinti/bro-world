@@ -63,10 +63,12 @@ const formPayload = computed(() => {
 
 async function handleAction() {
   loadingText.value = true
+  const formData = new FormData()
+  formData.append('content', postContent.value)
   try {
     const { data } = await $fetch('/api/posts/post/posts', {
       method: 'POST',
-      body: formPayload.value,
+      body: formData,
     })
     if (data) {
       Notify.success("Post created!", user.photo ?? "https://bro-world-space.com", "/post/" + data.slug)
@@ -132,7 +134,7 @@ function triggerFileInput() {
             rounded="xl"
             class="mx-3 w-100"
             variant="text"
-            style="overflow: hidden; max-height: 300px; transition: max-height 0.3s ease;"
+            style="overflow: hidden; transition: max-height 0.3s ease;"
           >
             <v-card-text>
               <Editor v-model="postContent" :api-key="''" />
