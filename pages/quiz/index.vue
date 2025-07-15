@@ -233,7 +233,24 @@ const { user, loggedIn } = useUserSession()
 import { useI18n } from 'vue-i18n'
 import LoginForm from "~/components/Auth/LoginForm.vue";
 import Social from "~/components/Auth/Social.vue";
-
+definePageMeta({
+  layout: 'default',
+  breadcrumb: 'disabled',
+  title: 'Quiz',
+  description: 'Welcome to the home page where you can find the latest posts and stories.',
+  meta: [
+    { name: 'description', content: 'Welcome to the home page where you can find the latest posts and stories.' },
+    { name: 'keywords', content: 'home, posts, stories, social' },
+  ],
+  head: {
+    title: 'Quiz - Bro World',
+    meta: [
+      { name: 'description', content: 'Welcome to the home page where you can find the latest posts and stories.' },
+      { name: 'keywords', content: 'home, posts, stories, social' },
+    ],
+  },
+  scrollToTop: true,
+})
 const { t, locale } = useI18n()
 const TIMER_DURATION = 30
 const topUsers = ref<{ userId: any; score: number }[]>([])

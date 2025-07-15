@@ -32,7 +32,6 @@ definePageMeta({
   scrollToTop: true,
 })
 
-
 const { locale } = useI18n()
 const { user, loggedIn } = useUserSession()
 const postStore = usePostStore()
@@ -69,8 +68,6 @@ const totalPages = computed(() =>
   Math.ceil(postStore.total / postStore.limit)
 )
 
-
-
 const loadProfile = async (): Promise<number> => {
   if (user?.value) {
     const  data = await userStore.fetchProfile(user.value.id, user.value.username)
@@ -95,8 +92,6 @@ const checkFollowStatus = async (userId: string): Promise<number> => {
     return 0
   }
 }
-
-
 
 const loadInitialPosts = async () => {
   try {
