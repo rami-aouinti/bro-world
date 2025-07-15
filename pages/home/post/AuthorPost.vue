@@ -6,6 +6,7 @@ import BaseDialog from "~/components/BaseDialog.vue";
 import { useI18n } from 'vue-i18n';
 import { useLocalePath } from '#i18n';
 import { useUserStore } from "~/stores/useUserStore";
+import Editor from "~/components/App/Editor.vue";
 
 const props = defineProps<{ post: any }>();
 const emit = defineEmits(['post-delete', 'post-updated']);
@@ -26,7 +27,7 @@ const postContent = ref('');
 const youtubeId = ref<string | null>(null);
 const imageUrl = ref<string | null>(null);
 const files = ref<File[]>([]);
-
+const contentInput = ref(false);
 function detectLinks() {
   if (youtubeId.value || imageUrl.value) return;
 
@@ -54,7 +55,14 @@ const formPayload = computed(() => {
   const payload: Record<string, any> = {};
   if (youtubeId.value) payload.url = `https://www.youtube.com/watch?v=${youtubeId.value}`;
   else if (imageUrl.value) payload.url = imageUrl.value;
-  if (postContent.value.trim()) payload.title = postContent.value.trim();
+
+  if (postContent.value.trim()) {
+    if (!contentInput) {
+      payload.title = postContent.value.trim();
+    } else {
+      payload.content = postContent.value.trim();
+    }
+  }
   return payload;
 });
 
@@ -77,7 +85,10 @@ const handleError = (error: any) => {
 };
 
 const handleEdit = () => {
-  postContent.value = props.post.title;
+  postContent.value = props.post.title ? '' : props.post.content;
+  if (props.post.content !== '') {
+    contentInput.value = true;
+  }
   editPost.value = true;
 };
 
@@ -275,6 +286,7 @@ watch(
         <v-card rounded="xl">
           <v-card-text>
             <v-text-field
+              v-if="!contentInput"
               v-model="postContent"
               label="Post Title"
               variant="outlined"
@@ -282,6 +294,7 @@ watch(
               required
               @input="detectLinks"
             />
+            <Editor v-model="postContent" :api-key="''" v-else />
             <div v-if="youtubeId" class="my-4 text-center">
               <div class="d-flex justify-end">
                 <v-btn icon @click="clearPreview" variant="text" size="small"><v-icon>mdi-close</v-icon></v-btn>

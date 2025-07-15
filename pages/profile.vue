@@ -92,6 +92,7 @@ watch(selected, async () => {
 })
 onMounted(async () => {
   window.scrollTo({ top: 0 })
+  await nextTick()
   await fetchConversations()
   canTeleport.value = !!document.getElementById('menu-bar-world')
 })

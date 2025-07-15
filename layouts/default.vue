@@ -41,11 +41,11 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useNuxtApp } from '#app'
-import {shallowRef, ref, watch, computed, onMounted} from 'vue'
+import {nextTick, ref, watch, computed, onMounted} from 'vue'
 import { useDisplay } from 'vuetify'
-import AppFooter from '~/components/App/AppFooter.vue'
-import AppDrawer from '~/components/App/AppDrawer.vue'
-import AppBar from '~/components/App/AppBar.vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 import SettingsDrawer from '~/components/App/SettingsDrawer.vue'
 import { Analytics } from '@vercel/analytics/vue'
 import { SpeedInsights } from '@vercel/speed-insights/nuxt'
@@ -72,13 +72,18 @@ function updateHtmlAttrs() {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   updateHtmlAttrs()
   stopLoading()
 })
-
 watch(locale, updateHtmlAttrs)
-
+watch(() => route.fullPath, () => {
+  nextTick(() => {
+    const scrollable = document.querySelector('.v-main')
+    if (scrollable) scrollable.scrollTop = 0
+    else window.scrollTo({ top: 0 })
+  })
+})
 function startLoading() {
   isLoading.value = true
 }
