@@ -1,8 +1,7 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <!-- Liste des conversations -->
-      <v-col cols="12" md="4">
+    <client-only>
+      <teleport v-if="canTeleport" to="#menu-bar-world">
         <template v-if="loadConversation">
           <v-card class="pa-4" rounded="xl" variant="text">
             <v-skeleton-loader
@@ -20,21 +19,17 @@
           :conversations="conversations"
           @select="setActiveConversation"
         />
-      </v-col>
-
-      <!-- Fenêtre de chat -->
-      <v-col cols="12" md="8">
-        <ChatWindow
-          v-if="activeConversation"
-          :conversation="activeConversation"
-        />
-      </v-col>
-    </v-row>
+      </teleport>
+    </client-only>
+    <ChatWindow
+      v-if="activeConversation"
+      :conversation="activeConversation"
+    />
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watchEffect } from 'vue'
+import { ref, onMounted, watchEffect, nextTick } from 'vue'
 import ChatList from '~/components/Messenger/ChatList.vue'
 import ChatWindow from '~/components/Messenger/ChatWindow.vue'
 definePageMeta({
@@ -58,7 +53,7 @@ definePageMeta({
 const loadConversation = ref(true)
 const conversations = ref<any[]>([])
 const activeConversation = ref<any | null>(null)
-
+const canTeleport = ref(false)
 const setActiveConversation = (conv: any) => {
   activeConversation.value = conv
 }
@@ -117,5 +112,7 @@ watchEffect(async () => {
 onMounted(async () => {
   window.scrollTo({ top: 0 })
   await fetchConversations
+  await nextTick()
+  canTeleport.value = !!document.getElementById('menu-bar-world')
 })
 </script>

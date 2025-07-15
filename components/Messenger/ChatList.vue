@@ -1,8 +1,8 @@
 <template>
   <v-card
     class="pt-12 px-1 shadow-blur fade-in overflow-visible"
-    style="margin-top: 20px;"
-    max-height="510"
+    style="margin-top: 10px;"
+    max-height="410"
     rounded="xl"
     variant="text"
   >
@@ -61,7 +61,7 @@
     <v-list
       v-model:selected="selectedId"
       class="d-none d-md-block"
-      style="height: 380px; background-color: transparent; overflow-x: hidden;"
+      style="height: 380px; background-color: transparent; overflow-x: hidden; margin-top: -50px"
     >
       <v-list-item
         v-for="conversation in filteredConversations"
