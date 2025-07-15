@@ -1,15 +1,10 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted, watch } from "vue";
 
 const { user } = await useUserSession()
 const pending = ref(false)
+const loading = ref(false)
 const gender = ["Female", "Male"];
-const months = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
-const days = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
-const years = Array.from({ length: 100 }, (_, i) => (new Date().getFullYear() - i).toString());
 const languages = ["English", "French", "Spanish", "German", "Chinese"];
 const skills = ["JavaScript", "Vue.js", "React", "Node.js", "Python"];
 const userData = ref({
@@ -18,6 +13,7 @@ const userData = ref({
   firstName:  '',
   lastName:  '',
   gender:  '',
+  birthday:  '',
   birthMonth:  '',
   birthDay:  '',
   birthYear:  '',
@@ -25,6 +21,7 @@ const userData = ref({
   confirmEmail: '',
   location: '',
   phone: '',
+  address: '',
   language: '',
   skills: [],
 });
@@ -32,22 +29,24 @@ const userData = ref({
 const loadProfile = async () => {
   pending.value = true
   if (user.value.username) {
-    const { data } = await useFetch(`/api/profile/${user.value.username}`)
-    if (data.value) {
+    const  data  = await $fetch(`/api/profile/${user.value.username}`)
+    if (data) {
       userData.value = {
-        title: data.value?.profile?.title || '',
-        description: data.value?.profile?.description || '',
-        firstName: data.value?.firstName || '',
-        lastName: data.value?.lastName || '',
-        gender: data.value?.profile?.gender || '',
-        birthMonth: data.value?.birthMonth || '',
-        birthDay: data.value?.birthDay || '',
-        birthYear: data.value?.birthYear || '',
-        email: data.value?.email || '',
-        confirmEmail: data.value?.email || '',
-        location: data.value?.location || '',
-        phone: data.value?.profile?.phone || '',
-        language: data.value?.language || '',
+        title: data?.profile?.title || '',
+        description: data?.profile?.description || '',
+        firstName: data?.firstName || '',
+        lastName: data?.lastName || '',
+        gender: data?.profile?.gender || '',
+        birthday: data?.profile?.birthday || '',
+        birthMonth: data?.birthMonth || '',
+        birthDay: data?.birthDay || '',
+        birthYear: data?.birthYear || '',
+        email: data?.email || '',
+        confirmEmail: data?.email || '',
+        location: data?.location || '',
+        phone: data?.profile?.phone || '',
+        address: data?.profile?.address || '',
+        language: data?.language || '',
         skills: [],
       };
     }
@@ -56,6 +55,7 @@ const loadProfile = async () => {
 }
 
 const saveProfile = async () => {
+  loading.value = true;
   const formData = new FormData();
   formData.append('firstName', userData?.value.firstName);
   formData.append('lastName', userData?.value.lastName);
@@ -63,6 +63,13 @@ const saveProfile = async () => {
   formData.append('description', userData?.value.description);
   formData.append('gender', userData?.value.gender);
   formData.append('phone', userData?.value.phone);
+  formData.append('address', userData?.value.address);
+  if (userData?.value?.birthday) {
+    const rawDate = userData?.value.birthday;
+    const rawDateStr = String(rawDate)
+    const cleanedDate = rawDateStr.replace(/\s*\(.*?\)\s*$/, '');
+    formData.append('birthday', cleanedDate);
+  }
 
   try {
     const response = await useFetch('/api/profile/update', {
@@ -78,6 +85,7 @@ const saveProfile = async () => {
         firstName: response.data.value?.firstName,
         lastName: response.data.value?.lastName,
         gender: response.data.value?.profile.gender,
+        birthday: response.data.value?.birthday,
         birthMonth: response.data.value?.birthMonth,
         birthDay: response.data.value?.birthDay,
         birthYear: response.data.value?.birthYear,
@@ -85,9 +93,11 @@ const saveProfile = async () => {
         confirmEmail: response.data.value?.email,
         location: response.data.value?.location,
         phone: response.data.value?.profile.phone,
+        address: response.data.value?.profile.address,
         language: response.data.value?.language,
         skills: [],
       };
+      loading.value = false;
     }
 
   } catch (error) {
@@ -115,7 +125,7 @@ onMounted(async () => {
       <h5 class="text-h5 font-weight-bold text-typo">Basic Info</h5>
     </div>
     <div class="px-6 pb-6 pt-0">
-      <v-form ref="formRef">
+      <v-form :loading="loading" ref="formRef">
         <v-row>
           <v-col cols="12" md="3">
             <v-text-field density="compact" rounded="xl" variant="outlined" v-model="userData.title" label="Title" />
@@ -131,11 +141,12 @@ onMounted(async () => {
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" sm="4">
+          <v-col cols="12" sm="3">
             <v-select density="compact" rounded="xl" variant="outlined" v-model="userData.gender" :items="gender" label="Gender" />
           </v-col>
-          <v-col cols="12" sm="8">
+          <v-col cols="12" sm="3">
             <v-date-input
+              v-model="userData.birthday"
               density="compact"
               rounded="xl"
               label="Date of birth"
@@ -143,6 +154,12 @@ onMounted(async () => {
               variant="outlined"
               persistent-placeholder
             ></v-date-input>
+          </v-col>
+          <v-col cols="12" md="3">
+            <v-text-field density="compact" v-model="userData.address" rounded="xl" label="Address" variant="outlined"></v-text-field>
+          </v-col>
+          <v-col cols="12" md="3">
+            <v-text-field density="compact" rounded="xl" variant="outlined" v-model="userData.phone" label="Phone Number" />
           </v-col>
         </v-row>
         <v-row>
@@ -154,36 +171,8 @@ onMounted(async () => {
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" md="3">
-            <v-text-field density="compact" rounded="xl" label="Address" variant="outlined"></v-text-field>
-          </v-col>
-          <v-col cols="12" md="3">
-            <v-text-field density="compact" rounded="xl" label="City" variant="outlined"></v-text-field>
-          </v-col>
-          <v-col cols="12" md="3">
-            <v-text-field density="compact" rounded="xl" label="State" variant="outlined"></v-text-field>
-          </v-col>
-          <v-col cols="12" md="3">
-            <v-text-field density="compact" rounded="xl" label="Zip code" variant="outlined"></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field density="compact" rounded="xl" variant="outlined" v-model="userData.location" label="Your Location" />
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field density="compact" rounded="xl" variant="outlined" v-model="userData.phone" label="Phone Number" />
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12" md="6">
-            <v-select density="compact" rounded="xl" variant="outlined" v-model="userData.language" :items="languages" label="Language" />
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-select density="compact" rounded="xl" variant="outlined" v-model="userData.skills" :items="skills" label="Skills" multiple chips />
-          </v-col>
-        </v-row>
-        <v-row>
           <v-col cols="12" class="d-flex justify-end">
-            <v-btn color="primary" @click="saveProfile">Save</v-btn>
+            <v-btn :loading="loading" :disabled="loading" color="primary" @click="saveProfile">Save</v-btn>
           </v-col>
         </v-row>
       </v-form>

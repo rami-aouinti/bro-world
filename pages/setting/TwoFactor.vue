@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+import { ref } from "vue";
+
+const { user } = await useUserSession()
+</script>
+
 <template>
   <v-card
     elevation="10"
@@ -39,9 +45,9 @@
       <div class="d-flex">
         <p class="my-auto text-body font-weight-light">SMS Number</p>
         <p
-          class="text-secondary font-weight-light text-sm ms-auto my-auto me-3"
+          class="text-secondary editable font-weight-light text-sm ms-auto my-auto me-3"
         >
-          +4012374423
+          {{ user.profile.phone }}
         </p>
         <v-btn
           variant="text"
@@ -70,8 +76,3 @@
     </div>
   </v-card>
 </template>
-<script>
-export default {
-  name: 'TwoFactor',
-}
-</script>
