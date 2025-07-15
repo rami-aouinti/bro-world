@@ -47,13 +47,10 @@ const userStore = useUserStore();
 const items = [
   { title: "Settings", icon: "mdi-account-settings-variant", color: "deep-purple", path: "/setting" },
   { title: "Calendar", icon: "mdi-calendar", color: "amber", path: "/calendar" },
-  { title: "Shop", icon: "mdi-storefront", color: "pink", path: "/shop" },
-  { title: "Jobs", icon: "mdi-briefcase", color: "blue", path: "/jobs" },
-  { title: "CRM", icon: "mdi-database", color: "teal", path: "/crm" },
-  { title: "Courses", icon: "mdi-school", color: "green", path: "/courses" },
-  { title: "Quiz", icon: "mdi-gamepad-variant", color: "indigo", path: "/quiz" },
+  { title: "My Jobs", icon: "mdi-briefcase", color: "blue", path: "/jobs" },
+  { title: "Company", icon: "mdi-database", color: "teal", path: "/crm" },
+  { title: "My Courses", icon: "mdi-school", color: "green", path: "/courses" },
   { title: "My Files", icon: "mdi-folder", color: "orange", path: "/user/channel/media" },
-  { title: "Recent", icon: "mdi-history", color: "cyan", path: "/recent" },
 ];
 
 const loading = ref({
