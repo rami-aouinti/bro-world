@@ -3,7 +3,7 @@
     <client-only>
       <teleport v-if="canTeleport" to="#menu-bar-world">
         <div class="d-flex align-center justify-space-between px-4 pt-4">
-          <h6 class="text-h7 font-weight-bold text-typo">
+          <h6 class="text-h6 font-weight-bold text-typo">
             Today's Events
           </h6>
           <v-btn
@@ -12,7 +12,7 @@
             color="primary"
             prepend-icon="mdi-plus"
           >
-            New Event
+            Event
           </v-btn>
         </div>
         <div class="px-4 pt-3 pb-3">
