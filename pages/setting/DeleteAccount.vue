@@ -1,4 +1,40 @@
-logged<template>
+<script lang="ts" setup>
+import { ref } from "vue";
+
+const { user } = await useUserSession()
+const pending = ref(false)
+
+const deactivateProfile = async () => {
+  try {
+    const response = await $fetch('/api/profile/deactivate', {
+      method: 'GET',
+    })
+
+    if (response) {
+      window.location.reload()
+    }
+
+  } catch (error) {
+    console.error("Error delete profile:", error);
+  }
+};
+
+const deleteProfile = async () => {
+  try {
+    const response = await $fetch('/api/profile/delete', {
+      method: 'DELETE',
+    })
+
+    if (response) {
+      window.location.reload()
+    }
+
+  } catch (error) {
+    console.error("Error delete profile:", error);
+  }
+};
+</script>
+<template>
   <v-card
     elevation="10"
     id="delete"
@@ -22,6 +58,7 @@ logged<template>
         <div class="px-6 pt-0">
           <div class="d-sm-flex align-center ms-auto">
             <v-btn
+              @click="deactivateProfile"
               variant="text"
               class="font-weight-bolder btn-outline-secondary"
               small
@@ -29,8 +66,9 @@ logged<template>
               Deactivate
             </v-btn>
             <v-btn
+              @click="deleteProfile"
               variant="text"
-              class="font-weight-bolder btn-danger bg-gradient-danger"
+              color="primary"
               small
             >
               Delete Account
@@ -41,8 +79,3 @@ logged<template>
     </v-row>
   </v-card>
 </template>
-<script>
-export default {
-  name: 'DeleteAccount',
-}
-</script>

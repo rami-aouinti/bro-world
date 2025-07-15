@@ -9,7 +9,7 @@
       </template>
       <template v-else>
         <v-card
-          style="height: calc(100vh - 132px); overflow-y: auto;"
+          style="height: calc(100vh - 112px); overflow-y: auto;"
           rounded="xl"
           class="bg-gradient-primary shadow-primary mx-2"
           variant="text"
@@ -21,7 +21,6 @@
                 <v-list-item
                   to="/profile"
                   :prepend-avatar="user.photo"
-                  :subtitle="user.email"
                   :title="user.firstName + ' ' + user.lastName"
                 />
               </v-list>

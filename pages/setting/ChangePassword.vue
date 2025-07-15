@@ -1,3 +1,34 @@
+<script lang="ts" setup>
+import { ref } from "vue";
+
+const { user } = await useUserSession()
+const pending = ref(false)
+
+const passwordData = ref({
+  oldPassword:  '',
+  newPassword:  '',
+  newRepeatPassword:  ''
+});
+const updatePassword = async () => {
+  const formData = new FormData();
+  formData.append('oldPassword', passwordData?.value.oldPassword);
+  formData.append('newPassword', passwordData?.value.newPassword);
+  formData.append('newRepeatPassword', passwordData?.value.newRepeatPassword);
+  try {
+    const response = await $fetch('/api/profile/password/update', {
+      method: 'DELETE',
+    })
+
+    if (response) {
+      window.location.reload()
+    }
+
+  } catch (error) {
+    console.error("Error delete profile:", error);
+  }
+};
+</script>
+
 <template>
   <v-card
     elevation="10"
@@ -16,6 +47,7 @@
                         density="compact"
             color="#e91e63"
             variant="outlined"
+                        v-model="passwordData.oldPassword"
             dense
             type="password"
             class="font-size-input input-style py-0"
@@ -24,6 +56,7 @@
             color="#e91e63"
             variant="outlined"
             dense
+                        v-model="passwordData.newPassword"
             type="password"
             class="font-size-input input-style py-0"
           />
@@ -31,6 +64,7 @@
             color="#e91e63"
             variant="outlined"
             dense
+                        v-model="passwordData.newRepeatPassword"
             type="password"
             class="font-size-input input-style py-0"
           />
@@ -62,6 +96,7 @@
         <v-row>
           <v-col cols="12" class="d-flex justify-end">
             <v-btn
+              @click="updatePassword"
               color="primary"
               small
             >
@@ -73,8 +108,3 @@
     </div>
   </v-card>
 </template>
-<script>
-export default {
-  name: 'ChangePassword',
-}
-</script>

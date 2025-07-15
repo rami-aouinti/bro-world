@@ -29,7 +29,7 @@
         class="bg-gradient-primary shadow-primary mx-3 d-flex flex-column"
         variant="text"
         elevation="10"
-        style="height: calc(100vh - 132px); overflow-y: auto;"
+        style="height: calc(100vh - 112px); overflow-y: auto;"
       >
         <v-card-title class="d-flex justify-end gap-2 my-2">
           <v-btn @click="dialogCreateFolder = true" color="primary" prepend-icon="mdi-plus">

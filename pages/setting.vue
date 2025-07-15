@@ -87,24 +87,12 @@
           <v-row class="py-2">
             <v-col md="6" cols="12">
               <change-password />
-            </v-col>
-            <v-col md="6" cols="12">
               <two-factor />
-            </v-col>
-          </v-row>
-          <v-row class="py-2">
-            <v-col md="6" cols="12">
-              <accounts />
-            </v-col>
-            <v-col md="6" cols="12">
-              <notifications :user="profile" />
-            </v-col>
-          </v-row>
-          <v-row class="py-2">
-            <v-col md="6" cols="12">
               <sessions />
             </v-col>
             <v-col md="6" cols="12">
+              <accounts />
+              <notifications :user="profile" />
               <delete-account />
             </v-col>
           </v-row>
