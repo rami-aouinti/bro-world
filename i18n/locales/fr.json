@@ -300,26 +300,27 @@
     "intro1": "Bro World est bien plus qu'une simple plateforme — c'est votre compagnon numérique. Ici, vous pouvez vous exprimer librement, partager vos idées, interagir avec d'autres et construire votre propre espace numérique grâce à des plugins puissants.",
     "intro2": "Que vous souhaitiez bloguer, gérer une boutique, discuter avec des amis ou organiser votre emploi du temps, Bro World s’adapte à vos besoins. Choisissez et installez les plugins dont vous avez besoin : E-commerce, Calendrier, Chat en direct, CRM, Blog CMS, Jeux, et plus encore.",
     "intro3": "Nous croyons en la liberté, la créativité et la personnalisation. Bro World vous permet de bâtir votre univers numérique — un post, un plugin, une connexion à la fois.",
-    "tech": "Conçu avec amour à l’aide de Vue 3, Vuetify 3 et Nuxt 3. Pensé pour être rapide, modulaire et agréable à utiliser."
+    "tech": "Conçu avec amour à l’aide de Vue 3, Vuetify 3 et Nuxt 3. Pensé pour être rapide, modulaire et agréable à utiliser.",
+    "values": "Nos valeurs fondamentales sont l’inclusivité, la liberté d’expression et l’innovation continue.",
+    "mission": "Notre mission est de construire un espace numérique créatif et éthique pour tous.",
+    "vision": "Devenir la référence communautaire libre, personnalisée et universelle.",
+    "team": "Créé par Rami Aouinti, passionné de technologie et de pédiatrie."
   },
   "help": {
     "title": "Aide & FAQ",
     "questions": {
       "q1": "Qu'est-ce que Bro World ?",
       "a1": "Bro World est une plateforme sociale où vous pouvez publier, discuter et ajouter des plugins fonctionnels pour personnaliser votre expérience.",
-
       "q2": "Comment installer un plugin ?",
       "a2": "Allez dans la section Plugins. Si le plugin n'est pas installé, cliquez sur « Installer ». Une fois installé, vous pourrez y accéder via le bouton « Ouvrir ».",
-
       "q3": "Est-ce gratuit ?",
       "a3": "Oui, Bro World est gratuit. Certains plugins sont gratuits, d'autres peuvent être marqués comme « Payants ».",
-
       "q4": "Puis-je publier tout ce que je veux ?",
       "a4": "Vous pouvez publier librement, mais veuillez respecter les autres. Tout contenu abusif, nuisible ou illégal peut être supprimé selon nos règles communautaires.",
-
       "q5": "Qui est derrière Bro World ?",
       "a5": "Bro World est développé par un passionné qui croit en la liberté, la créativité et les liens sociaux via les technologies web modernes."
-    }
+    },
+    "updated": "Dernière mise à jour : juillet 2025"
   },
   "reset": {
     "email": "Adresse e-mail",

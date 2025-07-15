@@ -303,26 +303,27 @@
     "intro1": "Bro World ist mehr als nur eine Plattform – es ist dein digitaler Begleiter. Hier kannst du dich frei ausdrücken, deine Gedanken teilen, dich mit anderen verbinden und deinen eigenen digitalen Raum mit leistungsstarken Plugins gestalten.",
     "intro2": "Egal ob Bloggen, ein Geschäft führen, mit Freunden chatten oder deine Zeit organisieren – Bro World passt sich dir an. Wähle und installiere die Plugins, die du brauchst: E-Commerce, Kalender, Live-Chat, CRM, Blog-CMS, Spiele und vieles mehr.",
     "intro3": "Wir glauben an Freiheit, Kreativität und Individualisierung. Mit Bro World kannst du dein eigenes digitales Universum aufbauen – Beitrag für Beitrag, Plugin für Plugin, Verbindung für Verbindung.",
-    "tech": "Mit Liebe entwickelt mit Vue 3, Vuetify 3 und Nuxt 3. Entworfen, um schnell, modular und angenehm zu sein."
+    "tech": "Mit Liebe entwickelt mit Vue 3, Vuetify 3 und Nuxt 3. Entworfen, um schnell, modular und angenehm zu sein.",
+    "values": "Unsere Grundwerte sind Inklusivität, Meinungsfreiheit und kontinuierliche Innovation.",
+    "mission": "Unsere Mission ist es, einen kreativen und ethischen digitalen Raum für alle zu schaffen.",
+    "vision": "Die führende, individuelle und freie Community-Plattform weltweit zu werden.",
+    "team": "Erstellt von Rami Aouinti, technikbegeistert und pädiatrisch interessiert."
   },
   "help": {
     "title": "Hilfe & FAQ",
     "questions": {
       "q1": "Was ist Bro World?",
       "a1": "Bro World ist eine soziale Webplattform, auf der du Beiträge erstellen, chatten und funktionale Plugins hinzufügen kannst, um dein Erlebnis zu personalisieren.",
-
       "q2": "Wie installiere ich ein Plugin?",
       "a2": "Gehe zum Plugin-Bereich. Wenn das Plugin nicht installiert ist, klicke auf „Installieren“. Nach der Installation kannst du es über den Button „Öffnen“ aufrufen.",
-
       "q3": "Ist es kostenlos?",
       "a3": "Ja, Bro World ist kostenlos. Einige Plugins sind gratis, andere können als „Kostenpflichtig“ gekennzeichnet sein.",
-
       "q4": "Darf ich alles posten, was ich will?",
       "a4": "Du kannst frei posten, aber bitte respektiere andere. Missbräuchliche, schädliche oder illegale Inhalte können gemäß unseren Gemeinschaftsrichtlinien entfernt werden.",
-
       "q5": "Wer steckt hinter Bro World?",
       "a5": "Bro World wurde von einem leidenschaftlichen Entwickler gebaut, der an Freiheit, Kreativität und soziale Verbindungen durch moderne Webtechnologien glaubt."
-    }
+    },
+    "updated": "Letzte Aktualisierung: Juli 2025"
   },
   "reset": {
     "email": "E-Mail-Adresse",

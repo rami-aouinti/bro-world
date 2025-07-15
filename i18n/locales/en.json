@@ -328,16 +328,12 @@
     "questions": {
       "q1": "What is Bro World?",
       "a1": "Bro World is a social web platform where you can post, chat, and add functional plugins to customize your experience.",
-
       "q2": "How do I install a plugin?",
       "a2": "Go to the Plugins section. If the plugin is not installed, click on \"Install\". Once installed, it will be accessible via the \"Open\" button.",
-
       "q3": "Is it free to use?",
       "a3": "Yes, Bro World is free to use. Some plugins are free, while others may be marked as \"Paid\".",
-
       "q4": "Can I post anything I want?",
       "a4": "You can post freely, but please respect others. Any abusive, harmful, or illegal content may be removed according to our community guidelines.",
-
       "q5": "Who is behind Bro World?",
       "a5": "Bro World is built by a passionate developer who believes in freedom, creativity, and social connection through modern web technologies."
     }

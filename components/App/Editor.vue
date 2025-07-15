@@ -7,7 +7,7 @@ const props = defineProps<{
   apiKey?: string
   init?: any
 }>()
-
+const runtimeConfig = useRuntimeConfig()
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void
   (e: 'input', value: string): void
@@ -28,7 +28,7 @@ const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches
 <template>
   <Editor
     v-model="content"
-    :api-key="apiKey || ''"
+    :api-key="apiKey || runtimeConfig.public.tinyMceApiKey"
     :init="{
       height: 300,
       menubar: 'file edit view insert format tools table help',
