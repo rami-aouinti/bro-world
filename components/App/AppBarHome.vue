@@ -24,19 +24,19 @@
     <!-- Centrage des boutons et cachés en mobile -->
     <v-row v-if="!mobile" class="mx-auto" align="center" justify="center" dense>
       <v-btn color="default" :to="localePath('/courses')" class="mx-2" variant="text">
-        <v-icon>mdi-school</v-icon>
+        <v-icon size="36">mdi-school</v-icon>
       </v-btn>
       <v-btn color="default" :to="localePath('/jobs')" class="mx-2" variant="text">
-        <v-icon>mdi-briefcase</v-icon>
+        <v-icon size="36">mdi-briefcase</v-icon>
       </v-btn>
       <v-btn color="default" :to="localePath('/shop')" class="mx-2" variant="text">
-        <v-icon>mdi-storefront</v-icon>
+        <v-icon size="36">mdi-storefront</v-icon>
       </v-btn>
       <v-btn color="default" :to="localePath('/crm')" class="mx-2" variant="text">
-        <v-icon>mdi-database</v-icon>
+        <v-icon size="36">mdi-database</v-icon>
       </v-btn>
       <v-btn color="default" :to="localePath('/quiz')" class="mx-2" variant="text">
-        <v-icon>mdi-gamepad-variant</v-icon>
+        <v-icon size="36">mdi-gamepad-variant</v-icon>
       </v-btn>
     </v-row>
 

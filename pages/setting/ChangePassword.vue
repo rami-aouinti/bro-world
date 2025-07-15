@@ -16,7 +16,9 @@ const updatePassword = async () => {
   formData.append('newRepeatPassword', passwordData?.value.newRepeatPassword);
   try {
     const response = await $fetch('/api/profile/password/update', {
-      method: 'DELETE',
+      method: 'POST',
+      body: formData,
+      credentials: 'include',
     })
 
     if (response) {
