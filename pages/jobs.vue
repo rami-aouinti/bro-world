@@ -1,65 +1,53 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <!-- Filters Column -->
-      <v-col cols="12" md="4">
-        <v-card class="pa-4 mb-4 position-sticky top-1" rounded="xl" variant="text">
-          <JobCreateButtons
-            @create-job="showCreateJobModal = true"
-            @create-applicant="showCreateApplicantModal = true"
-          />
-          <JobFilters
-            :experience-options="[0.5, 1, 2, 3, 5, 10]"
-            :companies="companies"
-            @update:experience="selectedExperience = $event"
-            @update:company="selectedCompany = $event"
-            @update:salaryRange="salaryRange = $event"
-            @update:skills="selectedSkills = $event"
-            @update:work="selectedWork = $event"
-            @update:contract="selectedContract = $event"
-          />
-        </v-card>
-      </v-col>
-
-      <!-- Job List Column -->
-      <v-col cols="12" md="8">
-        <JobTopFilters
-          @update:search="search = $event"
-          @update:location="selectedLocations = $event"
+    <client-only>
+      <teleport v-if="canTeleport" to="#menu-bar-world">
+        <JobCreateButtons
+          @create-job="showCreateJobModal = true"
+          @create-applicant="showCreateApplicantModal = true"
         />
-
-        <div v-if="pending">
-          <v-col cols="12" md="12" lg="12" v-for="n in 6" :key="n">
-            <v-skeleton-loader
-              type="card"
-              class="pa-4 rounded-xl"
-              height="200"
-              rounded="xl"
-            />
-          </v-col>
-        </div>
-        <JobList
-          v-else
-          :jobs="jobStore.jobs"
-          :filtered="jobStore.loaded"
-          @apply="openApplyModal"
-          @loaded="jobStore.setJobs"
+        <JobFilters
+          :experience-options="[0.5, 1, 2, 3, 5, 10]"
+          :companies="companies"
+          @update:experience="selectedExperience = $event"
+          @update:company="selectedCompany = $event"
+          @update:salaryRange="salaryRange = $event"
+          @update:skills="selectedSkills = $event"
+          @update:work="selectedWork = $event"
+          @update:contract="selectedContract = $event"
         />
-
-
-        <v-pagination
-          rounded="circle"
-          color="primary"
-          v-model="currentPage"
-          :length="totalPages"
-          class="mt-4"
+      </teleport>
+    </client-only>
+    <JobTopFilters
+      @update:search="search = $event"
+      @update:location="selectedLocations = $event"
+    />
+    <div v-if="pending">
+      <v-col cols="12" md="12" lg="12" v-for="n in 6" :key="n">
+        <v-skeleton-loader
+          type="card"
+          class="pa-4 rounded-xl"
+          height="200"
+          rounded="xl"
         />
       </v-col>
-    </v-row>
-
+    </div>
+    <JobList
+      v-else
+      :jobs="jobStore.jobs"
+      :filtered="jobStore.loaded"
+      @apply="openApplyModal"
+      @loaded="jobStore.setJobs"
+    />
+    <v-pagination
+      rounded="circle"
+      color="primary"
+      v-model="currentPage"
+      :length="totalPages"
+      class="mt-4"
+    />
     <!-- Create Job Modal -->
     <CreateJob v-model="showCreateJobModal" @job-created="refreshJobs" />
-
     <!-- Create Applicant Modal -->
     <CreateApplicant
       v-model="showCreateApplicantModal"
@@ -70,6 +58,7 @@
 </template>
 
 <script setup lang="ts">
+
 definePageMeta({
   layout: 'default',
   description: 'Job page',
@@ -89,8 +78,7 @@ definePageMeta({
   scrollToTop: true,
 })
 
-
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useJobStore } from '~/stores/useJobStore'
 const pending = ref(false)
@@ -100,6 +88,7 @@ import JobCreateButtons from '~/components/Job/JobCreateButtons.vue'
 import JobTopFilters from '~/components/Job/JobTopFilters.vue'
 import CreateJob from '~/components/Job/CreateJob.vue'
 import CreateApplicant from '~/components/Job/CreateApplicant.vue'
+const canTeleport = ref(false)
 
 const { t } = useI18n()
 const jobStore = useJobStore()
@@ -129,8 +118,13 @@ watch(!companies.value, () => {
   fetchCompanies()
 }, { immediate: true })
 
-onMounted(fetchCompanies)
 
+onMounted(async () => {
+  window.scrollTo({ top: 0 })
+  await fetchCompanies
+  await nextTick()
+  canTeleport.value = !!document.getElementById('menu-bar-world')
+})
 // Call API with filters and pagination
 const fetchJobs = async () => {
   pending.value = true
