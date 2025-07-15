@@ -75,11 +75,20 @@ const password = ref('')
 const loading = ref(false)
 const error = ref('')
 const showPassword = ref(false)
-
+const formPayload = ref(null)
 const togglePassword = () => {
   showPassword.value = !showPassword.value
 }
-
+const props = defineProps({
+  quiz: {
+    type: Boolean,
+    required: false,
+  },
+  payload: {
+    type: Object,
+    required: false,
+  },
+})
 async function handleSubmit() {
   error.value = ''
   loading.value = true
@@ -106,6 +115,22 @@ async function handleSubmit() {
 
   if (data.value) {
     await refreshSession()
+    if (props.quiz) {
+      formPayload.value = {
+        userId: data.value.id,
+        score: props.payload.score,
+        questions: props.payload.questions,
+      }
+      try {
+        await $fetch('/api/quiz/submit-score', {
+          method: 'POST',
+          body: formPayload.value
+        })
+        await window.location.reload()
+      } catch (error) {
+        console.error('Failed to submit score', error)
+      }
+    }
     await window.location.reload()
   }
 }

@@ -195,6 +195,7 @@ export default defineNuxtConfig({
       apiBase: 'https://bro-world.org',
       apiBlogBase: 'https://blog.bro-world.org',
       apiMediaBase: 'https://media.bro-world.org',
+      apiGameBase: 'https://game.bro-world.org',
       apiNotificationBase: 'https://notification.bro-world.org',
       apiJobBase: 'https://job.bro-world.org',
       groqApiKey: process.env.GROQ_API_KEY,

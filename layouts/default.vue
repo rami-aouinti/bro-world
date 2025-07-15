@@ -8,7 +8,7 @@
     <AppBarHome :mobile="mobile" :rtl="isRtl" @toggleSettingsDrawer="showSettingsDrawer = $event" aria-label="Top application bar" role="banner" />
     <v-main role="main" aria-label="Main content">
       <v-container fluid class="pa-0">
-        <div class="d-flex" style="min-height: 100vh;">
+        <div class="d-flex" style="height: 100%;">
           <MinBar></MinBar>
           <div
             style="max-width: 100%"
@@ -91,14 +91,17 @@ function stopLoading() {
 <style scoped>
 html, body, #__nuxt, .v-application {
   margin: 0;
+  height: 100%;
+  overflow: hidden;
 }
 .v-main {
   padding-top: 0;
   padding-bottom: 0;
   margin-top: 64px;
   margin-bottom: 32px;
-  /* height: calc(100vh - 64px - 32px); ❌ à supprimer */
+  height: calc(100vh - 64px - 32px);
   overflow-y: auto;
+
   transition-property: padding;
   transition: padding-left 0.3s ease;
 }
