@@ -31,7 +31,15 @@ function extractYouTubeVideoId(url) {
   }
 }
 const currentPostIndex = ref(0)
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 function goToPreviousPost() {
   if (currentPostIndex.value > 0) {
     currentPostIndex.value--
@@ -53,9 +61,9 @@ const localePath = useLocalePath()
 <template>
   <div class="px-4 py-1">
     <NuxtLink :to="localePath(`/post/${props.post.slug}`)" class="text-decoration-none">
-      <div v-if="props.post?.title" v-html="props.post?.title" class="text-default font-weight-600 text-sm mb-3">
+      <div v-if="props.post?.title" v-html="props.post?.title" class="font-weight-600 text-sm mb-3" :class="isDark ? 'text-white' : 'text-default'">
       </div>
-      <div v-if="props.post?.content" v-html="truncate(props.post?.content, 500)" class="text-default font-weight-600 text-sm mb-3">
+      <div v-if="props.post?.content" v-html="truncate(props.post?.content, 500)" class="font-weight-600 text-sm mb-3" :class="isDark ? 'text-white' : 'text-default'">
       </div>
     </NuxtLink>
       <div v-if="props.post?.url || props.post?.medias?.length > 0" class="text-left mb-3 text-body font-weight-light">

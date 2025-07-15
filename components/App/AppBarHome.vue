@@ -23,20 +23,20 @@
 
     <!-- Centrage des boutons et cachés en mobile -->
     <v-row v-if="!mobile" class="mx-auto" align="center" justify="center" dense>
-      <v-btn color="default" :to="localePath('/courses')" class="mx-2" variant="text">
-        <v-icon size="36">mdi-school</v-icon>
+      <v-btn :color="isDark ? '' : 'default'" :to="localePath('/courses')" class="mx-2" variant="text">
+        <v-icon size="32">mdi-school</v-icon>
       </v-btn>
-      <v-btn color="default" :to="localePath('/jobs')" class="mx-2" variant="text">
-        <v-icon size="36">mdi-briefcase</v-icon>
+      <v-btn :color="isDark ? '' : 'default'" :to="localePath('/jobs')" class="mx-2" variant="text">
+        <v-icon size="32">mdi-briefcase</v-icon>
       </v-btn>
-      <v-btn color="default" :to="localePath('/shop')" class="mx-2" variant="text">
-        <v-icon size="36">mdi-storefront</v-icon>
+      <v-btn :color="isDark ? '' : 'default'" :to="localePath('/shop')" class="mx-2" variant="text">
+        <v-icon size="32">mdi-storefront</v-icon>
       </v-btn>
-      <v-btn color="default" :to="localePath('/crm')" class="mx-2" variant="text">
-        <v-icon size="36">mdi-database</v-icon>
+      <v-btn :color="isDark ? '' : 'default'" :to="localePath('/crm')" class="mx-2" variant="text">
+        <v-icon size="32">mdi-database</v-icon>
       </v-btn>
-      <v-btn color="default" :to="localePath('/quiz')" class="mx-2" variant="text">
-        <v-icon size="36">mdi-gamepad-variant</v-icon>
+      <v-btn :color="isDark ? '' : 'default'" :to="localePath('/quiz')" class="mx-2" variant="text">
+        <v-icon size="32">mdi-gamepad-variant</v-icon>
       </v-btn>
     </v-row>
 
@@ -48,7 +48,7 @@
 
     <v-btn
       icon
-      color="primary"
+      :color="isDark ? '' : 'default'"
       aria-label="Shop"
       title="Shop"
       @click="emit('toggleSettingsDrawer', true)"
@@ -80,9 +80,18 @@ import User from "~/components/App/AppBar/User.vue"
 import Language from "~/components/App/AppBar/Language.vue"
 import Switch from "~/components/App/AppBar/Switch.vue"
 
-import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
+
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 import { useShopifyCart } from "~/modules/shopify/composables/useShopifyCart"
 
 const props = defineProps({ rtl: Boolean, mobile: Boolean })

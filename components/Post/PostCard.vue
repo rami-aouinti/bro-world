@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import ReactPost from "~/pages/home/post/ReactPost.vue";
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 const props = defineProps({
   post: {
     type: Object,
@@ -53,9 +61,9 @@ const localePath = useLocalePath()
 <template>
   <div class="px-4 py-1">
     <NuxtLink :to="localePath(`/post/${props.post.slug}`)" class="text-decoration-none">
-      <div v-if="props.post?.title" v-html="props.post?.title" class="text-default font-weight-600 text-sm px-12 mb-4">
+      <div v-if="props.post?.title" v-html="props.post?.title" class="font-weight-600 text-sm px-12 mb-4" :class="isDark ? 'text-white' : 'text-default'">
       </div>
-      <div v-if="props.post?.content" v-html="props.post?.content" class="text-default font-weight-600 text-sm px-12 mb-4">
+      <div v-if="props.post?.content" v-html="props.post?.content" class="font-weight-600 text-sm px-12 mb-4" :class="isDark ? 'text-white' : 'text-default'">
       </div>
     </NuxtLink>
     <div v-if="props.post?.url || props.post?.medias?.length > 0" class="text-left px-12 mb-6 text-body font-weight-light">

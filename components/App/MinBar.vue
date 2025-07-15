@@ -15,7 +15,7 @@
           variant="text"
           elevation="10"
         >
-          <div class="pa-2">
+          <div class="pa-1">
             <template v-if="loggedIn">
               <v-list style="background-color: transparent;">
                 <v-list-item
@@ -24,7 +24,7 @@
                   :title="user.firstName + ' ' + user.lastName"
                 />
               </v-list>
-              <v-divider class="my-2" />
+              <v-divider class="my-1" />
               <div id="menu-bar-world" />
             </template>
 

@@ -4,10 +4,10 @@ import CategorySelector from "~/components/Ecommerce/collection/CategorySelector
 import SortSelector from "~/components/Ecommerce/collection/SortSelector.vue";
 import TileCard from "~/components/Ecommerce/product/TileCard.vue";
 import type { ShopifyCollectionSortKey } from "~/modules/shopify/types";
-
+import {nextTick, onMounted, ref, watch} from 'vue'
 const route = useRoute()
 const handle = route.params.handle
-
+const canTeleport = ref(false)
 if (!handle || typeof handle !== 'string') {
   throw createError({ statusCode: 404, statusMessage: 'Missing Collection Handle' })
 }
@@ -29,18 +29,26 @@ const collectionProducts = computed(() => collection.value?.products.edges)
 const { data: collectionsData } = await useAsyncData('collections-data', () => GqlGetCollections({ first: 20 }))
 
 watch(
-  () => route.query.sortKey,
-  async (newVal) => {
-    if (!handle) return
+  () => [route.params.handle, route.query.sortKey],
+  async ([handleParam, sortKey]) => {
+    if (!handleParam) return;
     collectionData.value = await GqlGetCollection({
-      handle,
+      handle: handleParam as string,
       items: 12,
       variants: 1,
-      sortKey: newVal as ShopifyCollectionSortKey,
-    })
+      sortKey: sortKey as ShopifyCollectionSortKey,
+    });
   },
-)
-
+  { immediate: true }
+);
+onMounted(async () => {
+  window.scrollTo({ top: 0 })
+  try {
+    await nextTick()
+    canTeleport.value = !!document.getElementById('menu-bar-world')
+  } catch (e) {
+  }
+})
 useSeoMeta({
   title: collection.value?.seo.title || collection.value?.title,
   description: collection.value?.seo.description || collection.value?.description || 'Search through collection of products',
@@ -51,17 +59,20 @@ useSeoMeta({
 </script>
 
 <template>
+  <v-container
+    fluid
+  >
+    <client-only>
+      <teleport v-if="canTeleport" to="#menu-bar-world">
+        <CategorySelector :collections="collectionsData?.collections" />
+      </teleport>
+    </client-only>
   <div class="collection-container">
     <HeaderSection
       :title="collection?.title"
       description="Search through collection of products"
     />
-
     <div class="collection-main">
-      <aside class="collection-sidebar">
-        <CategorySelector :collections="collectionsData?.collections" />
-      </aside>
-
       <section class="collection-products">
         <div class="collection-toolbar">
           <h2 class="collection-count">
@@ -87,6 +98,7 @@ useSeoMeta({
       </section>
     </div>
   </div>
+  </v-container>
 </template>
 
 <style scoped>

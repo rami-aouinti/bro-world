@@ -6,6 +6,15 @@ import { useLocalePath } from '#i18n'
 import ReusablePopoverList from '~/components/App/ReusablePopoverList.vue'
 import RelativeTime from '~/components/App/RelativeTime.vue'
 
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 const { t } = useI18n()
 const localePath = useLocalePath()
 const notificationStore = useNotificationStore()
@@ -43,7 +52,7 @@ watch(isNotificationReady, async () => {
     :batch-size="batchSize"
     :height="300"
     :empty-text="t('notification.empty')"
-    color="primary"
+    :color="isDark ? '' : 'default'"
     @open="markAllAsRead"
   >
     <template #item="{ item }">

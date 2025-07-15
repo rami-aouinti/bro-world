@@ -1,7 +1,16 @@
 <script lang="ts" setup>
 import type { ShopifyProduct } from "~/modules/shopify/types";
 import {useShopifyCart} from "~/modules/shopify/composables/useShopifyCart";
-
+import { ref, computed } from 'vue'
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 const props = defineProps({
   product: {
     type: Object as PropType<ShopifyProduct>,
@@ -68,7 +77,7 @@ function handleMouseOver(event: MouseEvent) {
         />
       </div>
       <div class="tile-info">
-        <p class="text-default tile-title">{{ product?.title }}</p>
+        <p class="tile-title" :class="isDark ? 'text-white' : 'text-default'">{{ product?.title }}</p>
         <span class="text-primary tile-price">{{ computedPrice }}</span>
       </div>
     </NuxtLink>
@@ -85,7 +94,7 @@ function handleMouseOver(event: MouseEvent) {
 }
 
 .tile-card:hover {
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 8px rgb(var(--v-theme-primary));
 }
 
 .tile-link {

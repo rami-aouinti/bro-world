@@ -223,7 +223,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, shallowRef } from 'vue'
+import { ref, onMounted, computed, shallowRef, nextTick } from 'vue'
 
 import UploadDialog from "~/components/UploadDialog.vue";
 import BaseDialog from "~/components/BaseDialog.vue";

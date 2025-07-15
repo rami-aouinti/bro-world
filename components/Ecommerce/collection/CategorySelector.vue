@@ -25,10 +25,11 @@ const selected = ref(
     <!-- Mobile select -->
     <v-select
       v-model="selected"
+      rounded="xl"
       :items="selectOptions"
       item-title="value"
       item-value="value"
-      class="mobile-only mb-4"
+      class="mobile-only mb-1 mx-3"
       variant="outlined"
       @update:modelValue="val => {
         const target = selectOptions.find(opt => opt.value === val);
@@ -38,22 +39,23 @@ const selected = ref(
 
     <!-- Desktop list -->
     <div class="desktop-only">
-      <ul class="category-list">
-        <li
+      <v-list lines="one" class="rounded-xl bg-transparent">
+        <v-list-item
           v-for="{ node } in collections?.edges"
           :key="node.handle"
-          class="category-item"
+          :to="`/ecommerce/collection/${node.handle}`"
+          link
+          density="compact"
+          :active="isActiveCollection(node.handle)"
+          rounded="xl"
+          class="bg-transparent mx-3"
+          :class="{ 'active-item': isActiveCollection(node.handle) }"
         >
-          <NuxtLink
-            :to="`/ecommerce/collection/${node.handle}`"
-            class="bg-primary"
-            :class="['category-link', { active: isActiveCollection(node.handle) }]"
-          >
-            {{ node.title }}
-          </NuxtLink>
-        </li>
-      </ul>
+          <v-list-item-title>{{ node.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
     </div>
+
   </aside>
 </template>
 
@@ -77,33 +79,19 @@ const selected = ref(
   }
 }
 
-/* Style de la liste */
-.category-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.category-item {
-  margin-bottom: 10px;
-}
-
-.category-link {
-  display: block;
-  padding: 8px 12px;
-  text-decoration: none;
-  border-left: 3px solid transparent;
-  transition: all 0.3s ease;
-}
-
-.category-link:hover {
-  color: #818181;
-}
-
-.category-link.active {
-  color: #332f2f;
+.active-item {
+  background-color: rgb(var(--v-theme-primary));
   font-weight: 600;
-  border-left: 3px solid #332f2f;
-  border-radius: 4px;
+  color: #222;
+  box-shadow: 0 3px 8px rgb(var(--v-theme-primary));
+}
+
+.v-list-item {
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.v-list-item:hover {
+  background-color: rgb(var(--v-theme-primary));
+  transform: translateX(2px);
 }
 </style>

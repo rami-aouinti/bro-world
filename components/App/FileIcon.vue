@@ -51,8 +51,8 @@ const folderIcon = computed(() => {
   if (props.isFavorite) return { name: 'mdi-folder-star', color: '#ffb300', label: 'Favori' }
   if (props.isShared) return { name: 'mdi-folder-account', color: '#42a5f5', label: 'Partagé' }
   return props.isOpen
-    ? { name: 'mdi-folder-open', color: '#fdd835', label: 'Dossier ouvert' }
-    : { name: 'mdi-folder', color: '#fbc02d', label: 'Dossier' }
+    ? { name: 'mdi-folder-open', color: 'orange', label: 'Dossier ouvert' }
+    : { name: 'mdi-folder', color: 'orange', label: 'Dossier' }
 })
 
 const icon = computed(() => {

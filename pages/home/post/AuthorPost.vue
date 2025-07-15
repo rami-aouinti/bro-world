@@ -17,7 +17,15 @@ const { user, loggedIn } = await useUserSession();
 const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 const relationStatus = ref<number | null>(null); // 0: none, 1: follower, 2: following, 3: friend
 const loading = ref(true);
 const loadingReject = ref(false);
@@ -205,7 +213,8 @@ watch(
       <div class="mx-4">
         <NuxtLink
           :to="props.post.user?.username === user?.username ? localePath('/profile') : localePath(`/user/${props.post.user.username}`)"
-          class="text-default font-weight-bolder text-decoration-none"
+          class="font-weight-bolder text-decoration-none"
+          :class="isDark ? 'text-white' : 'text-default'"
         >
           {{ props.post.user?.firstName }} {{ props.user?.lastName }}
         </NuxtLink>

@@ -7,7 +7,7 @@ defineProps({
     default: false,
   },
 });
-
+const search = ref('')
 const router = useRouter();
 const route = useRoute();
 
@@ -18,7 +18,13 @@ const options = [
   { label: "Best Selling", value: ShopifyCollectionSortKeys.BEST_SELLING },
   { label: "Created", value: ShopifyCollectionSortKeys.CREATED },
 ];
-
+const sales = [
+  { label: "10%", value: ShopifyCollectionSortKeys.RELEVANCE },
+  { label: "20%", value: ShopifyCollectionSortKeys.TITLE },
+  { label: "30%", value: ShopifyCollectionSortKeys.PRICE },
+  { label: "40%", value: ShopifyCollectionSortKeys.BEST_SELLING },
+  { label: "50%", value: ShopifyCollectionSortKeys.CREATED },
+];
 const selected = ref(
   route.query.sortKey
     ? options.find(option => option.value === route.query.sortKey)?.value
@@ -32,10 +38,37 @@ watch(selected, (newSortKey) => {
 </script>
 
 <template>
+  <v-text-field
+    v-model="search"
+    prepend-inner-icon="mdi-magnify"
+    label="Search"
+    single-line
+    hide-details
+    class="mx-1"
+    density="compact"
+    rounded="xl"
+    variant="outlined"
+    style="max-width: 300px; margin-bottom: 20px;"
+  />
   <v-select
+    rounded="xl"
+    v-model="selected"
+    :items="sales"
+    max-width="200"
+    class="mx-1"
+    item-title="label"
+    item-value="value"
+    :disabled="disabled"
+    variant="outlined"
+    density="compact"
+    aria-label="Sort products"
+  />
+  <v-select
+    rounded="xl"
     v-model="selected"
     :items="options"
     max-width="200"
+    class="mx-1"
     item-title="label"
     item-value="value"
     :disabled="disabled"

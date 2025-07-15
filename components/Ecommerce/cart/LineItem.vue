@@ -101,7 +101,7 @@ function debouncedUpdateQuantity(newQuantity: number) {
 
 .product-title {
   font-size: 0.7rem;
-  font-weight: 500;
+  font-weight: 450;
 }
 
 .product-price {

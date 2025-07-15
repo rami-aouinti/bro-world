@@ -3,9 +3,18 @@ import VariantOptions from "~/components/Ecommerce/product/VariantOptions.vue";
 import QuantitySelector from "~/components/Ecommerce/product/QuantitySelector.vue";
 import type { ShopifyProduct } from "~/modules/shopify/types";
 import { useShopifyCart } from "~/modules/shopify/composables/useShopifyCart";
+import { computed } from 'vue'
 
 const props = defineProps<{ product?: ShopifyProduct }>()
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 const { addToCart, loading, getPriceWithCurrency } = useShopifyCart()
 const route = useRoute()
 
@@ -32,11 +41,11 @@ const computedVariant = computed(() => {
 <template>
   <section class="product-info">
     <div class="product-header">
-      <h1 class="product-title">
+      <h3 class="product-title" :class="isDark ? 'text-white' : 'text-default'">
         {{ product?.title }}
-      </h1>
+      </h3>
       <span class="product-price">
-        {{ getPriceWithCurrency(computedVariant?.price) || "-" }}
+        {{ getPriceWithCurrency(computedVariant?.price) || "" }}
       </span>
     </div>
 
@@ -69,7 +78,6 @@ const computedVariant = computed(() => {
 
 <style scoped>
 .product-info {
-  max-width: 640px;
   padding: 1rem 0;
   text-align: left;
 }
@@ -86,7 +94,7 @@ const computedVariant = computed(() => {
 
 @media (min-width: 640px) {
   .product-title {
-    font-size: 3rem;
+    font-size: 2rem;
   }
 }
 

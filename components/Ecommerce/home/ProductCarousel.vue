@@ -45,7 +45,7 @@ defineProps<{ products?: ShopifyProducts, title: string, description: string, li
 
 .carousel-title {
   font-size: 32px;
-  font-weight: 500;
+  font-weight: 450;
   margin-bottom: 8px;
 }
 

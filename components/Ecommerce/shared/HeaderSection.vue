@@ -4,11 +4,8 @@ defineProps<{ title?: string, description: string }>()
 
 <template>
   <section class="my-20">
-    <h1 class="text-2xl font-semibold">
+    <h2 class="text-2xl font-semibold">
       {{ title }}
-    </h1>
-    <p class="text-slate-400 text-base mt-6">
-      {{ description }}
-    </p>
+    </h2>
   </section>
 </template>

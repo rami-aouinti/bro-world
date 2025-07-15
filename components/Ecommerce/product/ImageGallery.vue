@@ -8,7 +8,8 @@ defineProps<{ images: string[], productTitle?: string }>()
 
 <template>
   <v-carousel
-    class="rounded-lg max-w-[300px] max-h-[300px] md:min-w-[500px] md:max-w-[500px] md:max-h-[500px] text-center mx-auto md:text-left md:mx-0 md:ml-12 overflow-hidden md:overflow-visible"
+    height="430"
+    class="rounded-lg text-center mx-auto md:text-left md:mx-0 md:ml-12 overflow-hidden md:overflow-visible"
     show-arrows="hover"
     hide-delimiter-background
     dots
@@ -26,8 +27,8 @@ defineProps<{ images: string[], productTitle?: string }>()
         :loading="index === 0 ? 'eager' : 'lazy'"
         :fetch-priority="index === 0 ? 'high' : 'low'"
         draggable="false"
-        class="max-w-[300px] max-h-[300px] md:min-w-[500px] md:max-w-[500px] md:max-h-[500px] object-contain text-center mx-auto"
-        width="300px" height="500px"
+        class="max-w-[300px] max-h-[300px] md:min-w-[400px] md:max-w-[450px] md:max-h-[450px] object-contain text-center mx-auto"
+        width="300px" height="450px"
         fit="contain"
       />
     </v-carousel-item>

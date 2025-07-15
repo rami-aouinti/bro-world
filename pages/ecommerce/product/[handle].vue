@@ -2,10 +2,11 @@
 import ImageGallery from "~/components/Ecommerce/product/ImageGallery.vue";
 import InfoDetails from "~/components/Ecommerce/product/InfoDetails.vue";
 import TileCard from "~/components/Ecommerce/product/TileCard.vue";
+import {nextTick, onMounted, ref} from 'vue'
 
 const route = useRoute()
-const router = useRouter()
 const config = useRuntimeConfig()
+const canTeleport = ref(false)
 
 const handle = route.params.handle
 
@@ -32,6 +33,16 @@ const { data: recommended } = await useAsyncData('recommended', () => GqlGetProd
   variants: 1,
 }), { lazy: true })
 
+
+onMounted(async () => {
+  window.scrollTo({ top: 0 })
+  try {
+    await nextTick()
+    canTeleport.value = !!document.getElementById('menu-bar-world')
+  } catch (e) {
+  }
+})
+
 useSeoMeta({
   title: product.value?.seo.title || product.value?.title,
   description: product.value?.seo.description || product.value?.description,
@@ -43,10 +54,17 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="product-container">
+  <v-container
+    fluid
+  >
+    <client-only>
+      <teleport v-if="canTeleport" to="#menu-bar-world">
+        <ImageGallery :images="galleryImages" :product-title="product?.title" />
+      </teleport>
+    </client-only>
+    <div class="product-container">
 
     <div class="product-content">
-      <ImageGallery :images="galleryImages" :product-title="product?.title" />
       <InfoDetails v-if="product" :product="product" />
     </div>
 
@@ -59,6 +77,7 @@ useSeoMeta({
       </section>
     </NuxtLazyHydrate>
   </div>
+  </v-container>
 </template>
 
 <style scoped>

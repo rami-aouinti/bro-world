@@ -5,6 +5,15 @@ import { useI18n } from 'vue-i18n'
 import { useLocalePath } from '#i18n'
 import { useConversationUtils } from '~/composables/useConversationUtils'
 
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 import ReusablePopoverList from '~/components/App/ReusablePopoverList.vue'
 import RelativeTime from '~/components/App/RelativeTime.vue'
 
@@ -77,7 +86,7 @@ const totalUnread = computed(() =>
     :empty-text="t('messages.empty')"
     :footer-url="localePath(pathAllMessages)"
     :footer-text="t('messages.all')"
-    color="primary"
+    :color="isDark ? '' : 'default'"
   >
     <template #item="{ item }">
       <v-list-item

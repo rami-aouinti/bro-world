@@ -133,9 +133,6 @@ definePageMeta({
     <client-only>
       <teleport v-if="canTeleport" to="#menu-bar-world">
         <div class="px-4 py-1">
-          <p class="text-sm font-weight-light text-body">
-            {{ profile?.profile?.description }}
-          </p>
           <v-list class="bg-transparent" elevation="0">
             <v-list-item class="px-0 border-radius-sm">
               <div class="text-body text-sm">
@@ -191,7 +188,7 @@ definePageMeta({
               <v-row align="center" class="pa-0 ma-0">
                 <v-col cols="auto">
                   <v-avatar size="50" class="border-primary border-lg rounded-circle">
-                    <NuxtImg :lazy-src="'/img/person.png'" format="webp" loading="lazy" cover width="50" height="50" :src="avatarUrl" alt="Avatar" />
+                    <NuxtImg :lazy-src="'/img/person.png'" format="webp" loading="lazy" cover width="50" height="50" :src="profile?.profile?.photo" alt="Avatar" />
                   </v-avatar>
                 </v-col>
                 <v-col cols="auto">
@@ -219,20 +216,18 @@ definePageMeta({
       </v-row>
       <v-row>
         <v-col cols="12" md="4">
-          <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3" variant="text" elevation="10">
+          <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3 mt-3" variant="text" elevation="10">
             <div class="d-flex flex-column justify-center text-center h-100">
               <NuxtLink href="javascript:" class="text-decoration-none">
-                <v-icon>mdi-plus</v-icon>
                 <h5 class="text-h5 text-secondary">New Blog</h5>
               </NuxtLink>
             </div>
           </v-card>
         </v-col>
         <v-col cols="12" md="4">
-          <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3" variant="text" elevation="10">
+          <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3 mt-3" variant="text" elevation="10">
             <div class="d-flex flex-column justify-center text-center h-100">
               <NuxtLink href="javascript:" class="text-decoration-none">
-                <v-icon>mdi-plus</v-icon>
                 <h5 class="text-h5 text-secondary">Generate your CV</h5>
               </NuxtLink>
             </div>
