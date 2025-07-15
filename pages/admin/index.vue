@@ -5,5 +5,6 @@
 import IndexPage from "~/components/IndexPage.vue";
 definePageMeta({
   title: 'Admin',
+  layout: 'admin',
 })
 </script>

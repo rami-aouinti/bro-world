@@ -7,6 +7,7 @@ import ReusableDataTable from "~/components/Admin/ReusableDataTable.vue";
 definePageMeta({
   icon: 'mdi-account-multiple',
   title: 'Groups',
+  layout: 'admin',
   requiresAdmin: true,
   drawerIndex: 2,
 })

@@ -97,7 +97,6 @@
         </v-row>
       </div>
 
-
       <div v-else>
         <transition name="fade-slide" mode="out-in">
           <div v-if="currentQuestion" :key="currentQuestion.id">

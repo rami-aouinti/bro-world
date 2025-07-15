@@ -104,7 +104,7 @@ function triggerFileInput() {
 </script>
 
 <template>
-  <div class="py-3">
+  <div class="py-2">
   <v-card
     rounded="xl"
     class="bg-gradient-primary shadow-primary mx-3"

@@ -8,6 +8,7 @@ definePageMeta({
   icon: 'mdi-account-settings-variant',
   title: 'Role',
   requiresAdmin: true,
+  layout: 'admin',
   drawerIndex: 3,
 })
 const loading = ref(true)

@@ -7,6 +7,7 @@ definePageMeta({
   icon: 'mdi-products',
   title: 'Products',
   requiresAdmin: true,
+  layout: 'admin',
   drawerIndex: 1,
 })
 

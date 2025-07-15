@@ -11,6 +11,7 @@ import ChartPie from "~/components/Chart/ChartPie.vue";
 definePageMeta({
   icon: 'mdi-chart-bubble',
   title: 'General Settings',
+  layout: 'admin',
   requiresAdmin: true,
   drawerIndex: 0,
 })

@@ -3,6 +3,7 @@
 definePageMeta({
   icon: 'mdi-account-circle',
   title: 'Customer',
+  layout: 'admin',
   requiresAdmin: true,
   drawerIndex: 2,
 })

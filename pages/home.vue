@@ -297,6 +297,7 @@ onMounted(async () => {
                 v-for="(item, index) in postStore.posts"
                 :key="item.id"
                 :post="item"
+                :index="index"
                 @post-reload="reloadPosts"
                 @post-updated="(post) => editPost(post)"
                 @post-deleted="(post) => deletePost(post)"

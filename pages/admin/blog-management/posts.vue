@@ -5,6 +5,7 @@ import ReusableDataTable from '~/components/Admin/ReusableDataTable.vue'
 definePageMeta({
   title: 'Posts',
   icon: 'mdi-settings',
+  layout: 'admin',
   requiresAdmin: true,
   drawerIndex: 3,
 })

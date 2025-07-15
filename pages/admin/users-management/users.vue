@@ -9,7 +9,9 @@ definePageMeta({
   title: 'Users',
   icon: 'mdi-account-group',
   requiresAdmin: true,
+  layout: 'admin',
   drawerIndex: 2,
+  description: 'Manage users, their roles, and permissions. Create, edit, and delete users as needed.',
 })
 
 const userStore = useUserStore()

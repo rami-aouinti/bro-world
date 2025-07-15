@@ -4,6 +4,7 @@ definePageMeta({
   icon: 'mdi-clipboard',
   requiresAdmin: true,
   drawerIndex: 5,
+  layout: 'admin',
 })
 </script>
 <template>

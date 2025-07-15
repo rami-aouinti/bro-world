@@ -87,7 +87,7 @@ function sendMessage() {
 </script>
 
 <template>
-  <div class="py-3">
+  <div class="py-2">
   <v-card
     rounded="xl"
     class="bg-gradient-primary shadow-primary overflow-x-auto mx-3 min-h-stories"

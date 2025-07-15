@@ -4,6 +4,7 @@ definePageMeta({
   icon: 'mdi-bell-plus',
   requiresAdmin: true,
   drawerIndex: 7,
+  layout: 'admin',
 })
 </script>
 <template>

@@ -7,6 +7,7 @@ import type {DataTableHeaders} from "~/plugins/vuetify";
 definePageMeta({
   icon: 'mdi-account-key',
   title: 'Api Keys',
+  layout: 'admin',
   requiresAdmin: true,
   drawerIndex: 4,
 })

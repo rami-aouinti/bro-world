@@ -8,6 +8,7 @@ definePageMeta({
   icon: 'mdi-chart-bubble',
   title: 'General Settings',
   requiresAdmin: true,
+  layout: 'admin',
   drawerIndex: 0,
 })
 const loading = ref(true)
