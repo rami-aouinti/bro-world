@@ -52,7 +52,7 @@ const items = [
   { title: "Jobs", icon: "mdi-briefcase", color: "blue", path: "/jobs" },
   { title: "CRM", icon: "mdi-database", color: "teal", path: "/crm" },
   { title: "Courses", icon: "mdi-school", color: "green", path: "/courses" },
-  { title: "Quiz", icon: "mdi-gamepad-variant", color: "indigo", path: "/game" },
+  { title: "Quiz", icon: "mdi-gamepad-variant", color: "indigo", path: "/quiz" },
   { title: "My Files", icon: "mdi-folder", color: "orange", path: "/user/channel/media" },
   { title: "Recent", icon: "mdi-history", color: "cyan", path: "/recent" },
 ];
