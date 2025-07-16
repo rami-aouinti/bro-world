@@ -71,8 +71,15 @@ const fetchConversations = async () => {
   console.log(conversations)
 
 }
-const { getConversationTitle, getConversationAvatar } = useConversationUtils()
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 
 async function fetchUsers (item) {
   await pause(1500)
@@ -132,47 +139,58 @@ definePageMeta({
   <v-container fluid>
     <client-only>
       <teleport v-if="canTeleport" to="#menu-bar-world">
-        <div class="px-4 py-1">
-          <v-list class="bg-transparent" elevation="0">
-            <v-list-item class="px-0 border-radius-sm">
-              <div class="text-body text-sm">
-                <strong class="text-dark">{{ t('profile.mobile') }}:</strong>
-                &nbsp; {{ profile?.profile?.phone ?? '' }}
-              </div>
-              <div class="text-body text-sm">
-                <strong class="text-dark">{{ t('profile.email') }}:</strong>
-                &nbsp; {{ profile?.email ?? t('profile.notProvided') }}
-              </div>
-              <div class="text-body text-sm">
-                <strong class="text-dark">{{ t('profile.location') }}:</strong>
-                &nbsp; {{ profile?.locale ?? '' }}
-              </div>
-            </v-list-item>
-          </v-list>
-          <h6 class="text-uppercase text-body text-xs font-weight-bolder">
+        <div class="pa-2">
+          <div class="text-subtitle-1 text-uppercase font-weight-bold mb-1" :class="isDark ? 'text-white' : 'text-default'">
             {{ t('profile.account') }}
-          </h6>
-          <v-list class="bg-transparent" elevation="0">
-            <v-list-item v-for="setting in accountSettings" :key="setting.text">
-              <v-row class="d-flex align-center">
-                <v-col cols="2">
-                  <v-switch v-model="setting.switchState" hide-details class="d-inline-flex mt-0 pt-0 switch ms-auto" />
-                </v-col>
-                <v-col cols="10">
-                  <div class="ms-4 text-body text-sm">{{ t(`profile.settings.${setting.text}`) }}</div>
-                </v-col>
-              </v-row>
-            </v-list-item>
-            <v-list-item v-for="setting in applicationSettings" :key="setting.text">
-              <v-row class="d-flex align-center">
-                <v-col cols="2">
-                  <v-switch v-model="setting.switchState" hide-details class="d-inline-flex mt-0 pt-0 switch ms-auto" />
-                </v-col>
-                <v-col cols="10">
-                  <div class="ms-4 text-body text-sm">{{ t(`profile.settings.${setting.text}`) }}</div>
-                </v-col>
-              </v-row>
-            </v-list-item>
+          </div>
+          <v-list class="pa-0 bg-transparent" lines="one">
+            <Motion preset="slideVisibleLeft" :duration="400">
+              <v-list-item class="setting-line bg-transparent">
+                <v-list-item-title class="setting-label" :class="isDark ? 'text-white' : 'text-default'">
+                  <v-icon class="me-3" color="primary">mdi-email</v-icon>
+                  {{ profile?.email ?? t('profile.notProvided') }}
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item class="setting-line bg-transparent">
+                <v-list-item-title class="setting-label" :class="isDark ? 'text-white' : 'text-default'">
+                  <v-icon class="me-3" color="primary">mdi-cellphone</v-icon>
+                  {{ profile?.profile?.phone ?? t('profile.notProvided') }}
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item class="setting-line bg-transparent">
+                <v-list-item-title class="setting-label" :class="isDark ? 'text-white' : 'text-default'">
+                  <v-icon class="me-3" color="primary">mdi-map-marker</v-icon>
+                  {{ profile?.locale ?? t('profile.notProvided') }}
+                </v-list-item-title>
+              </v-list-item>
+            </Motion>
+          </v-list>
+
+          <div class="text-subtitle-1 text-uppercase font-weight-bold mb-1" :class="isDark ? 'text-white' : 'text-default'">
+            Settings
+          </div>
+
+          <v-list class="pa-0 bg-transparent" lines="one">
+            <MotionGroup preset="slideVisibleLeft" :duration="800">
+            <v-list-item
+                v-for="setting in [...accountSettings, ...applicationSettings]"
+                :key="setting.text"
+                class="setting-line bg-transparent"
+              >
+                <v-list-item-title class="setting-label" :class="isDark ? 'text-white' : 'text-default'">
+                  {{ t(`profile.settings.${setting.text}`) }}
+                </v-list-item-title>
+                <template #append>
+                  <v-switch
+                    v-model="setting.switchState"
+                    hide-details
+                    color="primary"
+                    density="compact"
+                    class="switch mx-2"
+                  />
+                </template>
+              </v-list-item>
+            </MotionGroup>
           </v-list>
         </div>
       </teleport>
@@ -243,7 +261,35 @@ definePageMeta({
 ::v-deep(.v-application__wrap) {
   min-height: 0 !important;
 }
-
+.info-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.label {
+  font-weight: 600;
+  color: #212121;
+}
+.value {
+  color: #9e9e9e;
+  font-weight: 500;
+}
+.setting-line {
+  padding-left: 0;
+  padding-right: 0;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.setting-line:hover {
+  background: #f5f5f5;
+}
+.setting-label {
+  font-size: 0.875rem;
+  color: #424242;
+}
+.switch {
+  margin-inline-end: 0.5rem;
+}
 .demo-panel-static,
 .demo-panel-relative {
   margin: 0 80px 50px;

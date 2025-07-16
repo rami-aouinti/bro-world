@@ -2,26 +2,33 @@
   <v-container fluid>
     <client-only>
       <teleport v-if="canTeleport" to="#menu-bar-world">
-        <v-list style="background-color: transparent;"
+        <v-list class="bg-transparent custom-list"
                 :lines="false"
                 nav>
           <v-list-item-group class="border-radius-sm">
-            <v-list-item
-              class="px-3 py-1 border-radius-lg mb-2"
-              v-for="item in menu"
-              :key="item.id"
-              :prepend-icon="item.icon"
-            >
-              <a :href="item.id" class="text-decoration-none">
-                <v-list-item-title>
+            <MotionGroup preset="slideVisibleLeft" :duration="600">
+              <section>
+                <v-list-item
+                  class="custom-item pa-2"
+                  color="primary"
+                  v-for="item in menu"
+                  :key="item.id"
+                >
+                  <template #prepend>
+                    <a :href="item.id" class="text-decoration-none">
+                      <v-icon :color="isDark ? 'white' : 'default'" :icon="item.icon" class="me-3"></v-icon>
+                    </a>
+                  </template>
 
-                  <div class="d-flex flex-column">
-                    <span class="text-dark text-sm">{{ item.text }}</span>
-                  </div>
+                  <a :href="item.id" class="text-decoration-none">
+                    <v-list-item-title class="text-subtitle-2 text-uppercase font-weight-bold mx-3" :class="isDark ? 'text-white' : 'text-default'">
+                      {{ item.text }}
+                    </v-list-item-title>
+                  </a>
 
-                </v-list-item-title>
-              </a>
-            </v-list-item>
+                </v-list-item>
+              </section>
+            </MotionGroup>
           </v-list-item-group>
         </v-list>
       </teleport>
@@ -103,7 +110,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
@@ -123,6 +130,15 @@ const profile = ref<any>(null)
 const avatar = ref<File | null>(null)
 const avatarUrl = ref('')
 const fileInput = ref(null)
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 const menu  = ref ([
   {
     icon: "mdi-person",
@@ -246,5 +262,26 @@ definePageMeta({
   right: 0;
   z-index: 1;
   box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+.custom-list {
+  background-color: transparent;
+}
+
+.custom-item {
+  transition: all 0.2s ease;
+  border-radius: 12px;
+  padding-left: 12px;
+  margin-bottom: 4px;
+}
+
+.custom-item:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  transform: translateX(2px);
+  box-shadow: 0 3px 9px rgb(var(--v-theme-primary));
+}
+
+.router-link-exact-active {
+  background-color: #e3f2fd;
+  font-weight: 700;
 }
 </style>

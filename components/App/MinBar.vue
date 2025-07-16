@@ -17,13 +17,20 @@
         >
           <div class="pa-1">
             <template v-if="loggedIn">
-              <v-list style="background-color: transparent;">
-                <v-list-item
-                  to="/profile"
-                  :prepend-avatar="user.photo"
-                  :title="user.firstName + ' ' + user.lastName"
-                />
-              </v-list>
+              <div class="d-flex align-center px-3 my-2">
+                <a :href="'/profile'">
+                  <UserAvatar :user="user" color="primary" size="48" />
+                </a>
+                <div class="mx-4">
+                  <NuxtLink
+                    :to="localePath('/profile')"
+                    class="text-h5 font-weight-bolder text-decoration-none"
+                    :class="isDark ? 'text-white' : 'text-default'"
+                  >
+                    {{ truncate(user?.firstName + ' ' + user?.lastName, 20) }}
+                  </NuxtLink>
+                </div>
+              </div>
               <v-divider class="my-1" />
               <div id="menu-bar-world" />
             </template>
@@ -58,12 +65,27 @@
 <script setup lang="ts">
 import LoginForm from "~/components/Auth/LoginForm.vue";
 import Social from "~/components/Auth/Social.vue";
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, computed } from "vue";
+import UserAvatar from "~/components/App/UserAvatar.vue";
+import { useI18n } from 'vue-i18n';
+import { useLocalePath } from '#i18n';
+const { t } = useI18n();
+const localePath = useLocalePath();
+import RelativeTime from "~/components/App/RelativeTime.vue";
+import {truncate} from "../../utils/stringUtils";
 
 const { user, loggedIn } = await useUserSession();
 const isRedirecting = ref(false);
 const loading = ref(true);
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 onMounted(async () => {
   try {
     await nextTick();
@@ -72,3 +94,5 @@ onMounted(async () => {
   }
 });
 </script>
+<style scoped>
+</style>

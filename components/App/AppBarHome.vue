@@ -15,7 +15,9 @@
         style="color: inherit;"
       >
         <v-icon icon="custom:world-logo" color="primary" />
-        <template class="px-2" v-if="!mobile">Bro <span class="text-primary">World</span></template>
+        <template class="px-2" v-if="!mobile">
+          <span :class="isDark ? 'text-white' : 'text-default'">Bro</span>
+          <span class="text-primary">World</span></template>
       </NuxtLink>
     </template>
 
@@ -23,20 +25,20 @@
 
     <!-- Centrage des boutons et cachés en mobile -->
     <v-row v-if="!mobile" class="mx-auto" align="center" justify="center" dense>
-      <v-btn :color="isDark ? '' : 'default'" :to="localePath('/courses')" class="mx-2" variant="text">
-        <v-icon size="32">mdi-school</v-icon>
+      <v-btn color="primary" :to="localePath('/courses')" class="mx-2" variant="text">
+        <v-icon :color="isDark ? 'white' : 'default'" size="32">mdi-school</v-icon>
       </v-btn>
-      <v-btn :color="isDark ? '' : 'default'" :to="localePath('/jobs')" class="mx-2" variant="text">
-        <v-icon size="32">mdi-briefcase</v-icon>
+      <v-btn color="primary" :to="localePath('/jobs')" class="mx-2" variant="text">
+        <v-icon :color="isDark ? 'white' : 'default'" size="32">mdi-briefcase</v-icon>
       </v-btn>
-      <v-btn :color="isDark ? '' : 'default'" :to="localePath('/shop')" class="mx-2" variant="text">
-        <v-icon size="32">mdi-storefront</v-icon>
+      <v-btn color="primary" :to="localePath('/shop')" class="mx-2" variant="text">
+        <v-icon :color="isDark ? 'white' : 'default'" size="32">mdi-storefront</v-icon>
       </v-btn>
-      <v-btn :color="isDark ? '' : 'default'" :to="localePath('/crm')" class="mx-2" variant="text">
-        <v-icon size="32">mdi-database</v-icon>
+      <v-btn color="primary" :to="localePath('/crm')" class="mx-2" variant="text">
+        <v-icon :color="isDark ? 'white' : 'default'" size="32">mdi-database</v-icon>
       </v-btn>
-      <v-btn :color="isDark ? '' : 'default'" :to="localePath('/quiz')" class="mx-2" variant="text">
-        <v-icon size="32">mdi-gamepad-variant</v-icon>
+      <v-btn color="primary" :to="localePath('/quiz')" class="mx-2" variant="text">
+        <v-icon :color="isDark ? 'white' : 'default'" size="32">mdi-gamepad-variant</v-icon>
       </v-btn>
     </v-row>
 
@@ -48,7 +50,7 @@
 
     <v-btn
       icon
-      :color="isDark ? '' : 'default'"
+      color="primary"
       aria-label="Shop"
       title="Shop"
       @click="emit('toggleSettingsDrawer', true)"
@@ -58,9 +60,9 @@
         :content="cart?.lines.edges.length"
         color="primary"
       >
-        <v-icon>mdi-shopping</v-icon>
+        <v-icon :color="isDark ? 'white' : 'default'">mdi-shopping</v-icon>
       </v-badge>
-      <v-icon v-else>mdi-shopping</v-icon>
+      <v-icon :color="isDark ? 'white' : 'default'" v-else>mdi-shopping</v-icon>
     </v-btn>
 
     <Messenger v-if="loggedIn" />

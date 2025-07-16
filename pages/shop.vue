@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ProductCarousel from "~/components/Ecommerce/home/ProductCarousel.vue";
 import CookieConsent from "~/components/Ecommerce/layout/CookieConsent.vue";
-import {nextTick, onMounted, ref, watch} from 'vue'
+import {nextTick, onMounted, ref, watch, computed} from 'vue'
 import {buildTaxonTree} from "~/composables/useTaxons";
 
 definePageMeta({
@@ -33,7 +33,15 @@ const { data: casualThingsCollection } = await useAsyncData('casual-things-colle
   items: 10,
   variants: 1,
 }), { lazy: true })
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 const products = ref<any[]>([])
 const loading = ref(true)
 const canTeleport = ref(false)
@@ -116,26 +124,29 @@ onMounted(async () => {
   >
     <client-only>
       <teleport v-if="canTeleport" to="#menu-bar-world">
-        <v-list class="bg-transparent" elevation="0" lines="one" nav>
-          <v-list-group
-            v-for="taxon in taxons"
-            :key="taxon.id"
-            v-model="expanded[taxon.id]"
-            :prepend-icon="'mdi-storefront'"
-          >
-            <template #activator="{ props }">
-              <v-list-item v-bind="props">
-                <v-list-item-title>{{ taxon.name }}</v-list-item-title>
-              </v-list-item>
-            </template>
+        <v-list class="bg-transparent custom-list" elevation="0" lines="one" nav>
+          <div v-motion-fade>
+            <v-list-group
+              v-for="taxon in taxons"
+              :key="taxon.id"
+              v-model="expanded[taxon.id]"
+            >
+              <template #activator="{ props }">
+                <v-list-item class="custom-item pa-3" color="primary" v-bind="props">
+                  <v-list-item-title class="text-subtitle-2 text-uppercase font-weight-bold mx-3" :class="isDark ? 'text-white' : 'text-default'">
+                    {{ taxon.name }}
+                  </v-list-item-title>
+                </v-list-item>
+              </template>
 
-            <v-list-item
-              v-for="child in taxon.children"
-              :key="child"
-              :title="extractNameFromSlug(child)"
-              prepend-icon="mdi-subdirectory-arrow-right"
-            />
-          </v-list-group>
+              <v-list-item
+                v-for="child in taxon.children"
+                :key="child"
+                :title="extractNameFromSlug(child)"
+                prepend-icon="mdi-subdirectory-arrow-right"
+              />
+            </v-list-group>
+          </div>
         </v-list>
       </teleport>
     </client-only>
@@ -162,3 +173,26 @@ onMounted(async () => {
     <CookieConsent />
   </v-container>
 </template>
+<style scoped>
+.custom-list {
+  background-color: transparent;
+}
+
+.custom-item {
+  transition: all 0.2s ease;
+  border-radius: 12px;
+  padding-left: 12px;
+  margin-bottom: 4px;
+}
+
+.custom-item:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  transform: translateX(2px);
+  box-shadow: 0 3px 9px rgb(var(--v-theme-primary));
+}
+
+.router-link-exact-active {
+  background-color: #e3f2fd;
+  font-weight: 700;
+}
+</style>

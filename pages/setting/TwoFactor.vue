@@ -47,7 +47,7 @@ const { user } = await useUserSession()
         <p
           class="text-secondary editable font-weight-light text-sm ms-auto my-auto me-3"
         >
-          {{ user.profile.phone }}
+          {{ user.profile?.phone }}
         </p>
         <v-btn
           variant="text"

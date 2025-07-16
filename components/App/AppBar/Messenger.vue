@@ -86,7 +86,7 @@ const totalUnread = computed(() =>
     :empty-text="t('messages.empty')"
     :footer-url="localePath(pathAllMessages)"
     :footer-text="t('messages.all')"
-    :color="isDark ? '' : 'default'"
+    :color="isDark ? 'white' : 'default'"
   >
     <template #item="{ item }">
       <v-list-item

@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
+    '@vueuse/motion/nuxt',
     'vuetify-nuxt-module',
     'nuxt-auth-utils',
     'nuxt-echarts',
@@ -191,6 +192,22 @@ export default defineNuxtConfig({
       password: '',
     },
     public: {
+      motion: {
+        directives: {
+          'pop-bottom': {
+            initial: {
+              scale: 0,
+              opacity: 0,
+              y: 100,
+            },
+            visible: {
+              scale: 1,
+              opacity: 1,
+              y: 0,
+            }
+          }
+        }
+      },
       siteUrl: 'https://bro-world-space.com',
       apiBase: 'https://bro-world.org',
       apiBlogBase: 'https://blog.bro-world.org',

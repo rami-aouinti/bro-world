@@ -1,7 +1,16 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import TileCard from "~/components/Ecommerce/product/TileCard.vue";
 import type { ShopifyProducts } from "~/modules/shopify/types";
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 defineProps<{ products?: ShopifyProducts, title: string, description: string, link: string }>();
 </script>
 
@@ -9,8 +18,8 @@ defineProps<{ products?: ShopifyProducts, title: string, description: string, li
   <div v-if="products?.edges && products?.edges.length" class="carousel-wrapper">
     <div class="carousel-header">
       <div class="header-left">
-        <h2 class="carousel-title">{{ title }}</h2>
-        <p class="carousel-description">{{ description }}</p>
+        <h2 class="carousel-title" :class="isDark ? 'text-white' : 'text-default'">{{ title }}</h2>
+        <p class="carousel-description" :class="isDark ? 'text-white' : 'text-default'">{{ description }}</p>
       </div>
 
       <NuxtLink :to="link" class="text-primary see-all-link">

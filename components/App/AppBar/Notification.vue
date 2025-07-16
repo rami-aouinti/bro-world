@@ -52,7 +52,7 @@ watch(isNotificationReady, async () => {
     :batch-size="batchSize"
     :height="300"
     :empty-text="t('notification.empty')"
-    :color="isDark ? '' : 'default'"
+    :color="isDark ? 'white' : 'default'"
     @open="markAllAsRead"
   >
     <template #item="{ item }">

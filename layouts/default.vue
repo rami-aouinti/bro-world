@@ -79,7 +79,6 @@ onMounted(async () => {
 watch(locale, updateHtmlAttrs)
 watch(() => route.fullPath, () => {
   nextTick(async () => {
-    await sleep(300)
     const scrollable = document.querySelector('.v-main')
     smoothScrollToTop(scrollable || window, 2000) // 2 secondes
   })
