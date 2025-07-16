@@ -4,7 +4,7 @@
       <teleport v-if="canTeleport" to="#menu-bar-world">
         <v-toolbar
           rounded="xl"
-          class="d-flex align-center justify-space-between bg-gradient-primary shadow-primary px-4 py-2"
+          class="d-flex align-center justify-center px-4 py-1"
           color="transparent"
         >
           <v-app-bar-nav-icon color="primary">🏆</v-app-bar-nav-icon>
@@ -18,7 +18,7 @@
             </NuxtLink>
           </v-toolbar-title>
         </v-toolbar>
-        <v-list class="bg-transparent py-6" role="list">
+        <v-list class="bg-transparent py-1" role="list">
           <v-list-item
             v-for="(topUser, index) in topUsers"
             :key="topUser.userId?.id ?? index"
@@ -53,7 +53,7 @@
       </teleport>
     </client-only>
 
-    <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3 mb-3 py-2" variant="text" elevation="10" mx-auto style="min-height: 480px;">
+    <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3 mb-3 py-1" variant="text" elevation="10" mx-auto style="min-height: 480px;">
       <v-card-title class="text-h5 mb-2 d-flex align-center">
         🎓 Quiz
         <v-spacer />
@@ -103,7 +103,7 @@
             <div :key="currentQuestion.id">
               <v-progress-linear
                 :model-value="progress"
-                color="deep-purple-accent-4"
+                color="primary"
                 height="8"
                 class="mb-4"
                 rounded
@@ -183,7 +183,7 @@
                 <v-btn
                   @click="resetQuiz"
                   color="primary"
-                  class="mt-2"
+                  class="mt-2 mx-3"
                 >
                   🔁 Start a new quiz
                 </v-btn>
