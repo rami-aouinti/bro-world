@@ -1,0 +1,36 @@
+<script setup lang="ts">
+import {useShopifyCart} from "~/modules/shopify/composables/useShopifyCart";
+
+const { getImagePath } = useShopifyCart()
+
+defineProps<{ images: string[], productTitle?: string }>()
+</script>
+
+<template>
+  <v-carousel
+    height="430"
+    class="rounded-lg text-center mx-auto md:text-left md:mx-0 md:ml-12 overflow-hidden md:overflow-visible"
+    show-arrows="hover"
+    hide-delimiter-background
+    dots
+  >
+    <v-carousel-item
+      v-for="(item, index) in images"
+      :key="index"
+    >
+      <NuxtImg
+        format="webp"
+        cover
+        :src="getImagePath(item)"
+        :alt="`Image ${index + 1} of - ${productTitle}`"
+        :preload="index === 0"
+        :loading="index === 0 ? 'eager' : 'lazy'"
+        :fetch-priority="index === 0 ? 'high' : 'low'"
+        draggable="false"
+        class="max-w-[300px] max-h-[300px] md:min-w-[400px] md:max-w-[450px] md:max-h-[450px] object-contain text-center mx-auto"
+        width="300px" height="450px"
+        fit="contain"
+      />
+    </v-carousel-item>
+  </v-carousel>
+</template>

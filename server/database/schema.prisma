@@ -1,0 +1,145 @@
+generator client {
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native", "debian-openssl-1.1.x"]
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int            @id @default(autoincrement())
+  loginType        String?        @default("email")
+  password         String?
+  email            String?        @unique
+  name             String?
+  username         String?        @unique
+  session          Session[]
+  questions        Question[]
+  answers          Answer[]
+  stripeCustomerId String?
+  Subscription     Subscription[]
+}
+
+model Session {
+  id        Int       @id @default(autoincrement())
+  authToken String    @unique
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model Subscription {
+  id            Int     @id @default(autoincrement())
+  user          User    @relation(fields: [userId], references: [id])
+  userId        Int
+  stripeId      String  @unique
+  stripeStatus  String?
+  stripePriceId String?
+  quantity      Int?
+  trialEndsAt   Int?
+  endsAt        Int?
+  startDate     Int
+  lastEventDate Int
+}
+
+model Question {
+  id          Int      @id @default(autoincrement())
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    Int
+  title       String
+  description String
+  answers     Answer[]
+}
+
+model Answer {
+  id         Int      @id @default(autoincrement())
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId Int
+  author     User     @relation(fields: [authorId], references: [id])
+  authorId   Int
+  text       String
+}
+
+model Category {
+  id                 Int                  @id @default(autoincrement())
+  name               String               @unique
+  url                String               @unique
+  image              String?
+  accentColor        String?
+  CategoryAssignment CategoryAssignment[]
+}
+
+model Topic {
+  id            Int             @id @default(autoincrement())
+  name          String          @unique
+  displayName   String?
+  showName      Boolean?
+  url           String          @unique
+  image         String?
+  accentColor   String?
+  Video         Video[]
+  TagAssignment TagAssignment[]
+  Series        Series[]
+}
+
+model Series {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  displayName String?
+  url         String  @unique
+  topic       Topic?  @relation(fields: [topicId], references: [id])
+  topicId     Int?
+  image       String?
+  accentColor String?
+  Video       Video[]
+}
+
+model Video {
+  id             Int     @id @default(autoincrement())
+  url            String  @unique
+  host_type      String
+  host_id        String
+  title          String
+  subtitle       String
+  description    String?
+  image          String?
+  topic          Topic   @relation(fields: [topicId], references: [id])
+  topicId        Int
+  series         Series? @relation(fields: [seriesId], references: [id])
+  seriesId       Int?
+  seriesPosition Int?
+  accentColor    String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Tag {
+  id          Int     @id @default(autoincrement())
+  name        String
+  accentColor String?
+  TagAssignment TagAssignment[]
+}
+
+model TagAssignment {
+  id          Int    @id @default(autoincrement())
+  entity_type String
+  entity_id   Int
+  tag         Tag    @relation(fields: [tagId], references: [id])
+  tagId       Int
+
+  topic       Topic  @relation(fields: [topicId], references: [id])
+  topicId     Int
+}
+
+model CategoryAssignment {
+  id          Int      @id @default(autoincrement())
+  entity_type String
+  entity_id   Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+}

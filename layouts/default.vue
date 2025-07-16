@@ -1,0 +1,198 @@
+<template>
+  <v-app>
+    <ClientOnly>
+      <v-overlay :model-value="isLoading" class="z-loader" persistent>
+        <v-progress-circular indeterminate color="primary" size="64" />
+      </v-overlay>
+    </ClientOnly>
+    <AppBarHome :mobile="mobile" :rtl="isRtl" @toggleSettingsDrawer="showSettingsDrawer = $event" aria-label="Top application bar" role="banner" />
+    <v-main role="main" aria-label="Main content">
+      <v-container fluid class="pa-0">
+        <div class="d-flex" style="height: 100%;">
+          <MinBar></MinBar>
+          <div
+            style="max-width: 100%"
+            class="flex-grow-1"
+            :style="!mobile ? 'padding-left: 350px;' : ''"
+          >
+            <Suspense>
+              <template #default>
+                <NuxtPage :transition="{ name: 'fade', mode: 'out-in' }" @vue:beforeMount="startLoading" @vue:mounted="stopLoading" />
+              </template>
+              <template #fallback>
+                <v-progress-linear indeterminate color="primary" height="3" aria-label="Loading content" role="progressbar" />
+              </template>
+            </Suspense>
+          </div>
+        </div>
+      </v-container>
+    </v-main>
+    <SettingsDrawer
+      :show-settings-drawer="showSettingsDrawer"
+      @toggleSettingsDrawer="showSettingsDrawer = $event"
+      aria-label="Settings drawer"
+      role="complementary"
+    />
+    <Analytics />
+    <SpeedInsights />
+  </v-app>
+</template>
+
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+import { useNuxtApp } from '#app'
+import {nextTick, ref, watch, computed, onMounted} from 'vue'
+import { useDisplay } from 'vuetify'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+import SettingsDrawer from '~/components/App/SettingsDrawer.vue'
+import { Analytics } from '@vercel/analytics/vue'
+import { SpeedInsights } from '@vercel/speed-insights/nuxt'
+import AppBarHome from "~/components/App/AppBarHome.vue";
+import MinBar from "~/components/App/MinBar.vue";
+const { locale } = useI18n()
+const { $vuetify } = useNuxtApp()
+const rtlLanguages = ['ar']
+const isRtl = computed(() => rtlLanguages.includes(locale.value))
+const { loggedIn } =  useUserSession()
+const showSettingsDrawer = ref(false)
+const { mobile } = useDisplay()
+const isLoading = ref(true)
+function updateHtmlAttrs() {
+  if (!process.client) return
+
+  document.documentElement.setAttribute('lang', locale.value)
+  document.documentElement.setAttribute('dir', isRtl.value ? 'rtl' : 'ltr')
+  document.body.classList.toggle('rtl', isRtl.value)
+  document.body.classList.toggle('ltr', !isRtl.value)
+
+  if ($vuetify?.locale) {
+    $vuetify.locale.current = locale.value
+  }
+}
+
+onMounted(async () => {
+  updateHtmlAttrs()
+  stopLoading()
+})
+watch(locale, updateHtmlAttrs)
+watch(() => route.fullPath, () => {
+  nextTick(async () => {
+    const scrollable = document.querySelector('.v-main')
+    smoothScrollToTop(scrollable || window, 2000) // 2 secondes
+  })
+})
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+function smoothScrollToTop(element?: Element | Window, duration = 1000) {
+  const start = element === window ? window.scrollY : element.scrollTop
+  const startTime = performance.now()
+
+  function scrollStep(timestamp) {
+    const elapsed = timestamp - startTime
+    const progress = Math.min(elapsed / duration, 1)
+    const ease = 1 - Math.pow(1 - progress, 3) // easing out cubic
+
+    const scrollTo = start * (1 - ease)
+
+    if (element === window) {
+      window.scrollTo(0, scrollTo)
+    } else {
+      element.scrollTop = scrollTo
+    }
+
+    if (progress < 1) {
+      requestAnimationFrame(scrollStep)
+    }
+  }
+
+  requestAnimationFrame(scrollStep)
+}
+function startLoading() {
+  isLoading.value = true
+}
+
+function stopLoading() {
+  isLoading.value = false
+}
+</script>
+
+<style scoped>
+html, body, #__nuxt, .v-application {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+.v-main {
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 64px;
+  margin-bottom: 32px;
+  height: calc(100vh - 64px - 32px);
+  overflow-y: auto;
+
+  transition-property: padding;
+  transition: padding-left 0.3s ease;
+}
+.v-application--wrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.main-content {
+  min-height: calc(100vh - 64px - 64px); /* header + footer */
+  padding-top: 64px;
+  padding-bottom: 64px;
+  position: relative;
+  z-index: 1;
+  padding-left: 256px; /* drawer width */
+  transition: padding-left 0.3s ease;
+}
+
+@media (max-width: 960px) {
+  .main-content {
+    padding-left: 0;
+  }
+}
+
+.v-application .v-app-bar {
+  height: 64px;
+  z-index: 2000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  align-items: center;
+}
+
+.v-application .v-footer {
+  height: 64px;
+  z-index: 1000;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease-in-out;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.z-loader {
+  z-index: 3000;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>

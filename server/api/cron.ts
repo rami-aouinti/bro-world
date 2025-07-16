@@ -1,0 +1,4 @@
+export default function handler(req, res) {
+  console.log('hello');
+  console.log('hello');
+}

@@ -1,0 +1,20 @@
+{
+  "crons": [
+    {
+    "path": "/api/cron",
+    "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/cron/grok-news",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/reviews",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/quiz",
+      "schedule": "0 * * * *"
+    }
+  ]
+}

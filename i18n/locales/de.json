@@ -1,0 +1,407 @@
+{
+  "dashboard": {
+    "weather": {
+      "title": "Wetter heute",
+      "condition": "Bewölkt"
+    },
+    "news": {
+      "title": "Nachrichten",
+      "fallback": "Die neuesten Nachrichten konnten nicht geladen werden.",
+      "error": "Beim Abrufen der Nachrichten ist ein Fehler aufgetreten."
+    },
+    "quiz": {
+      "title": "Top 3 Mitglieder im",
+      "link": "Quiz"
+    },
+    "rating": {
+      "title": "Bewertungsübersicht",
+      "count": "Bewertungen",
+      "submit": "Absenden"
+    },
+    "groq": {
+      "place": "Basierend auf diesen Koordinaten: Breitengrad {lat}, Längengrad {lng}, gib nur den Namen des nächstgelegenen Ortes oder der Stadt zurück. Nur ein Wort oder Name, kein Satz.",
+      "weather": "Basierend auf diesen Koordinaten: Breitengrad {lat}, Längengrad {lng}, gib nur die aktuelle Temperatur zurück (z. B. \"7°C\"). Keine Sätze oder Erklärungen, nur ein Wert.",
+      "news": "Liste 5 wichtige globale Nachrichtenschlagzeilen von heute auf. Gib einfach eine Liste aus, eine pro Zeile. Keine Einleitung oder zusätzlichen Texte. Kein Markdown oder Nummerierung."
+    }
+  },
+  "navbar": {
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "logout": "Abmelden",
+    "profile": "Profil",
+    "setting": "Einstellungen",
+    "apps": "Apps",
+    "help": "Hilfe",
+    "about": "Über uns",
+    "contact": "Kontakt"
+  },
+  "plugin": {
+    "actions": {
+      "open": "Öffnen",
+      "install": "Installieren"
+    },
+    "pricing": {
+      "free": "Kostenlos",
+      "paid": "Kostenpflichtig"
+    },
+    "ecommerce": {
+      "name": "E-Commerce",
+      "description": "Verwalten Sie einfach Ihren Online-Shop."
+    },
+    "calendar": {
+      "name": "Kalender",
+      "description": "Organisieren Sie Ihre Ereignisse und Aufgaben."
+    },
+    "chat": {
+      "name": "Chat",
+      "description": "Sofortnachrichten mit Ihren Kontakten."
+    },
+    "game": {
+      "name": "Spiele",
+      "description": "Spielen und genießen Sie interaktive Spiele."
+    },
+    "blog": {
+      "name": "Blog",
+      "description": "Teilen Sie Ihre Ideen und Geschichten."
+    },
+    "crm": {
+      "name": "CRM",
+      "description": "Verwalten Sie Kundenbeziehungen effizient."
+    },
+    "job": {
+      "name": "Jobs",
+      "description": "Finden und verwalten Sie Stellenanzeigen."
+    }
+  },
+  "profile": {
+    "platform": "Plattform-Einstellungen",
+    "account": "Konto",
+    "application": "Anwendung",
+    "information": "Profilinformationen",
+    "fullName": "Vollständiger Name",
+    "mobile": "Handy",
+    "email": "E-Mail",
+    "location": "Standort",
+    "social": "Soziale Netzwerke",
+    "reply": "Antworten",
+    "notProvided": "Nicht angegeben",
+    "settings": {
+      "title": "Plattform-Einstellungen",
+      "account": "Konto",
+      "application": "Anwendung",
+      "Email me when someone follows me": "E-Mail senden, wenn mir jemand folgt",
+      "Email me when someone answers on my post": "E-Mail senden, wenn jemand auf meinen Beitrag antwortet",
+      "New launches and projects": "Neue Starts und Projekte",
+      "Monthly product updates": "Monatliche Produktupdates"
+    },
+    "info": {
+      "title": "Profilinformationen",
+      "fullname": "Vollständiger Name",
+      "mobile": "Telefonnummer",
+      "email": "E-Mail",
+      "location": "Standort",
+      "social": "Soziale Netzwerke"
+    },
+    "conversations": {
+      "title": "Unterhaltungen",
+      "reply": "Antworten"
+    }
+  },
+  "setting": {
+    "switch_to_invisible": "Zu unsichtbar wechseln",
+    "switch_to_visible": "Zu sichtbar wechseln"
+  },
+  "terms": {
+    "1": {
+      "title": "Einleitung",
+      "text": "Durch den Zugriff auf unsere Plattform („Dienst“) und deren Nutzung erklären Sie sich mit diesen Allgemeinen Geschäftsbedingungen einverstanden. Wenn Sie mit einem Teil nicht einverstanden sind, nutzen Sie den Dienst bitte nicht."
+    },
+    "2": {
+      "title": "Zulässigkeit",
+      "text": "Sie müssen mindestens 13 Jahre alt sein, um diesen Dienst nutzen zu dürfen. Durch die Registrierung erklären und garantieren Sie, dass Sie diese Voraussetzung erfüllen."
+    },
+    "3": {
+      "title": "Kontoverantwortung",
+      "text": "Sie sind dafür verantwortlich, Ihre Anmeldedaten vertraulich zu behandeln. Sie tragen auch die volle Verantwortung für alle Aktivitäten unter Ihrem Konto."
+    },
+    "4": {
+      "title": "Zulässige Nutzung",
+      "text": "Sie erklären sich damit einverstanden, Folgendes zu unterlassen:\n- Nutzung des Dienstes für rechtswidrige Zwecke;\n- Hochladen oder Teilen von Inhalten, die beleidigend, schädlich oder rechtsverletzend sind;\n- Der Versuch, sich unbefugten Zugang zu den Konten anderer Nutzer oder zu unseren Systemen zu verschaffen."
+    },
+    "5": {
+      "title": "Inhaltsrechte",
+      "text": "Sie behalten das Eigentum an den Inhalten, die Sie veröffentlichen. Durch das Posten auf unserer Plattform gewähren Sie uns jedoch eine nicht-exklusive, weltweite Lizenz zur Anzeige, Verbreitung und Bewerbung Ihrer Inhalte innerhalb der Plattform."
+    },
+    "6": {
+      "title": "Beendigung",
+      "text": "Wir behalten uns das Recht vor, Ihren Zugriff auf den Dienst jederzeit und ohne Vorankündigung zu sperren oder zu beenden, wenn wir glauben, dass Sie gegen diese Bedingungen verstoßen haben."
+    },
+    "7": {
+      "title": "Datenschutz",
+      "text": "Ihre personenbezogenen Daten werden gemäß unserer Datenschutzrichtlinie verarbeitet. Durch die Nutzung des Dienstes stimmen Sie dieser Verarbeitung zu."
+    },
+    "8": {
+      "title": "Änderungen",
+      "text": "Wir können diese Bedingungen von Zeit zu Zeit überarbeiten. Die fortgesetzte Nutzung des Dienstes bedeutet, dass Sie die aktualisierten Bedingungen akzeptieren."
+    },
+    "9": {
+      "title": "Kontakt",
+      "text": "Wenn Sie Fragen zu diesen Bedingungen haben, kontaktieren Sie uns bitte unter"
+    }
+  },
+  "MyAssets": "My Assets",
+  "PersonalAssets": "Personal Assets",
+  "CompanyAssets": "Company Assets",
+  "FleetManagement": "Fleet Management",
+  "DigitalMarketing": "Digitales Marketing",
+  "DigitalMarketingDescription": "Eine Gruppe von Personen, die gemeinsam für die gesamte Arbeit verantwortlich sind, die zur Erstellung funktionierender, validierter Assets erforderlich ist.",
+  "AddStory": "Story hinzufügen",
+  "$vuetify": {
+    "badge": "Abzeichen",
+    "open": "Öffnen",
+    "close": "Schließen",
+    "dataIterator": {
+      "noResultsText": "Keine passenden Einträge gefunden",
+      "loadingText": "Lade Elemente..."
+    },
+    "dataTable": {
+      "itemsPerPageText": "Zeilen pro Seite:",
+      "ariaLabel": {
+        "sortDescending": "Absteigend sortiert.",
+        "sortAscending": "Aufsteigend sortiert.",
+        "sortNone": "Nicht sortiert.",
+        "activateNone": "Aktivieren, um Sortierung zu entfernen.",
+        "activateDescending": "Aktivieren für absteigend sortieren.",
+        "activateAscending": "Aktivieren für aufsteigend sortieren."
+      },
+      "sortBy": "Sortieren nach"
+    },
+    "dataFooter": {
+      "itemsPerPageText": "Elemente pro Seite:",
+      "itemsPerPageAll": "Alle",
+      "nextPage": "Nächste Seite",
+      "prevPage": "Vorherige Seite",
+      "firstPage": "Erste Seite",
+      "lastPage": "Letzte Seite",
+      "pageText": "{0}-{1} von {2}"
+    },
+    "datePicker": {
+      "itemsSelected": "{0} ausgewählt",
+      "nextMonthAriaLabel": "Nächster Monat",
+      "nextYearAriaLabel": "Nächstes Jahr",
+      "prevMonthAriaLabel": "Vorheriger Monat",
+      "prevYearAriaLabel": "Vorheriges Jahr"
+    },
+    "noDataText": "Keine Daten verfügbar",
+    "carousel": {
+      "prev": "Vorheriges Bild",
+      "next": "Nächstes Bild",
+      "ariaLabel": {
+        "delimiter": "Folie {0} von {1}"
+      }
+    },
+    "loading": "Lädt...",
+    "fileInput": {
+      "counter": "{0} Dateien",
+      "counterSize": "{0} Dateien ({1} insgesamt)"
+    },
+    "timePicker": {
+      "am": "AM",
+      "pm": "PM"
+    },
+    "pagination": {
+      "ariaLabel": {
+        "root": "Seitennummerierung",
+        "next": "Nächste Seite",
+        "previous": "Vorherige Seite",
+        "page": "Gehe zu Seite {0}",
+        "currentPage": "Aktuelle Seite, Seite {0}"
+      }
+    }
+  },
+  "post": {
+    "files": "Post files"
+  },
+  "story": {
+    "loadingText": "Lade Elemente..."
+  },
+  "pageNotFound": {
+    "headline": "Hoppla, 404",
+    "title": "Seite nicht gefunden",
+    "message": "Die angeforderte Seite konnte nicht gefunden werden.",
+    "goHome": "Zur Startseite",
+    "goBack": "Zurück"
+  },
+  "error": {
+    "title": "Fehler",
+    "message": "Beim Verarbeiten Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
+  },
+  "success": {
+    "title": "Erfolg",
+    "message": "Ihre Anfrage wurde erfolgreich verarbeitet."
+  },
+  "warning": {
+    "title": "Warnung",
+    "message": "Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut."
+  },
+  "info": {
+    "title": "Information",
+    "message": "Hier sind einige Informationen, die für Sie nützlich sein könnten."
+  },
+  "loading": {
+    "message": "Laden, bitte warten..."
+  },
+  "notFound": {
+    "message": "Die angeforderte Ressource wurde nicht gefunden."
+  },
+  "unauthorized": {
+    "message": "Sie sind nicht berechtigt, diese Seite anzuzeigen. Bitte melden Sie sich an."
+  },
+  "forbidden": {
+    "message": "Sie haben keine Berechtigung, auf diese Ressource zuzugreifen."
+  },
+  "serverError": {
+    "message": "Ein interner Serverfehler ist aufgetreten. Bitte versuchen Sie es später erneut."
+  },
+  "maintenance": {
+    "message": "Die Website wird derzeit gewartet. Bitte versuchen Sie es später erneut."
+  },
+  "contactSupport": {
+    "message": "Wenn das Problem weiterhin besteht, wenden Sie sich bitte an den Support."
+  },
+  "termsOfService": "Nutzungsbedingungen",
+  "privacyPolicy": "Datenschutzrichtlinie",
+  "cookiePolicy": "Cookie-Richtlinie",
+  "aboutUs": "Über uns",
+  "faq": "FAQ",
+  "feedback": "Feedback",
+  "search": "Suche",
+  "settings": "Einstellungen",
+  "logout": "Abmelden",
+  "login": "Anmelden",
+  "resetPassword": "Passwort zurücksetzen",
+  "changePassword": "Passwort ändern",
+  "updateProfile": "Profil aktualisieren",
+  "notifications": "Benachrichtigungen",
+  "language": "Sprache",
+  "theme": "Thema",
+  "darkMode": "Dunkler Modus",
+  "lightMode": "Heller Modus",
+  "contact": {
+    "title": "Kontaktieren Sie uns",
+    "name": "Ihr Name",
+    "email": "Ihre E-Mail-Adresse",
+    "subject": "Betreff",
+    "message": "Ihre Nachricht",
+    "send": "Nachricht senden",
+    "success": "Vielen Dank! Ihre Nachricht wurde gesendet.",
+    "error": "Fehler beim Senden der Nachricht. Bitte versuchen Sie es später erneut.",
+    "location": "Standort"
+  },
+  "about": {
+    "title": "Über Bro World",
+    "intro1": "Bro World ist mehr als nur eine Plattform – es ist dein digitaler Begleiter. Hier kannst du dich frei ausdrücken, deine Gedanken teilen, dich mit anderen verbinden und deinen eigenen digitalen Raum mit leistungsstarken Plugins gestalten.",
+    "intro2": "Egal ob Bloggen, ein Geschäft führen, mit Freunden chatten oder deine Zeit organisieren – Bro World passt sich dir an. Wähle und installiere die Plugins, die du brauchst: E-Commerce, Kalender, Live-Chat, CRM, Blog-CMS, Spiele und vieles mehr.",
+    "intro3": "Wir glauben an Freiheit, Kreativität und Individualisierung. Mit Bro World kannst du dein eigenes digitales Universum aufbauen – Beitrag für Beitrag, Plugin für Plugin, Verbindung für Verbindung.",
+    "tech": "Mit Liebe entwickelt mit Vue 3, Vuetify 3 und Nuxt 3. Entworfen, um schnell, modular und angenehm zu sein.",
+    "values": "Unsere Grundwerte sind Inklusivität, Meinungsfreiheit und kontinuierliche Innovation.",
+    "mission": "Unsere Mission ist es, einen kreativen und ethischen digitalen Raum für alle zu schaffen.",
+    "vision": "Die führende, individuelle und freie Community-Plattform weltweit zu werden.",
+    "team": "Erstellt von Rami Aouinti, technikbegeistert und pädiatrisch interessiert."
+  },
+  "help": {
+    "title": "Hilfe & FAQ",
+    "questions": {
+      "q1": "Was ist Bro World?",
+      "a1": "Bro World ist eine soziale Webplattform, auf der du Beiträge erstellen, chatten und funktionale Plugins hinzufügen kannst, um dein Erlebnis zu personalisieren.",
+      "q2": "Wie installiere ich ein Plugin?",
+      "a2": "Gehe zum Plugin-Bereich. Wenn das Plugin nicht installiert ist, klicke auf „Installieren“. Nach der Installation kannst du es über den Button „Öffnen“ aufrufen.",
+      "q3": "Ist es kostenlos?",
+      "a3": "Ja, Bro World ist kostenlos. Einige Plugins sind gratis, andere können als „Kostenpflichtig“ gekennzeichnet sein.",
+      "q4": "Darf ich alles posten, was ich will?",
+      "a4": "Du kannst frei posten, aber bitte respektiere andere. Missbräuchliche, schädliche oder illegale Inhalte können gemäß unseren Gemeinschaftsrichtlinien entfernt werden.",
+      "q5": "Wer steckt hinter Bro World?",
+      "a5": "Bro World wurde von einem leidenschaftlichen Entwickler gebaut, der an Freiheit, Kreativität und soziale Verbindungen durch moderne Webtechnologien glaubt."
+    },
+    "updated": "Letzte Aktualisierung: Juli 2025"
+  },
+  "reset": {
+    "email": "E-Mail-Adresse",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "submit": "Passwort zurücksetzen",
+    "success": "Passwort wurde erfolgreich zurückgesetzt. Weiterleitung zum Login...",
+    "errorToken": "Token fehlt oder ist ungültig.",
+    "errorGeneric": "Etwas ist schiefgelaufen.",
+    "rules": {
+      "required": "Passwort ist erforderlich.",
+      "minLength": "Das Passwort muss mindestens 8 Zeichen lang sein.",
+      "mismatch": "Passwörter stimmen nicht überein."
+    }
+  },
+  "register": {
+    "email": "Benutzername oder E-Mail",
+    "password": "Passwort",
+    "repeatPassword": "Passwort wiederholen",
+    "agree": "Ich akzeptiere die",
+    "terms": "Nutzungsbedingungen",
+    "errorMissing": "Benutzername und Passwort sind erforderlich.",
+    "errorTerms": "Sie müssen die Nutzungsbedingungen akzeptieren, um fortzufahren.",
+    "success": "Erfolgreich registriert!",
+    "haveAccount": "Sie haben ein Konto?",
+    "signIn": "Anmelden",
+    "requirements": "Passwortanforderungen",
+    "requirement1": "Ein Sonderzeichen",
+    "requirement2": "Mindestens 6 Zeichen",
+    "termsTitle": "Nutzungsbedingungen"
+  },
+  "auth": {
+    "usernameOrEmail": "Benutzername oder E-Mail",
+    "password": "Passwort",
+    "forgotPassword": "Passwort vergessen?",
+    "signIn": "Anmelden",
+    "signUpPrompt": "Sie haben noch kein Konto?",
+    "signUp": "Registrieren",
+    "requiredError": "Benutzername und Passwort sind erforderlich.",
+    "invalidError": "Benutzername oder Passwort ist falsch."
+  },
+  "job": {
+    "create": "Stellenangebot erstellen",
+    "edit": "Stellenangebot bearbeiten",
+    "delete": "Stellenangebot löschen",
+    "search": "Stelle suchen",
+    "filterByExperience": "Nach Berufserfahrung filtern",
+    "yearsExperience": "Jahre Erfahrung",
+    "skills": "Erforderliche Fähigkeiten",
+    "description": "Beschreibung",
+    "company": "Unternehmen",
+    "title": "Stellentitel",
+    "experience": "Berufserfahrung (in Jahren)",
+    "submit": "Veröffentlichen",
+    "noMatch": "Keine Stellenanzeige entspricht Ihrer Suche.",
+    "list": "Stellenliste",
+    "details": "Stellendetails"
+  },
+  "applicant": {
+    "create": "Bewerbung einreichen",
+    "name": "Vollständiger Name",
+    "contactEmail": "E-Mail-Adresse",
+    "jobPreferences": "Jobpräferenzen",
+    "submit": "Bewerben",
+    "list": "Bewerber",
+    "details": "Bewerbungsdetails"
+  },
+  "buttons": {
+    "back": "Zurück",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen"
+  },
+  "messages": {
+    "jobCreated": "Stellenangebot erfolgreich erstellt.",
+    "jobUpdated": "Stellenangebot erfolgreich aktualisiert.",
+    "applicationSubmitted": "Bewerbung erfolgreich eingereicht.",
+    "errorOccurred": "Ein Fehler ist aufgetreten. Bitte versuche es erneut."
+  }
+}

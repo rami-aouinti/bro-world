@@ -1,0 +1,62 @@
+<template>
+  <Suspense>
+    <template #default>
+      <Weather />
+    </template>
+    <template #fallback>
+      <v-skeleton-loader
+        type="card"
+        class="rounded-xl mx-3 mb-3"
+        height="140"
+      />
+    </template>
+  </Suspense>
+  <Suspense>
+    <template #default>
+      <News />
+    </template>
+    <template #fallback>
+      <v-skeleton-loader
+        type="card"
+        class="rounded-xl mx-3 mb-3"
+        height="140"
+      />
+    </template>
+  </Suspense>
+
+  <Suspense>
+    <template #default>
+      <Quiz />
+    </template>
+    <template #fallback>
+      <v-skeleton-loader
+        type="card"
+        class="rounded-xl mx-3 mb-3"
+        height="140"
+      />
+    </template>
+  </Suspense>
+
+  <Suspense>
+    <template #default>
+      <Rating />
+    </template>
+    <template #fallback>
+      <v-skeleton-loader
+        type="card"
+        class="rounded-xl mx-3 mb-3"
+        height="140"
+      />
+    </template>
+  </Suspense>
+</template>
+
+<script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
+const { loggedIn } = await useUserSession()
+
+const Weather = defineAsyncComponent(() => import('~/pages/home/dashboard/Weather.vue'))
+const News = defineAsyncComponent(() => import('~/pages/home/dashboard/News.vue'))
+const Quiz = defineAsyncComponent(() => import('~/pages/home/dashboard/Quiz.vue'))
+const Rating = defineAsyncComponent(() => import('~/pages/home/dashboard/Rating.vue'))
+</script>
