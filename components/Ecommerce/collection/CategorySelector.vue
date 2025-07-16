@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { ShopifyCollections } from "~/modules/shopify/types";
+import { ref, computed } from 'vue'
 
 const props = defineProps<{ collections?: ShopifyCollections }>();
 const route = useRoute();
@@ -7,7 +8,15 @@ const route = useRoute();
 function isActiveCollection(collectionHandle: string) {
   return route.params.handle === collectionHandle;
 }
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 const selectOptions = computed(() =>
   props.collections?.edges.map(({ node }) => ({
     value: node.title,
@@ -51,7 +60,9 @@ const selected = ref(
           class="bg-transparent mx-3"
           :class="{ 'active-item': isActiveCollection(node.handle) }"
         >
-          <v-list-item-title>{{ node.title }}</v-list-item-title>
+          <v-list-item-title class="text-subtitle-2 text-uppercase font-weight-bold mx-3" :class="isDark ? 'text-white' : 'text-default'">
+            {{ node.title }}
+          </v-list-item-title>
         </v-list-item>
       </v-list>
     </div>

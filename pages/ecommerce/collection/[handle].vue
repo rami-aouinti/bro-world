@@ -75,9 +75,6 @@ useSeoMeta({
     <div class="collection-main">
       <section class="collection-products">
         <div class="collection-toolbar">
-          <h2 class="collection-count">
-            All products ({{ collectionProducts?.length }})
-          </h2>
           <SortSelector :disabled="!collectionProducts?.length" />
         </div>
 

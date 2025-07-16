@@ -107,7 +107,6 @@ useSeoMeta({
 }
 
 .related-products {
-  margin: 80px auto 40px;
   text-align: left;
 }
 
