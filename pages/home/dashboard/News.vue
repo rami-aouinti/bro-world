@@ -22,7 +22,8 @@
           color="transparent"
         >
           <v-app-bar-nav-icon color="primary">🌐</v-app-bar-nav-icon>
-          <v-toolbar-title>
+          <v-toolbar-title :class="isDark ? 'text-white' : 'text-default'"
+                           style="text-shadow: 1px 1px 2px rgb(var(--v-theme-primary));">
             {{ t('dashboard.news.title') }}
           </v-toolbar-title>
         </v-toolbar>
@@ -38,14 +39,14 @@
               role="listitem"
             >
               <template v-if="isRtl" #append>
-                <v-icon color="primary" class="ms-2">mdi-newspaper-variant-outline</v-icon>
+                <v-icon color="primary" class="ms-1">mdi-newspaper-variant-outline</v-icon>
               </template>
               <template v-else #prepend>
-                <v-icon color="primary" class="mr-2">mdi-newspaper-variant-outline</v-icon>
+                <v-icon color="primary" class="mr-1">mdi-newspaper-variant-outline</v-icon>
               </template>
 
               <template #default>
-                <span class="text-body-2">{{ item }}</span>
+                <span :class="isDark ? 'text-white' : 'text-default'">{{ item }}</span>
               </template>
             </v-list-item>
           </v-list>
@@ -65,7 +66,15 @@ const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
 
 const news = ref<string[]>([])
 const loadingNews = ref(true)
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 onMounted(async () => {
   try {
     const { askGroq } = useGroq()

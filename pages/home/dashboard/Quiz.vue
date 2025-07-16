@@ -19,11 +19,12 @@
           color="transparent"
         >
           <v-app-bar-nav-icon color="primary">🏆</v-app-bar-nav-icon>
-          <v-toolbar-title to="/game">
+          <v-toolbar-title :class="isDark ? 'text-white' : 'text-default'"
+                           style="text-shadow: 1px 1px 2px rgb(var(--v-theme-primary));" to="/game">
             {{ t('dashboard.quiz.title') }}
             <NuxtLink
               to="/game"
-              class="text-primary text-decoration-none font-weight-bold ml-1"
+              class="text-default text-decoration-none font-weight-bold ml-1"
             >
               {{ t('dashboard.quiz.link') }}
             </NuxtLink>
@@ -52,7 +53,7 @@
                 <span class="mx-2">
                   <UserAvatar :user="topUser.userId" size="26" color="primary" />
                 </span>
-                <span :class="topUser.userId?.id === user?.id ? 'text-primary font-weight-bold' : 'font-weight-medium'">
+                <span :class="topUser.userId?.id === user?.id ? 'text-primary font-weight-bold' : 'text-default font-weight-medium'">
                   {{ topUser.userId?.firstName }} {{ topUser.userId?.lastName }}
                 </span>
                 <span class="text-body-2 ms-auto font-weight-bold" :class="topUser.userId?.id === user?.id ? 'text-primary' : ''">
@@ -78,7 +79,15 @@ const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
 const topUsers = ref<{ name: string; points: number }[]>([])
 const trophies = ['🥇', '🥈', '🥉']
 const loadingQuiz = ref(true)
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 const fetchScores = async () => {
   try {
     const data = await $fetch('/api/quiz/leaderboard')

@@ -37,7 +37,7 @@ const isDark = computed({
           <v-icon :icon="item.icon" :color="item.color" class="me-3"></v-icon>
         </template>
 
-        <v-list-item-title class="text-subtitle-1 text-uppercase font-weight-bold" :class="isDark ? 'text-white' : 'text-default'">
+        <v-list-item-title class="text-subtitle-2 text-uppercase font-weight-bold" :class="isDark ? 'text-white' : 'text-default'">
           {{ item.title }}
         </v-list-item-title>
       </v-list-item>

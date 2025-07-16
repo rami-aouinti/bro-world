@@ -16,13 +16,15 @@
       >
         <v-icon icon="custom:world-logo" color="primary" />
         <template class="px-2" v-if="!mobile">
-          <span :class="isDark ? 'text-white' : 'text-default'">Bro</span>
-          <span class="text-primary">World</span></template>
+          <span style="text-shadow: 1px 1px 2px rgb(var(--v-theme-primary));" :class="isDark ? 'text-white' : 'text-default'">Bro</span>
+          <span style="text-shadow: 1px 1px 2px #344767;" class="text-primary">World</span></template>
       </NuxtLink>
     </template>
 
     <div id="app-bar" />
 
+
+    <v-spacer />
     <!-- Centrage des boutons et cachés en mobile -->
     <v-row v-if="!mobile" class="mx-auto" align="center" justify="center" dense>
       <v-btn color="primary" :to="localePath('/courses')" class="mx-2" variant="text">
@@ -41,8 +43,6 @@
         <v-icon :color="isDark ? 'white' : 'default'" size="32">mdi-gamepad-variant</v-icon>
       </v-btn>
     </v-row>
-
-    <v-spacer />
 
     <Switch />
     <Navigation />

@@ -21,7 +21,11 @@
             <p class="text-sm mb-0 font-weight-bold opacity-7">
               {{ t('dashboard.weather.title') }}
             </p>
-            <h6 class="text-h6 font-weight-bolder mb-0">
+            <h6
+              class="text-h6 font-weight-bolder mb-0"
+              :class="isDark ? 'text-white' : 'text-default'"
+              style="text-shadow: 1px 1px 2px rgb(var(--v-theme-primary));"
+            >
               {{ city }} {{ weatherInfo }}°C
             </h6>
           </v-col>
@@ -50,7 +54,6 @@ import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGroq } from '~/composables/useGroq'
 import { useCachedFetch } from '~/composables/useCachedFetch'
-import ChartBar from "~/components/Chart/ChartBar.vue";
 
 const { t, locale } = useI18n()
 const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
@@ -58,7 +61,15 @@ const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
 const { loggedIn } = useUserSession()
 const runtimeConfig = useRuntimeConfig()
 const { askGroq } = useGroq()
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 const loading = ref(true)
 const weatherInfo = ref('')
 const city = ref('')

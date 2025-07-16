@@ -23,7 +23,8 @@
           color="transparent"
         >
           <v-app-bar-nav-icon color="primary">❤️</v-app-bar-nav-icon>
-          <v-toolbar-title>
+          <v-toolbar-title :class="isDark ? 'text-white' : 'text-default'"
+                           style="text-shadow: 1px 1px 2px rgb(var(--v-theme-primary));">
             {{ t('dashboard.rating.title') }}
           </v-toolbar-title>
         </v-toolbar>
@@ -31,7 +32,7 @@
 
         <!-- Note globale -->
         <div class="d-flex flex-column align-center my-4">
-          <div class="text-h2">
+          <div class="text-h2" :class="isDark ? 'text-white' : 'text-default'">
             {{ averageRating.toFixed(1) }}
             <span class="text-h6 ml-1">/5</span>
           </div>
@@ -43,7 +44,7 @@
             size="large"
             aria-label="Average rating"
           />
-          <div class="text-caption">
+          <div class="text-caption" :class="isDark ? 'text-white' : 'text-default'">
             {{ totalReviews }} {{ t('dashboard.rating.count') }}
           </div>
         </div>
@@ -115,7 +116,15 @@ const { t, locale } = useI18n()
 const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
 
 const { loggedIn } = useUserSession()
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 const loading = ref(true)
 const averageRating = ref(0)
 const totalReviews = ref(0)

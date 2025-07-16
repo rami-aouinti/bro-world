@@ -24,8 +24,9 @@
                 <div class="mx-4">
                   <NuxtLink
                     :to="localePath('/profile')"
-                    class="text-h5 font-weight-bolder text-decoration-none"
+                    class="text-h6 font-weight-bolder text-decoration-none"
                     :class="isDark ? 'text-white' : 'text-default'"
+                    style="text-shadow: 1px 1px 2px rgb(var(--v-theme-primary));"
                   >
                     {{ truncate(user?.firstName + ' ' + user?.lastName, 20) }}
                   </NuxtLink>
@@ -71,8 +72,7 @@ import { useI18n } from 'vue-i18n';
 import { useLocalePath } from '#i18n';
 const { t } = useI18n();
 const localePath = useLocalePath();
-import RelativeTime from "~/components/App/RelativeTime.vue";
-import {truncate} from "../../utils/stringUtils";
+import {truncate} from "~/utils/stringUtils";
 
 const { user, loggedIn } = await useUserSession();
 const isRedirecting = ref(false);
