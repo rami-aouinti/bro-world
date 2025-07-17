@@ -1,11 +1,17 @@
-
-
-<!-- ✅ COMPONENT: LineItem.vue -->
 <script setup lang="ts">
+import { computed } from 'vue'
 import QuantitySelector from "~/components/Ecommerce/product/QuantitySelector.vue";
 import type { ShopifyCartLineItem } from "~/modules/shopify/types";
 import { useShopifyCart } from "~/modules/shopify/composables/useShopifyCart";
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 const { getPriceWithCurrency, isCartOpen } = useShopifyCart();
 
 const emit = defineEmits<{
@@ -33,8 +39,8 @@ function debouncedUpdateQuantity(newQuantity: number) {
           <NuxtImg
             format="webp"
             :src="item.merchandise.product.featuredImage?.url"
-            width="62"
-            height="62"
+            width="72"
+            height="92"
             class="product-image"
           />
         </NuxtLink>
@@ -42,16 +48,17 @@ function debouncedUpdateQuantity(newQuantity: number) {
           class="remove-btn"
           size="xs"
           variant="outline"
-          icon="i-heroicons-x-mark-20-solid"
+          icon="mdi-delete"
+          color="primary"
           @click="emit('remove-item', item.id)"
         />
       </div>
       <div class="details-wrapper">
-        <p class="product-title">{{ item.merchandise.product.title }}</p>
-        <p class="product-price">
+        <p class="product-title" :class="isDark ? 'text-white' : 'text-default'">{{ item.merchandise.product.title }}</p>
+        <p class="product-price text-primary">
           {{ getPriceWithCurrency(item.merchandise.product.priceRange.minVariantPrice) }}
         </p>
-        <p class="product-options">
+        <p class="product-options" :class="isDark ? 'text-white' : 'text-secondary'">
           {{ item.merchandise.selectedOptions.map((option) => option.value).join(", ") }}
         </p>
         <QuantitySelector
@@ -90,7 +97,7 @@ function debouncedUpdateQuantity(newQuantity: number) {
 
 .remove-btn {
   position: absolute;
-  top: -6px;
+  top: -3px;
   right: -6px;
 }
 
@@ -100,17 +107,17 @@ function debouncedUpdateQuantity(newQuantity: number) {
 }
 
 .product-title {
-  font-size: 0.7rem;
+  font-size: 0.875rem;
   font-weight: 450;
 }
 
 .product-price {
-  font-size: 0.575rem;
+  font-size: 1.075rem;
   font-weight: 600;
 }
 
 .product-options {
-  font-size: 0.55rem;
+  font-size: 1.05rem;
   margin-bottom: 0.5rem;
 }
 

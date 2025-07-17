@@ -30,6 +30,7 @@ export enum ShopifyCollectionSortKeys {
   MANUAL = 'MANUAL',
   /** Sort by the `price` value. */
   PRICE = 'PRICE',
+  SALES = 'SALES',
   /**
    * Sort by relevance to the search terms when the `query` parameter is specified on the connection.
    * Don't use this sort key when no search query is specified.

@@ -10,6 +10,7 @@ defineProps({
 const search = ref('')
 const router = useRouter();
 const route = useRoute();
+import { watch } from 'vue'
 
 const options = [
   { label: "Relevance", value: ShopifyCollectionSortKeys.RELEVANCE },
@@ -19,6 +20,7 @@ const options = [
   { label: "Created", value: ShopifyCollectionSortKeys.CREATED },
 ];
 const sales = [
+  { label: "Sales", value: ShopifyCollectionSortKeys.SALES },
   { label: "10%", value: ShopifyCollectionSortKeys.RELEVANCE },
   { label: "20%", value: ShopifyCollectionSortKeys.TITLE },
   { label: "30%", value: ShopifyCollectionSortKeys.PRICE },
@@ -30,8 +32,16 @@ const selected = ref(
     ? options.find(option => option.value === route.query.sortKey)?.value
     : options[0]?.value
 );
-
+const selectedSales = ref(
+  route.query.sortKey
+    ? options.find(option => option.value === route.query.sortKey)?.value
+    : options[0]?.value
+);
 watch(selected, (newSortKey) => {
+  if (!newSortKey) return;
+  router.replace({ query: { sortKey: newSortKey } });
+});
+watch(selectedSales, (newSortKey) => {
   if (!newSortKey) return;
   router.replace({ query: { sortKey: newSortKey } });
 });
@@ -48,11 +58,11 @@ watch(selected, (newSortKey) => {
     density="compact"
     rounded="xl"
     variant="outlined"
-    style="max-width: 300px; margin-bottom: 20px;"
+    style="margin-bottom: 20px;"
   />
   <v-select
     rounded="xl"
-    v-model="selected"
+    v-model="selectedSales"
     :items="sales"
     max-width="200"
     class="mx-1"

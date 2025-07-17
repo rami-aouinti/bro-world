@@ -1,8 +1,20 @@
-<!-- ✅ COMPONENT: Cart Panel (Cart.vue) -->
 <script lang="ts" setup>
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 import LineItem from "~/components/Ecommerce/cart/LineItem.vue";
 import { useShopifyCart } from "~/modules/shopify/composables/useShopifyCart";
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
+const emit = defineEmits(['checkout'])
 const {
   getPriceWithCurrency,
   cart,
@@ -11,7 +23,10 @@ const {
   removeFromCart,
   redirectToCheckout,
 } = useShopifyCart();
-
+function redirect(url: string) {
+  emit('checkout')
+  router.push(url)
+}
 const costs = computed(() => cart?.value?.cost);
 </script>
 
@@ -35,31 +50,32 @@ const costs = computed(() => cart?.value?.cost);
 
       <div v-else class="cart-empty">
         <v-icon name="i-heroicons-shopping-bag-20-solid" class="icon-empty" />
-        <p class="empty-text">No items in cart</p>
+        <p class="empty-text" :class="isDark ? 'text-white' : 'text-default'">No items in cart</p>
       </div>
 
       <div v-if="cart?.lines?.edges?.length" class="cart-summary">
         <div class="summary-row">
-          <div class="summary-labels">
+          <div class="summary-labels" :class="isDark ? 'text-white' : 'text-default'">
             <p>Subtotal</p>
             <p>Sales Tax</p>
             <p>Shipping</p>
           </div>
-          <div class="summary-values">
+          <div class="summary-values" :class="isDark ? 'text-white' : 'text-default'">
             <p>{{ getPriceWithCurrency(costs?.subtotalAmount) }}</p>
             <p>{{ getPriceWithCurrency(costs?.totalTaxAmount) }}</p>
             <p class="text-sm">Calculated at checkout</p>
           </div>
         </div>
         <div class="summary-total">
-          <p>Total</p>
-          <p>{{ getPriceWithCurrency(costs?.totalAmount) }}</p>
+          <p :class="isDark ? 'text-white' : 'text-default'">Total</p>
+          <p class="text-primary">{{ getPriceWithCurrency(costs?.totalAmount) }}</p>
         </div>
         <v-btn
           class="checkout-btn"
           :disabled="loading"
-          size="xl"
-          @click="redirectToCheckout"
+          color="primary"
+          variant="outlined"
+          @click="redirect('/ecommerce/cart')"
         >
           Checkout
         </v-btn>
@@ -72,7 +88,6 @@ const costs = computed(() => cart?.value?.cost);
 .cart-panel {
   display: flex;
   flex-direction: column;
-  height: 100%;
   padding: 1rem;
 }
 
@@ -86,13 +101,12 @@ const costs = computed(() => cart?.value?.cost);
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .cart-items {
   flex-grow: 1;
   overflow-y: auto;
-  padding-right: 4px;
 }
 
 .cart-empty {

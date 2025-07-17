@@ -19,23 +19,6 @@ const { data: profile, pending, error, refresh } = await useAsyncData(
     server: true
   }
 )
-const fetchProfile = async (userId) => {
-  if (user.id) {
-    const data = await userStore.fetchProfile(userId, null)
-    if (data) {
-      return data.value.username
-    }
-  }
-
-}
-
-const avatars = [
-  '?accessoriesType=Blank&avatarStyle=Circle&clotheColor=PastelGreen&clotheType=ShirtScoopNeck&eyeType=Wink&eyebrowType=UnibrowNatural&facialHairColor=Black&facialHairType=MoustacheMagnum&hairColor=Platinum&mouthType=Concerned&skinColor=Tanned&topType=Turban',
-  '?accessoriesType=Sunglasses&avatarStyle=Circle&clotheColor=Gray02&clotheType=ShirtScoopNeck&eyeType=EyeRoll&eyebrowType=RaisedExcited&facialHairColor=Red&facialHairType=BeardMagestic&hairColor=Red&hatColor=White&mouthType=Twinkle&skinColor=DarkBrown&topType=LongHairBun',
-  '?accessoriesType=Prescription02&avatarStyle=Circle&clotheColor=Black&clotheType=ShirtVNeck&eyeType=Surprised&eyebrowType=Angry&facialHairColor=Blonde&facialHairType=Blank&hairColor=Blonde&hatColor=PastelOrange&mouthType=Smile&skinColor=Black&topType=LongHairNotTooLong',
-  '?accessoriesType=Round&avatarStyle=Circle&clotheColor=PastelOrange&clotheType=Overall&eyeType=Close&eyebrowType=AngryNatural&facialHairColor=Blonde&facialHairType=Blank&graphicType=Pizza&hairColor=Black&hatColor=PastelBlue&mouthType=Serious&skinColor=Light&topType=LongHairBigHair',
-  '?accessoriesType=Kurt&avatarStyle=Circle&clotheColor=Gray01&clotheType=BlazerShirt&eyeType=Surprised&eyebrowType=Default&facialHairColor=Red&facialHairType=Blank&graphicType=Selena&hairColor=Red&hatColor=Blue02&mouthType=Twinkle&skinColor=Pale&topType=LongHairCurly',
-]
 
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -81,21 +64,8 @@ const isDark = computed({
   },
 })
 
-async function fetchUsers (item) {
-  await pause(1500)
-
-  return fetch('https://jsonplaceholder.typicode.com/users')
-    .then(res => res.json())
-    .then(json => (item.children.push(...json)))
-    .catch(err => console.warn(err))
-}
-
-function randomAvatar () {
-  avatar.value = avatars[Math.floor(Math.random() * avatars.length)]
-}
 watch(selected, async () => {
   await fetchConversations()
-  randomAvatar()
 })
 onMounted(async () => {
   window.scrollTo({ top: 0 })

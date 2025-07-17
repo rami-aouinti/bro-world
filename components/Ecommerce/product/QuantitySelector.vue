@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useCounter } from '@vueuse/core'
+import { watch } from 'vue'
 
 const props = defineProps({
   quantity: {
@@ -33,14 +34,14 @@ watch(count, (newVal: number) => {
 
 <template>
   <div class="inline-flex flex-col items-center">
-    <div class="flex border border-gray-700 rounded-md bg-gray-800 h-10">
+    <div class="flex border border-gray-700 rounded-xl bg-gray-800 h-10">
       <v-btn
         type="button"
         :disabled="count <= min || disabled"
-        class="rounded-r-none"
         :class="small && '!p-1'"
         :aria-controls="inputId"
-        variant="ghost"
+        variant="text"
+        outlined
         color="primary"
         aria-label="Decrease value"
         @click="dec()"
@@ -58,7 +59,7 @@ watch(count, (newVal: number) => {
         role="spinbutton"
         disabled
         aria-label="Quantity Selector"
-        class="w-8 text-center bg-transparent font-medium [&::-webkit-inner-spin-button]:appearance-none disabled:placeholder-disabled-900"
+        class="w-8 text-center text-default bg-transparent font-medium [&::-webkit-inner-spin-button]:appearance-none disabled:placeholder-disabled-900"
         :class="!small && 'mx-2'"
         :min="min"
         :max="max"
@@ -66,10 +67,9 @@ watch(count, (newVal: number) => {
       <v-btn
         type="button"
         :disabled="count >= max || disabled"
-        class="rounded-l-none"
         :class="small && '!p-1'"
         :aria-controls="inputId"
-        variant="ghost"
+        variant="text"
         color="primary"
         aria-label="Increase value"
         @click="inc()"

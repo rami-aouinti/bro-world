@@ -44,7 +44,11 @@ const computedVariant = computed(() => {
       <h3 class="product-title" :class="isDark ? 'text-white' : 'text-default'">
         {{ product?.title }}
       </h3>
-      <span class="product-price">
+      <span
+        class="product-price"
+        :class="isDark ? 'text-white' : 'text-default'"
+        style="text-shadow: 1px 1px 2px rgb(var(--v-theme-primary));"
+      >
         {{ getPriceWithCurrency(computedVariant?.price) || "" }}
       </span>
     </div>
@@ -53,11 +57,11 @@ const computedVariant = computed(() => {
       {{ product?.description }}
     </p>
 
-    <VariantOptions :product="product" />
+    <VariantOptions :product="product"  />
 
     <div class="action-row">
       <div class="quantity-block">
-        <p class="quantity-label">Quantity</p>
+        <p class="quantity-label font-weight-bold" :class="isDark ? 'text-white' : 'text-default'">Quantity</p>
         <QuantitySelector
           class="quantity-selector"
           @quantity-updated="(newVal: number) => (quantity = newVal)"

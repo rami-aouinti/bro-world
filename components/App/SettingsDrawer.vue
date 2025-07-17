@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineEmits, defineProps, onMounted, onBeforeUnmount } from 'vue'
+import { defineEmits, defineProps, onMounted, onBeforeUnmount, computed } from 'vue'
 import OrderSummary from '~/components/Ecommerce/cart/OrderSummary.vue'
 
 const emit = defineEmits(['toggleSettingsDrawer'])
@@ -7,7 +7,15 @@ const emit = defineEmits(['toggleSettingsDrawer'])
 const props = defineProps({
   showSettingsDrawer: Boolean
 })
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 function onKeydown(e: KeyboardEvent) {
   if (e.key === 'Escape') emit('toggleSettingsDrawer', false)
 }
@@ -31,12 +39,13 @@ onBeforeUnmount(() => {
     <v-card
       class="card-shadow border-radius-xl pa-2"
       max-width="360"
+      style="overflow-y: auto"
     >
       <v-row align="center" justify="space-between" class="mb-2">
         <v-col cols="10">
           <div>
-            <h5 class="text-h5 font-weight-bold">Order Summary</h5>
-            <p class="text-body-2">Review items in your cart</p>
+            <h5 style="text-shadow: 1px 1px 2px rgb(var(--v-theme-primary));"  class="text-h5 font-weight-bold" :class="isDark ? 'text-white' : 'text-default'">Order Summary</h5>
+            <p class="text-secondary px-4">Review items in your cart</p>
           </div>
         </v-col>
         <v-col cols="2" class="text-end">
@@ -53,7 +62,7 @@ onBeforeUnmount(() => {
 
       <v-divider class="my-1"/>
 
-      <OrderSummary/>
+      <OrderSummary @checkout="emit('toggleSettingsDrawer', false)"/>
     </v-card>
   </div>
 </template>

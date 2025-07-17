@@ -2,7 +2,7 @@
 import ImageGallery from "~/components/Ecommerce/product/ImageGallery.vue";
 import InfoDetails from "~/components/Ecommerce/product/InfoDetails.vue";
 import TileCard from "~/components/Ecommerce/product/TileCard.vue";
-import {nextTick, onMounted, ref} from 'vue'
+import {nextTick, onMounted, ref, computed} from 'vue'
 
 const route = useRoute()
 const config = useRuntimeConfig()
@@ -42,7 +42,15 @@ onMounted(async () => {
   } catch (e) {
   }
 })
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 useSeoMeta({
   title: product.value?.seo.title || product.value?.title,
   description: product.value?.seo.description || product.value?.description,
@@ -70,7 +78,7 @@ useSeoMeta({
 
     <NuxtLazyHydrate when-visible>
       <section v-if="recommended?.productRecommendations?.length" class="related-products">
-        <h2 class="related-title">Related Products</h2>
+        <h2 class="related-title" :class="isDark ? 'text-white' : 'text-default'">Related Products</h2>
         <div class="related-scroll">
           <TileCard v-for="recommendedProduct in recommended?.productRecommendations" :key="recommendedProduct.id" :product="recommendedProduct" />
         </div>
