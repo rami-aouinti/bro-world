@@ -39,7 +39,7 @@ export const usePostStore = defineStore('post', {
 
     async fetchPost(slug): Promise<any[]> {
       try {
-        return await useCachedFetch(`pFenRpPsbw:public_post_${slug}`, async () => {
+        return await useCachedFetch(`giUbFlBbPL:public_post_${slug}`, async () => {
           return await $fetch(`/api/posts/post/${slug}`)
         }, 31536000)
       } catch (e) {
@@ -48,19 +48,53 @@ export const usePostStore = defineStore('post', {
       }
     },
 
-    async fetchPosts(page = 1, limit = 10): Promise<any[]> {
+    async fetchReact(id): Promise<any[]> {
+      try {
+        return await useCachedFetch(`giUbFlBbPL:public_post_${id}_reacts`, async () => {
+          return await $fetch(`/api/posts/post/${id}/likes`)
+        }, 31536000)
+      } catch (e) {
+        console.error('Failed to fetch posts', e)
+        return []
+      }
+    },
+
+    async fetchComments(id): Promise<any[]> {
+      try {
+        return await useCachedFetch(`giUbFlBbPL:public_post_${id}_comments`, async () => {
+          return await $fetch(`/api/posts/post/${id}/comments`)
+        }, 31536000)
+      } catch (e) {
+        console.error('Failed to fetch posts', e)
+        return []
+      }
+    },
+
+    async fetchPosts(page = 1, limit = 10, userId?): Promise<any[]> {
       try {
         const query = new URLSearchParams({
           page: page.toString(),
           limit: limit.toString(),
         })
-        const response = await useCachedFetch(`pFenRpPsbw:post_public_${page}_${limit}`, async () => {
-          return await $fetch(`/api/posts?${query.toString()}`)
-        }, 31536000)
 
-        if (response && Array.isArray(response.data)) {
-          // mise à jour des métadonnées
-          this.total = response.count
+        let response: any
+
+        if (userId) {
+          response = await useCachedFetch(
+            `giUbFlBbPL:posts_page_${page}_limit_${limit}_user_${userId}`,
+            async () => await $fetch(`/api/posts?${query.toString()}`),
+            31536000
+          )
+        } else {
+          response = await useCachedFetch(
+            `giUbFlBbPL:posts_page_${page}_limit_${limit}`,
+            async () => await $fetch(`/api/posts?${query.toString()}`),
+            31536000
+          )
+        }
+
+        if (response?.data && Array.isArray(response.data)) {
+          this.total = response.count ?? 0
           this.page = page
           this.limit = limit
           return response.data

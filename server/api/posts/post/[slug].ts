@@ -7,8 +7,8 @@ export default defineEventHandler(async (event) => {
   if (!slug) {
     throw createError({ statusCode: 400, message: 'Missing slug' })
   }
-
-  const url = `https://blog.bro-world.org/public/post/${slug}`
+  const config = useRuntimeConfig()
+  const url = `${config.public.apiBlogBase}/public/post/${slug}`
 
   return await requestWithRetry('get', url)
 })

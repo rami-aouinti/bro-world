@@ -3,24 +3,23 @@ import { ref, computed, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { usePostStore } from '~/stores/usePostStore'
 import { useStoryStore } from '~/stores/useStoryStore'
-
+import { useUserStore } from '~/stores/useUserStore'
 import HomeStories from '~/pages/home/HomeStories.vue'
 import NewPost from '~/pages/home/post/NewPost.vue'
-import HomePosts from '~/pages/home/HomePosts.vue'
 import LoaderPost from '~/components/App/Loader/Home/LoaderPost.vue'
-import {useUserStore} from "~/stores/useUserStore";
+import PostCard from "~/components/Blog/PostCard.vue"
 
 const { locale } = useI18n()
 const { user, loggedIn } = useUserSession()
 const postStore = usePostStore()
 const storyStore = useStoryStore()
+const userStore = useUserStore()
 
 const currentPage = ref(1)
 const isLoading = ref(false)
 const hasMore = ref(true)
 const stories = ref<any[]>([])
-const profile = ref<any[]>([])
-const userStore = useUserStore();
+const profile = ref<any>({})
 
 const loading = ref({
   user: true,
@@ -30,19 +29,15 @@ const loading = ref({
 })
 
 const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
-const totalPages = computed(() =>
-  Math.ceil(postStore.total / postStore.limit)
-)
+const totalPages = computed(() => Math.ceil(postStore.total / postStore.limit))
 
 const checkFollowStatus = async (userId: string): Promise<number> => {
   try {
     const friends = profile.value?.friends
-    if (!friends) return 0
-
+    if (!friends || typeof friends !== 'object') return 0
     for (const friend of Object.values(friends)) {
       if (friend.user === userId) return friend.status
     }
-
     return 0
   } catch (e) {
     console.error("Error checking follow status:", e)
@@ -52,17 +47,19 @@ const checkFollowStatus = async (userId: string): Promise<number> => {
 
 const loadInitialPosts = async () => {
   try {
-    const newPosts = await postStore.fetchPosts(1, postStore.limit)
+    let newPosts: any[] = []
+    if (user.value?.id) {
+      newPosts = await postStore.fetchPosts(1, postStore.limit, user.value.id)
+    } else {
+      newPosts = await postStore.fetchPosts(1, postStore.limit)
+    }
 
-    if (newPosts && Array.isArray(newPosts)) {
-      // Ajouter status async pour chaque post
+    if (Array.isArray(newPosts)) {
       const postsWithStatus = await Promise.all(
         newPosts.map(async (post: any) => {
-          if (post.user?.id !== user.value?.id) {
-            post.status = await checkFollowStatus(post.user.id)
-          } else {
-            post.status = 0
-          }
+          post.status = (post.user?.id !== user.value?.id)
+            ? await checkFollowStatus(post.user.id)
+            : 0
           return post
         })
       )
@@ -88,17 +85,16 @@ const loadMore = async ({ done }) => {
   isLoading.value = true
 
   const nextPage = currentPage.value + 1
-  const newPosts = await postStore.fetchPosts(nextPage, postStore.limit)
+  const newPosts = await postStore.fetchPosts(nextPage, postStore.limit, user.value?.id)
   const postsWithStatus = await Promise.all(
     newPosts.map(async (post: any) => {
-      if (post.user?.id !== user.value?.id) {
-        post.status = await checkFollowStatus(post.user.id)
-      } else {
-        post.status = 0
-      }
+      post.status = (post.user?.id !== user.value?.id)
+        ? await checkFollowStatus(post.user.id)
+        : 0
       return post
     })
   )
+
   if (postsWithStatus?.length) {
     postStore.appendPosts(postsWithStatus)
     currentPage.value = nextPage
@@ -114,8 +110,7 @@ const loadMore = async ({ done }) => {
 const loadStories = async () => {
   try {
     if (loggedIn.value && user.value?.id) {
-      const data = await storyStore.fetchStories(user.value.id)
-      stories.value = data ?? []
+      stories.value = await storyStore.fetchStories(user.value.id) ?? []
     }
   } catch (e) {
     console.error('Erreur fetch stories:', e)
@@ -125,49 +120,31 @@ const loadStories = async () => {
 }
 
 const addPost = (post: any) => {
-  if (!post || typeof post !== 'object' || !post.id) {
-    console.warn('[reloadPosts] Post non valide :', post)
-    return
-  }
-
+  if (!post?.id) return
   postStore.appendPost({ data: post })
   reloadPosts()
 }
 
 const editPost = (post: any) => {
-  if (!post || typeof post !== 'object' || !post.id) {
-    console.warn('[editPost] Post non valide :', post)
-    return
-  }
-
+  if (!post?.id) return
   const index = postStore.posts.findIndex((p: any) => p.id === post.id)
-
-  if (index !== -1) {
-    postStore.posts[index] = post
-  } else {
-    console.warn('[editPost] Post non trouvé dans le store, ajout en fallback')
-    postStore.appendPost({ data: post })
-  }
+  index !== -1 ? (postStore.posts[index] = post) : postStore.appendPost({ data: post })
   reloadPosts()
 }
 
 const deletePost = (postId: string | number) => {
-  if (!postId) {
-    console.warn('[deletePost] postId invalide:', postId)
-    return
-  }
-
+  if (!postId) return
   postStore.posts = postStore.posts.filter((p: any) => p.id !== postId)
   reloadPosts()
 }
 
-const reloadPosts = () => {
-  postStore.fetchPosts()
+const reloadPosts = async () => {
+  await loadInitialPosts()
 }
 
 const reloadStories = async () => {
   await loadStories()
-  Notify.success("Story created!", user?.photo ?? 'https://placehold.net/avatar-5.svg', `/user/${user.username}`)
+  // Notify.success("Story created!", user.value?.photo ?? 'https://placehold.net/avatar-5.svg', `/user/${user.value?.username}`)
 }
 
 onMounted(async () => {
@@ -175,12 +152,12 @@ onMounted(async () => {
     await loadInitialPosts()
     await nextTick()
     await loadStories()
-  } catch (e) {
   } finally {
     loading.value.user = false
   }
 })
 </script>
+
 
 <template>
   <template v-if="loading.user">
@@ -210,7 +187,7 @@ onMounted(async () => {
   </template>
   <template v-else>
     <v-infinite-scroll :items="postStore.posts" mode="manual" @load="loadMore">
-      <HomePosts
+      <PostCard
         v-for="(item, index) in postStore.posts"
         :key="item.id"
         :post="item"

@@ -50,12 +50,19 @@
 
             <template #default>
               <div class="d-flex align-center w-100">
-                <span class="mx-2">
+                <NuxtLink
+                  :to="topUser.userId?.username === user?.username ? localePath('/profile') : localePath(`/user/${topUser.userId.username}`)"
+                  class="font-weight-bolder text-decoration-none"
+                  :class="isDark ? 'text-white' : 'text-default'"
+                >
+                  <span class="mx-2">
                   <UserAvatar :user="topUser.userId" size="26" color="primary" />
                 </span>
-                <span :class="topUser.userId?.id === user?.id ? 'text-primary font-weight-bold' : 'text-default font-weight-medium'">
+                  <span :class="topUser.userId?.id === user?.id ? 'text-primary font-weight-bold' : 'text-default font-weight-medium'">
                   {{ topUser.userId?.firstName }} {{ topUser.userId?.lastName }}
                 </span>
+                </NuxtLink>
+
                 <span class="text-body-2 ms-auto font-weight-bold" :class="topUser.userId?.id === user?.id ? 'text-primary' : ''">
                   {{ topUser.score }} pts
                 </span>
@@ -72,10 +79,11 @@
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import UserAvatar from "~/components/App/UserAvatar.vue";
+import { useLocalePath } from '#i18n';
 
 const { t, locale } = useI18n()
 const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
-
+const localePath = useLocalePath();
 const topUsers = ref<{ name: string; points: number }[]>([])
 const trophies = ['🥇', '🥈', '🥉']
 const loadingQuiz = ref(true)
