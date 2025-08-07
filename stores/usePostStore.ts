@@ -50,8 +50,19 @@ export const usePostStore = defineStore('post', {
 
     async fetchReact(id): Promise<any[]> {
       try {
-        return await useCachedFetch(`giUbFlBbPL:public_post_${id}_reacts`, async () => {
+        return await useCachedFetch(`giUbFlBbPL:private_post_${id}_reacts`, async () => {
           return await $fetch(`/api/posts/post/${id}/likes`)
+        }, 31536000)
+      } catch (e) {
+        console.error('Failed to fetch posts', e)
+        return []
+      }
+    },
+
+    async fetchPublicReact(id): Promise<any[]> {
+      try {
+        return await useCachedFetch(`giUbFlBbPL:public_post_${id}_reacts`, async () => {
+          return await $fetch(`/api/posts/post/${id}/public_likes`)
         }, 31536000)
       } catch (e) {
         console.error('Failed to fetch posts', e)
@@ -82,13 +93,13 @@ export const usePostStore = defineStore('post', {
         if (userId) {
           response = await useCachedFetch(
             `giUbFlBbPL:posts_page_${page}_limit_${limit}_user_${userId}`,
-            async () => await $fetch(`/api/posts?${query.toString()}`),
+            async () => await $fetch(`/api/posts/index?${query.toString()}`),
             31536000
           )
         } else {
           response = await useCachedFetch(
             `giUbFlBbPL:posts_page_${page}_limit_${limit}`,
-            async () => await $fetch(`/api/posts?${query.toString()}`),
+            async () => await $fetch(`/api/posts/public?${query.toString()}`),
             31536000
           )
         }

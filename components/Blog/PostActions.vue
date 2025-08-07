@@ -64,14 +64,33 @@ function checkPickerPosition() {
 /** ✅ Charge les réactions pour le modal */
 async function loadLikes() {
   showLikesModal.value = true
-  const data = await postStore.fetchReact(props.post.id)
-  const grouped: Record<string, any[]> = {}
-  for (const r of data.reactions || []) {
-    (grouped[r.type] ||= []).push(r)
+
+  let data: { reactions?: Array<{ type: string }> } = {}
+
+  try {
+    data = loggedIn.value
+      ? await postStore.fetchReact(props.post.id)
+      : await postStore.fetchPublicReact(props.post.id)
+
+    const grouped: Record<string, any[]> = {}
+
+    for (const reaction of data.reactions ?? []) {
+      if (!reaction.type) continue
+      if (!grouped[reaction.type]) {
+        grouped[reaction.type] = []
+      }
+      grouped[reaction.type].push(reaction)
+    }
+
+    localLikes.value = grouped
+    activeTab.value = Object.keys(grouped)[0] || ''
+  } catch (error) {
+    console.error('Failed to load likes:', error)
+    localLikes.value = {}
+    activeTab.value = ''
   }
-  localLikes.value = grouped
-  activeTab.value = Object.keys(grouped)[0] || ''
 }
+
 
 async function handleReact(type: string) {
   if (!loggedIn) return Notify.error('You are not logged')
@@ -132,8 +151,8 @@ onMounted(() => window.addEventListener('resize', checkPickerPosition))
       </div>
     </v-col>
   </v-row>
-  <v-divider></v-divider>
-  <div class="d-flex align-center text-default text-center py-2">
+  <v-divider  v-if="loggedIn" ></v-divider>
+  <div v-if="loggedIn"  class="d-flex align-center text-default text-center py-2">
     <v-row>
       <v-col cols="4">
         <div ref="reactionContainer"
@@ -173,7 +192,7 @@ onMounted(() => window.addEventListener('resize', checkPickerPosition))
     <v-divider></v-divider>
     <Comments :comments="comments" />
   </div>
-  <div v-if="showNewComment || showReplies">
+  <div v-if="loggedIn && (showNewComment || showReplies)">
     <v-divider></v-divider>
     <NewComment :post="props.post"  @comment-created="reloadComments" />
   </div>

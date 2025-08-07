@@ -7,10 +7,9 @@ export default defineEventHandler(async (event) => {
   const page = parseInt((query.page as string) || '1', 10)
   const limit = parseInt((query.limit as string) || '20', 10)
   const offset = (page - 1) * limit
-  const token = await getUserToken(event)
   const config = useRuntimeConfig()
   const apiUrl = `${config.public.apiBlogBase}/public/post?page=${page}&limit=${limit}`
 
-  return await requestWithRetry('get', apiUrl, token)
+  return await requestWithRetry('get', apiUrl)
 
 })

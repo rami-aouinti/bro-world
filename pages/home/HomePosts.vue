@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AuthorPost from "~/pages/home/post/AuthorPost.vue";
-import Post from "~/pages/home/post/Post.vue";
 import PostCard from "~/components/Blog/PostCard.vue";
 const emit = defineEmits(['post-updated', 'post-deleted', 'post-reload'])
 const props = defineProps({
