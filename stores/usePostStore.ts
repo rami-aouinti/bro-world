@@ -93,7 +93,7 @@ export const usePostStore = defineStore('post', {
         if (userId) {
           response = await useCachedFetch(
             `giUbFlBbPL:posts_page_${page}_limit_${limit}_user_${userId}`,
-            async () => await $fetch(`/api/posts/index?${query.toString()}`),
+            async () => await $fetch(`/api/posts?${query.toString()}`),
             31536000
           )
         } else {
