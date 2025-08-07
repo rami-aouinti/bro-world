@@ -95,8 +95,8 @@ async function loadLikes() {
 async function handleReact(type: string) {
   if (!loggedIn) return Notify.error('You are not logged')
   try {
+    await postStore.invalidateReactCache(props.post.id)
     await $fetch(`/api/posts/${props.post.id}/react/${type}`, { method: 'POST' })
-
     // Supprimer ancienne réaction utilisateur
     for (const key in localLikes.value) {
       localLikes.value[key] = localLikes.value[key].filter(r => r.user?.id !== user.value.id)
@@ -189,7 +189,6 @@ onMounted(() => window.addEventListener('resize', checkPickerPosition))
 
   <!-- ✅ Section commentaires -->
   <div v-if="showReplies">
-    <v-divider></v-divider>
     <Comments :comments="comments" />
   </div>
   <div v-if="loggedIn && (showNewComment || showReplies)">

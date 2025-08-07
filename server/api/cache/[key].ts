@@ -1,21 +1,28 @@
 // server/api/cache/[key].ts
-import { getRedisClient } from '~/server/utils/redis';
+import { getRedisClient } from '~/server/utils/redis'
 
 export default defineEventHandler(async (event) => {
-  const redis = await getRedisClient();
-  const { key } = event.context.params!;
+  const redis = await getRedisClient()
+  const { key } = event.context.params!
+
   if (event.method === 'GET') {
-    const value = await redis.get(`${key}`);
-    return value ? JSON.parse(value) : null;
+    const value = await redis.get(`${key}`)
+    return value ? JSON.parse(value) : null
   }
 
   if (event.method === 'POST') {
-    const body = await readBody<{ value: unknown; ttl?: number }>(event);
+    const body = await readBody<{ value: unknown; ttl?: number }>(event)
     await redis.set(`${key}`, JSON.stringify(body.value), {
       EX: body.ttl || 10000,
-    });
-    return { success: true };
+    })
+    return { success: true }
   }
 
-  return createError({ statusCode: 405, statusMessage: 'Method Not Allowed' });
-});
+  // ✅ Ajout de la suppression
+  if (event.method === 'DELETE') {
+    await redis.del(`${key}`)
+    return { success: true, deletedKey: key }
+  }
+
+  return createError({ statusCode: 405, statusMessage: 'Method Not Allowed' })
+})

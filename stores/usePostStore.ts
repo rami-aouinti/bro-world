@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia'
 import {useCachedFetch} from "~/composables/useCachedFetch";
+import { deleteCachedKey } from '~/composables/useCachedFetch'
 
 export const usePostStore = defineStore('post', {
   state: () => ({
@@ -41,7 +42,7 @@ export const usePostStore = defineStore('post', {
       try {
         return await useCachedFetch(`giUbFlBbPL:public_post_${slug}`, async () => {
           return await $fetch(`/api/posts/post/${slug}`)
-        }, 31536000)
+        }, 300)
       } catch (e) {
         console.error('Failed to fetch posts', e)
         return []
@@ -52,7 +53,7 @@ export const usePostStore = defineStore('post', {
       try {
         return await useCachedFetch(`giUbFlBbPL:private_post_${id}_reacts`, async () => {
           return await $fetch(`/api/posts/post/${id}/likes`)
-        }, 31536000)
+        }, 300)
       } catch (e) {
         console.error('Failed to fetch posts', e)
         return []
@@ -63,7 +64,7 @@ export const usePostStore = defineStore('post', {
       try {
         return await useCachedFetch(`giUbFlBbPL:public_post_${id}_reacts`, async () => {
           return await $fetch(`/api/posts/post/${id}/public_likes`)
-        }, 31536000)
+        }, 300)
       } catch (e) {
         console.error('Failed to fetch posts', e)
         return []
@@ -74,11 +75,16 @@ export const usePostStore = defineStore('post', {
       try {
         return await useCachedFetch(`giUbFlBbPL:public_post_${id}_comments`, async () => {
           return await $fetch(`/api/posts/post/${id}/comments`)
-        }, 31536000)
+        }, 300)
       } catch (e) {
         console.error('Failed to fetch posts', e)
         return []
       }
+    },
+
+    async invalidateReactCache(id: string | number) {
+      await deleteCachedKey(`giUbFlBbPL:public_post_${id}_reacts`)
+      await deleteCachedKey(`giUbFlBbPL:private_post_${id}_reacts`)
     },
 
     async fetchPosts(page = 1, limit = 10, userId?): Promise<any[]> {
@@ -94,13 +100,13 @@ export const usePostStore = defineStore('post', {
           response = await useCachedFetch(
             `giUbFlBbPL:posts_page_${page}_limit_${limit}_user_${userId}`,
             async () => await $fetch(`/api/posts?${query.toString()}`),
-            31536000
+            300
           )
         } else {
           response = await useCachedFetch(
             `giUbFlBbPL:posts_page_${page}_limit_${limit}`,
             async () => await $fetch(`/api/posts/public?${query.toString()}`),
-            31536000
+            300
           )
         }
 

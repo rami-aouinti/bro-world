@@ -30,3 +30,15 @@ export async function useCachedFetch<T = any>(
 
   return result
 }
+
+export async function deleteCachedKey(key: string): Promise<void> {
+  const cacheKey = `${key}`
+
+  if (process.server) {
+    const { getRedisClient } = await import('~/server/utils/redis')
+    const redis = await getRedisClient()
+    await redis.del(cacheKey)
+  } else {
+    await $fetch(`/api/cache/${cacheKey}`, { method: 'DELETE' }).catch(() => {})
+  }
+}

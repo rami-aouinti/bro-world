@@ -2,7 +2,6 @@
 import AuthorPost from "~/pages/home/post/AuthorPost.vue";
 import PostMedia from "~/components/Blog/PostMedia.vue";
 import PostActions from "~/components/Blog/PostActions.vue";
-import PostComments from "~/components/Blog/PostComments.vue";
 import PostContent from "~/components/Blog/PostContent.vue";
 
 const props = defineProps({
