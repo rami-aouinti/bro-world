@@ -66,18 +66,17 @@ const localePath = useLocalePath()
       <div v-if="props.post?.content" v-html="truncate(props.post?.content, 500)" class="font-weight-600 text-sm mb-3" :class="isDark ? 'text-white' : 'text-default'">
       </div>
     </NuxtLink>
-      <div v-if="props.post?.url || props.post?.medias?.length > 0" class="text-left mb-3 text-body font-weight-light">
+      <div v-if="props.post?.url || props.post?.medias?.length > 0" class="mb-3 text-body font-weight-light">
         <!-- Si c'est une URL YouTube, on affiche la vidéo centrée -->
         <div v-if="isYoutubeUrl(props.post?.url)" class="text-center">
-          <v-sheet color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
+          <v-card color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
             <iframe
               :src="`https://www.youtube.com/embed/${extractYouTubeVideoId(props.post.url)}`"
-              style="width: 100%;"
               height="315"
               frameborder="0"
               allowfullscreen
             ></iframe>
-          </v-sheet>
+          </v-card>
         </div>
         <v-sheet v-else-if="isImageUrl(props.post?.url)" color="primary" rounded="xl" class="overflow-hidden shadow-lg" elevation="10">
         <NuxtImg
