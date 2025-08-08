@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import {computed, nextTick, onMounted, onUnmounted, ref} from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useLocalePath } from '#i18n'
+
 import Comments from '~/pages/home/post/Comments.vue'
 import ReactionPicker from "~/components/App/ReactionPicker.vue"
 import NewComment from "~/pages/home/post/NewComment.vue"
 import UserAvatar from "~/components/App/UserAvatar.vue"
-import {useLocalePath} from '#i18n'
-import {usePostStore} from "~/stores/usePostStore"
-const postContent = ref('')
-import PostContent from "~/components/Blog/PostContent.vue";
-import PostMedia from "~/components/Blog/PostMedia.vue";
-import AuthorPost from "~/pages/home/post/AuthorPost.vue";
+import PostContent from "~/components/Blog/PostContent.vue"
+import PostMedia from "~/components/Blog/PostMedia.vue"
+import AuthorPost from "~/pages/home/post/AuthorPost.vue"
+import BaseDialog from "~/components/BaseDialog.vue"
+import { usePostStore } from "~/stores/usePostStore"
 
+const postContent = ref('')
 const postStore = usePostStore()
 const showLikesModal = ref(false)
 const showPicker = ref(false)
@@ -61,6 +64,12 @@ function checkPickerPosition() {
   })
 }
 
+async function loadComments() {
+  const response = await postStore.fetchComments(props.post.id)
+  comments.value = response.comments
+}
+
+
 /** ✅ Charge les réactions pour le modal */
 async function loadLikes() {
   showLikesModal.value = true
@@ -106,26 +115,45 @@ function updatePickerStyle() {
 async function handleReact(type: string) {
   if (!loggedIn) return Notify.error('You are not logged')
   try {
-    await postStore.invalidateReactCache(props.post.id)
-    await $fetch(`/api/posts/${props.post.id}/react/${type}`, { method: 'POST' })
-    // Supprimer ancienne réaction utilisateur
     for (const key in localLikes.value) {
       localLikes.value[key] = localLikes.value[key].filter(r => r.user?.id !== user.value.id)
     }
-
-    // Ajouter nouvelle réaction
     (localLikes.value[type] ||= []).push({ id: Date.now(), type, user: user.value })
-
+    props.post.reactions_count++
+    props.post.isReacted = type
     Notify.success(`You reacted with ${type}`, user.value?.photo, `/post/${props.post.slug}`)
+
+    await postStore.invalidateReactCache(props.post.id)
+    await $fetch(`/api/posts/${props.post.id}/react/${type}`, { method: 'POST' })
     emit('post-reload')
   } catch (err) {
     Notify.error('Error: ' + err)
   }
 }
-
+const contentInput = ref(false);
 const handleLike = async () => handleReact('like')
 const reloadComments = async (data: any) => { showReplies.value = true; comments.value.unshift(data.value); emit('post-reload') }
+const formPayload = computed(() => {
+  const payload: Record<string, any> = {};
+  if (postContent.value.trim()) {
+    if (!contentInput) {
+      payload.title = postContent.value.trim();
+    } else {
+      payload.content = postContent.value.trim();
+    }
+  }
+  return payload;
+});
 
+const handleSuccess = (data: any) => {
+  postContent.value = '';
+  Notify.success("Post updated!", user.photo ?? "", "/post/" + data.slug);
+  emit('post-updated', data);
+};
+const handleError = (error: any) => {
+  Notify.error("Post failed!");
+  console.error('Failed:', error);
+};
 onMounted(() => {
   window.addEventListener('resize', checkPickerPosition)
   window.addEventListener('scroll', updatePickerStyle)
@@ -216,45 +244,48 @@ onUnmounted(() => {
     </div>
   </v-card>
 
-  <!-- ✅ Section commentaires -->
+  <v-btn
+    v-if="props.post.totalComments > comments.length && showReplies"
+    class="text-default text-decoration-none"
+    variant="text"
+    size="small"
+    @click="loadComments()">
+    Show all comments
+  </v-btn>
   <div v-if="showReplies">
     <Comments :comments="comments" />
   </div>
   <div v-if="loggedIn && (showNewComment || showReplies)">
     <NewComment :post="props.post"  @comment-created="reloadComments" />
   </div>
-
-  <v-dialog v-model="showShare" max-width="600">
-    <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3">
-      <v-text-field
-        v-model="postContent"
-        label="Post Title"
-        variant="outlined"
-        rounded
-        outlined
-        required
-      />
-      <v-divider />
-      <v-card-text>
-        <div class="px-4 py-2">
-
-
-          <PostContent :post="props.post" />
-          <PostMedia :post="props.post" />
-
-          <AuthorPost :post="props.post"
-                      @post-updated="emit('post-updated', $event)"
-                      @post-delete="emit('post-deleted', $event)" />
-
-        </div>
-      </v-card-text>
-
-      <v-card-actions>
-        <v-spacer />
-        <v-btn text color="primary" @click="showShare = false">Close</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <BaseDialog
+    v-model="showShare"
+    title="Share Post"
+    color="primary"
+    :closeButton="[{ text: 'Cancel', action: 'close' }]"
+    :saveButton="[{ text: 'Post', color: 'primary', action: '/api/posts/post/share/' + props.post.id }]"
+    :forms="formPayload"
+    @success="handleSuccess"
+    @error="handleError"
+  >
+    <v-text-field
+      v-if="!contentInput"
+      v-model="postContent"
+      label="Post Title"
+      variant="outlined"
+      rounded
+      outlined
+      required
+    />
+    <v-divider />
+    <div class="px-4 py-2">
+      <AuthorPost :post="props.post"
+                  @post-updated="emit('post-updated', $event)"
+                  @post-delete="emit('post-deleted', $event)" />
+      <PostContent :post="props.post" />
+      <PostMedia :post="props.post" />
+    </div>
+  </BaseDialog>
   <!-- ✅ MODAL des réactions -->
   <v-dialog v-model="showLikesModal" max-width="400">
     <v-card>

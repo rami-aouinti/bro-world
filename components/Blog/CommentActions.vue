@@ -7,6 +7,7 @@ import Comments from "~/pages/home/post/Comments.vue";
 import NewComment from "~/pages/home/post/NewComment.vue";
 import ReactionPicker from "~/components/App/ReactionPicker.vue";
 import ReactionPickerComment from "~/components/App/ReactionPickerComment.vue";
+import CommentComment from "~/pages/home/post/CommentComment.vue";
 
 const postStore = usePostStore()
 const showLikesModal = ref(false)
@@ -103,17 +104,17 @@ async function loadLikes() {
 async function handleReact(type: string) {
   if (!loggedIn) return Notify.error('You are not logged')
   try {
-    await postStore.invalidateReactCache(props.comment.id)
-    await $fetch(`/api/posts/${props.comment.id}/react/${type}`, { method: 'POST' })
-    // Supprimer ancienne réaction utilisateur
     for (const key in localLikes.value) {
       localLikes.value[key] = localLikes.value[key].filter(r => r.user?.id !== user.value.id)
     }
 
-    // Ajouter nouvelle réaction
     (localLikes.value[type] ||= []).push({ id: Date.now(), type, user: user.value })
-
+    props.comment.reactions_count++
+    props.comment.isReacted = type
     Notify.success(`You reacted with ${type}`, user.value?.photo, `/post/${props.comment.comment}`)
+
+    await postStore.invalidateReactCache(props.comment.id)
+    await $fetch(`/api/posts/${props.comment.id}/react/${type}`, { method: 'POST' })
     emit('post-reload')
   } catch (err) {
     Notify.error('Error: ' + err)
@@ -199,7 +200,7 @@ onUnmounted(() => {
     <Comments :comments="comments" />
   </div>
   <div v-if="loggedIn && (showNewComment || showReplies)">
-    <NewComment :post="props.comment"  @comment-created="reloadComments" />
+    <CommentComment :comment="props.comment"  @comment-created="reloadComments" />
   </div>
   <!-- ✅ MODAL des réactions -->
   <v-dialog v-model="showLikesModal" max-width="400">

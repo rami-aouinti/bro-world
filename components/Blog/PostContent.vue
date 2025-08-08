@@ -12,6 +12,7 @@ const isDark = computed({
   },
 })
 import { useLocalePath } from '#i18n'
+import PostCard from "~/components/Blog/PostCard.vue";
 const localePath = useLocalePath()
 </script>
 
@@ -23,5 +24,8 @@ const localePath = useLocalePath()
       <div v-if="props.post?.content" v-html="truncate(props.post?.content, 500)" class="font-weight-600 text-sm" :class="isDark ? 'text-white' : 'text-default'">
       </div>
     </NuxtLink>
+  </div>
+  <div v-if="props.post?.sharedFrom" class="font-weight-600 text-sm" :class="isDark ? 'text-white' : 'text-default'">
+    <PostCard :post="props.post.sharedFrom" />
   </div>
 </template>

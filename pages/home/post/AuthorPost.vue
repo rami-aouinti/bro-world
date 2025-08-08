@@ -109,16 +109,16 @@ const handleSuccess = (data: any) => {
   Notify.success("Post updated!", user.photo ?? "", "/post/" + data.slug);
   emit('post-updated', data);
 };
-
+const handleError = (error: any) => {
+  Notify.error("Post failed!");
+  console.error('Failed:', error);
+};
 const handleSuccessDelete = () => {
   Notify.success("Post deleted!", user.photo ?? "", "");
   emit('post-delete', props.post.id);
 };
 
-const handleError = (error: any) => {
-  Notify.error("Post failed!");
-  console.error('Failed:', error);
-};
+
 
 const handleEdit = () => {
   postContent.value = props.post.title ? '' : props.post.content;
