@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import {computed, nextTick, onMounted, ref} from 'vue'
-import Comments from '~/pages/home/post/Comments.vue'
-import ReactionPicker from "~/components/App/ReactionPicker.vue"
-import NewComment from "~/pages/home/post/NewComment.vue"
 import UserAvatar from "~/components/App/UserAvatar.vue"
 import {useLocalePath} from '#i18n'
 import {usePostStore} from "~/stores/usePostStore"
-const postContent = ref('')
-import PostContent from "~/components/Blog/PostContent.vue";
-import PostMedia from "~/components/Blog/PostMedia.vue";
-import AuthorPost from "~/pages/home/post/AuthorPost.vue";
+import Comments from "~/pages/home/post/Comments.vue";
+import NewComment from "~/pages/home/post/NewComment.vue";
+import ReactionPicker from "~/components/App/ReactionPicker.vue";
+import ReactionPickerComment from "~/components/App/ReactionPickerComment.vue";
 
 const postStore = usePostStore()
 const showLikesModal = ref(false)
@@ -21,23 +18,31 @@ const activeTab = ref('')
 const { user, loggedIn } = await useUserSession()
 const showReplies = ref(false)
 const showNewComment = ref(false)
-const showShare = ref(false)
 const emit = defineEmits(['post-reload']);
 const localePath = useLocalePath()
 const { t } = useI18n()
 
-const props = defineProps<{ post: any }>()
-const comments = ref(props.post.comments_preview)
+const props = defineProps<{ comment: any }>()
+const comments = ref(props.comment?.comments_preview)
 const loading = ref(false)
 
 /** ✅ Initialisation des réactions groupées depuis reactions_preview */
 const localLikes = ref<{ [key: string]: any[] }>(
-  (props.post.reactions_preview || []).reduce((acc: Record<string, any[]>, r: any) => {
+  (props.comment.reactions_preview || []).reduce((acc: Record<string, any[]>, r: any) => {
     (acc[r.type] ||= []).push(r)
     return acc
   }, {})
 )
-
+const pickerStyle = computed(() => {
+  if (!reactionContainer.value) return {}
+  const rect = reactionContainer.value.getBoundingClientRect()
+  return {
+    position: 'absolute',
+    top: `${rect.top - 10}px`,
+    left: `${rect.left}px`,
+    zIndex: 9999,
+  }
+})
 /** ✅ Emoji & couleurs */
 function getEmoji(type: string) {
   return { like: '👍', love: '❤️', haha: '😂', wow: '😮', sad: '😢', angry: '😡' }[type] || '👍'
@@ -45,6 +50,7 @@ function getEmoji(type: string) {
 function getColor(type: string) {
   return { like: 'primary', love: 'red', haha: 'yellow-darken-2', wow: 'blue', sad: 'cyan-darken-2', angry: 'deep-orange' }[type] || 'grey'
 }
+const reloadComments = async (data: any) => { showReplies.value = true; comments.value.unshift(data.value); emit('post-reload') }
 
 const topReactions = computed(() => {
   return Object.entries(localLikes.value)
@@ -69,8 +75,8 @@ async function loadLikes() {
 
   try {
     data = loggedIn.value
-      ? await postStore.fetchReact(props.post.id)
-      : await postStore.fetchPublicReact(props.post.id)
+      ? await postStore.fetchReact(props.comment.id)
+      : await postStore.fetchPublicReact(props.comment.id)
 
     const grouped: Record<string, any[]> = {}
 
@@ -90,22 +96,13 @@ async function loadLikes() {
     activeTab.value = ''
   }
 }
-const pickerStyle = computed(() => {
-  if (!reactionContainer.value) return {}
-  const rect = reactionContainer.value.getBoundingClientRect()
-  return {
-    position: 'absolute',
-    top: `${rect.top - 10}px`,
-    left: `${rect.left}px`,
-    zIndex: 9999,
-  }
-})
+
 
 async function handleReact(type: string) {
   if (!loggedIn) return Notify.error('You are not logged')
   try {
-    await postStore.invalidateReactCache(props.post.id)
-    await $fetch(`/api/posts/${props.post.id}/react/${type}`, { method: 'POST' })
+    await postStore.invalidateReactCache(props.comment.id)
+    await $fetch(`/api/posts/${props.comment.id}/react/${type}`, { method: 'POST' })
     // Supprimer ancienne réaction utilisateur
     for (const key in localLikes.value) {
       localLikes.value[key] = localLikes.value[key].filter(r => r.user?.id !== user.value.id)
@@ -114,32 +111,60 @@ async function handleReact(type: string) {
     // Ajouter nouvelle réaction
     (localLikes.value[type] ||= []).push({ id: Date.now(), type, user: user.value })
 
-    Notify.success(`You reacted with ${type}`, user.value?.photo, `/post/${props.post.slug}`)
+    Notify.success(`You reacted with ${type}`, user.value?.photo, `/post/${props.comment.comment}`)
     emit('post-reload')
   } catch (err) {
     Notify.error('Error: ' + err)
   }
 }
-
 const handleLike = async () => handleReact('like')
-const reloadComments = async (data: any) => { showReplies.value = true; comments.value.unshift(data.value); emit('post-reload') }
 
 onMounted(() => window.addEventListener('resize', checkPickerPosition))
 </script>
 
 <template>
-  <v-row v-if="props.post.reactions_count > 0 && props.post?.totalComments > 0 " >
+  <v-row>
     <v-col cols="6">
-      <div v-if="props.post.reactions_count > 0" class="d-flex justify-start mx-2">
-        <div class="d-flex align-center me-2" style="margin-top: -3px;">
+      <div class="d-flex justify-start mx-2">
+        <div ref="reactionContainer"
+             v-if="loggedIn"
+             @mouseenter="showPicker = true; checkPickerPosition()"
+             @mouseleave="showPicker = false">
+          <v-icon v-if="!props.comment.isReacted" size="18" class="flex-grow-1 cursor-pointer"
+                  color="default"
+                  @click="handleLike"
+                  icon="mdi-thumb-up-outline"
+          >
+
+          </v-icon>
+          <span v-else class="cursor-pointer emoji-badge">{{ getEmoji(props.comment.isReacted) }}</span>
+          <transition name="fade-scale" appear>
+            <teleport to="body">
+              <div v-if="showPicker"
+                   class="reaction-picker-float"
+                   :style="pickerStyle"
+                   @mouseenter="showPicker = true"
+                   @mouseleave="showPicker = false"
+              >
+                <ReactionPickerComment :selectedReact="props.comment.isReacted"
+                                v-show="showPicker"
+                                :class="['reaction-picker-float', pickerPosition]"
+                                @select="(type) => handleReact(type)"
+                />
+              </div>
+            </teleport>
+          </transition>
+        </div>
+        <div v-if="props.comment.reactions_count > 0" class="d-flex align-center me-2" style="margin-top: -3px;">
           <span v-if="topReactions.length" class="reaction-badges">
-        <span v-for="r in topReactions" :key="r.type" class="emoji-badge">{{ getEmoji(r.type) }}</span>
-      </span>
-          <span v-if="props.post.reactions_count > 0 && !loading"
+            <span v-for="r in topReactions" :key="r.type" class="emoji-badge">{{ getEmoji(r.type) }}
+            </span>
+          </span>
+          <span v-if="props.comment.reactions_count > 0 && !loading"
                 class="text-sm mx-1 cursor-pointer"
                 @click="loadLikes()"
-                :class="props.post.isReacted ? 'text-primary' : 'text-secondary'">
-        {{ props.post.reactions_count }}
+                :class="props.comment.isReacted ? 'text-primary' : 'text-secondary'">
+        {{ props.comment.reactions_count }}
       </span>
       </div>
 
@@ -147,107 +172,30 @@ onMounted(() => window.addEventListener('resize', checkPickerPosition))
     </v-col>
     <v-col cols="6">
       <div class="d-flex justify-end mb-2">
-        <div v-if="props.post?.totalComments > 0" class="d-flex align-center">
+        <div class="d-flex align-center">
           <v-icon size="18" class="me-1 cursor-pointer text-default" @click="showReplies = !showReplies">
             mdi-comment-processing-outline
           </v-icon>
           <span
+            v-if="props.comment.totalComments > 0"
                 class="text-sm me-4 cursor-pointer text-default"
                 @click="showReplies = !showReplies">
-        {{ props.post.totalComments }}
+        {{ props.comment.totalComments }}
       </span>
         </div>
       </div>
     </v-col>
   </v-row>
-  <v-card rounded="xl"
-          variant="text" v-if="loggedIn">
-    <div class="d-flex align-center text-default text-center py-2">
-      <v-row>
-        <v-col cols="4" class="position-relative">
-          <div ref="reactionContainer"
-               class="reaction-container"
-               @mouseenter="showPicker = true; checkPickerPosition()"
-               @mouseleave="showPicker = false">
-            <v-icon v-if="!props.post.isReacted" size="18" class="flex-grow-1 mx-1 cursor-pointer"
-                    color="default"
-                    @click="handleLike"
-                    icon="mdi-thumb-up-outline"
-            >
-
-            </v-icon>
-            <span v-else class="cursor-pointer emoji-badge">{{ getEmoji(props.post.isReacted) }}</span>
-            <transition name="fade-scale" appear>
-              <teleport to="body">
-                <div v-if="showPicker"
-                     class="reaction-picker-float"
-                     :style="pickerStyle"
-                     @mouseenter="showPicker = true"
-                     @mouseleave="showPicker = false"
-                >
-                  <ReactionPicker :selectedReact="props.post.isReacted"
-                                  v-show="showPicker"
-                                  :class="['reaction-picker-float', pickerPosition]"
-                                  @select="(type) => handleReact(type)"
-                  />
-                </div>
-              </teleport>
-            </transition>
-          </div>
-        </v-col>
-        <v-col cols="4">
-          <v-icon @click="showNewComment = !showNewComment" class="cursor-pointer flex-grow-1 mx-1" size="18" color="default">mdi-comment-outline</v-icon>
-        </v-col>
-        <v-col cols="4">
-          <v-icon @click="showShare = !showShare" class="cursor-pointer flex-grow-1 mx-1" size="18" color="default">mdi-share-variant</v-icon>
-        </v-col>
-      </v-row>
-    </div>
-  </v-card>
-
-  <!-- ✅ Section commentaires -->
   <div v-if="showReplies">
     <Comments :comments="comments" />
   </div>
   <div v-if="loggedIn && (showNewComment || showReplies)">
-    <NewComment :post="props.post"  @comment-created="reloadComments" />
+    <NewComment :post="props.comment"  @comment-created="reloadComments" />
   </div>
-
-  <v-dialog v-model="showShare" max-width="600">
-    <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3">
-      <v-text-field
-        v-model="postContent"
-        label="Post Title"
-        variant="outlined"
-        rounded
-        outlined
-        required
-      />
-      <v-divider />
-      <v-card-text>
-        <div class="px-4 py-2">
-
-
-          <PostContent :post="props.post" />
-          <PostMedia :post="props.post" />
-
-          <AuthorPost :post="props.post"
-                      @post-updated="emit('post-updated', $event)"
-                      @post-delete="emit('post-deleted', $event)" />
-
-        </div>
-      </v-card-text>
-
-      <v-card-actions>
-        <v-spacer />
-        <v-btn text color="primary" @click="showShare = false">Close</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
   <!-- ✅ MODAL des réactions -->
   <v-dialog v-model="showLikesModal" max-width="400">
     <v-card>
-      <v-card-title class="text-h6">Reactions ({{ props.post.reactions_count }})</v-card-title>
+      <v-card-title class="text-h6">Reactions ({{ props.comment.reactions_count }})</v-card-title>
       <v-divider />
 
       <v-tabs v-model="activeTab" grow>
@@ -295,7 +243,7 @@ onMounted(() => window.addEventListener('resize', checkPickerPosition))
 }
 
 /* ✅ Picker dynamique */
-.reaction-picker-float { position: absolute; top: -50px; z-index: 200; transition: transform 0.2s ease; }
+.reaction-picker-float { position: absolute; top: -30px; z-index: 200; transition: transform 0.2s ease; }
 .reaction-picker-float.left { transform-origin: left center; }
 .reaction-picker-float.right { right: 0; left: auto; transform-origin: right center; }
 

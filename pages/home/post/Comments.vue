@@ -22,9 +22,7 @@ const reloadComments = async (data: any) => {
 
 <template>
   <div class="mb-1">
-    <hr class="horizontal dark mt-1 mb-5" />
-
-    <div v-for="comment in comments" :key="comment.id" class="d-flex mt-3">
+    <div v-for="comment in comments" :key="comment.id" class="d-flex mt-1">
       <Comment @comment-created="reloadComments" @comment-deleted="reloadComments" :comment="comment" />
     </div>
   </div>

@@ -233,8 +233,8 @@ watch(
 </script>
 
 <template>
-  <div class="d-flex align-center px-4 my-1">
-    <Author  :user="props.post.user" :published-at="props.post.publishedAt" :size="48" />
+  <div class="d-flex align-center px-3 my-1">
+    <Author  :user="props.post.user" :published-at="props.post.publishedAt" :size="36" />
 
     <div class="text-end ms-auto" v-if="props.post.user?.id === user?.id && loggedIn">
       <v-menu location="bottom" max-width="68">
