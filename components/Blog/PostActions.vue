@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, nextTick, onMounted, ref} from 'vue'
+import {computed, nextTick, onMounted, onUnmounted, ref} from 'vue'
 import Comments from '~/pages/home/post/Comments.vue'
 import ReactionPicker from "~/components/App/ReactionPicker.vue"
 import NewComment from "~/pages/home/post/NewComment.vue"
@@ -90,16 +90,18 @@ async function loadLikes() {
     activeTab.value = ''
   }
 }
-const pickerStyle = computed(() => {
-  if (!reactionContainer.value) return {}
+const pickerStyle = ref({})
+
+function updatePickerStyle() {
+  if (!reactionContainer.value) return
   const rect = reactionContainer.value.getBoundingClientRect()
-  return {
+  pickerStyle.value = {
     position: 'absolute',
-    top: `${rect.top - 10}px`,
-    left: `${rect.left}px`,
+    top: `${rect.top + window.scrollY - 10}px`,
+    left: `${rect.left + window.scrollX}px`,
     zIndex: 9999,
   }
-})
+}
 
 async function handleReact(type: string) {
   if (!loggedIn) return Notify.error('You are not logged')
@@ -124,11 +126,19 @@ async function handleReact(type: string) {
 const handleLike = async () => handleReact('like')
 const reloadComments = async (data: any) => { showReplies.value = true; comments.value.unshift(data.value); emit('post-reload') }
 
-onMounted(() => window.addEventListener('resize', checkPickerPosition))
+onMounted(() => {
+  window.addEventListener('resize', checkPickerPosition)
+  window.addEventListener('scroll', updatePickerStyle)
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', checkPickerPosition)
+  window.removeEventListener('scroll', updatePickerStyle)
+})
+
 </script>
 
 <template>
-  <v-row v-if="props.post.reactions_count > 0 && props.post?.totalComments > 0 " >
+  <v-row v-if="props.post.reactions_count > 0" >
     <v-col cols="6">
       <div v-if="props.post.reactions_count > 0" class="d-flex justify-start mx-2">
         <div class="d-flex align-center me-2" style="margin-top: -3px;">
@@ -147,11 +157,12 @@ onMounted(() => window.addEventListener('resize', checkPickerPosition))
     </v-col>
     <v-col cols="6">
       <div class="d-flex justify-end mb-2">
-        <div v-if="props.post?.totalComments > 0" class="d-flex align-center">
+        <div class="d-flex align-center">
           <v-icon size="18" class="me-1 cursor-pointer text-default" @click="showReplies = !showReplies">
             mdi-comment-processing-outline
           </v-icon>
           <span
+            v-if="props.post?.totalComments > 0"
                 class="text-sm me-4 cursor-pointer text-default"
                 @click="showReplies = !showReplies">
         {{ props.post.totalComments }}
@@ -167,7 +178,7 @@ onMounted(() => window.addEventListener('resize', checkPickerPosition))
         <v-col cols="4" class="position-relative">
           <div ref="reactionContainer"
                class="reaction-container"
-               @mouseenter="showPicker = true; checkPickerPosition()"
+               @mouseenter="showPicker = true; checkPickerPosition(); updatePickerStyle()"
                @mouseleave="showPicker = false">
             <v-icon v-if="!props.post.isReacted" size="18" class="flex-grow-1 mx-1 cursor-pointer"
                     color="default"

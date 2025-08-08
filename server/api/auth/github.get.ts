@@ -24,6 +24,7 @@ export default defineOAuthGitHubEventHandler({
           photo: profile?.photo,
           token: userGithub.token,
           roles: profile.roles,
+          friends: user.friends,
         },
       })
 

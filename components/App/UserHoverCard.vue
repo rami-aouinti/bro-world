@@ -10,7 +10,7 @@
     <Teleport to="body">
       <transition name="fade-slide">
         <div
-          v-if="show"
+          v-if="show && (props.author?.username != user?.username)"
           ref="cardRef"
           class="hover-card-wrapper"
           :style="cardStyle"
@@ -19,7 +19,7 @@
         >
           <Arrow :placement="placeBelow ? 'top' : 'bottom'" />
 
-          <v-card class="hover-card" width="250" rounded="xl" elevation="8">
+          <v-card class="hover-card" rounded="xl" elevation="8">
             <v-card-text class="text-center pb-0">
               <div class="d-flex align-center">
                 <a :href="props.author?.username === user?.username ? '/profile' : `/user/${props.author.username}`">
@@ -37,16 +37,58 @@
                     {{ props.author?.followerCount }} followers
                   </p>
                 </div>
+                <div class="mx-2">
+                  <v-btn
+                    v-if="relationStatus === 3"
+                    :loading="loadingReject"
+                    variant="outlined"
+                    size="small"
+                    class="text-primary"
+                    @click="rejectRelationAction"
+                  >
+                    <template #default>
+                      <v-icon>mdi-account-minus</v-icon>
+                      <span class="ms-2 text-caption">
+            {{
+                          relationStatus === 3 ? 'Reject' : ''
+                        }}
+          </span>
+                    </template>
+                  </v-btn>
+                  <v-btn
+                    v-if="props.author?.username != user?.username"
+                    :loading="loading"
+                    variant="outlined"
+                    size="small"
+                    class="text-primary mx-1"
+                    @click="handleRelationAction"
+                  >
+                    <template #default>
+                      <v-icon v-if="relationStatus === 0">mdi-account-plus</v-icon>
+                      <v-icon v-if="relationStatus === 3">mdi-account-check</v-icon>
+                      <v-icon v-if="relationStatus === 2">mdi-clock</v-icon>
+                      <v-icon v-if="relationStatus === 1">mdi-account-multiple-check</v-icon>
+                      <span class="ms-2 text-caption">
+            {{
+                          relationStatus === 0 ? 'Follow' :
+                            relationStatus === 1 ? 'Friend' :
+                              relationStatus === 2 ? 'Requested' :
+                                relationStatus === 3 ? 'Accept' : ''
+                        }}
+          </span>
+                    </template>
+                  </v-btn>
+                </div>
               </div>
 
-              <div class="d-flex justify-center gap-2 mt-2">
-                <v-btn icon size="small" variant="text" @click="toggleActions">
+              <div class="d-flex justify-center text-default gap-2 mt-2">
+                <v-btn v-if="relationStatus === 1" icon size="small" variant="text" @click="toggleActions" class="mx-1">
                   <v-icon>mdi-account-multiple</v-icon>
                 </v-btn>
-                <v-btn icon size="small" variant="text" @click="goToMessenger">
+                <v-btn icon size="small" variant="text" @click="goToMessenger" class="mx-1">
                   <v-icon>mdi-message-text-outline</v-icon>
                 </v-btn>
-                <v-btn icon size="small" variant="text" @click="toggleReports">
+                <v-btn icon size="small" variant="text" @click="toggleReports" class="mx-1">
                   <v-icon>mdi-dots-horizontal</v-icon>
                 </v-btn>
               </div>
@@ -85,7 +127,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import Arrow from './Arrow.vue'
 import UserAvatar from '~/components/App/UserAvatar.vue'
 import UserActionCard from './UserActionCard.vue'
@@ -93,9 +135,10 @@ import UserReportCard from './UserReportCard.vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useLocalePath } from '#i18n'
+import {useUserStore} from "~/stores/useUserStore";
 const { t } = useI18n()
 const localePath = useLocalePath()
-
+const route = useRoute();
 const props = defineProps<{
   author: {
     firstName: string
@@ -106,7 +149,7 @@ const props = defineProps<{
     username: string
   }
 }>()
-
+const userStore = useUserStore();
 const theme = useTheme()
 const isDark = computed(() => theme.global.name.value === 'dark')
 
@@ -121,7 +164,9 @@ const triggerRef = ref<HTMLElement | null>(null)
 const cardRef = ref<HTMLElement | null>(null)
 const cardStyle = ref<Record<string, string>>({})
 const actionTrigger = ref<HTMLElement | null>(null)
-
+const relationStatus = ref<number | null>(null); // 0: none, 1: follower, 2: following, 3: friend
+const loading = ref(true);
+const loadingReject = ref(false);
 const hoverDelay = 150
 let showTimeout: ReturnType<typeof setTimeout> | null = null
 let hideTimeout: ReturnType<typeof setTimeout> | null = null
@@ -134,6 +179,99 @@ function onEnter() {
   }, hoverDelay)
 }
 
+const refreshUser = async (userId: string, userName: string) => {
+  await userStore.fetchProfile(userId, userName);
+};
+
+function getFriendStatus(friendId: string): number | null {
+  const friends = Object.values(user.value.friends || {})
+
+  const match = friends.find((entry: any) => entry.user === friendId)
+
+  return match ? match.status : null
+}
+const checkFollowStatus = async () => {
+  loading.value = true;
+  try {
+    relationStatus.value = await getFriendStatus(props.author.id);
+  } catch (e) {
+    console.error("Error checking follow status:", e);
+    relationStatus.value = 0;
+  } finally {
+    loading.value = false;
+  }
+};
+
+
+const toggleFollow = async (userId: string) => {
+  if (!user.value) return redirectToLogin();
+  loading.value = true;
+  try {
+    await $fetch(`/api/follow/follow/${userId}`, { method: 'POST' });
+    await refreshUser(props.author.id, props.author.username);
+    await refreshUser(user.value.id, user.value.username);
+  } catch (error) {
+    console.error('Error following:', error);
+  }
+  loading.value = false;
+};
+
+const toggleUnFollow = async (userId: string) => {
+  if (!user.value) return redirectToLogin();
+  loading.value = true;
+  try {
+    await $fetch(`/api/follow/unfollow/${userId}`, { method: 'POST' });
+    loading.value = false;
+    await refreshUser(props.author.id, props.author.username);
+    await refreshUser(user.value.id, user.value.username);
+  } catch (error) {
+    console.error('Error unfollowing:', error);
+  }
+};
+
+const toggleReject = async (userId: string) => {
+  if (!user.value) return redirectToLogin();
+  loadingReject.value = true;
+  try {
+    await $fetch(`/api/follow/unfollow/${userId}`, { method: 'POST' });
+    loadingReject.value = false;
+    await refreshUser(props.author.id, props.author.username);
+    await refreshUser(user.value.id, user.value.username);
+  } catch (error) {
+    console.error('Error unfollowing:', error);
+  }
+};
+const changeFollowStatus = async (val) => {
+  relationStatus.value = val
+};
+const rejectRelationAction = () => {
+  changeFollowStatus(0);
+  toggleReject(props.author.id);
+};
+
+const handleRelationAction = () => {
+  switch (relationStatus.value) {
+    case 0:
+      changeFollowStatus(2);
+      toggleFollow(props.author.id);
+      break;
+    case 3:
+      changeFollowStatus(1);
+      toggleFollow(props.author.id);
+      break;
+    case 2:
+      changeFollowStatus(0);
+      toggleUnFollow(props.author.id);
+      break;
+    case 1:
+      changeFollowStatus(0);
+      toggleUnFollow(props.author.id);
+      break;
+  }
+};
+const redirectToLogin = () => {
+  router.push({ path: '/login', query: { redirect: route.fullPath } });
+};
 function onLeave() {
   clearTimeout(showTimeout)
   scheduleHide()
@@ -204,6 +342,15 @@ function positionCard() {
     zIndex: '9999'
   }
 }
+watch(
+  () => props.author?.id,
+  () => {
+    if (user.value && props.author?.id) {
+      checkFollowStatus();
+    }
+  },
+  { immediate: true }
+);
 
 onMounted(() => {
   document.addEventListener('scroll', positionCard)

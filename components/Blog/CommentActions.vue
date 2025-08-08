@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, nextTick, onMounted, ref} from 'vue'
+import {computed, nextTick, onMounted, onUnmounted, ref} from 'vue'
 import UserAvatar from "~/components/App/UserAvatar.vue"
 import {useLocalePath} from '#i18n'
 import {usePostStore} from "~/stores/usePostStore"
@@ -12,7 +12,7 @@ const postStore = usePostStore()
 const showLikesModal = ref(false)
 const showPicker = ref(false)
 const pickerPosition = ref<'left' | 'right'>('left')
-const reactionContainer = ref<HTMLElement | null>(null)
+const reactionContainerComment = ref<HTMLElement | null>(null)
 
 const activeTab = ref('')
 const { user, loggedIn } = await useUserSession()
@@ -33,16 +33,18 @@ const localLikes = ref<{ [key: string]: any[] }>(
     return acc
   }, {})
 )
-const pickerStyle = computed(() => {
-  if (!reactionContainer.value) return {}
-  const rect = reactionContainer.value.getBoundingClientRect()
-  return {
+const pickerStyle = ref({})
+
+function updatePickerStyle() {
+  if (!reactionContainerComment.value) return
+  const rect = reactionContainerComment.value.getBoundingClientRect()
+  pickerStyle.value = {
     position: 'absolute',
-    top: `${rect.top - 10}px`,
-    left: `${rect.left}px`,
+    top: `${rect.top + window.scrollY - 10}px`,
+    left: `${rect.left + window.scrollX}px`,
     zIndex: 9999,
   }
-})
+}
 /** ✅ Emoji & couleurs */
 function getEmoji(type: string) {
   return { like: '👍', love: '❤️', haha: '😂', wow: '😮', sad: '😢', angry: '😡' }[type] || '👍'
@@ -61,8 +63,8 @@ const topReactions = computed(() => {
 
 function checkPickerPosition() {
   nextTick(() => {
-    if (!reactionContainer.value) return
-    const rect = reactionContainer.value.getBoundingClientRect()
+    if (!reactionContainerComment.value) return
+    const rect = reactionContainerComment.value.getBoundingClientRect()
     pickerPosition.value = (window.innerWidth - rect.right < 220) ? 'right' : 'left'
   })
 }
@@ -119,16 +121,23 @@ async function handleReact(type: string) {
 }
 const handleLike = async () => handleReact('like')
 
-onMounted(() => window.addEventListener('resize', checkPickerPosition))
+onMounted(() => {
+  window.addEventListener('resize', checkPickerPosition)
+  window.addEventListener('scroll', updatePickerStyle)
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', checkPickerPosition)
+  window.removeEventListener('scroll', updatePickerStyle)
+})
 </script>
 
 <template>
   <v-row>
     <v-col cols="6">
       <div class="d-flex justify-start mx-2">
-        <div ref="reactionContainer"
+        <div ref="reactionContainerComment"
              v-if="loggedIn"
-             @mouseenter="showPicker = true; checkPickerPosition()"
+             @mouseenter="showPicker = true; checkPickerPosition(); updatePickerStyle()"
              @mouseleave="showPicker = false">
           <v-icon v-if="!props.comment.isReacted" size="18" class="flex-grow-1 cursor-pointer"
                   color="default"
@@ -141,14 +150,14 @@ onMounted(() => window.addEventListener('resize', checkPickerPosition))
           <transition name="fade-scale" appear>
             <teleport to="body">
               <div v-if="showPicker"
-                   class="reaction-picker-float"
+                   class="reaction-picker-float-comment"
                    :style="pickerStyle"
                    @mouseenter="showPicker = true"
                    @mouseleave="showPicker = false"
               >
                 <ReactionPickerComment :selectedReact="props.comment.isReacted"
                                 v-show="showPicker"
-                                :class="['reaction-picker-float', pickerPosition]"
+                                :class="['reaction-picker-float-comment', pickerPosition]"
                                 @select="(type) => handleReact(type)"
                 />
               </div>
@@ -230,7 +239,7 @@ onMounted(() => window.addEventListener('resize', checkPickerPosition))
 </template>
 
 <style scoped>
-.reaction-container { position: relative; display: inline-flex; align-items: center; }
+.reaction-container-comment { position: relative; display: inline-flex; align-items: center; }
 
 /* ✅ Petits emojis stackés à côté du like */
 .reaction-badges { display: inline-flex; align-items: center; margin-left: 5px; }
@@ -243,9 +252,9 @@ onMounted(() => window.addEventListener('resize', checkPickerPosition))
 }
 
 /* ✅ Picker dynamique */
-.reaction-picker-float { position: absolute; top: -30px; z-index: 200; transition: transform 0.2s ease; }
-.reaction-picker-float.left { transform-origin: left center; }
-.reaction-picker-float.right { right: 0; left: auto; transform-origin: right center; }
+.reaction-picker-float-comment { position: relative; top: -30px; z-index: 200; transition: transform 0.2s ease; }
+.reaction-picker-float-comment.left { transform-origin: left center; }
+.reaction-picker-float-comment.right { right: 0; left: auto; transform-origin: right center; }
 
 .fade-scale-enter-active, .fade-scale-leave-active { transition: all 0.2s ease; }
 .fade-scale-enter-from, .fade-scale-leave-to { opacity: 0; transform: scale(0.9); }

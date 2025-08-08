@@ -41,6 +41,7 @@ export default defineEventHandler(async (event) => {
         tokenEcommerce: user?.tokenEcommerce,
         customerEcommerce: user?.adminUser,
         roles: user.roles,
+        friends: user.friends,
       },
     })
 

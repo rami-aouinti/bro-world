@@ -24,6 +24,7 @@ export default defineOAuthGoogleEventHandler({
           photo: profile?.photo,
           token: userGoogle.token,
           roles: profile.roles,
+          friends: user.friends,
         },
       })
 

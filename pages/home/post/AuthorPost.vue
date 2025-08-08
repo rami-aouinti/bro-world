@@ -234,10 +234,10 @@ watch(
 
 <template>
   <div class="d-flex align-center px-4 my-1">
-    <Author  :user="props.post.user" :published-at="props.post.publishedAt" :size="48" />
+    <Author :status="props.post.status" :user="props.post.user" :published-at="props.post.publishedAt" :size="48" />
 
-    <div class="text-end ms-auto" v-if="props.post.user?.id === user?.id && loggedIn">
-      <v-menu location="bottom" max-width="68">
+    <div class="text-end ms-auto" v-if="loggedIn">
+      <v-menu v-if="props.post.user?.id === user?.id" location="bottom" max-width="68">
         <template #activator="{ props }">
           <v-btn icon variant="text" size="small" class="text-primary" v-bind="props">
             <v-icon icon="mdi-dots-vertical" size="20" />
@@ -253,7 +253,22 @@ watch(
           </v-list-item>
         </v-list>
       </v-menu>
+      <v-menu v-else location="bottom" max-width="400">
+        <template #activator="{ props }">
+          <v-btn icon variant="text" size="small" class="text-primary" v-bind="props">
+            <v-icon icon="mdi-dots-vertical" size="20" />
+          </v-btn>
+        </template>
 
+        <v-list class="pa-2">
+          <v-list-item>
+            Report
+          </v-list-item>
+          <v-list-item>
+            Ne plus afficher
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <BaseDialog
         v-model="editPost"
         title="Edit Post"
