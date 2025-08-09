@@ -21,15 +21,24 @@
                 <a :href="'/profile'">
                   <UserAvatar :user="user" color="primary" size="48" />
                 </a>
-                <div class="mx-4">
+                <div class="mx-2">
                   <NuxtLink
                     :to="localePath('/profile')"
                     class="text-h6 font-weight-bolder text-decoration-none"
                     :class="isDark ? 'text-white' : 'text-default'"
-                    style="text-shadow: 1px 1px 2px rgb(var(--v-theme-primary));"
                   >
                     {{ truncate(user?.firstName + ' ' + user?.lastName, 20) }}
                   </NuxtLink>
+                </div>
+                <div class="mx-1">
+                  <v-btn size="small" variant="text" to="/setting" class="font-weight-bolder">
+                    <v-icon icon="mdi-settings" size="15" />
+                  </v-btn>
+                </div>
+                <div class="mx-1">
+                  <v-btn size="small" variant="text" to="/inbox" class="font-weight-bolder">
+                    <v-icon icon="mdi-message" size="15" />
+                  </v-btn>
                 </div>
               </div>
               <v-divider class="my-1" />

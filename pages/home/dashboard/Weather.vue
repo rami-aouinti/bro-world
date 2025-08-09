@@ -58,7 +58,7 @@ import { useCachedFetch } from '~/composables/useCachedFetch'
 const { t, locale } = useI18n()
 const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(locale.value))
 
-const { loggedIn } = useUserSession()
+const { user, loggedIn } = await useUserSession()
 const runtimeConfig = useRuntimeConfig()
 const { askGroq } = useGroq()
 const theme = useTheme()
@@ -75,7 +75,7 @@ const weatherInfo = ref('')
 const city = ref('')
 async function getWeather(place: string) {
   try {
-    const result = await useCachedFetch('cache:my-weather', async () => {
+    const result = await useCachedFetch('cache:my-weather-' + user?.value?.id, async () => {
       return await $fetch('https://api.weatherapi.com/v1/current.json', {
         query: {
           key: runtimeConfig.public.weatherKey,

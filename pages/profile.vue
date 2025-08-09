@@ -11,7 +11,7 @@ const avatarUrl = ref('')
 
 const { data: profile, pending, error, refresh } = await useAsyncData(
   'profile-' + user.value.id,
-  async () => await userStore.fetchProfile(user.value.id),
+  async () => await userStore.fetchProfile(user.value.username),
   {
     watch: [() => user.value.id],
     server: true
@@ -168,57 +168,8 @@ definePageMeta({
     </div>
     <div v-else>
       <v-row>
-        <v-col lg="12">
-          <v-card rounded="xl" class="bg-gradient-primary shadow-primary py-1" variant="text" elevation="10">
-            <div class="px-5">
-              <v-row align="center" class="pa-0 ma-0">
-                <v-col cols="auto">
-                  <v-avatar size="50" class="border-primary border-lg rounded-circle">
-                    <NuxtImg :lazy-src="'/img/person.png'" format="webp" loading="lazy" cover width="50" height="50" :src="profile?.profile?.photo" alt="Avatar" />
-                  </v-avatar>
-                </v-col>
-                <v-col cols="auto">
-                  <div>
-                    <h6 class="mb-1 text-h6 text-typo font-weight-bold">
-                      {{ profile?.firstName }} {{ profile?.lastName }}
-                    </h6>
-                    <p class="mb-0 font-weight-light text-body text-sm">
-                      {{ profile?.profile?.title }}
-                    </p>
-                  </div>
-                </v-col>
-                <v-col cols="auto" class="ms-auto d-flex align-center justify-end">
-                  <v-btn variant="text" to="/setting" class="font-weight-bolder me-1">
-                    <v-icon icon="mdi-settings" size="20" />
-                  </v-btn>
-                  <v-btn variant="text" to="/inbox" class="font-weight-bolder">
-                    <v-icon icon="mdi-message" size="20" />
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </div>
-          </v-card>
-        </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" md="4">
-          <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3 mt-3" variant="text" elevation="10">
-            <div class="d-flex flex-column justify-center text-center h-100">
-              <NuxtLink href="javascript:" class="text-decoration-none">
-                <h5 class="text-h5 text-secondary">New Blog</h5>
-              </NuxtLink>
-            </div>
-          </v-card>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3 mt-3" variant="text" elevation="10">
-            <div class="d-flex flex-column justify-center text-center h-100">
-              <NuxtLink href="javascript:" class="text-decoration-none">
-                <h5 class="text-h5 text-secondary">Generate your CV</h5>
-              </NuxtLink>
-            </div>
-          </v-card>
-        </v-col>
       </v-row>
 
     </div>
