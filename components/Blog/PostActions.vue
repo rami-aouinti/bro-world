@@ -29,7 +29,7 @@ const emit = defineEmits(['post-reload']);
 const localePath = useLocalePath()
 const { t } = useI18n()
 
-const props = defineProps<{ post: any }>()
+const props = defineProps<{ post: any, friends: any, }>()
 const comments = ref(props.post.comments_preview)
 const loading = ref(false)
 
@@ -253,7 +253,7 @@ onUnmounted(() => {
     Show all comments
   </v-btn>
   <div v-if="showReplies">
-    <Comments :comments="comments" />
+    <Comments :friends="props.friends" :comments="comments" />
   </div>
   <div v-if="loggedIn && (showNewComment || showReplies)">
     <NewComment :post="props.post"  @comment-created="reloadComments" />

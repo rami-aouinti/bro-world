@@ -147,14 +147,15 @@ const props = defineProps<{
     followerCount?: number
     id: string
     username: string
-  }
+  },
+  friends: any,
 }>()
 const userStore = useUserStore();
 const theme = useTheme()
 const isDark = computed(() => theme.global.name.value === 'dark')
 
 const router = useRouter()
-const { user } = await useUserSession()
+const { user, refresh } = await useUserSession()
 
 const show = ref(false)
 const showActions = ref(false)
@@ -179,12 +180,12 @@ function onEnter() {
   }, hoverDelay)
 }
 
-const refreshUser = async (userId: string, userName: string) => {
-  await userStore.fetchProfile(userId, userName);
+const refreshUser = async (userId: string) => {
+  await userStore.invalidateProfileCache(userId);
 };
 
-function getFriendStatus(friendId: string): number | null {
-  const friends = Object.values(user.value.friends || {})
+async function getFriendStatus(friendId: string): Promise<number | null> {
+  const friends = Object.values(props.friends || {})
 
   const match = friends.find((entry: any) => entry.user === friendId)
 
@@ -208,8 +209,8 @@ const toggleFollow = async (userId: string) => {
   loading.value = true;
   try {
     await $fetch(`/api/follow/follow/${userId}`, { method: 'POST' });
-    await refreshUser(props.author.id, props.author.username);
-    await refreshUser(user.value.id, user.value.username);
+    await refreshUser(props.author.username);
+    await refreshUser(user.value.username);
   } catch (error) {
     console.error('Error following:', error);
   }
@@ -222,8 +223,8 @@ const toggleUnFollow = async (userId: string) => {
   try {
     await $fetch(`/api/follow/unfollow/${userId}`, { method: 'POST' });
     loading.value = false;
-    await refreshUser(props.author.id, props.author.username);
-    await refreshUser(user.value.id, user.value.username);
+    await refreshUser(props.author.username);
+    await refreshUser(user.value.username);
   } catch (error) {
     console.error('Error unfollowing:', error);
   }
@@ -235,8 +236,8 @@ const toggleReject = async (userId: string) => {
   try {
     await $fetch(`/api/follow/unfollow/${userId}`, { method: 'POST' });
     loadingReject.value = false;
-    await refreshUser(props.author.id, props.author.username);
-    await refreshUser(user.value.id, user.value.username);
+    await refreshUser(props.author.username);
+    await refreshUser(user.value.username);
   } catch (error) {
     console.error('Error unfollowing:', error);
   }

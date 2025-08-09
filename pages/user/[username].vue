@@ -14,7 +14,7 @@ const avatarUrl = ref('')
 const userStore = useUserStore()
 const loadProfile = async () => {
   pending.value = true
-  const data  = await userStore.fetchProfile(null, username)
+  const data  = await userStore.fetchProfile(username)
   if (data) {
     avatarUrl.value = data?.photo ?? 'https://placehold.net/avatar-5.svg'
     profile.value = data

@@ -13,7 +13,7 @@ const avatarUrl = ref('')
 
 const { data: profile, pending, error, refresh } = await useAsyncData(
   'profile-' + user.value.id,
-  async () => await userStore.fetchProfile(user.value.id, user.value.username),
+  async () => await userStore.fetchProfile(user.value.id),
   {
     watch: [() => user.value.id],
     server: true

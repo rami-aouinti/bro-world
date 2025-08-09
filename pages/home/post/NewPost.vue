@@ -109,9 +109,8 @@ function triggerFileInput() {
   <div class="py-2">
   <v-card
     rounded="xl"
-    class="bg-gradient-primary shadow-primary mx-3"
-    variant="text"
-    elevation="10"
+    class="bg-gradient-primary mx-3"
+    variant="outlined"
   >
     <div class="bg-gradient-primary shadow-primary px-4 py-2">
       <v-card-text>

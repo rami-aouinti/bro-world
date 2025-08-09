@@ -139,6 +139,7 @@ const deletePost = (postId: string | number) => {
 }
 
 const reloadPosts = async () => {
+  await postStore.invalidatePostCache(user.value?.id)
   await loadInitialPosts()
 }
 
@@ -146,9 +147,16 @@ const reloadStories = async () => {
   await loadStories()
   // Notify.success("Story created!", user.value?.photo ?? 'https://placehold.net/avatar-5.svg', `/user/${user.value?.username}`)
 }
+const friends = ref<any>({})
 
+const getFriendStatus = async () => {
+  const profile = await userStore.fetchProfile(user.value.username);
+
+  friends.value = profile.friends
+}
 onMounted(async () => {
   try {
+    await getFriendStatus()
     await loadInitialPosts()
     await nextTick()
     await loadStories()
@@ -191,6 +199,7 @@ onMounted(async () => {
         v-for="(item, index) in postStore.posts"
         :key="item.id"
         :post="item"
+        :friends="friends"
         :index="index"
         @post-reload="reloadPosts"
         @post-updated="(post) => editPost(post)"

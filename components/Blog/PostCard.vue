@@ -6,6 +6,7 @@ import PostContent from "~/components/Blog/PostContent.vue";
 
 const props = defineProps({
   post: { type: Object, required: true },
+  friends: {},
   index: Number
 });
 const emit = defineEmits(['post-updated', 'post-deleted', 'post-reload']);
@@ -15,16 +16,17 @@ const cardSpacing = computed(() => (props.index === 0 ? 'mb-2' : 'my-2'));
 
 <template>
   <div :class="cardSpacing">
-    <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3" variant="text" elevation="10">
+    <v-card rounded="xl" class="bg-gradient-primary mx-3" variant="outlined">
       <div class="px-4 py-2">
         <AuthorPost :post="props.post"
+                    :friends="props.friends"
                     @post-updated="emit('post-updated', $event)"
                     @post-delete="emit('post-deleted', $event)" />
 
         <PostContent :post="props.post" />
         <PostMedia :post="props.post" />
 
-        <PostActions :post="props.post"
+        <PostActions :friends="props.friends" :post="props.post"
                      @post-reload="emit('post-reload')" />
 
       </div>

@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import {useCachedFetch} from "~/composables/useCachedFetch";
+import {deleteCachedKey, useCachedFetch} from "~/composables/useCachedFetch";
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -14,17 +14,17 @@ export const useUserStore = defineStore('user', {
       this.user = payload.user
       this.loaded = true
     },
-    async fetchProfile(id, username): Promise<any[]> {
+
+    async invalidateProfileCache(userId): Promise<any[]>  {
+      await deleteCachedKey(`pFenRpPsbw:user_profile_${userId}`)
+      return this.fetchProfile(userId)
+    },
+
+    async fetchProfile(id): Promise<any[]> {
       try {
-        if (id) {
-          return await useCachedFetch(`pFenRpPsbw:user_profile_${id}`, async () => {
-            return await $fetch(`/api/profile/${username}`)
-          }, 31536000)
-        } else {
-          return await useCachedFetch(`pFenRpPsbw:user_profile_${username}`, async () => {
-            return await $fetch(`/api/profile/${username}`)
-          }, 31536000)
-        }
+        return await useCachedFetch(`pFenRpPsbw:user_profile_${id}`, async () => {
+          return await $fetch(`/api/profile/${id}`)
+        }, 300)
 
       } catch (e) {
         console.error('Failed to fetch posts', e)

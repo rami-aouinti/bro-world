@@ -9,6 +9,7 @@ import AuthorPost from "~/pages/home/post/AuthorPost.vue";
 import AuthorComment from "~/components/App/AuthorComment.vue";
 import PostActions from "~/components/Blog/PostActions.vue";
 import CommentActions from "~/components/Blog/CommentActions.vue";
+import Comments from "~/pages/home/post/Comments.vue";
 
 const emit = defineEmits(['comment-created', 'comment-deleted'])
 
@@ -25,6 +26,7 @@ const props = defineProps<{
       profile: any[]
     }
     children?: any[]
+    friends: any
   }
 }>()
 
@@ -86,11 +88,11 @@ const createdComment = () => {
   <v-card
     rounded="xl"
     class="mt-2 mb-2 w-100 px-3 py-1"
-    variant="text"
+    variant="tonal"
     style="min-height: 48px;"
   >
     <div class="px-2 py-1">
-      <AuthorComment :post="props.comment"
+      <AuthorComment :friends="props.friends" :post="props.comment"
                   @post-updated="emit('post-updated', $event)"
                   @post-delete="emit('post-deleted', $event)" />
       <div v-if="!edit" class="text-left text-sm font-weight-light text-body mt-2 mb-2" :style="{ wordBreak: 'break-word' }" v-html="formattedComment" />
@@ -130,7 +132,7 @@ const createdComment = () => {
         </div>
       </div>
 
-      <CommentActions :comment="props.comment"
+      <CommentActions :friends="props.friends"  :comment="props.comment"
                    @post-reload="emit('post-reload')" />
     </div>
   </v-card>

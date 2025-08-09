@@ -6,9 +6,8 @@ import { useLocalePath } from '#i18n';
 import { useUserStore } from "~/stores/useUserStore";
 import UserHoverCard from "~/components/App/UserHoverCard.vue";
 
-const props = defineProps<{ user: any, status: any, publishedAt: any, size: any }>();
+const props = defineProps<{ user: any, friends: any, publishedAt: any, size: any }>();
 const emit = defineEmits(['post-delete', 'post-updated']);
-
 const { t } = useI18n();
 const localePath = useLocalePath();
 const { user, loggedIn } = await useUserSession();
@@ -49,6 +48,7 @@ function onAction(action: string) {
 <template>
   <UserHoverCard
     :author="props.user"
+    :friends="props.friends"
     @friends="toggleFriends"
     @message="onAction('sendMessage')"
     @block="onAction('block')"

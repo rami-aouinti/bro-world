@@ -5,10 +5,9 @@ import { useI18n } from 'vue-i18n';
 import { useLocalePath } from '#i18n';
 import { useUserStore } from "~/stores/useUserStore";
 import Editor from "~/components/App/Editor.vue";
-import UserHoverCard from "~/components/App/UserHoverCard.vue";
 import Author from "~/components/App/Author.vue";
 
-const props = defineProps<{ post: any }>();
+const props = defineProps<{ post: any, friends: any }>();
 const emit = defineEmits(['post-delete', 'post-updated']);
 
 const { t } = useI18n();
@@ -28,7 +27,6 @@ const isDark = computed({
 })
 const relationStatus = ref<number | null>(null); // 0: none, 1: follower, 2: following, 3: friend
 const loading = ref(true);
-const loadingReject = ref(false);
 const deletePost = ref(false);
 const editPost = ref(false);
 const postContent = ref('');
@@ -37,31 +35,6 @@ const imageUrl = ref<string | null>(null);
 const files = ref<File[]>([]);
 const contentInput = ref(false);
 
-const showFriendsCard = ref(false)
-const showMenuCard = ref(false)
-
-const friendsBtn = ref<HTMLElement | null>(null)
-const menuBtn = ref<HTMLElement | null>(null)
-
-function toggleFriends() {
-  showFriendsCard.value = !showFriendsCard.value
-  showMenuCard.value = false
-}
-
-function toggleMenu() {
-  showMenuCard.value = !showMenuCard.value
-  showFriendsCard.value = false
-}
-
-function onAction(action: string) {
-  console.log('Action:', action)
-  showFriendsCard.value = false
-  showMenuCard.value = false
-
-  if (action === 'sendMessage') {
-    navigateTo(`/inbox/${props.post.user.firstName.toLowerCase()}`) // ou user.id
-  }
-}
 
 
 function detectLinks() {
@@ -132,13 +105,6 @@ const handleDelete = () => {
   deletePost.value = true;
 };
 
-const refreshUser = async (userId: string, userName: string) => {
-  await userStore.fetchProfile(userId, userName);
-};
-
-const changeFollowStatus = async (val) => {
-  relationStatus.value = val
-};
 
 const checkFollowStatus = async () => {
   loading.value = true;
@@ -152,74 +118,6 @@ const checkFollowStatus = async () => {
   }
 };
 
-const toggleFollow = async (userId: string) => {
-  if (!user.value) return redirectToLogin();
-  loading.value = true;
-  try {
-    await $fetch(`/api/follow/follow/${userId}`, { method: 'POST' });
-    await refreshUser(props.post.user.id, props.post.user.username);
-    await refreshUser(user.value.id, user.value.username);
-  } catch (error) {
-    console.error('Error following:', error);
-  }
-  loading.value = false;
-};
-
-const toggleUnFollow = async (userId: string) => {
-  if (!user.value) return redirectToLogin();
-  loading.value = true;
-  try {
-    await $fetch(`/api/follow/unfollow/${userId}`, { method: 'POST' });
-    loading.value = false;
-    await refreshUser(props.post.user.id, props.post.user.username);
-    await refreshUser(user.value.id, user.value.username);
-  } catch (error) {
-    console.error('Error unfollowing:', error);
-  }
-};
-
-const toggleReject = async (userId: string) => {
-  if (!user.value) return redirectToLogin();
-  loadingReject.value = true;
-  try {
-    await $fetch(`/api/follow/unfollow/${userId}`, { method: 'POST' });
-    loadingReject.value = false;
-    await refreshUser(props.post.user.id, props.post.user.username);
-    await refreshUser(user.value.id, user.value.username);
-  } catch (error) {
-    console.error('Error unfollowing:', error);
-  }
-};
-
-const rejectRelationAction = () => {
-  changeFollowStatus(0);
-  toggleReject(props.post.user.id);
-};
-
-const handleRelationAction = () => {
-  switch (relationStatus.value) {
-    case 0:
-      changeFollowStatus(2);
-      toggleFollow(props.post.user.id);
-    break;
-    case 3:
-      changeFollowStatus(1);
-      toggleFollow(props.post.user.id);
-      break;
-    case 2:
-      changeFollowStatus(0);
-      toggleUnFollow(props.post.user.id);
-    break;
-    case 1:
-      changeFollowStatus(0);
-      toggleUnFollow(props.post.user.id);
-    break;
-  }
-};
-
-const redirectToLogin = () => {
-  router.push({ path: '/login', query: { redirect: route.fullPath } });
-};
 
 watch(
   () => props.post.user?.id,
@@ -234,24 +132,32 @@ watch(
 
 <template>
   <div class="d-flex align-center px-4 my-1">
-    <Author :status="props.post.status" :user="props.post.user" :published-at="props.post.publishedAt" :size="48" />
+    <Author :friends="props.friends" :user="props.post.user" :published-at="props.post.publishedAt" :size="48" />
 
     <div class="text-end ms-auto" v-if="loggedIn">
-      <v-menu v-if="props.post.user?.id === user?.id" location="bottom" max-width="68">
+      <v-menu v-if="props.post.user?.id === user?.id" location="bottom">
         <template #activator="{ props }">
           <v-btn icon variant="text" size="small" class="text-primary" v-bind="props">
             <v-icon icon="mdi-dots-vertical" size="20" />
           </v-btn>
         </template>
+        <v-card rounded="xl" variant="text">
+          <v-list rounded="xl" style="background-color: transparent;" dense nav>
+            <v-list-item @click="handleEdit()">
+              <v-list-item-title class="d-flex align-center">
+                <v-icon class="me-2" size="20">mdi-pencil-outline</v-icon>
+                Edit
+              </v-list-item-title>
+            </v-list-item>
 
-        <v-list class="pa-2">
-          <v-list-item>
-            <v-icon size="small" icon="mdi-pencil" color="warning" @click="handleEdit()" />
-          </v-list-item>
-          <v-list-item>
-            <v-icon size="small" color="error" @click="handleDelete()">mdi-delete</v-icon>
-          </v-list-item>
-        </v-list>
+            <v-list-item @click="handleDelete()">
+              <v-list-item-title class="d-flex align-center">
+                <v-icon class="me-2" size="20">mdi-delete-outline</v-icon>
+                Delete
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-card>
       </v-menu>
       <v-menu v-else location="bottom" max-width="400">
         <template #activator="{ props }">
@@ -259,15 +165,23 @@ watch(
             <v-icon icon="mdi-dots-vertical" size="20" />
           </v-btn>
         </template>
+        <v-card rounded="xl" variant="text">
+          <v-list rounded="xl" style="background-color: transparent;" dense nav>
+            <v-list-item @click="emit('unfollow')">
+              <v-list-item-title class="d-flex align-center">
+                <v-icon class="me-2" size="20">mdi-account-cancel-outline</v-icon>
+                Blockieren
+              </v-list-item-title>
+            </v-list-item>
 
-        <v-list class="pa-2">
-          <v-list-item>
-            Report
-          </v-list-item>
-          <v-list-item>
-            Ne plus afficher
-          </v-list-item>
-        </v-list>
+            <v-list-item @click="emit('removeFriend')">
+              <v-list-item-title class="d-flex align-center">
+                <v-icon class="me-2" size="20">mdi-message-outline</v-icon>
+                Report
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-card>
       </v-menu>
       <BaseDialog
         v-model="editPost"

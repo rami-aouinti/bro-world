@@ -82,6 +82,11 @@ export const usePostStore = defineStore('post', {
       }
     },
 
+    async invalidatePostCache(userId) {
+      await deleteCachedKey(`giUbFlBbPL:posts_page_1_limit_10_user_${userId}`)
+      await deleteCachedKey(`giUbFlBbPL:posts_page_1_limit_10`)
+    },
+
     async invalidateReactCache(id: string | number) {
       await deleteCachedKey(`giUbFlBbPL:public_post_${id}_reacts`)
       await deleteCachedKey(`giUbFlBbPL:private_post_${id}_reacts`)
