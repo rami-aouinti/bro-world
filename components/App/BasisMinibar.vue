@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 const items = [
-  { title: "Settings", icon: "mdi-account-settings-variant", color: "default", path: "/setting" },
   { title: "Calendar", icon: "mdi-calendar", color: "default", path: "/calendar" },
   { title: "Order", icon: "mdi-shopping", color: "default", path: "/ecommerce/order" },
   { title: "CV", icon: "mdi-file-pdf", color: "default", path: "/resume" },

@@ -15,8 +15,8 @@ watch(
 )
 import AuthorPost from "~/pages/home/post/AuthorPost.vue";
 import { usePostStore } from "~/stores/usePostStore"
-import PostCard from "~/components/Post/PostCard.vue";
 import BasisMinibar from "~/components/App/BasisMinibar.vue";
+import PostCard from "~/components/Blog/PostCard.vue";
 
 const postStore = usePostStore()
 
