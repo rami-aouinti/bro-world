@@ -2,8 +2,7 @@
   <v-card
     border="xl"
     class="mx-auto overflow-y-auto"
-    max-height="500"
-    max-width="850"
+    max-height="450"
     rounded="xl"
     variant="text"
   >

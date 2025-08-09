@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 const items = [
-  { title: "Settings", icon: "mdi-account-settings-variant", color: "deep-purple", path: "/setting" },
-  { title: "Calendar", icon: "mdi-calendar", color: "warning", path: "/calendar" },
-  { title: "Order", icon: "mdi-shopping", color: "pink", path: "/ecommerce/order" },
-  { title: "My Jobs", icon: "mdi-briefcase", color: "blue", path: "/jobs" },
-  { title: "Company", icon: "mdi-database", color: "teal", path: "/crm" },
-  { title: "My Courses", icon: "mdi-school", color: "green", path: "/courses" },
-  { title: "My Files", icon: "mdi-folder", color: "orange", path: "/user/channel/media" },
+  { title: "Settings", icon: "mdi-account-settings-variant", color: "default", path: "/setting" },
+  { title: "Calendar", icon: "mdi-calendar", color: "default", path: "/calendar" },
+  { title: "Order", icon: "mdi-shopping", color: "default", path: "/ecommerce/order" },
+  { title: "CV", icon: "mdi-file-pdf", color: "default", path: "/resume" },
+  { title: "My Jobs", icon: "mdi-briefcase", color: "default", path: "/jobs" },
+  { title: "Company", icon: "mdi-database", color: "default", path: "/crm" },
+  { title: "My Courses", icon: "mdi-school", color: "default", path: "/courses" },
+  { title: "My Files", icon: "mdi-folder", color: "default", path: "/user/channel/media" },
 ];
 const theme = useTheme()
 const isDark = computed({

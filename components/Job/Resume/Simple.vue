@@ -88,7 +88,6 @@
       </v-row>
     </v-col>
   </v-row>
-  <v-btn color="primary" @click="handleExport">Télécharger le PDF</v-btn>
   </ClientOnly>
 </template>
 

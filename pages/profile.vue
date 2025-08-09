@@ -3,8 +3,6 @@ import { onMounted, ref, watch, computed, nextTick } from 'vue'
 import {useI18n} from 'vue-i18n'
 import LoaderProfile from '~/components/App/Loader/Profile/LoaderProfile.vue'
 import {useUserStore} from '~/stores/useUserStore'
-import Media from "~/pages/home/dashboard/Media.vue";
-import {useConversationUtils} from "~/composables/useConversationUtils";
 const userStore = useUserStore()
 const canTeleport = ref(false)
 const { t } = useI18n()
