@@ -37,7 +37,7 @@
                     {{ props.author?.followerCount }} followers
                   </p>
                 </div>
-                <div class="mx-2">
+                <div class="mx-2" v-if="loggedIn">
                   <v-btn
                     v-if="relationStatus === 3"
                     :loading="loadingReject"
@@ -155,7 +155,7 @@ const theme = useTheme()
 const isDark = computed(() => theme.global.name.value === 'dark')
 
 const router = useRouter()
-const { user, refresh } = await useUserSession()
+const { user, refresh, loggedIn} = await useUserSession()
 
 const show = ref(false)
 const showActions = ref(false)

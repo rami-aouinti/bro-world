@@ -150,7 +150,7 @@ const reloadStories = async () => {
 const friends = ref<any>({})
 
 const getFriendStatus = async () => {
-  const profile = await userStore.fetchProfile(user.value.username);
+  const profile = await userStore.fetchProfile(user?.value?.username);
 
   friends.value = profile.friends
 }
