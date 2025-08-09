@@ -244,15 +244,15 @@ onUnmounted(() => {
     </div>
   </v-card>
 
-  <v-btn
-    v-if="props.post.totalComments > comments.length && showReplies"
-    class="text-default text-decoration-none"
-    variant="text"
-    size="small"
-    @click="loadComments()">
-    Show all comments
-  </v-btn>
   <div v-if="showReplies">
+    <v-btn
+      v-if="props.post.totalComments > comments.length && showReplies"
+      class="text-default text-decoration-none"
+      variant="text"
+      size="small"
+      @click="loadComments">
+      Show all comments
+    </v-btn>
     <Comments :friends="props.friends" :comments="comments" />
   </div>
   <div v-if="loggedIn && (showNewComment || showReplies)">
@@ -281,7 +281,7 @@ onUnmounted(() => {
     <div class="px-4 py-2">
       <AuthorPost :post="props.post"
                   @post-updated="emit('post-updated', $event)"
-                  @post-delete="emit('post-deleted', $event)" />
+                  @post-delete="emit('post-deleted', $event)"  :friends="props.friends"/>
       <PostContent :post="props.post" />
       <PostMedia :post="props.post" />
     </div>
