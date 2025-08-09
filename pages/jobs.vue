@@ -47,9 +47,10 @@
       class="mt-4"
     />
     <!-- Create Job Modal -->
-    <CreateJob v-model="showCreateJobModal" @job-created="refreshJobs" />
+    <CreateJob v-if="loggedIn" v-model="showCreateJobModal" @job-created="refreshJobs" />
     <!-- Create Applicant Modal -->
     <CreateApplicant
+      v-if="loggedIn"
       v-model="showCreateApplicantModal"
       :selected-job-id="selectedJobId"
       @applicant-created="onApplicantCreated"
@@ -92,7 +93,7 @@ const canTeleport = ref(false)
 
 const { t } = useI18n()
 const jobStore = useJobStore()
-
+const { user, loggedIn } = useUserSession()
 const search = ref('')
 const selectedCompany = ref('')
 const selectedExperience = ref<number | null>(null)
@@ -111,8 +112,15 @@ const selectedJobId = ref<string | null>(null)
 
 const companies = ref<any[]>([])
 const fetchCompanies = async () => {
-  const { data } = await useFetch('/api/job/companies')
-  if (data.value) companies.value = data.value
+  let data
+
+  if (loggedIn.value) {
+    data = await $fetch(`/api/job/companies`)
+  } else {
+    data = await $fetch(`/api/job/public-companies`)
+  }
+
+  if (data) companies.value = data
 }
 watch(!companies.value, () => {
   fetchCompanies()
@@ -149,19 +157,20 @@ const fetchJobs = async () => {
   query.set('page', currentPage.value.toString())
   query.set('limit', limit.value.toString())
 
-  const { data, error } = await useFetch(`/api/job/jobs?${query.toString()}`)
+  let data
 
-  if (error.value) {
-    console.error(error.value)
-    return
+  if (loggedIn.value) {
+    data = await $fetch(`/api/job/jobs?${query.toString()}`)
+  } else {
+    data = await $fetch(`/api/job/public-jobs?${query.toString()}`)
   }
 
-  if (data.value) {
-    jobStore.setJobs(data.value.data)
-    jobStore.setTotal(data.value.count)
-    jobStore.setPage(data.value.page)
+  if (data) {
+    jobStore.setJobs(data.data)
+    jobStore.setTotal(data.count)
+    jobStore.setPage(data.page)
     jobStore.setLoaded(true)
-    totalPages.value = Math.ceil(data.value.count / limit.value)
+    totalPages.value = Math.ceil(data.count / limit.value)
   }
   pending.value = false
 }

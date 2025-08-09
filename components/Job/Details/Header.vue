@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import CreateApplicant from "~/components/Job/CreateApplicant.vue";
+const { user, loggedIn } = useUserSession()
 
 const router = useRouter()
 const { t } = useI18n()
@@ -117,6 +118,7 @@ const jobInfos = computed(() => {
         </v-btn>
       </v-col>
       <CreateApplicant
+        v-if="loggedIn"
         v-model="showCreateApplicantModal"
         :selected-job-id="selectedJobId"
         @applicant-created="onApplicantCreated">

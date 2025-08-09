@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import Social from "~/components/Job/Resume/Social.vue";
-import Profile from "~/components/Job/Resume/Profile.vue";
-import Preview from "~/components/Job/Resume/Preview.vue";
 import { onMounted, ref, watch, computed, nextTick } from 'vue'
 import PdfTemplateGrid from "~/components/Resume/PdfTemplateGrid.vue";
 
