@@ -58,7 +58,7 @@ const templates = ref<TemplateItem[]>([
     previewImg: '/img/cv/cv-2.png',
     pdfUrl: '/samples/cv-2026.pdf',
     pages: 2,
-    tags: ['Modern', 'ATS-friendly']
+    tags: ['Modern']
   },
   {
     id: 'kopfzeile5',
