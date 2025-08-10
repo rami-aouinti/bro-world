@@ -23,17 +23,17 @@ const templates = ref<TemplateItem[]>([
     subtitle: 'Moderne, sauber',
     category: 'Kreativ',
     badge: 'TOP',
-    previewImg: 'https://picsum.photos/seed/cv2025/800/1130',
+    previewImg: '/img/cv/cv-1.png',
     pdfUrl: '/samples/cv-2025.pdf',
     pages: 2,
-    tags: ['Modern', 'ATS-friendly']
+    tags: ['Modern']
   },
   {
     id: 'kopfzeile',
     title: 'Lebenslauf Kopfzeile',
     subtitle: 'Seriös, schlicht',
     category: 'Klassisch',
-    previewImg: 'https://picsum.photos/seed/kopf/800/1130',
+    previewImg: '/img/cv/cv-2.png',
     pdfUrl: '/samples/cv-kopfzeile.pdf',
     pages: 1,
     tags: ['Klassisch']
@@ -44,7 +44,7 @@ const templates = ref<TemplateItem[]>([
     subtitle: 'Kompakt, klar',
     category: 'Klassisch',
     badge: 'NEU',
-    previewImg: 'https://picsum.photos/seed/2024/800/1130',
+    previewImg: '/img/cv/cv-1.png',
     pdfUrl: '/samples/cv-2024.pdf',
     pages: 1,
     tags: ['Einseitig']
@@ -55,7 +55,7 @@ const templates = ref<TemplateItem[]>([
     subtitle: 'Moderne, sauber',
     category: 'Kreativ',
     badge: 'TOP',
-    previewImg: 'https://picsum.photos/seed/cv2026/800/1130',
+    previewImg: '/img/cv/cv-2.png',
     pdfUrl: '/samples/cv-2026.pdf',
     pages: 2,
     tags: ['Modern', 'ATS-friendly']
@@ -65,7 +65,7 @@ const templates = ref<TemplateItem[]>([
     title: 'Lebenslauf Kopfzeile',
     subtitle: 'Seriös, schlicht',
     category: 'Klassisch',
-    previewImg: 'https://picsum.photos/seed/men/800/1130',
+    previewImg: '/img/cv/cv-1.png',
     pdfUrl: '/samples/cv-kopfzeile.pdf',
     pages: 1,
     tags: ['Klassisch']
@@ -76,7 +76,7 @@ const templates = ref<TemplateItem[]>([
     subtitle: 'Kompakt, klar',
     category: 'Klassisch',
     badge: 'NEU',
-    previewImg: 'https://picsum.photos/seed/2026/800/1130',
+    previewImg: '/img/cv/cv-2.png',
     pdfUrl: '/samples/cv-2024.pdf',
     pages: 1,
     tags: ['Einseitig']
@@ -148,12 +148,12 @@ function downloadPdf(item: TemplateItem) {
       <v-col
         v-for="item in filtered"
         :key="item.id"
-        cols="12" sm="6" md="4"
+        cols="12" sm="6" md="3"
       >
         <v-card class="template-card" rounded="xl" elevation="4" hover>
           <v-img
             :src="item.previewImg"
-            height="260"
+            height="250"
             cover
             class="rounded-t-xl"
           >
@@ -170,7 +170,7 @@ function downloadPdf(item: TemplateItem) {
           </v-img>
 
           <v-card-item>
-            <div class="text-h6">{{ item.title }}</div>
+            <div class="text-h7">{{ item.title }}</div>
             <div class="text-caption text-medium-emphasis">{{ item.subtitle }}</div>
 
             <div class="mt-2 d-flex flex-wrap ga-2">

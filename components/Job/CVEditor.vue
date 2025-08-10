@@ -234,7 +234,7 @@ onMounted(async () => {
 .cv-wrapper{ background:#eee; }
 .cv{ width:210mm; min-height:297mm; margin:0px auto; background:white; position:relative; box-shadow:0 2px 10px rgba(0,0,0,.08); }
 .cv-content{ padding: 22mm 4mm 20mm 4mm; position:relative; }
-.accent-corner{ position:absolute; left:0; top:0; width:0; height:0; border-top:30mm solid var(--accent,#b88b6a); border-right:30mm solid transparent; }
+.accent-corner{ position:absolute; left:0; top:0; width:0; height:0; border-top:30mm solid var(--accent, #091b2d); border-right:30mm solid transparent; }
 .accent-corner::after{ content:''; position:absolute; left:8mm; top:8mm; width:0; height:0; border-top:22mm solid transparent; border-right:22mm solid transparent; border-bottom:22mm solid white; }
 
 .hero{ display:flex; gap:18px; align-items:center; }
