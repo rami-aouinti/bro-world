@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 const items = [
+  { title: "Inbox", icon: "mdi-message", color: "default", path: "/inbox" },
   { title: "Calendar", icon: "mdi-calendar", color: "default", path: "/calendar" },
   { title: "Order", icon: "mdi-shopping", color: "default", path: "/ecommerce/order" },
   { title: "CV", icon: "mdi-file-pdf", color: "default", path: "/resume" },
@@ -35,7 +36,7 @@ const isDark = computed({
         color="primary"
       >
         <template #prepend>
-          <v-icon :icon="item.icon" :color="item.color" class="me-3"></v-icon>
+          <v-icon :icon="item.icon" :color="item.color" class="me-1"></v-icon>
         </template>
 
         <v-list-item-title class="text-subtitle-2 text-uppercase font-weight-bold" :class="isDark ? 'text-white' : 'text-default'">

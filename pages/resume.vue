@@ -25,13 +25,13 @@ const items = [
     title: "Create New CV",
     icon: "mdi-file-account", // Icône de CV/profil
     color: "default",
-    path: "/setting"
+    path: "/cv/cv/new"
   },
   {
-    title: "Create New Lettre de motivation",
+    title: "New Cover Letter",
     icon: "mdi-file-document-edit", // Document avec crayon (édition)
     color: "default",
-    path: "/calendar"
+    path: "/cv/cover/new"
   },
   {
     title: "My Cvs",

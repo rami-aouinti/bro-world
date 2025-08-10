@@ -19,27 +19,24 @@
             <template v-if="loggedIn">
               <div class="d-flex align-center px-3 my-2">
                 <a :href="'/profile'">
-                  <UserAvatar :user="user" color="primary" size="48" />
+                  <UserAvatar :user="user" color="primary" size="32" />
                 </a>
                 <div class="mx-2">
                   <NuxtLink
                     :to="localePath('/profile')"
-                    class="text-h6 font-weight-bolder text-decoration-none"
+                    class="text-h7 font-weight-bolder text-decoration-none"
                     :class="isDark ? 'text-white' : 'text-default'"
                   >
-                    {{ truncate(user?.firstName + ' ' + user?.lastName, 20) }}
+                    {{ truncate(user?.firstName + ' ' + user?.lastName, 15) }}
                   </NuxtLink>
                 </div>
-                <div class="mx-1">
+                <v-spacer />
+                <div class="me-1 d-flex justify-end">
                   <v-btn size="small" variant="text" to="/setting" class="font-weight-bolder">
-                    <v-icon icon="mdi-settings" size="15" />
+                    <v-icon color="default" icon="mdi-settings" size="15" />
                   </v-btn>
                 </div>
-                <div class="mx-1">
-                  <v-btn size="small" variant="text" to="/inbox" class="font-weight-bolder">
-                    <v-icon icon="mdi-message" size="15" />
-                  </v-btn>
-                </div>
+
               </div>
               <v-divider class="my-1" />
               <div id="menu-bar-world" />

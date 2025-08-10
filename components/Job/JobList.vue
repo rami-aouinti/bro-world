@@ -19,28 +19,9 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <InfiniteList
-    v-if="!filtered"
-    fetch-url="/api/job/jobs"
-    :limit="5"
-    @loaded="emit('loaded', $event)"
-  >
-    <template #default="{ items }">
-      <v-card
-        v-for="job in items"
-        :key="job.id"
-        class="mb-4 pa-3"
-        rounded="xl"
-        variant="text"
-      >
-        <JobDetails :job="job"/>
-      </v-card>
-    </template>
-  </InfiniteList>
-
-  <div v-else-if="jobs.length">
+  <div v-if="props.jobs.length > 0">
     <v-card
-      v-for="job in jobs"
+      v-for="job in props.jobs"
       :key="job.id"
       class="mb-4 pa-3"
       rounded="xl"

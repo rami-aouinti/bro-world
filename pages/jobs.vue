@@ -93,11 +93,11 @@ const canTeleport = ref(false)
 
 const { t } = useI18n()
 const jobStore = useJobStore()
-const { user, loggedIn } = useUserSession()
+const { user, loggedIn } = await useUserSession()
 const search = ref('')
 const selectedCompany = ref('')
 const selectedExperience = ref<number | null>(null)
-const salaryRange = ref<number>(50)
+const salaryRange = ref<number>(5)
 const selectedSkills= ref<string[]>([])
 const selectedWork = ref<string[]>([])
 const selectedContract = ref<string[]>([])
@@ -160,17 +160,18 @@ const fetchJobs = async () => {
   let data
 
   if (loggedIn.value) {
-    data = await $fetch(`/api/job/jobs?${query.toString()}`)
+    data = await jobStore.fetchJobs(currentPage.value.toString(),limit.value.toString(),search.value,selectedCompany.value,  selectedLocations.value, query)
   } else {
-    data = await $fetch(`/api/job/public-jobs?${query.toString()}`)
+    data = await jobStore.fetchPublicJobs(currentPage.value.toString(),limit.value.toString(),search.value,selectedCompany.value,  selectedLocations.value, query)
   }
 
   if (data) {
-    jobStore.setJobs(data.data)
-    jobStore.setTotal(data.count)
-    jobStore.setPage(data.page)
+    jobStore.setJobs(data)
+    jobStore.setPage(currentPage.value.toString())
+    jobStore.setLimit(limit.value.toString())
     jobStore.setLoaded(true)
-    totalPages.value = Math.ceil(data.count / limit.value)
+    totalPages.value = Math.ceil(data.length / limit.value)
+    jobStore.setTotal(totalPages)
   }
   pending.value = false
 }
