@@ -56,7 +56,9 @@ onMounted(async () => {
   try {
     await loadProfile()
     await nextTick()
+    setTimeout(() => {
     canTeleport.value = !!document.getElementById('menu-bar-world')
+  }, 200)
   } catch (e) {
   } finally {
     loading.value.user = false

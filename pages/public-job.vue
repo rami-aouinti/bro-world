@@ -32,12 +32,6 @@
     <JobTopFilters
       @update:search="search = $event"
       @update:location="selectedLocations = $event"
-    />
-    <JobCreateButtons
-      @create-job="showCreateJobModal = true"
-      @create-applicant="showCreateApplicantModal = true"
-    />
-    <JobFilters
       :experience-options="[0.5, 1, 2, 3, 5, 10]"
       :companies="companies"
       @update:experience="selectedExperience = $event"
@@ -104,13 +98,11 @@ definePageMeta({
   scrollToTop: true,
 })
 
-import { ref, watch, onMounted, nextTick, computed } from 'vue'
+import { ref, watch, onMounted, nextTick, computed, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useJobStore } from '~/stores/useJobStore'
 const pending = ref(false)
-import JobFilters from '~/components/Job/JobFilters.vue'
 import JobList from '~/components/Job/JobList.vue'
-import JobCreateButtons from '~/components/Job/JobCreateButtons.vue'
 import JobTopFilters from '~/components/Job/JobTopFilters.vue'
 import CreateJob from '~/components/Job/CreateJob.vue'
 import CreateApplicant from '~/components/Job/CreateApplicant.vue'
@@ -208,14 +200,6 @@ const fetchCompanies = async () => {
 watch(!companies.value, () => {
   fetchCompanies()
 }, { immediate: true })
-
-
-onMounted(async () => {
-  window.scrollTo({ top: 0 })
-  await fetchCompanies
-  await nextTick()
-  canTeleport.value = !!document.getElementById('menu-bar-world')
-})
 // Call API with filters and pagination
 const fetchJobs = async () => {
   pending.value = true
@@ -259,9 +243,26 @@ const fetchJobs = async () => {
   pending.value = false
 }
 onMounted(async () => {
-  window.scrollTo({top: 0})
+  // safe côté client uniquement
+  window.scrollTo({ top: 0 })
+  await fetchCompanies()
   await nextTick()
-  canTeleport.value = !!document.getElementById('menu-bar-world')
+
+  const setIfExists = () => {
+    const ok = !!document.getElementById('menu-bar-world')
+    if (ok) canTeleport.value = true
+    return ok
+  }
+
+  // premier essai rapide
+  if (setIfExists()) return
+
+  // vérifie toutes les 100ms jusqu’à ce que l’élément apparaisse
+  const timer = setInterval(() => {
+    if (setIfExists()) clearInterval(timer)
+  }, 100)
+
+  onBeforeUnmount(() => clearInterval(timer))
 })
 
 watch([

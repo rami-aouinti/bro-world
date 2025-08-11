@@ -131,7 +131,9 @@ onMounted(async () => {
   window.scrollTo({ top: 0 })
   await fetchCompanies
   await nextTick()
-  canTeleport.value = !!document.getElementById('menu-bar-world')
+  setTimeout(() => {
+    canTeleport.value = !!document.getElementById('menu-bar-world')
+  }, 200)
 })
 // Call API with filters and pagination
 const fetchJobs = async () => {

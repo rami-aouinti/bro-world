@@ -299,7 +299,9 @@ watch(!jobs.value, () => {
 onMounted(async () => {
   window.scrollTo({top: 0})
   await nextTick()
-  canTeleport.value = !!document.getElementById('menu-bar-world')
+  setTimeout(() => {
+    canTeleport.value = !!document.getElementById('menu-bar-world')
+  }, 200)
   await fetchApplications()
 })
 </script>

@@ -30,7 +30,7 @@
       <v-btn color="primary" :to="localePath('/courses')" class="mx-2" variant="text">
         <v-icon :color="isDark ? 'white' : 'default'" size="32">mdi-school</v-icon>
       </v-btn>
-      <v-btn color="primary" :to="localePath('/jobs')" class="mx-2" variant="text">
+      <v-btn color="primary" :to="localePath('/public-job')" class="mx-2" variant="text">
         <v-icon :color="isDark ? 'white' : 'default'" size="32">mdi-briefcase</v-icon>
       </v-btn>
       <v-btn color="primary" :to="localePath('/shop')" class="mx-2" variant="text">

@@ -5,7 +5,7 @@ const items = [
   { title: "Calendar", icon: "mdi-calendar", color: "default", path: "/calendar" },
   { title: "Order", icon: "mdi-shopping", color: "default", path: "/ecommerce/order" },
   { title: "CV", icon: "mdi-file-pdf", color: "default", path: "/resume" },
-  { title: "My Jobs", icon: "mdi-briefcase", color: "default", path: "/jobs" },
+  { title: "My Jobs", icon: "mdi-briefcase", color: "default", path: "/public-job" },
   { title: "Company", icon: "mdi-database", color: "default", path: "/crm" },
   { title: "My Courses", icon: "mdi-school", color: "default", path: "/courses" },
   { title: "My Files", icon: "mdi-folder", color: "default", path: "/user/channel/media" },

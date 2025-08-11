@@ -370,7 +370,9 @@ onMounted(async () => {
   if (!loggedIn) return
   await loadFolders()
   await nextTick()
-  canTeleport.value = !!document.getElementById('menu-bar-world')
+  setTimeout(() => {
+    canTeleport.value = !!document.getElementById('menu-bar-world')
+  }, 200)
 })
 
 interface FolderTreeNode {

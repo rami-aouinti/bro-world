@@ -113,7 +113,9 @@ onMounted(async () => {
     await loadTaxons()
     await loadProducts()
     await nextTick()
+    setTimeout(() => {
     canTeleport.value = !!document.getElementById('menu-bar-world')
+  }, 200)
   } catch (e) {
   }
 })

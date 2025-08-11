@@ -38,7 +38,9 @@ onMounted(async () => {
   window.scrollTo({ top: 0 })
   try {
     await nextTick()
+    setTimeout(() => {
     canTeleport.value = !!document.getElementById('menu-bar-world')
+  }, 200)
   } catch (e) {
   }
 })

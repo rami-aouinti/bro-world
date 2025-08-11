@@ -227,7 +227,9 @@ watch(user.value.username, () => {
 onMounted(async () => {
   window.scrollTo({ top: 0 })
   await loadProfile()
-  canTeleport.value = !!document.getElementById('menu-bar-world')
+  setTimeout(() => {
+    canTeleport.value = !!document.getElementById('menu-bar-world')
+  }, 200)
 })
 
 definePageMeta({
