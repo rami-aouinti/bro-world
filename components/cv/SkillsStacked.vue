@@ -1,5 +1,5 @@
 <template>
-  <div class="skills-stacked">
+  <div class="skills-stacked pa-4">
     <div v-for="g in modelValue" :key="g.id" class="group">
       <div class="label">{{ g.label }}</div>
       <ul class="items">

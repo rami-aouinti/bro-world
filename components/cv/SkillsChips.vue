@@ -1,5 +1,5 @@
 <template>
-  <div class="personal-grid-wrapper"
+  <div class="personal-grid-wrapper pa-4"
        @mouseenter="isHovered = true"
        @mouseleave="isHovered = false">
     <div v-for="(group, gi) in modelValue" :key="group.id" class="skill-group my-3">
@@ -8,11 +8,14 @@
       </div>
       <div class="items">
         <template v-for="(s, si) in group.items" :key="si">
-          <v-hover v-slot="{ isHovering, props }">
+          <v-hover v-slot="{ isHovering, props: hoverProps }"> <!-- ✅ -->
             <v-chip
-              v-bind="props"
+              v-bind="hoverProps"
               class="ma-1 chip-hover-closable"
               :closable="isHovering"
+              :variant="chipVariant"
+              :color="chipColor"
+              :density="chipDensity"
               @click="openEditDialog(gi, si, s)"
               @click:close="remove(gi, si)"
             >
@@ -20,27 +23,28 @@
             </v-chip>
           </v-hover>
         </template>
+
         <v-btn v-if="isHovered"
                size="x-small"
                color="primary"
                variant="outlined"
                prepend-icon="mdi-plus"
                @click="add(gi)">
-          neue Skillbox
+          new skill
         </v-btn>
       </div>
     </div>
 
     <v-dialog v-model="dialogVisible" max-width="400">
       <v-card>
-        <v-card-title class="text-h6">Skill bearbeiten</v-card-title>
+        <v-card-title class="text-h6">Skill edit</v-card-title>
         <v-card-text>
-          <v-text-field v-model="editValue" label="Neuer Skill" outlined autofocus />
+          <v-text-field v-model="editValue" label="New Skill" outlined autofocus />
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn text @click="dialogVisible = false">Abbrechen</v-btn>
-          <v-btn color="primary" @click="saveEdit">Speichern</v-btn>
+          <v-btn text @click="dialogVisible = false">Cancel</v-btn>
+          <v-btn color="primary" @click="saveEdit">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -48,11 +52,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+
 type SkillGroup = { id:string; label:string; items:string[] }
-const props = defineProps<{ modelValue: SkillGroup[] }>()
+
+const props = withDefaults(defineProps<{
+  modelValue: SkillGroup[]
+  accent?: string
+  chipVariant?: 'text' | 'elevated' | 'outlined' | 'flat' | 'tonal' | 'plain'
+  chipColor?: string
+  chipDensity?: 'comfortable' | 'compact' | 'default'
+}>(), {
+  chipVariant: 'text',
+  chipDensity: 'compact'
+})
+
 const emit = defineEmits(['update:modelValue'])
 const update = (v:any)=>emit('update:modelValue',v)
+
+// ✅ proxies
+const chipVariant  = computed(() => props.chipVariant)
+const chipColor    = computed(() => props.chipColor ?? props.accent)  // fallback sur accent
+const chipDensity  = computed(() => props.chipDensity)
 
 const isHovered = ref(false)
 const dialogVisible = ref(false)

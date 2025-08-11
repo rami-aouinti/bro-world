@@ -1,5 +1,5 @@
 <template>
-  <div class="interests-stacked">
+  <div class="interests-stacked pa-4">
     <div class="label">Hobbys</div>
     <ul class="items">
       <li v-for="(h,i) in modelValue" :key="i" class="item">

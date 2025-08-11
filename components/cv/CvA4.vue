@@ -1,44 +1,38 @@
 <!-- components/cv/CvA4.vue -->
 <template>
   <div class="a4" :style="pageStyle" :class="`layout--${ui.layout}`">
+    <!-- VBar -->
     <div
-      v-if="ui.vbar.show"
+      v-if="vbar.show"
       class="vbar"
-      :class="`vbar--${ui.vbar.side}`"
+      :class="`vbar--${vbar.side}`"
     />
+
+    <!-- Corner -->
     <CornerDecoration
-      v-if="ui.corner.enabled"
-      :corner="{
-    type: ui.corner.type,
-    anchor: ui.corner.anchor,
-    sizeMm: ui.corner.sizeMm,
-    color: ui.corner.color,
-    color2: ui.corner.color2,
-    offsetMmX: ui.corner.offsetMmX,
-    offsetMmY: ui.corner.offsetMmY,
-    rotateDeg: ui.corner.rotateDeg
-  }"
+      v-if="normalizedCorner"
+      :corner="normalizedCorner"
       :default-accent="ui.accent"
       :default-primary="ui.primary"
     />
-
-      <!--
-        Ici tu peux éventuellement poser un contenu au-dessus du corner,
-        par ex. une petite photo ou un badge (optionnel):
-        <img v-if="... " class="badge" :src="..." />
-      -->
 
     <div class="grid">
       <!-- Identity -->
       <div class="identity">
         <div class="identity-left">
-
           <div class="identity-left d-flex align-center justify-center">
-            <div v-if="ui.photo.show && ui.photo.position === 'left' && !usesSidebar && !ui.vbar?.show" class="photo" :class="photoClass">
+            <div
+              v-if="ui.photo.show && ui.photo.position === 'left' && !usesSidebar && !vbar.show"
+              class="photo"
+              :class="photoClass"
+              :style="{ width: ui.photo.widthMm + 'mm', height: ui.photo.heightMm + 'mm' }"
+            >
               <template v-if="ui.photo.show">
                 <PhotoBlock
+                  :key="`${ui.photo.widthMm}x${ui.photo.heightMm}`"
                   :src="model.photo"
                   @update:src="val => (model.photo = val)"
+                  :style="{ '--w': ui.photo.widthMm + 'mm', '--h': ui.photo.heightMm + 'mm' }"
                   @delete-section="ui.photo.show = false"
                   :width="`${ui.photo.widthMm}mm`"
                   :height="`${ui.photo.heightMm}mm`"
@@ -50,16 +44,34 @@
                 />
               </template>
             </div>
-            <v-spacer />
-            <div>
-              <h1 class="name">{{ model.identity.name }}</h1>
-              <div class="headline">{{ model.identity.headline }}</div>
+
+            <div class="mx-4">
+              <EditableText
+                v-model="model.identity.name"
+                class="cv-title"
+                placeholder="Name eingeben"
+              />
+              <EditableText
+                v-model="model.identity.headline"
+                class="subtitle"
+                placeholder="Berufsbezeichnung eingeben"
+              />
+              <slot v-if="!usesSidebar && ui.photo.heightMm >= 60" name="personal" />
             </div>
+
             <v-spacer />
-            <div v-if="ui.photo.show && ui.photo?.position === 'right' && !usesSidebar" class="photo" :class="photoClass">
+
+            <div
+              v-if="ui.photo.show && ui.photo.position === 'right' && !usesSidebar && !vbar.show"
+              class="photo"
+              :class="photoClass"
+              :style="{ width: ui.photo.widthMm + 'mm', height: ui.photo.heightMm + 'mm' }"
+            >
               <template v-if="ui.photo.show">
                 <PhotoBlock
+                  :key="`${ui.photo.widthMm}x${ui.photo.heightMm}`"
                   :src="model.photo"
+                  :style="{ '--w': ui.photo.widthMm + 'mm', '--h': ui.photo.heightMm + 'mm' }"
                   @update:src="val => (model.photo = val)"
                   @delete-section="ui.photo.show = false"
                   :width="`${ui.photo.widthMm}mm`"
@@ -73,8 +85,9 @@
               </template>
             </div>
           </div>
+
           <!-- only show personal block here when there is NO sidebar -->
-          <slot v-if="!usesSidebar" name="personal" />
+          <slot v-if="!usesSidebar && ui.photo.heightMm < 60" name="personal" />
         </div>
       </div>
 
@@ -85,11 +98,21 @@
         <slot name="skills" />
         <slot name="interests" />
       </div>
-      <div v-if="ui.vbar?.show" class="sidebar">
-        <div style="justify-self: center;" v-if="ui.photo.show" class="photo d-flex align-center justify-center text-center my-1" :class="photoClass">
+
+      <!-- Sidebar (vbar mode) -->
+      <div v-if="vbar.show" class="sidebar">
+        <div
+          v-if="ui.photo.show"
+          class="photo d-flex align-center justify-center text-center my-1"
+          :class="photoClass"
+          :style="{ width: ui.photo.widthMm + 'mm', height: ui.photo.heightMm + 'mm' }"
+          style="justify-self: center;"
+        >
           <template v-if="ui.photo.show">
             <PhotoBlock
+              :key="`${ui.photo.widthMm}x${ui.photo.heightMm}`"
               :src="model.photo"
+              :style="{ '--w': ui.photo.widthMm + 'mm', '--h': ui.photo.heightMm + 'mm' }"
               @update:src="val => (model.photo = val)"
               @delete-section="ui.photo.show = false"
               :width="`${ui.photo.widthMm}mm`"
@@ -104,12 +127,21 @@
         </div>
         <slot name="sidebar" />
       </div>
-      <!-- Sidebar -->
+
+      <!-- Sidebar (layout sidebar-left/right) -->
       <div v-if="usesSidebar" class="sidebar">
-        <div style="justify-self: center;" v-if="ui.photo.show" class="photo d-flex align-center justify-center text-center my-1" :class="photoClass">
+        <div
+          v-if="ui.photo.show"
+          class="photo d-flex align-center justify-center text-center my-1"
+          :class="photoClass"
+          :style="{ width: ui.photo.widthMm + 'mm', height: ui.photo.heightMm + 'mm' }"
+          style="justify-self: center;"
+        >
           <template v-if="ui.photo.show">
             <PhotoBlock
+              :key="`${ui.photo.widthMm}x${ui.photo.heightMm}`"
               :src="model.photo"
+              :style="{ '--w': ui.photo.widthMm + 'mm', '--h': ui.photo.heightMm + 'mm' }"
               @update:src="val => (model.photo = val)"
               @delete-section="ui.photo.show = false"
               :width="`${ui.photo.widthMm}mm`"
@@ -137,14 +169,59 @@
 import { computed, toRefs } from 'vue'
 import type { CvPreset } from '@/presets/cvPresets'
 import type { UiState } from '@/types/ui/types'
-import CornerDecoration from "~/components/cv/CornerDecoration.vue";
-import PhotoBlock from "~/components/cv/PhotoBlock.vue";
+import CornerDecoration from '~/components/cv/CornerDecoration.vue'
+import PhotoBlock from '~/components/cv/PhotoBlock.vue'
+import EditableText from '~/components/common/EditableText.vue'
 
 const _props = defineProps<{ model:any; preset:CvPreset; ui:UiState }>()
 const { model, preset, ui } = toRefs(_props)
 
+const layout = computed(() => ui.value.layout)
+
+/** vbar normalisé (évite les undefined) */
+const vbar = computed(() => {
+  const vb = ui.value?.vbar ?? preset.value?.vbar ?? null
+  if (!vb) return { show: false, side: 'left', color: 'transparent', widthMm: 0, offsetMm: 0 }
+  return {
+    show: !!vb.show,
+    side: vb.side ?? 'left',
+    color: vb.color ?? (ui.value.primary ?? preset.value.palette.primary),
+    widthMm: vb.widthMm ?? 0,
+    offsetMm: vb.offsetMm ?? 0,
+  }
+})
+
+/** corner normalisé (UI > preset) + defaults sûrs */
+const normalizedCorner = computed(() => {
+  const c = ui.value?.corner ?? preset.value?.corner ?? null
+  if (!c) return null
+  return {
+    enabled: c.enabled ?? true,
+    type: c.type,
+    anchor: c.anchor ?? 'top-left',
+    sizeMm: c.sizeMm ?? 30,
+    color: c.color ?? (ui.value.accent ?? preset.value.palette.accent),
+    color2: c.color2,
+    offsetMmX: c.offsetMmX ?? 0,
+    offsetMmY: c.offsetMmY ?? 0,
+    rotateDeg: c.rotateDeg ?? 0,
+  }
+})
+
+const cornerPadTop = computed(() => {
+  const c = normalizedCorner.value
+  if (!c) return '0mm'
+  const s = (c.sizeMm ?? 30) * 0.55
+  return c.anchor?.startsWith('top') ? `${s}mm` : '0mm'
+})
+const cornerPadBottom = computed(() => {
+  const c = normalizedCorner.value
+  if (!c) return '0mm'
+  const s = (c.sizeMm ?? 30) * 0.55
+  return c.anchor?.startsWith('bottom') ? `${s}mm` : '0mm'
+})
+
 const pageStyle = computed(() => ({
-  // Couleurs du preset
   '--primary': ui.value.primary ?? preset.value.palette.primary,
   '--accent':  ui.value.accent  ?? preset.value.palette.accent,
   '--paper':   ui.value.paper   ?? preset.value.palette.paper,
@@ -152,56 +229,38 @@ const pageStyle = computed(() => ({
   fontFamily:  ui.value.fontFamily ?? preset.value.fontFamily,
   fontSize:    ui.value.fontSize   ?? preset.value.baseSize,
 
-  '--vbar-color':  ui.value.vbar.color,
-  '--vbar-width':  `${ui.value.vbar.widthMm}mm`,
-  '--vbar-offset': `${ui.value.vbar.offsetMm}mm`,
-  '--sidebar-w': `${ui.value.sidebar?.widthMm ?? 70}mm`,   // largeur sidebar
-  '--sidebar-bg':    ui.value.sidebar?.background ?? '#f7f8fa',
-  '--sidebar-text':  ui.value.sidebar?.text ?? 'inherit',
-  '--sidebar-border': ui.value.sidebar?.enabled ? (ui.value.sidebar?.borderColor ?? '#e6e8ec') : 'transparent',
+  '--vbar-color':  vbar.value.color,
+  '--vbar-width':  `${vbar.value.widthMm}mm`,
+  '--vbar-offset': `${vbar.value.offsetMm}mm`,
+  '--sidebar-w':     `${ui.value.sidebar?.widthMm ?? 70}mm`,
+  '--sidebar-bg':     ui.value.sidebar?.background ?? '#f7f8fa',
+  '--sidebar-text':   ui.value.sidebar?.text ?? 'inherit',
+  '--sidebar-border': ui.value.sidebar?.enabled
+    ? (ui.value.sidebar?.borderColor ?? '#e6e8ec')
+    : 'transparent',
 
-  // ⚡ Accent surchargé par l’UI s’il existe
-
-  // ⚡ Police & taille surchargées par l’UI
-
-  // (tes autres vars existantes…)
   '--corner-safe-top':    cornerPadTop.value,
   '--corner-safe-bottom': cornerPadBottom.value,
 
   '--a4-pad':
     ui.value.a4Padding ??
-    (usesSidebar.value === 'sidebar-left'
-      ? '14mm 14mm 14mm 0mm'
-      : usesSidebar.value === 'sidebar-right'
-        ? '14mm 0mm 14mm 14mm'
+    (ui.value.layout === 'sidebar-left'
+      ? '0mm 14mm 0mm 0mm'
+      : ui.value.layout === 'sidebar-right'
+        ? '0mm 0mm 0mm 14mm'
         : '14mm'),
-
 }))
-
-const cornerPadTop = computed(() => {
-  const c = ui.value.corner
-  if (!c) return '0mm'
-  const s = (c.sizeMm ?? 30) * 0.55  // facteur visuel (~55%)
-  return c.anchor?.startsWith('top') ? `${s}mm` : '0mm'
-})
-
-const cornerPadBottom = computed(() => {
-  const c = ui.value.corner
-  if (!c) return '0mm'
-  const s = (c.sizeMm ?? 30) * 0.55
-  return c.anchor?.startsWith('bottom') ? `${s}mm` : '0mm'
-})
 
 const usesSidebar = computed(() =>
   ['sidebar-right', 'sidebar-left'].includes(ui.value.layout)
 )
 const photoClass = computed(() => ({
-  'is-right':   preset.value.photo.position === 'right',
-  'is-left':    preset.value.photo.position === 'left',
-  'is-top':     preset.value.photo.position === 'top',
-  'is-rounded': preset.value.photo.rounded,
-  '--w':        `${preset.value.photo.widthMm}mm`,
-  '--h':        `${preset.value.photo.heightMm}mm`,
+  'is-right':   ui.value.photo.position === 'right',
+  'is-left':    ui.value.photo.position === 'left',
+  'is-top':     ui.value.photo.position === 'top',
+  'is-rounded': ui.value.photo.rounded,
+  '--w':        `${ui.value.photo.widthMm}mm`,
+  '--h':        `${ui.value.photo.heightMm}mm`,
 }))
 </script>
 
@@ -234,7 +293,8 @@ const photoClass = computed(() => ({
     box-shadow: 0 2px 10px rgba(0,0,0,.08); /* joli à l’écran */
   }
 }
-
+.cv-title{ margin:0; font-size:32px; font-weight:800; letter-spacing:.1px; }
+.subtitle{ margin-bottom:1px; opacity:.8; }
 @media print {
   html, body {
     margin: 0 !important;

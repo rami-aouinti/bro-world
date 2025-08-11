@@ -1,11 +1,18 @@
 // presets/cvPresets.ts
 export type CvPresetKey =
-  | 'sidebarRight' | 'stylish' | 'latest'
+  | 'sidebarRight' | 'sidebarLeft' | 'navRight' | 'navLeft' | 'stylish' | 'latest'
   | 'photoLeft' | 'photoLeft-1' | 'photoLeft-2' | 'photoLeft-3' | 'photoLeft-4'
   | `corner-${'quarter'|'diagonal'|'notch'|'ribbon'|'dual-slope'}-${'tl'|'tr'|'bl'|'br'}`
 
 export type CornerType = 'quarter' | 'diagonal' | 'notch' | 'ribbon' | 'dual-slope'
 export type CornerAnchor = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+
+export type SkillChipVariant = 'text' | 'elevated' | 'outlined' | 'flat' | 'tonal' | 'plain'
+export type InterestChipVariant = 'text' | 'elevated' | 'outlined' | 'flat' | 'tonal' | 'plain'
+export type LanguagesVariant = 'stars' | 'bars' | 'dots'
+export type EducationVariant = 'variant-1' | 'variant-2' | 'variant-3'
+export type ExperienceVariant = 'variant-1' | 'variant-2' | 'variant-3'
+
 type VBarConfig = {
   show: boolean
   side?: 'left'|'right'
@@ -42,8 +49,30 @@ export type CvPreset = {
     offsetMmX?: number
     offsetMmY?: number
     rotateDeg?: number
+    enabled?: boolean         // ✅ NOUVEAU: pour activer/désactiver le coin
   }
   vbar?: VBarConfig
+  skills?: {
+    chipVariant: SkillChipVariant
+    chipColor?: string
+    chipDensity?: 'comfortable'|'compact'|'default'
+    editable?: boolean
+    draggable?: boolean
+  }
+  interests?: {
+    chipVariant: InterestChipVariant
+    chipColor?: string
+    chipDensity?: 'comfortable'|'compact'|'default'
+    editable?: boolean
+    draggable?: boolean
+  }
+  languages?: {
+    variant: LanguagesVariant
+    maxLevel?: number
+    showNote?: boolean
+    sizePx?: number
+    accent?: string
+  }
 }
 
 /* ------------------ TES 8 PRESETS EXISTANTS ------------------ */
@@ -55,16 +84,17 @@ const BASE_PRESETS: CvPreset[] = [
     fontFamily: 'Inter',
     baseSize: '14px',
     palette: { primary: '#320604', accent: '#f29f05', paper: '#ffffff', text: '#111' },
-    photo: { show: true, position: 'right', widthMm: 42, heightMm: 54, rounded: true },
+    photo: { show: true, position: 'right', widthMm: 42, heightMm: 42, rounded: true },
     previewImg: '/img/cv/cv-1.png',
-    photoShape: 'square',
     layout: 'sidebar-right',
     sidebar: {
-      background: '#3e61a6',     // ✅ couleur du panneau
-      text: '#0f172a',           // optionnel
-      borderColor: '#0b0c0e'     // optionnel
+      background: '#3e61a6',
+      text: '#0f172a',
+      borderColor: '#0b0c0e'
     },
-    corner: { type: 'quarter', anchor: 'top-left', color: '#f2c100', sizeMm: 28 }
+    corner: { type: 'quarter', anchor: 'top-left', color: '#59533a', sizeMm: 28, enabled: true },
+    skills:    { chipVariant: 'outlined', chipColor: '#f29f05', chipDensity: 'compact', editable: true, draggable: true },
+    languages: { variant: 'stars', maxLevel: 5, showNote: true, sizePx: 18, accent: '#f29f05', editable: true, draggable: true }
   },
   {
     key: 'stylish',
@@ -77,7 +107,27 @@ const BASE_PRESETS: CvPreset[] = [
     photoShape: 'circle',
     photoShadow: { enabled: true, elevation: 8, color: 'rgba(0,0,0,.25)' },
     layout: 'stylish',
-    corner: { type: 'quarter', anchor: 'top-right', color: '#ff9e1a', sizeMm: 30 }
+    corner: { type: 'quarter', anchor: 'top-left', color: '#09143d', sizeMm: 30, enabled: true },
+    skills:    { chipVariant: 'tonal', chipColor: '#03203d', chipDensity: 'compact', editable: true, draggable: true },
+    languages: { variant: 'bars',  maxLevel: 5, showNote: true, sizePx: 8,  accent: '#03203d', editable: true, draggable: true }
+  },
+  {
+    key: 'sidebarLeft',
+    label: 'CV sidebar on the right',
+    fontFamily: 'Inter',
+    baseSize: '14px',
+    palette: { primary: '#320604', accent: '#f29f05', paper: '#ffffff', text: '#111' },
+    photo: { show: true, position: 'right', widthMm: 42, heightMm: 42, rounded: true },
+    previewImg: '/img/cv/cv-1.png',
+    layout: 'sidebar-left',
+    sidebar: {
+      background: '#3e61a6',
+      text: '#0f172a',
+      borderColor: '#0b0c0e'
+    },
+    corner: { type: 'quarter', anchor: 'top-left', color: '#59533a', sizeMm: 28, enabled: true },
+    skills:    { chipVariant: 'outlined', chipColor: '#f29f05', chipDensity: 'compact', editable: true, draggable: true },
+    languages: { variant: 'stars', maxLevel: 5, showNote: true, sizePx: 18, accent: '#f29f05', editable: true, draggable: true }
   },
   {
     key: 'latest',
@@ -90,7 +140,9 @@ const BASE_PRESETS: CvPreset[] = [
     photoShadow: { enabled: true, elevation: 4, color: 'rgba(180,34,34,0.25)' },
     photoShape: 'circle',
     layout: 'latest',
-    corner: { type: 'diagonal', anchor: 'top-left', color: '#26a4d3', sizeMm: 34 }
+    corner: { type: 'diagonal', anchor: 'top-left', color: '#26a4d3', sizeMm: 34 },
+    skills:    { chipVariant: 'elevated', chipColor: '#ff9e1a', chipDensity: 'comfortable', editable: true, draggable: true },
+    languages: { variant: 'stars',    maxLevel: 5, showNote: true, sizePx: 18, accent: '#ff9e1a', editable: true, draggable: true }
   },
   {
     key: 'photoLeft',
@@ -100,11 +152,12 @@ const BASE_PRESETS: CvPreset[] = [
     baseSize: '13.5px',
     palette: { primary: '#26a4d3', accent: '#ce2626', paper: '#ffffff', text: '#0e0e0e' },
     photo: { show: true, position: 'left', widthMm: 38, heightMm: 48, rounded: false },
-    photoShape: 'circle',
+    // photoShape: 'circle',
     layout: 'sidebar-left',
     corner: { type: 'diagonal', anchor: 'top-right', color: '#26a4d3', sizeMm: 34 },
-    vbar: { show: true, side: 'left', color: '#c23d3d', widthMm: 3, offsetMm: 0 }
-
+    vbar: { show: true, side: 'left', color: '#c23d3d', widthMm: 3, offsetMm: 0 },
+    skills:    { chipVariant: 'text', chipColor: '#ce2626', chipDensity: 'compact', editable: true, draggable: true },
+    languages: { variant: 'stars', maxLevel: 5, showNote: true, sizePx: 18, accent: '#ce2626', editable: true, draggable: true }
   },
   {
     key: 'photoLeft-1',
@@ -114,9 +167,11 @@ const BASE_PRESETS: CvPreset[] = [
     baseSize: '13.5px',
     palette: { primary: '#000000', accent: '#332f2f', paper: '#ffffff', text: '#0e0e0e' },
     photo: { show: true, position: 'left', widthMm: 38, heightMm: 48, rounded: false },
-    photoShape: 'circle',
+    // photoShape: 'circle',
     layout: 'sidebar-left',
-    corner: { type: 'diagonal', anchor: 'bottom-left', color: '#ff6f61', sizeMm: 34 }
+    corner: { type: 'diagonal', anchor: 'bottom-left', color: '#ff6f61', sizeMm: 34 },
+    skills:    { chipVariant: 'outlined', chipColor: '#332f2f', chipDensity: 'compact', editable: true, draggable: true },
+    languages: { variant: 'dots', maxLevel: 5, showNote: false, sizePx: 8, accent: '#332f2f', editable: true, draggable: true }
   },
   {
     key: 'photoLeft-2',
@@ -127,7 +182,9 @@ const BASE_PRESETS: CvPreset[] = [
     palette: { primary: '#c51616', accent: '#000000', paper: '#ffffff', text: '#0e0e0e' },
     photo: { show: true, position: 'left', widthMm: 38, heightMm: 48, rounded: false },
     layout: 'photo-left',
-    corner: { type: 'notch', anchor: 'top-right', color: '#ff9e1a', sizeMm: 32 }
+    corner: { type: 'notch', anchor: 'top-right', color: '#ff9e1a', sizeMm: 32 },
+    skills:    { chipVariant: 'elevated', chipColor: '#000000', chipDensity: 'comfortable', editable: true, draggable: true },
+    languages: { variant: 'bars',     maxLevel: 5, showNote: true, sizePx: 8, accent: '#000000', editable: true, draggable: true }
   },
   {
     key: 'photoLeft-3',
@@ -138,7 +195,9 @@ const BASE_PRESETS: CvPreset[] = [
     palette: { primary: '#4db928', accent: '#e00a1e', paper: '#ffffff', text: '#0e0e0e' },
     photo: { show: true, position: 'left', widthMm: 38, heightMm: 48, rounded: false },
     layout: 'photo-left',
-    corner: { type: 'quarter', anchor: 'top-right', color: '#ff9e1a', color2: '#162235', sizeMm: 30 }
+    corner: { type: 'quarter', anchor: 'top-right', color: '#ff9e1a', color2: '#162235', sizeMm: 30 },
+    skills:    { chipVariant: 'tonal', chipColor: '#e00a1e', chipDensity: 'compact', editable: true, draggable: true },
+    languages: { variant: 'stars', maxLevel: 5, showNote: true, sizePx: 18, accent: '#e00a1e', editable: true, draggable: true }
   },
   {
     key: 'photoLeft-4',
@@ -149,9 +208,12 @@ const BASE_PRESETS: CvPreset[] = [
     palette: { primary: '#818181', accent: '#320604', paper: '#ffffff', text: '#0e0e0e' },
     photo: { show: true, position: 'right', widthMm: 38, heightMm: 48, rounded: false },
     layout: 'photo-left',
-    corner: { type: 'dual-slope', anchor: 'top-left', color: '#b88b6a', color2: '#2f2f2f', sizeMm: 32 }
+    corner: { type: 'dual-slope', anchor: 'top-left', color: '#b88b6a', color2: '#2f2f2f', sizeMm: 32 },
+    skills:    { chipVariant: 'text', chipColor: '#320604', chipDensity: 'default', editable: true, draggable: true },
+    languages: { variant: 'dots', maxLevel: 5, showNote: false, sizePx: 8, accent: '#320604', editable: true, draggable: true }
   },
 ]
+
 
 /* ------------------ GÉNÉRATEUR DES 20 COINS ------------------ */
 
@@ -204,8 +266,9 @@ function createCornerPreset(type: CornerType, anchor: CornerAnchor): CvPreset {
     palette: { primary: colors.primary, accent: colors.accent, paper: PAPER, text: TEXT },
     photo: { show: false, position: 'left', widthMm: 30, heightMm: 30, rounded: false },
     layout: 'photo-left',
-
     corner: cornerCommon,
+    skills:    { chipVariant: 'text', chipColor: colors.accent, chipDensity: 'compact', editable: true, draggable: true },
+    languages: { variant: 'stars', maxLevel: 5, showNote: true, sizePx: 18, accent: colors.accent, editable: true, draggable: true }
   }
 }
 

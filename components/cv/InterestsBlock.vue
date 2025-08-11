@@ -1,35 +1,44 @@
 <template>
   <component
     :is="Comp"
+    :ui="ui"
     v-model="localValue"
-    v-bind="forwardProps"
-    v-on="forwardListeners"
+    :accent="accent"
+    :chipVariant="chipVariant"
+    :chipColor="chipColor"
+    :chipDensity="chipDensity"
   />
 </template>
-
 <script setup lang="ts">
 import { computed, useAttrs } from 'vue'
 import InterestsChips from './InterestsChips.vue'      // variante "interests-1"
-import InterestsStacked from './InterestsStacked.vue'  // variante "interests-2"
+import InterestsStacked from './InterestsStacked.vue'
 
-const props = defineProps<{
-  modelValue: string[]
-  variant?: 'interests-1' | 'interests-2'
+defineOptions({ inheritAttrs: false })
+
+const props = withDefaults(defineProps<{
+  modelValue: any
+  variant?: 'interest-1' | 'interest-2'
+  ui: any
   accent?: string
-}>()
+  chipVariant?: 'text'|'elevated'|'outlined'|'flat'|'tonal'|'plain'
+  chipColor?: string
+  chipDensity?: 'comfortable'|'compact'|'default'
+}>(), {
+  variant: 'interest-1',
+  chipVariant: 'text',
+  chipDensity: 'compact'
+})
 
-const emit = defineEmits<{ (e:'update:modelValue', v:string[]): void }>()
-const attrs = useAttrs()
-
-const Comp = computed(() =>
-  props.variant === 'interests-2' ? InterestsStacked : InterestsChips
-)
+const emit = defineEmits<{ (e:'update:modelValue', v: any): void }>()
+const Comp = computed(() => props.variant === 'interest-2' ? InterestsStacked : InterestsChips)
 
 const localValue = computed({
   get: () => props.modelValue,
-  set: (v: string[]) => emit('update:modelValue', v),
+  set: (v) => emit('update:modelValue', v),
 })
 
-const forwardProps = computed(() => ({ accent: props.accent }))
-const forwardListeners = computed(() => attrs)
+const chipVariant  = computed(() => props.chipVariant)
+const chipColor    = computed(() => props.chipColor ?? props.accent)
+const chipDensity  = computed(() => props.chipDensity)
 </script>

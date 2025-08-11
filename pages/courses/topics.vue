@@ -2,7 +2,7 @@
 import TopicCard from '~/components/Course/elements/TopicCard.vue'
 
 const route = useRoute()
-const { data: rows } = await useFetch('/api/course/topics', { key: route.fullPath })
+const rows = await $fetch('/api/course/topics', { key: route.fullPath })
 
 definePageMeta({
   title: 'Topics',
