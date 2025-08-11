@@ -178,17 +178,6 @@ async function onSignatureFromPad(file: File) {
   // @ts-ignore (selon ton typage)
   ui.signatureFile = file
 }
-async function onPhotoUpload(files: File | File[] | null){
-  const f = Array.isArray(files) ? files[0] : files
-  if(!f) return
-  model.photo = await readFile(f as File)
-}
-async function onSignatureUpload(files: File | File[] | null){
-  const f = Array.isArray(files) ? files[0] : files
-  if(!f) return
-  model.signature = await readFile(f as File)
-}
-
 const pdfRef = ref<HTMLElement | null>(null)
 async function exportPdf(){
   if(!pdfRef.value) return

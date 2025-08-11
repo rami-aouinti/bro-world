@@ -22,6 +22,12 @@ definePageMeta({
 })
 const items = [
   {
+    title: "Template Gallery",
+    icon: "mdi-windows", // Icône de CV/profil
+    color: "default",
+    path: "/resume"
+  },
+  {
     title: "Create New CV",
     icon: "mdi-file-account", // Icône de CV/profil
     color: "default",
@@ -37,13 +43,7 @@ const items = [
     title: "My Cvs",
     icon: "mdi-briefcase", // Valise → carrière/emploi
     color: "default",
-    path: "/ecommerce/order"
-  },
-  {
-    title: "Lettre de motivation",
-    icon: "mdi-file-document", // Document simple (lecture)
-    color: "default",
-    path: "/resume"
+    path: "/resume-test"
   },
 ]
 
@@ -63,7 +63,6 @@ const data = ref({
   y: "",
   ls: [],
 });
-const publish = `1?data=${encodeData(data.value)}`;
 const theme = useTheme()
 const isDark = computed({
   get() {
@@ -73,23 +72,6 @@ const isDark = computed({
     theme.global.name.value = v ? 'dark' : 'light'
   },
 })
-const downloadPdf = async () => {
-  const res = await useFetch('/api/resume/export-pdf', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url: publish })
-  })
-
-  const blob = await res.blob()
-  const url = URL.createObjectURL(blob)
-
-  const link = document.createElement('a')
-  link.href = url
-  link.download = 'resume.pdf'
-  link.click()
-
-  URL.revokeObjectURL(url)
-}
 onMounted(async () => {
   window.scrollTo({ top: 0 })
   await nextTick()

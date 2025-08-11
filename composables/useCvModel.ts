@@ -26,10 +26,15 @@ export function useCvModel(){
       { id:'d2', period:'10/2011 - 10/2013', school:'Universität Musterstadt', degree:'DE-Studium', bullets:['Schwerpunkte: Telekommunikation und Informationstechnick','Auslandssemester in Berlin'] },
     ],
     skills: [
-      { id:'s1', label:'Fremdsprachen', items:['Deutsch (Muttersprache)','Englisch (fließend)'] },
-      { id:'s2', label:'IT-Kenntnisse', items:['MS-Office: sehr gut'] },
+      { id:'s1', label:'Frontend', items:['Vue 3','TypeScript','Pinia'] },
+      { id:'s2', label:'Backend', items:['Node.js','Express','PostgreSQL'] },
     ],
-    interests: ['Lesen','Sport (Fußball, Jogging)'],
+    languages: [
+      { id:'de', name:'Deutsch',  level:5, note:'Muttersprache' },
+      { id:'en', name:'English',  level:4, note:'fließend' },
+      { id:'fr', name:'Français', level:3 },
+    ],
+    interests: ['Lesen', 'Sport (Fußball, Jogging)'],
     personal: [
       { id:'name',    icon:'mdi-account',       label:'Name',       value:'Rami Aouinti' },
       { id:'phone',   icon:'mdi-phone',         label:'Telefon',    value:'0176/17635587613' },

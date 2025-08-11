@@ -33,7 +33,7 @@ const templates = ref<TemplateItem[]>([
     title: 'Lebenslauf Kopfzeile',
     subtitle: 'Seriös, schlicht',
     category: 'Klassisch',
-    previewImg: '/img/cv/cv-2.png',
+    previewImg: '/img/cv/cv-4.png',
     pdfUrl: '/samples/cv-kopfzeile.pdf',
     pages: 1,
     tags: ['Klassisch']
@@ -44,7 +44,7 @@ const templates = ref<TemplateItem[]>([
     subtitle: 'Kompakt, klar',
     category: 'Klassisch',
     badge: 'NEU',
-    previewImg: '/img/cv/cv-1.png',
+    previewImg: '/img/cv/cv-2.png',
     pdfUrl: '/samples/cv-2024.pdf',
     pages: 1,
     tags: ['Einseitig']
@@ -55,7 +55,7 @@ const templates = ref<TemplateItem[]>([
     subtitle: 'Moderne, sauber',
     category: 'Kreativ',
     badge: 'TOP',
-    previewImg: '/img/cv/cv-2.png',
+    previewImg: '/img/cv/cv-5.png',
     pdfUrl: '/samples/cv-2026.pdf',
     pages: 2,
     tags: ['Modern']
@@ -76,7 +76,7 @@ const templates = ref<TemplateItem[]>([
     subtitle: 'Kompakt, klar',
     category: 'Klassisch',
     badge: 'NEU',
-    previewImg: '/img/cv/cv-2.png',
+    previewImg: '/img/cv/cv-3.png',
     pdfUrl: '/samples/cv-2024.pdf',
     pages: 1,
     tags: ['Einseitig']
