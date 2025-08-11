@@ -89,24 +89,8 @@ const isDark = computed({
     theme.global.name.value = v ? 'dark' : 'light'
   },
 })
-const srcs = {
-  1: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-  2: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-  3: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-  4: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-  5: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-}
-const friends = ref(['Sandra Adams', 'Britta Holt'])
-const people = [
-  { name: 'Sandra Adams', group: 'Group 1', avatar: srcs[1] },
-  { name: 'Ali Connors', group: 'Group 1', avatar: srcs[2] },
-  { name: 'Trevor Hansen', group: 'Group 1', avatar: srcs[3] },
-  { name: 'Tucker Smith', group: 'Group 1', avatar: srcs[2] },
-  { name: 'Britta Holt', group: 'Group 2', avatar: srcs[4] },
-  { name: 'Jane Smith ', group: 'Group 2', avatar: srcs[5] },
-  { name: 'John Smith', group: 'Group 2', avatar: srcs[1] },
-  { name: 'Sandra Williams', group: 'Group 2', avatar: srcs[3] },
-]
+
+
 async function onSignatureFromPad(file: File) {
   // 1) Afficher tout de suite la signature dans la carte (img)
   model.signature = await readFile(file)  // -> dataURL "data:image/png;base64,..."
