@@ -16,7 +16,7 @@
   >
     <v-card
       class="my-2 cursor-pointer"
-      :elevation="isSelected ? 20 : 2"
+      :elevation="isSelected ? 24 : 2"
       :class="isSelected ? 'border border-radius-xl border-secondary border-md shadow-2xl shadow-primary' : ''"
       width="95"
       role="button"

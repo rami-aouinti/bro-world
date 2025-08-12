@@ -66,6 +66,7 @@ const ui = reactive<UiState>({
     chipVariant: chosen.value.skills?.chipVariant ?? 'text',
     chipColor:   chosen.value.skills?.chipColor   ?? chosen.value.palette.accent,
     chipDensity: chosen.value.skills?.chipDensity ?? 'compact',
+    columns: 1,          // ✅ important pour onAction
     editable: true,
     draggable: true,
   },
@@ -77,14 +78,16 @@ const ui = reactive<UiState>({
     editable: true,
     draggable: true,
   },
+
   experience: {
-    variant: 'two-col',      // 'two-col' ou 'stacked'
-    dateLine: 'underline',   // 'underline' | 'none'
-    dateLineWidth: 100,      // %
-    dateLineStyle: 'solid',  // 'solid' | 'dashed' | 'dotted'
+    variant: 'two-col',  // ✅ c’est ce champ qu’on modifie
+    dateLine: 'underline',
+    dateLineWidth: 100,
+    dateLineStyle: 'solid',
   },
+
   education: {
-    variant: 'two-col',
+    variant: 'two-col',  // ✅ idem
     dateLine: 'underline',
     dateLineWidth: 100,
     dateLineStyle: 'solid',
@@ -173,11 +176,7 @@ onMounted(async () => {
   }, 200)
 })
 
-const menuItems = [
-  { title: 'Template Gallery', icon: 'mdi-windows', color: 'default', path: '/resume' },
-  { title: 'Create New CV', icon: 'mdi-file-account', color: 'default', path: '/cv/cv/new' },
-  { title: 'New Cover Letter', icon: 'mdi-file-document-edit', color: 'default', path: '/cv/cover/new' },
-]
+
 
 /* ---------------- Sections dynamiques ---------------- */
 
@@ -488,6 +487,49 @@ const sectionModels = [
   },
 ]
 
+function onAction(sectionKey: string, actionKey: string) {
+  switch (sectionKey) {
+    case 'skills': {
+      ui.skills.columns = colByAction[actionKey] ?? ui.skills.columns
+      break
+    }
+    case 'experience': {
+      // tu utilises déjà "variant" ('stacked' | 'two-col')
+      ui.experience.variant = actionKey as 'stacked' | 'two-col'
+      break
+    }
+    case 'education': {
+      ui.education.variant = actionKey as 'stacked' | 'two-col'
+      break
+    }
+    case 'models': {
+      // si "models" pilote la mise en page globale, mappe sur ui.layout
+      ui.layout = actionKey as any // 'stacked' | 'two-col' | 'three-col' selon ta logique
+      break
+    }
+    case 'images': {
+      // tu as "photo" dans l'UI, pas "images"
+      ui.photo.shape = actionKey as 'circle' | 'square'
+      break
+    }
+    case 'languages': {
+      // tu as "variant" dans l'UI, pas "style"
+      ui.languages.variant = actionKey as 'stars' | 'bars' | 'dots'
+      break
+    }
+    case 'corner': {
+      ui.corner ??= {} as any
+      ;(ui.corner as any).style = actionKey
+      break
+    }
+  }
+}
+
+
+const colByAction: Record<string, number> = {
+  'stacked': 1,
+  'two-col': 2,
+}
 const actions = [
   { key: 'preview',  label: 'Preview',  icon: 'mdi-eye-outline' },
   { key: 'save',     label: 'Save',     icon: 'mdi-content-save-outline' },
@@ -495,16 +537,28 @@ const actions = [
 ]
 const flatSwatches = ['#1E88E5','#43A047','#8E24AA','#37474F','#0D47A1','#FB8C00','#E53935','#D81B60','#3949AB', '#D81B60', '#3949AB', '#4E342E']
 const color = ref(flatSwatches[0])
-function onAction(sectionKey: string, actionKey: string) {
-  // branche ici tes handlers (emit, store, appel API, etc.)
-  console.log('clicked:', sectionKey, actionKey)
-}
 const selected = reactive<Record<string, string | null>>({})
 // (optionnel) valeur par défaut par section :
-onMounted(() => {
-})
-onMounted(() => {
+function syncSelectedFromUi() {
+  selected.models     = ui.layout ?? 'stacked'
+  selected.images     = ui.photo?.shape ?? 'circle'
+  selected.languages  = ui.languages?.variant ?? 'stars'
+  selected.skills     = (ui.skills?.columns ?? 1) >= 2 ? 'two-col' : 'stacked'
+  selected.experience = ui.experience?.variant ?? 'two-col'
+  selected.education  = ui.education?.variant ?? 'two-col'
+  selected.corner     = ui.corner?.style ?? 'stacked'
+}
+watch(chosenKey, (k) => {
+  const p = presets.find(x => x.key === k)
+  if (p) {
+    applyPreset(p)
+    syncSelectedFromUi()   // ← remet les groupes en phase avec l’UI
+  }
+}, { immediate: true })
+onMounted(async () => {
   seedDemoContent()
+  await nextTick()
+  syncSelectedFromUi()
 })
 </script>
 
@@ -530,7 +584,7 @@ onMounted(() => {
 
                     <!-- 3 chips empilés verticalement -->
                     <div class="d-flex align-center justify-center">
-                      <v-item-group v-model="selected[section.key]" mandatory>
+                      <v-item-group v-model="selected[section.key]" mandatory @update:modelValue="val => onAction(section.key, val)">
                         <div class="d-flex align-center justify-center">
                           <v-item
                             v-for="action in section.actions"
@@ -544,7 +598,7 @@ onMounted(() => {
                               rounded="pill"
                               class="mx-1"
                               :class="isSelected ? 'border border-radius-xl border-secondary border-md shadow-2xl shadow-primary' : ''"
-                              @click="(toggle(), onAction(section.key, action.key))"
+                              @click="toggle"
                             >
                               {{ action.label }}
                             </v-btn>
@@ -556,7 +610,7 @@ onMounted(() => {
                 </v-row>
               </v-list-item>
               <v-list-item color="primary">
-                <v-item-group v-model="color" mandatory>
+                <v-item-group v-model="ui.accent" mandatory>
                   <div class="d-flex flex-wrap">
                     <v-item
                       v-for="c in flatSwatches"
