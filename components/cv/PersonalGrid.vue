@@ -1,6 +1,7 @@
+<!-- components/cv/PersonalGrid.vue -->
 <template>
   <div
-    class="personal-grid-wrapper pa-5 mr-1 d-flex align-center justify-center flex-column"
+    class="personal-grid-wrapper py-6 d-flex align-center justify-center flex-column"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
   >
@@ -15,15 +16,37 @@
     >
       new section
     </v-btn>
+
     <draggable
       v-model="localItems"
       item-key="id"
       handle=".drag"
       animation="150"
       class="grid"
+      :style="{ '--pg-cols': String(effectiveCols) }"
     >
       <template #item="{ element, index }">
-        <div class="tile">
+        <div class="tile mx-1">
+          <div class="actions">
+            <v-tooltip text="Drag">
+              <template #activator="{ props }">
+                <v-icon class="drag" icon="mdi-dots-grid" size="12" v-bind="props" />
+              </template>
+            </v-tooltip>
+
+            <v-tooltip text="Delete">
+              <template #activator="{ props }">
+                <v-icon
+                  v-bind="props"
+                  color="error"
+                  icon="mdi-delete"
+                  size="12"
+                  @click="remove(index)"
+                />
+              </template>
+            </v-tooltip>
+          </div>
+
           <div class="label">
             <span
               @click="openEdit(index)"
@@ -31,7 +54,13 @@
               v-if="ICONS[element.icon]"
               v-html="ICONS[element.icon]"
             />
-            <v-icon @click="openEdit(index)" v-else :icon="element.icon" size="18" class="me-1 clickable" />
+            <v-icon
+              v-else
+              :icon="element.icon"
+              size="18"
+              class="me-1 clickable"
+              @click="openEdit(index)"
+            />
             <EditableText
               v-model="element.label"
               :placeholder="element.placeholder || 'Text tippen...'"
@@ -44,27 +73,6 @@
               :placeholder="element.placeholder || 'Text tippen...'"
             />
           </div>
-
-          <div class="actions">
-            <v-tooltip text="Drag">
-              <template #activator="{ props }">
-                <v-icon class="drag" icon="mdi-dots-grid" size="18" />
-              </template>
-            </v-tooltip>
-
-            <v-tooltip text="Delete">
-              <template #activator="{ props }">
-                <v-icon
-                  v-bind="props"
-                  color="error"
-                  icon="mdi-delete"
-                  size="18"
-                  @click="remove(index)"
-                />
-              </template>
-            </v-tooltip>
-          </div>
-          <v-spacer />
         </div>
       </template>
     </draggable>
@@ -72,9 +80,7 @@
     <!-- Dialog d'édition -->
     <v-dialog v-model="editDialog.open" max-width="350">
       <v-card rounded="xl">
-        <v-card-title class="text-subtitle-1 font-weight-bold">
-          Icons
-        </v-card-title>
+        <v-card-title class="text-subtitle-1 font-weight-bold">Icons</v-card-title>
         <v-card-text>
           <div class="d-flex align-center justify-center flex-column">
             <div class="mt-4">
@@ -116,20 +122,23 @@ const ICONS: Record<string, string> = {
   'mdi-cake-variant': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12,6C13.11,6 14,5.1 14,4C14,3.62 13.9,3.27 13.71,2.97L12,0L10.29,2.97C10.1,3.27 10,3.62 10,4A2,2 0 0,0 12,6M16.6,16L15.53,14.92L14.45,16C13.15,17.29 10.87,17.3 9.56,16L8.5,14.92L7.4,16C6.75,16.64 5.88,17 4.96,17C4.23,17 3.56,16.77 3,16.39V21A1,1 0 0,0 4,22H20A1,1 0 0,0 21,21V16.39C20.44,16.77 19.77,17 19.04,17C18.12,17 17.25,16.64 16.6,16M18,9H13V7H11V9H6A3,3 0 0,0 3,12V13.54C3,14.62 3.88,15.5 4.96,15.5C5.5,15.5 6,15.3 6.34,14.93L8.5,12.8L10.61,14.93C11.35,15.67 12.64,15.67 13.38,14.93L15.5,12.8L17.65,14.93C18,15.3 18.5,15.5 19.03,15.5C20.11,15.5 21,14.62 21,13.54V12A3,3 0 0,0 18,9Z" /></svg>`,
   'mdi-map-marker': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z" /></svg>`,
 }
-
-// liste plate des clés disponibles dans ICONS
 const ICON_OPTIONS = Object.keys(ICONS)
 
 type Item = {
-  id: string        // identifiant interne (draggable)
-  key: string       // clé logique (modifiable)
+  id: string
+  key: string
   icon: string
   label: string
   value: string
   placeholder?: string
 }
 
-const props = defineProps<{ modelValue: Item[] }>()
+const props = defineProps<{
+  modelValue: Item[]
+  inSidebar?: boolean          // 👈 NEW: si true, 1 seule colonne
+  columns?: number             // 👈 optionnel: nb de colonnes en mode normal (default 2)
+}>()
+
 const emit = defineEmits<{
   (e: 'update:modelValue', v: Item[]): void
   (e: 'update-name', v: string): void
@@ -137,23 +146,18 @@ const emit = defineEmits<{
 
 const isHovered = ref(false)
 
-// v-model local (proxy) sur la prop
 const localItems = computed<Item[]>({
   get: () => props.modelValue,
   set: (v) => emit('update:modelValue', v),
 })
 
+// 1 col si inSidebar, sinon columns (2 par défaut)
+const effectiveCols = computed(() => (props.inSidebar ? 1 : Math.max(1, props.columns ?? 2)))
+
 function add() {
   localItems.value = [
     ...localItems.value,
-    {
-      id: `p-${crypto.randomUUID()}`,
-      key: 'custom',               // clé par défaut modifiable
-      icon: 'mdi-account',         // par défaut une icône existante
-      label: 'Neu Field',
-      value: '',
-      placeholder: 'Value',
-    },
+    { id: `p-${crypto.randomUUID()}`, key: 'custom', icon: 'mdi-account', label: 'Neu Field', value: '', placeholder: 'Value' },
   ]
 }
 function remove(i: number) {
@@ -162,66 +166,41 @@ function remove(i: number) {
   localItems.value = copy
 }
 
-// --- Dialog d'édition ---
-const editDialog = ref<{
-  open: boolean
-  index: number
-  form: { key: string; label: string; value: string; icon: string }
-}>({
-  open: false,
-  index: -1,
-  form: { key: '', label: '', value: '', icon: 'mdi-account' },
-})
+const editDialog = ref({ open: false, index: -1, form: { key: '', label: '', value: '', icon: 'mdi-account' } })
 
 function openEdit(index: number) {
   const it = localItems.value[index]
-  editDialog.value = {
-    open: true,
-    index,
-    form: {
-      key: it.key ?? '',
-      label: it.label ?? '',
-      value: it.value ?? '',
-      icon: it.icon ?? 'mdi-account',
-    },
-  }
+  editDialog.value = { open: true, index, form: { key: it.key ?? '', label: it.label ?? '', value: it.value ?? '', icon: it.icon ?? 'mdi-account' } }
 }
-
 function saveEdit() {
   const { index, form } = editDialog.value
   if (index < 0) return
   const copy = [...localItems.value]
-  const old = copy[index]
-  copy[index] = {
-    ...old,
-    key: form.key?.trim() || old.key,
-    label: form.label?.trim() || old.label,
-    value: form.value ?? old.value,
-    icon: form.icon || old.icon,
-  }
+  copy[index] = { ...copy[index], key: form.key?.trim() || copy[index].key, label: form.label?.trim() || copy[index].label, value: form.value ?? copy[index].value, icon: form.icon || copy[index].icon }
   localItems.value = copy
   editDialog.value.open = false
 }
 
-// émettre update-name si l’élément de key === 'name' change
-watch(
-  localItems,
-  (newItems) => {
-    const nameItem = newItems.find((item) => item.key === 'name' || item.id === 'name')
-    if (nameItem) emit('update-name', nameItem.value)
-  },
-  { deep: true }
-)
+watch(localItems, (newItems) => {
+  const nameItem = newItems.find((item) => item.key === 'name' || item.id === 'name')
+  if (nameItem) emit('update-name', nameItem.value)
+}, { deep: true })
 </script>
 
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(var(--pg-cols, 2), 1fr); /* 👈 piloté par la var */
+  justify-content: center;
+  gap: 0; /* déjà géré par .tile */
 }
+
+/* En dessous de 960px, on force 1 colonne seulement si ce n’est PAS dans la sidebar
+   (dans la sidebar on a déjà 1 via --pg-cols) */
 @media (max-width: 960px) {
-  .grid { grid-template-columns: 1fr; }
+  .grid { grid-template-columns: repeat(var(--pg-cols, 1), 1fr); }
 }
+
 .tile {
   position: relative;
   display: grid;
@@ -232,76 +211,33 @@ watch(
   align-items: center;
   justify-content: center;
 }
-.personal-grid-wrapper {
-  position: relative;        /* ⬅️ référence pour l’absolu */
-}
 
-.neu-component-add-btn {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  z-index: 10;              /* au-dessus du contenu */
-}
-.clickable {
-  cursor: pointer;
-}
-.clickable:hover {
-  opacity: .85;            /* optionnel : petit feedback */
-}
-.drag {
-  cursor: grab;
-  opacity: .6;
-}
+.personal-grid-wrapper { position: relative; }
+.neu-component-add-btn { position: absolute; top: 0; right: 0; z-index: 10; }
+
+.clickable { cursor: pointer; }
+.clickable:hover { opacity: .85; }
+.drag { cursor: grab; opacity: .6; }
+
 .label { width: 100px; font-weight: 600; opacity: .9; display:flex; align-items:center; }
 .value { flex: 1; }
-.actions {
-  position: absolute;
-  right: 8px;
-  top: 8px;
-  display: flex;
-  gap: 6px;
-}
 
-/* Grille d’icônes dans le dialog */
+.actions { position: relative; display: flex; gap: 3px; }
+
 .icon-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 8px;
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
 }
 .icon-cell {
-  display: grid;
-  place-items: center;
-  padding: 8px;
-  border: 1px solid rgba(0,0,0,.12);
-  border-radius: 10px;
-  background: transparent;
-  cursor: pointer;
-  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  display: grid; place-items: center; padding: 8px;
+  border: 1px solid rgba(0,0,0,.12); border-radius: 10px; background: transparent;
+  cursor: pointer; transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
 }
-.icon-cell:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0,0,0,.08);
-}
-.icon-cell.selected {
-  border-color: rgb(var(--v-theme-primary));
-  box-shadow: 0 2px 10px rgba(var(--v-theme-primary), .25);
-}
-.tile .drag,
-.tile .actions {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .15s ease;
-}
-.tile:hover .drag,
-.tile:hover .actions {
-  opacity: 1;
-  pointer-events: auto;
-}
+.icon-cell:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.icon-cell.selected { border-color: rgb(var(--v-theme-primary)); box-shadow: 0 2px 10px rgba(var(--v-theme-primary), .25); }
+
+.tile .drag, .tile .actions { opacity: 0; pointer-events: none; transition: opacity .15s ease; }
+.tile:hover .drag, .tile:hover .actions { opacity: 1; pointer-events: auto; }
 @media (hover: none) {
-  .tile .drag,
-  .tile .actions {
-    opacity: 1;
-    pointer-events: auto;
-  }
+  .tile .drag, .tile .actions { opacity: 1; pointer-events: auto; }
 }
 </style>

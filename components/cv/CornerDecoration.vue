@@ -160,7 +160,6 @@ const dualFrontPath = computed(() => {
   position:absolute;
   inset:0;
   pointer-events:none;
-  z-index:1; /* derrière le contenu */
 }
 .corner{
   position:absolute;

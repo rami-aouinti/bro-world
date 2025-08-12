@@ -38,7 +38,7 @@ const positions = ['left','right','top']
           density="compact"
           class="mx-1"
           :min="0"
-          :max="38"
+          :max="80"
         step="1"
         suffix="mm"
         />

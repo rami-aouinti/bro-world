@@ -113,7 +113,7 @@ const BASE_PRESETS: CvPreset[] = [
   },
   {
     key: 'sidebarLeft',
-    label: 'CV sidebar on the right',
+    label: 'CV sidebar on the left',
     fontFamily: 'Inter',
     baseSize: '14px',
     palette: { primary: '#320604', accent: '#f29f05', paper: '#ffffff', text: '#111' },

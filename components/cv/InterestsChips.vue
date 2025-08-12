@@ -1,10 +1,9 @@
 <template>
   <div
-    class="interests"
+    class="interests pa-5"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
   >
-    <div class="label">Hobbies</div>
 
     <div class="items">
       <template v-for="(h, i) in modelValue" :key="i">
