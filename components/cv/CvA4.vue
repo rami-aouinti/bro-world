@@ -5,6 +5,7 @@
 
     <!-- VBar décorative -->
     <div v-if="vbar.show" class="vbar" :class="`vbar--${vbar.side}`" />
+    <div id="cv-corner" style="position:absolute; inset-block-start:0; inset-inline-start:0; width:1px; height:1px;"></div>
 
     <!-- Corner, au-dessus du fond mais sous le contenu -->
     <CornerDecoration
@@ -21,6 +22,7 @@
         <div class="identity-left d-flex align-center justify-center">
           <!-- Photo à gauche (sans sidebar et sans vbar) -->
           <div
+            id="cv-photo"
             v-if="ui.photo.show && ui.photo.position === 'left' && !usesSidebar && !vbar.show"
             class="photo" :class="photoClass"
             :style="{ width: ui.photo.widthMm + 'mm', height: ui.photo.heightMm + 'mm' }"
@@ -50,6 +52,7 @@
 
           <!-- Photo à droite (sans sidebar et sans vbar) -->
           <div
+            id="cv-photo"
             v-if="ui.photo.show && ui.photo.position === 'right' && !usesSidebar && !vbar.show"
             class="photo" :class="photoClass"
             :style="{ width: ui.photo.widthMm + 'mm', height: ui.photo.heightMm + 'mm' }"
@@ -85,6 +88,7 @@
       <!-- Sidebar (layout sidebar-left/right) -->
       <div v-if="usesSidebar" class="sidebar me-5">
         <div
+          id="cv-photo"
           v-if="ui.photo.show"
           class="photo d-flex align-center justify-center text-center my-1"
           :class="photoClass"
@@ -110,6 +114,7 @@
 
       <!-- Footer -->
       <div class="footer">
+        <div id="cv-signature"></div>
         <slot name="footer" />
       </div>
     </div>

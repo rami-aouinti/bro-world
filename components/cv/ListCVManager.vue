@@ -18,7 +18,7 @@
       class="my-2 cursor-pointer"
       :elevation="isSelected ? 24 : 2"
       :class="isSelected ? 'border border-radius-xl border-secondary border-md shadow-2xl shadow-primary' : ''"
-      width="95"
+      width="90"
       role="button"
       tabindex="0"
       @click="toggle"

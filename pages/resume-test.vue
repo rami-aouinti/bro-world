@@ -22,16 +22,18 @@ import EditableText from '~/components/common/EditableText.vue'
 
 import { useCvModel } from '~/composables/useCvModel'
 import { exportCvAsPdf } from '~/utils/pdf'
-import ListCVManager from "~/components/cv/ListCVManager.vue";
+import ListCVManager from '~/components/cv/ListCVManager.vue'
+import SectionCvLayout from '~/components/cv/SectionCvLayout.vue'
+import SectionSettingsMenu from '~/components/cv/SectionSettingsMenu.vue'
 
 /* ---------------- Presets & sélection ---------------- */
 const presets = CV_PRESETS
-const chosenKey = ref<string>(
-  presets.find(p => (p as any).default)?.key ?? presets[1]?.key ?? presets[0].key
-)
+const chosenKey = ref<string>(presets.find(p => (p as any).default)?.key ?? presets[1]?.key ?? presets[0].key)
 const chosen = computed(() => presets.find(p => p.key === chosenKey.value) ?? presets[0])
+
 const hoverSection = ref<number|null>(null)
 const hoverCanvas = ref(false)
+
 /* ---------------- UI pilotable ---------------- */
 const ui = reactive<UiState>({
   ...defaultUi,
@@ -55,18 +57,17 @@ const ui = reactive<UiState>({
     },
   },
   // @ts-ignore
-  corner: chosen.value.corner ? { ...chosen.value.corner } : undefined,
+  corner:  chosen.value.corner  ? { ...chosen.value.corner }  : undefined,
   // @ts-ignore
   sidebar: chosen.value.sidebar ? { ...chosen.value.sidebar } : undefined,
   // @ts-ignore
-  vbar: chosen.value.vbar ? { ...chosen.value.vbar } : undefined,
+  vbar:    chosen.value.vbar    ? { ...chosen.value.vbar }    : undefined,
 
-  // Options de rendu spécifiques
   skills: {
     chipVariant: chosen.value.skills?.chipVariant ?? 'text',
     chipColor:   chosen.value.skills?.chipColor   ?? chosen.value.palette.accent,
     chipDensity: chosen.value.skills?.chipDensity ?? 'compact',
-    columns: 1,          // ✅ important pour onAction
+    columns: 1,
     editable: true,
     draggable: true,
   },
@@ -78,16 +79,14 @@ const ui = reactive<UiState>({
     editable: true,
     draggable: true,
   },
-
   experience: {
-    variant: 'two-col',  // ✅ c’est ce champ qu’on modifie
+    variant: 'two-col',
     dateLine: 'underline',
     dateLineWidth: 100,
     dateLineStyle: 'solid',
   },
-
   education: {
-    variant: 'two-col',  // ✅ idem
+    variant: 'two-col',
     dateLine: 'underline',
     dateLineWidth: 100,
     dateLineStyle: 'solid',
@@ -96,7 +95,6 @@ const ui = reactive<UiState>({
 
 function applyPreset(p: typeof CV_PRESETS[number]) {
   const keepShow = ui.photo.show
-
   ui.layout     = p.layout
   ui.fontFamily = p.fontFamily
   ui.fontSize   = p.baseSize
@@ -113,21 +111,15 @@ function applyPreset(p: typeof CV_PRESETS[number]) {
   ui.photo.shadow   = { ...(ui.photo.shadow ?? {}), ...(p.photoShadow ?? {}) }
 
   // @ts-ignore
-  ui.corner  = p.corner ? { ...p.corner } : undefined
+  ui.corner  = p.corner  ? { ...p.corner }  : undefined
   // @ts-ignore
   ui.sidebar = p.sidebar ? { ...p.sidebar } : undefined
   // @ts-ignore
   ui.vbar    = p.vbar    ? { ...p.vbar }    : undefined
 
-  // couleurs par défaut liées
-  ui.skills!.chipColor = p.skills?.chipColor ?? p.palette.accent
-  ui.languages!.accent = p.languages?.accent ?? p.palette.accent
+  ui.skills!.chipColor   = p.skills?.chipColor ?? p.palette.accent
+  ui.languages!.accent   = p.languages?.accent ?? p.palette.accent
 }
-
-watch(chosenKey, (k) => {
-  const p = presets.find(x => x.key === k)
-  if (p) applyPreset(p)
-}, { immediate: true })
 
 /* ---------------- Modèle / Divers ---------------- */
 const { model, readFile } = useCvModel()
@@ -176,10 +168,7 @@ onMounted(async () => {
   }, 200)
 })
 
-
-
 /* ---------------- Sections dynamiques ---------------- */
-
 type SectionType = 'experience'|'education'|'skills'|'languages'|'interests'|'custom'
 type CvSection = {
   id: string
@@ -198,7 +187,6 @@ const SECTION_DEFS: Record<SectionType, { label: string }> = {
   interests:  { label: 'Interests' },
   custom:     { label: 'Custom' },
 }
-
 function defaultIconFor(type: SectionType) {
   return ({
     experience: 'mdi-briefcase',
@@ -228,39 +216,6 @@ function resolveComp(s: CvSection) {
     case 'custom':     return EditableText
   }
 }
-
-function resolveBindings(s: CvSection) {
-  switch (s.type) {
-    case 'experience': return {
-      modelValue: model.experience,
-      'onUpdate:modelValue': (v:any) => (model.experience = v),
-    }
-    case 'education': return {
-      modelValue: model.education,
-      'onUpdate:modelValue': (v:any) => (model.education = v),
-    }
-    case 'skills': return {
-      modelValue: model.skills,
-      'onUpdate:modelValue': (v:any) => (model.skills = v),
-    }
-    case 'languages': return {
-      modelValue: model.languages,
-      'onUpdate:modelValue': (v:any) => (model.languages = v),
-    }
-    case 'interests': return {
-      modelValue: model.interests,
-      'onUpdate:modelValue': (v:any) => (model.interests = v),
-    }
-    case 'custom': {
-      if (!s.props) s.props = { content: '' }
-      return {
-        modelValue: s.props.content,
-        'onUpdate:modelValue': (v:any) => (s.props!.content = v),
-      }
-    }
-  }
-}
-
 function resolveProps(s: CvSection) {
   switch (s.type) {
     case 'experience':
@@ -311,11 +266,9 @@ function resolveProps(s: CvSection) {
         chipDensity: ui.skills?.chipDensity ?? 'compact',
       }
     case 'custom':
-      return { class: 'pa-2', placeholder: 'Contenu...' }
+      return { class: 'pa-2', placeholder: 'Content...' }
   }
 }
-
-
 function getModelValue(t: SectionType) {
   switch (t) {
     case 'experience': return model.experience
@@ -323,10 +276,9 @@ function getModelValue(t: SectionType) {
     case 'skills':     return model.skills
     case 'languages':  return model.languages
     case 'interests':  return model.interests
-    case 'custom':     return '' // sera géré par s.props.content ci-dessous
+    case 'custom':     return ''
   }
 }
-
 function setModelValue(t: SectionType, v: any) {
   switch (t) {
     case 'experience': model.experience = v; break
@@ -334,7 +286,7 @@ function setModelValue(t: SectionType, v: any) {
     case 'skills':     model.skills     = v; break
     case 'languages':  model.languages  = v; break
     case 'interests':  model.interests  = v; break
-    case 'custom':     /* noop ici */   break
+    case 'custom':     break
   }
 }
 function move(i:number, dir:number){
@@ -355,53 +307,30 @@ function addSection(type: SectionType) {
     props: {},
   })
 }
+
+/* Seed data */
 function seedDemoContent() {
   if (!Array.isArray(model.experience) || model.experience.length === 0) {
     model.experience = [
-      {
-        id: nanoid(),
-        period: '2022 – 2025',
-        company: 'Acme GmbH',
-        role: 'Senior Full-Stack Developer',
-        bullets: [
-          'Dev Vue/Nuxt + API Symfony',
-          'Mise en place CI/CD & tests',
-          'Mentorat de 3 développeurs',
-        ],
-      },
-      {
-        id: nanoid(),
-        period: '2020 – 2022',
-        company: 'Bro World GmbH',
-        role: 'Frontend Engineer',
-        bullets: [
-          'Refonte design system (Vuetify)',
-          'Optimisation performance (LCP < 2.5s)',
-        ],
-      },
+      { id: nanoid(), period: '2022 – 2025', company: 'Acme GmbH', role: 'Senior Full-Stack Developer',
+        bullets: ['Dev Vue/Nuxt + API Symfony','Mise en place CI/CD & tests','Mentorat de 3 développeurs'] },
+      { id: nanoid(), period: '2020 – 2022', company: 'Bro World GmbH', role: 'Frontend Engineer',
+        bullets: ['Refonte design system (Vuetify)','Optimisation performance (LCP < 2.5s)'] },
     ]
   }
-
   if (!Array.isArray(model.education) || model.education.length === 0) {
     model.education = [
-      {
-        id: nanoid(),
-        period: '2016 – 2019',
-        school: 'Université Technique',
-        degree: 'Licence Informatique',
-        bullets: ['Algorithmique, Web, Bases de données'],
-      },
+      { id: nanoid(), period: '2016 – 2019', school: 'Université Technique', degree: 'Licence Informatique',
+        bullets: ['Algorithmique, Web, Bases de données'] },
     ]
   }
-
   if (!Array.isArray(model.skills) || model.skills.length === 0) {
     model.skills = [
       { id: nanoid(), label: 'Frontend', items: ['Vue', 'Nuxt', 'Vuetify', 'Vite'] },
       { id: nanoid(), label: 'Backend',  items: ['Node', 'Symfony', 'Laravel'] },
-      { id: nanoid(), label: 'Tools',   items: ['Git', 'Docker', 'CI/CD'] },
+      { id: nanoid(), label: 'Tools',    items: ['Git', 'Docker', 'CI/CD'] },
     ]
   }
-
   if (!Array.isArray(model.languages) || model.languages.length === 0) {
     model.languages = [
       { id: nanoid(), name: 'Français', level: 5, note: 'Courant' },
@@ -409,152 +338,239 @@ function seedDemoContent() {
       { id: nanoid(), name: 'English',  level: 4, note: 'Fluent' },
     ]
   }
-
   if (!Array.isArray(model.interests) || model.interests.length === 0) {
-    // adapte selon la forme attendue par ton InterestsBlock (string[] ou groups)
     model.interests = ['Photographie', 'Randonnée', 'UI Design', 'Tech watch']
   }
 }
 
+/* --------- modèles de menu haut --------- */
+const models = ref<any>({
+  key: 'models',
+  label: 'Models',
+  icon: 'mdi-vector-square',
+  actions: [
+    { key: 'stacked',   label: 'Default', icon: 'mdi-eye-outline' },
+    { key: 'two-col',   label: 'Sidbar',  icon: 'mdi-content-save-outline' },
+    { key: 'three-col', label: 'Bar',     icon: 'mdi-content-save-outline' },
+  ]
+})
+
 const sectionModels = [
-  {
-    key: 'models',
-    label: 'Models',
-    icon: 'mdi-vector-square',
-    actions: [
-      { key: 'stacked',  label: 'Default',  icon: 'mdi-eye-outline' },
-      { key: 'two-col',     label: 'Sidbar',     icon: 'mdi-content-save-outline' },
-      { key: 'three-col',     label: 'Bar',     icon: 'mdi-content-save-outline' },
-    ]
-  },
-  {
-    key: 'images',
-    label: 'Images',
-    icon: 'mdi-emoticon',
-    actions: [
-      { key: 'circle',  label: 'Circle',  icon: 'mdi-eye-outline' },
-      { key: 'square',     label: 'Square',     icon: 'mdi-content-save-outline' },
-    ]
-  },
-  {
-    key: 'corner',
-    label: 'Corner',
-    icon: 'mdi-chart-bubble',
-    actions: [
-      { key: 'stacked',   icon: 'mdi-eye-outline' },
-      { key: 'two-col',       icon: 'mdi-content-save-outline' },
-      { key: 'three-col',        icon: 'mdi-content-save-outline' },
-      { key: 'three-col',       icon: 'mdi-content-save-outline' },
-    ]
-  },
-  {
-    key: 'languages',
-    label: 'Languages',
-    icon: 'mdi-flag-outline',
-    actions: [
-      { key: 'stars',  label: 'Stars',  icon: 'mdi-eye-outline' },
-      { key: 'bars',     label: 'Bars',     icon: 'mdi-content-save-outline' },
-      { key: 'dots',     label: 'Dots',     icon: 'mdi-content-save-outline' },
-    ]
-  },
-  {
-    key: 'skills',
-    label: 'Skills',
-    icon: 'mdi-star-outline',
-    actions: [
-      { key: 'stacked',  label: 'One Col',  icon: 'mdi-eye-outline' },
-      { key: 'two-col',     label: 'Two Col',     icon: 'mdi-content-save-outline' },
-
-    ]
-  },
-  { key: 'experience',
-    label: 'Experience',
-    icon: 'mdi-briefcase-outline' ,
-    actions: [
-      { key: 'stacked',  label: 'One Col',  icon: 'mdi-eye-outline' },
-      { key: 'two-col',     label: 'Two Col',     icon: 'mdi-content-save-outline' },
-
-    ]
-  },
-  { key: 'education',
-    label: 'Education',
-    icon: 'mdi-school-outline' ,
-    actions: [
-      { key: 'stacked',  label: 'One Col',  icon: 'mdi-eye-outline' },
-      { key: 'two-col',     label: 'Two Col',     icon: 'mdi-content-save-outline' },
-
-    ]
-  },
+  { key: 'personal',  label: 'Personal',  icon: 'mdi-account-outline', actions: [] },
+  { key: 'photo',     label: 'Images',    icon: 'mdi-emoticon',
+    actions: [{ key: 'circle', label: 'Circle', icon: 'mdi-eye-outline' },
+      { key: 'square', label: 'Square', icon: 'mdi-content-save-outline' }] },
+  { key: 'corner',    label: 'Corner',    icon: 'mdi-chart-bubble',
+    actions: [{ key: 'stacked', icon:'mdi-eye-outline' },
+      { key: 'two-col', icon:'mdi-content-save-outline' },
+      { key: 'three-col', icon:'mdi-content-save-outline' }] },
+  { key: 'experience', label: 'Experience', icon: 'mdi-briefcase-outline',
+    actions: [{ key: 'stacked', label:'One Col', icon:'mdi-eye-outline' },
+      { key: 'two-col', label:'Two Col', icon:'mdi-content-save-outline' }] },
+  { key: 'education', label: 'Education', icon: 'mdi-school-outline',
+    actions: [{ key: 'stacked', label:'One Col', icon:'mdi-eye-outline' },
+      { key: 'two-col', label:'Two Col', icon:'mdi-content-save-outline' }] },
+  { key: 'skills', label: 'Skills', icon: 'mdi-star-outline',
+    actions: [{ key:'stacked', label:'One Col', icon:'mdi-eye-outline' },
+      { key:'two-col', label:'Two Col', icon:'mdi-content-save-outline' }] },
+  { key: 'languages', label: 'Languages', icon: 'mdi-flag-outline',
+    actions: [{ key:'stars', label:'Stars', icon:'mdi-eye-outline' },
+      { key:'bars',  label:'Bars',  icon:'mdi-content-save-outline' },
+      { key:'dots',  label:'Dots',  icon:'mdi-content-save-outline' }] },
+  { key: 'signature', label: 'Signature', icon: 'mdi-draw', actions: [] },
+  { key: 'custom',    label: 'Custom',    icon: 'mdi-shape-outline', actions: [] },
 ]
 
 function onAction(sectionKey: string, actionKey: string) {
   switch (sectionKey) {
-    case 'skills': {
-      ui.skills.columns = colByAction[actionKey] ?? ui.skills.columns
-      break
-    }
-    case 'experience': {
-      // tu utilises déjà "variant" ('stacked' | 'two-col')
-      ui.experience.variant = actionKey as 'stacked' | 'two-col'
-      break
-    }
-    case 'education': {
-      ui.education.variant = actionKey as 'stacked' | 'two-col'
-      break
-    }
-    case 'models': {
-      // si "models" pilote la mise en page globale, mappe sur ui.layout
-      ui.layout = actionKey as any // 'stacked' | 'two-col' | 'three-col' selon ta logique
-      break
-    }
-    case 'images': {
-      // tu as "photo" dans l'UI, pas "images"
-      ui.photo.shape = actionKey as 'circle' | 'square'
-      break
-    }
-    case 'languages': {
-      // tu as "variant" dans l'UI, pas "style"
-      ui.languages.variant = actionKey as 'stars' | 'bars' | 'dots'
-      break
-    }
-    case 'corner': {
-      ui.corner ??= {} as any
-      ;(ui.corner as any).style = actionKey
+    case 'skills':      ui.skills.columns      = colByAction[actionKey] ?? ui.skills.columns; break
+    case 'experience':  ui.experience.variant  = actionKey as 'stacked' | 'two-col';         break
+    case 'education':   ui.education.variant   = actionKey as 'stacked' | 'two-col';         break
+    case 'models':      ui.layout              = actionKey as any;                            break
+    case 'photo':       ui.photo.shape         = actionKey as 'circle' | 'square';           break
+    case 'languages':   ui.languages.variant   = actionKey as 'stars' | 'bars' | 'dots';     break
+    case 'corner':      (ui.corner ??= {} as any).style = actionKey;                         break
+    case 'signature': {
+      if (actionKey === 'open')   signatureModal.value = true
+      if (actionKey === 'remove') model.signature = null
       break
     }
   }
 }
 
-
-const colByAction: Record<string, number> = {
-  'stacked': 1,
-  'two-col': 2,
+/* --------- ancrage & focus --------- */
+const anchors = reactive<Record<string, HTMLElement | null>>({
+  experience: null, education:  null, skills:     null,
+  languages:  null, interests:  null, personal:   null, custom: null,
+})
+function setAnchorIfEmpty(key: keyof typeof anchors) {
+  return (el: HTMLElement | null) => { if (el && !anchors[key]) anchors[key] = el }
 }
+function scrollToAnchor(key: keyof typeof anchors | 'photo' | 'corner' | 'signature') {
+  const byRef = anchors[key as keyof typeof anchors]
+  if (byRef) return byRef.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  document.getElementById(`cv-${key}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+const anchorBySectionKey: Record<string, string> = {
+  models:'personal', personal:'personal', photo:'photo', corner:'corner',
+  languages:'languages', skills:'skills', experience:'experience', education:'education',
+  signature:'signature', custom:'custom',
+}
+function focusSection(sectionKey: string) {
+  const target = anchorBySectionKey[sectionKey]
+  if (target) scrollToAnchor(target as any)
+}
+
+/* --------- header actions --------- */
+const colByAction: Record<string, number> = { 'stacked': 1, 'two-col': 2 }
 const actions = [
   { key: 'preview',  label: 'Preview',  icon: 'mdi-eye-outline' },
   { key: 'save',     label: 'Save',     icon: 'mdi-content-save-outline' },
   { key: 'download', label: 'Download', icon: 'mdi-download-outline' },
 ]
-const flatSwatches = ['#1E88E5','#43A047','#8E24AA','#37474F','#0D47A1','#FB8C00','#E53935','#D81B60','#3949AB', '#D81B60', '#3949AB', '#4E342E']
+
+const languages = [
+  { code: 'en', iso: 'en-GB', name: 'English',  icon: 'fi-gb gb' },
+  { code: 'fr', iso: 'fr-FR', name: 'Français', icon: 'fi-fr fr' },
+  { code: 'de', iso: 'de-DE', name: 'Deutsch',  icon: 'fi-de de' },
+  { code: 'ar', iso: 'ar-AR', name: 'العربية',  icon: 'fi-tn tn' },
+]
+const language = ref(languages[0])
+
+const flatSwatches = ['#1E88E5','#43A047','#8E24AA','#37474F','#0D47A1','#FB8C00','#E53935','#D81B60','#3949AB','#4E342E']
 const color = ref(flatSwatches[0])
 const selected = reactive<Record<string, string | null>>({})
-// (optionnel) valeur par défaut par section :
 function syncSelectedFromUi() {
   selected.models     = ui.layout ?? 'stacked'
-  selected.images     = ui.photo?.shape ?? 'circle'
+  selected.photo      = ui.photo?.shape ?? 'circle'
   selected.languages  = ui.languages?.variant ?? 'stars'
   selected.skills     = (ui.skills?.columns ?? 1) >= 2 ? 'two-col' : 'stacked'
   selected.experience = ui.experience?.variant ?? 'two-col'
   selected.education  = ui.education?.variant ?? 'two-col'
-  selected.corner     = ui.corner?.style ?? 'stacked'
+  selected.corner     = (ui.corner as any)?.style ?? 'stacked'
 }
+
+/* --------- Settings menu global --------- */
+const panels = [
+  { key: 'experience', label: 'Experience', icon: 'mdi-briefcase-outline',
+    fields: [
+      { type:'segmented', key:'variant', label:'Layout',
+        options:[{value:'stacked',label:'One Col',icon:'mdi-view-agenda-outline'},
+          {value:'two-col',label:'Two Col',icon:'mdi-view-column-outline'}]},
+      { type:'select', key:'dateLineStyle', label:'Date line style',
+        items:[{title:'Solid',value:'solid'},{title:'Dashed',value:'dashed'},{title:'Dotted',value:'dotted'}]},
+      { type:'slider', key:'dateLineWidth', label:'Date line width', min:0, max:120, step:5 },
+    ]},
+  { key:'education', label:'Education', icon:'mdi-school-outline',
+    fields:[
+      { type:'segmented', key:'variant', label:'Layout',
+        options:[{value:'stacked',label:'One Col'},{value:'two-col',label:'Two Col'}]},
+      { type:'slider', key:'dateLineWidth', label:'Date line width', min:0, max:120, step:5 },
+      { type:'select', key:'dateLineStyle', label:'Date line style',
+        items:[{title:'Solid',value:'solid'},{title:'Dashed',value:'dashed'},{title:'Dotted',value:'dotted'}]},
+    ]},
+  { key:'photo', label:'Photo', icon:'mdi-camera-outline',
+    fields:[
+      { type:'switch', key:'show', label:'Show photo' },
+      { type:'segmented', key:'shape', label:'Shape',
+        options:[{value:'circle',label:'Circle',icon:'mdi-circle-outline'},
+          {value:'square',label:'Square',icon:'mdi-square-outline'}]},
+      { type:'slider', key:'widthMm',  label:'Width (mm)',  min:20, max:90, step:1 },
+      { type:'slider', key:'heightMm', label:'Height (mm)', min:20, max:90, step:1 },
+      { type:'swatches', key:'accent', label:'Accent' },
+    ]},
+  { key:'skills', label:'Skills', icon:'mdi-star-outline',
+    fields:[
+      { type:'segmented', key:'columns', label:'Columns', options:[{value:1,label:'1'},{value:2,label:'2'}]},
+      { type:'select', key:'chipVariant', label:'Chip variant', items:[{title:'Text',value:'text'},{title:'Tonal',value:'tonal'},{title:'Flat',value:'flat'}]},
+      { type:'swatches', key:'chipColor', label:'Chip color' },
+    ]},
+  { key:'languages', label:'Languages', icon:'mdi-flag-outline',
+    fields:[
+      { type:'segmented', key:'variant', label:'Style', options:[{value:'stars',label:'Stars'},{value:'bars',label:'Bars'},{value:'dots',label:'Dots'}]},
+      { type:'slider', key:'sizePx', label:'Icon size', min:12, max:28, step:1 },
+      { type:'slider', key:'maxLevel', label:'Max level', min:3, max:7, step:1 },
+    ]},
+  { key:'corner', label:'Corner', icon:'mdi-chart-bubble',
+    fields:[
+      { type:'switch', key:'enabled', label:'Enabled' },
+      { type:'segmented', key:'type', label:'Type', options:[{value:'triangle',label:'Triangle'},{value:'curve',label:'Curve'}]},
+      { type:'swatches', key:'color', label:'Color' },
+    ]},
+  { key:'signature', label:'Signature', icon:'mdi-draw',
+    fields:[
+      { type:'button', key:'open',   action:'open',   label:'Open pad', icon:'mdi-draw',  color:'primary' },
+      { type:'button', key:'remove', action:'remove', label:'Remove',   icon:'mdi-close', color:'error' },
+    ]},
+]
+const bindings = {
+  experience: ui.experience,
+  education:  ui.education,
+  photo:      ui.photo,
+  skills:     ui.skills,
+  languages:  ui.languages,
+  corner:     (ui.corner ??= {} as any),
+  signature:  {},
+}
+
+/* État du menu + source (1 section ou toutes) + ancrage activator */
+const panelOpen      = ref(false)
+const panelActive    = ref<string>(panels[0]?.key ?? 'experience')
+const panelSource    = ref(panels)
+const panelActivator = ref<Element | null>(null)
+
+/* bouton dans la toolbar (Teleport) */
+const toolbarBtnRef  = ref<HTMLElement | null>(null)
+
+/* map de refs pour chaque bouton “tune” de section */
+const tuneRefs = reactive<Record<string, HTMLElement | null>>({})
+function setTuneRef(id: string, el: HTMLElement | null) {
+  tuneRefs[id] = el
+}
+
+/* Ouvre le menu pour TOUTES les sections (ancré sur le bouton toolbar) */
+function openSettingsAll() {
+  panelSource.value    = panels
+  panelActive.value    = panels[0]?.key || 'experience'
+  panelActivator.value = toolbarBtnRef.value
+  panelOpen.value      = true
+}
+
+/* Ouvre le menu pour 1 section (ancré sur le bouton de cette section) */
+function openSettingsSingle(key: string, id: string) {
+  panelSource.value    = panels.filter(p => p.key === key)
+  panelActive.value    = key
+  panelActivator.value = tuneRefs[id] || toolbarBtnRef.value
+  panelOpen.value      = true
+}
+
+/* actions spéciales */
+function handlePanelAction(sectionKey: string, actionKey: string) {
+  if (sectionKey === 'signature') {
+    if (actionKey === 'open')   signatureModal.value = true
+    if (actionKey === 'remove') model.signature = null
+  }
+}
+
+/* sync selected[] si changement via menu */
+function handlePanelChanged(sectionKey: string, fieldKey: string, value: any) {
+  if (sectionKey === 'experience' && fieldKey === 'variant') selected.experience = value
+  if (sectionKey === 'education'  && fieldKey === 'variant') selected.education  = value
+  if (sectionKey === 'skills'     && fieldKey === 'columns') selected.skills     = value >= 2 ? 'two-col' : 'stacked'
+  if (sectionKey === 'languages'  && fieldKey === 'variant') selected.languages  = value
+  if (sectionKey === 'photo'      && fieldKey === 'shape')   selected.photo      = value
+  if (sectionKey === 'corner'     && fieldKey === 'style')   selected.corner     = value
+}
+
+/* watchers & init */
 watch(chosenKey, (k) => {
   const p = presets.find(x => x.key === k)
   if (p) {
     applyPreset(p)
-    syncSelectedFromUi()   // ← remet les groupes en phase avec l’UI
+    syncSelectedFromUi()
   }
 }, { immediate: true })
+
 onMounted(async () => {
   seedDemoContent()
   await nextTick()
@@ -567,57 +583,69 @@ onMounted(async () => {
     <client-only>
       <teleport v-if="canTeleport" to="#menu-bar-world">
         <div class="pa-0">
-          <v-list class="custom-list"  :lines="false">
+          <v-list class="custom-list pa-0" :lines="false">
             <MotionGroup preset="slideVisibleLeft" :duration="600">
               <v-list-item color="primary">
-                <v-row class="text-default" dense>
-                  <v-col
-                    v-for="section in sectionModels"
-                    :key="section.key"
-                    cols="12"
-                    class="d-flex align-center justify-items-start"
-                  >
-                    <!-- Libellé de la ligne -->
-                    <div class="text-subtitle-1 font-weight-medium d-flex align-center">
-                      <v-icon :icon="section.icon" class="me-1" />
-                    </div>
+                <v-list-subheader class="text-uppercase text-default font-weight-bold py-0 px-1">
+                  Forms & Models
+                </v-list-subheader>
+                <v-item-group mandatory>
+                  <div class="d-flex">
+                    <!-- Bouton Settings (toutes sections) -->
+                    <v-btn
+                      ref="toolbarBtnRef"
+                      size="small"
+                      variant="elevated"
+                      color="primary"
+                      class="ma-1 text-none rounded-xl"
+                      @click="openSettingsAll()"
+                    >
+                      <v-icon start icon="mdi-tune-variant" />
+                    </v-btn>
 
-                    <!-- 3 chips empilés verticalement -->
-                    <div class="d-flex align-center justify-center">
-                      <v-item-group v-model="selected[section.key]" mandatory @update:modelValue="val => onAction(section.key, val)">
-                        <div class="d-flex align-center justify-center">
-                          <v-item
-                            v-for="action in section.actions"
-                            :key="action.key"
-                            :value="action.key"
-                            v-slot="{ isSelected, toggle }"
-                          >
-                            <v-btn
-                              size="small"
-                              variant="outlined"
-                              rounded="pill"
-                              class="mx-1"
-                              :class="isSelected ? 'border border-radius-xl border-secondary border-md shadow-2xl shadow-primary' : ''"
-                              @click="toggle"
-                            >
-                              {{ action.label }}
-                            </v-btn>
-                          </v-item>
-                        </div>
-                      </v-item-group>
-                    </div>
-                  </v-col>
-                </v-row>
-              </v-list-item>
-              <v-list-item color="primary">
-                <v-item-group v-model="ui.accent" mandatory>
-                  <div class="d-flex flex-wrap">
                     <v-item
-                      v-for="c in flatSwatches"
-                      :key="c"
-                      :value="c"
+                      v-for="a in models.actions"
+                      :key="a.key"
+                      :value="a.key"
                       v-slot="{ isSelected, toggle }"
                     >
+                      <v-btn
+                        class="ma-1 text-none"
+                        :class="isSelected ? 'border border-radius-xl border-secondary border-md shadow-2xl shadow-primary' : 'border border-radius-xl border-secondary border-md'"
+                        :variant="isSelected ? 'elevated' : 'text'"
+                        size="small"
+                        rounded="lg"
+                        @click="toggle"
+                      >
+                        {{ a.label ?? a.key }}
+                      </v-btn>
+                    </v-item>
+                  </div>
+                </v-item-group>
+              </v-list-item>
+
+              <v-list-item color="primary">
+                <v-list-subheader dense class="text-uppercase text-default font-weight-bold py-0 px-1">
+                  Languages
+                </v-list-subheader>
+                <v-item-group v-model="ui.accent" mandatory>
+                  <div class="d-flex align-center justify-center flex-wrap">
+                    <v-item v-for="l in languages" :key="l.code" :value="l.code" v-slot="{ isSelected, toggle }">
+                      <v-btn :class="isSelected ? 'border border-radius-xl border-secondary border-md shadow-2xl shadow-primary' : ''" variant="text" @click="toggle">
+                        <span class="border border-radius-xl shadow-2xl shadow-primary object-cover" :class="`fi ${l.icon}`" style="width: 36px; height: 30px;" />
+                      </v-btn>
+                    </v-item>
+                  </div>
+                </v-item-group>
+              </v-list-item>
+
+              <v-list-item color="primary">
+                <v-list-subheader class="text-uppercase text-default font-weight-bold py-0 px-1">
+                  Colors
+                </v-list-subheader>
+                <v-item-group v-model="ui.accent" mandatory>
+                  <div class="d-flex flex-wrap">
+                    <v-item v-for="c in flatSwatches" :key="c" :value="c" v-slot="{ isSelected, toggle }">
                       <v-btn
                         class="ma-1"
                         :class="isSelected ? 'border border-radius-xl border-secondary border-md shadow-2xl shadow-primary' : ''"
@@ -630,37 +658,21 @@ onMounted(async () => {
                   </div>
                 </v-item-group>
               </v-list-item>
+
               <v-list-item color="primary">
                 <div class="d-flex align-center justify-center">
-                  <v-btn
-                    class="mx-1"
-                    size="small"
-                    variant="outlined"
-                    :color="ui.photo.show ? 'default' : 'primary'"
-                    :prepend-icon="ui.photo.show ? 'mdi-eye-off' : 'mdi-image-plus'"
-                    @click="ui.photo.show = !ui.photo.show"
-                  >
+                  <v-btn class="mx-1" size="small" variant="outlined" :color="ui.photo.show ? 'default' : 'primary'"
+                         :prepend-icon="ui.photo.show ? 'mdi-eye-off' : 'mdi-image-plus'"
+                         @click="ui.photo.show = !ui.photo.show">
                     {{ ui.photo.show ? 'Image' : 'Image' }}
                   </v-btn>
-                  <v-btn
-                    class="mx-1"
-                    size="small"
-                    variant="outlined"
-                    :color="ui.photo.show ? 'default' : 'primary'"
-                    :prepend-icon="ui.photo.show ? 'mdi-eye-off' : 'mdi-image-plus'"
-                    @click="ui.photo.show = !ui.photo.show"
-                  >
-                    {{ ui.photo.show ? 'Corner' : 'Corner' }}
+                  <v-btn class="mx-1" size="small" variant="outlined" color="primary" prepend-icon="mdi-shape-outline"
+                         @click="openSettingsSingle('corner', 'toolbar-corner')">
+                    Corner
                   </v-btn>
-                  <v-btn
-                    class="mx-1"
-                    size="small"
-                    variant="outlined"
-                    :color="ui.photo.show ? 'default' : 'primary'"
-                    :prepend-icon="ui.photo.show ? 'mdi-eye-off' : 'mdi-image-plus'"
-                    @click="ui.photo.show = !ui.photo.show"
-                  >
-                    {{ ui.photo.show ? 'Sign' : 'Sign' }}
+                  <v-btn class="mx-1" size="small" variant="outlined" color="primary" prepend-icon="mdi-draw"
+                         @click="signatureModal = true">
+                    Sign
                   </v-btn>
                 </div>
               </v-list-item>
@@ -682,140 +694,135 @@ onMounted(async () => {
     <v-dialog v-model="signatureModal" max-width="600">
       <Signature v-model="signatureModal" @signature="onSignatureFromPad" />
     </v-dialog>
+
     <v-row>
       <v-col cols="1">
         <ListCVManager v-model="chosenKey" :presets="presets" class="mb-4" :drawer="drawer" :ui="ui" />
       </v-col>
+
       <v-col cols="11">
-        <div ref="pdfRef">
-          <div
-            class="cv-page-wrap"
-            @mouseenter="hoverCanvas = true"
-            @mouseleave="hoverCanvas = false"
-            @focusin="hoverCanvas = true"
-            @focusout="hoverCanvas = false"
-          >
-            <CvA4 :key="chosenKey" :ui="ui" :model="model" :preset="chosen">
-              <template #personal>
-                <PersonalGrid v-model="model.personal" @update-name="model.identity.name = $event" />
-              </template>
+        <v-card class="pa-0 ma-0" flat elevation="24" rounded="xl" style="width:97%; height:100%; background-color: transparent">
+          <div ref="pdfRef">
+            <div class="cv-page-wrap"
+                 @mouseenter="hoverCanvas = true" @mouseleave="hoverCanvas = false"
+                 @focusin="hoverCanvas = true" @focusout="hoverCanvas = false">
+              <CvA4 :key="chosenKey" :ui="ui" :model="model" :preset="chosen">
+                <template #personal>
+                  <div :ref="setAnchorIfEmpty('personal')">
+                    <PersonalGrid v-model="model.personal" @update-name="model.identity.name = $event" />
+                  </div>
+                </template>
 
-              <!-- ====== Rendu dynamique des sections (main) ====== -->
-              <template #experience>
-                <draggable
-                  v-model="sections"
-                  item-key="id"
-                  handle=".drag-handle"
-                  animation="150"
-                  :force-fallback="true"
-                >
-                  <template #item="{ element: s, index }">
-                    <div
-                      v-if="s.enabled"
-                      class="cv-section mb-8"
-                      @mouseenter="hoverSection = index"
-                      @mouseleave="hoverSection = null"
-                    >
-                      <div class="section-actions" :class="{ show: hoverSection === index }">
-                        <v-btn
-                          icon
-                          density="comfortable"
-                          variant="text"
-                          @click="move(index,-1)"
-                          :title="'update section'"
-                        >
-                          <v-icon icon="mdi-arrow-up" />
-                        </v-btn>
-                        <v-btn
-                          icon
-                          density="comfortable"
-                          variant="text"
-                          @click="move(index, 1)"
-                          :title="'update section'"
-                        >
-                          <v-icon icon="mdi-arrow-down"/>
-                        </v-btn>
-                        <v-btn
-                          icon
-                          density="comfortable"
-                          variant="text"
-                          @click.stop="removeSection(index)"
-                          :title="'Supprimer la section'"
-                        >
-                          <v-icon icon="mdi-delete" color="error" />
-                        </v-btn>
+                <!-- ====== Rendu dynamique des sections (main) ====== -->
+                <template #experience>
+                  <draggable v-model="sections" item-key="id" handle=".drag-handle" animation="150" :force-fallback="true">
+                    <template #item="{ element: s, index }">
+                      <div :ref="setAnchorIfEmpty(s.type as any)">
+                        <div v-if="s.enabled" class="cv-section mb-8"
+                             @mouseenter="hoverSection = index" @mouseleave="hoverSection = null">
 
-                        <!-- ⬇️ Poignée de drag, juste à côté du delete -->
-                        <v-btn
-                          icon
-                          density="comfortable"
-                          variant="text"
-                          class="drag-handle"
-                          :title="'Réordonner la section'"
-                        >
-                          <v-icon icon="mdi-dots-grid" />
-                        </v-btn>
+                          <div class="section-actions" :class="{ show: hoverSection === index }">
+                            <!-- bouton paramètres section (ouvre le menu global sur CETTE section) -->
+                            <v-btn
+                              :ref="el => setTuneRef(s.id, el as any)"
+                              icon
+                              density="comfortable"
+                              variant="text"
+                              :title="'Section settings'"
+                              @click="openSettingsSingle(s.type, s.id)"
+                            >
+                              <v-icon icon="mdi-tune-variant" />
+                            </v-btn>
+
+                            <SectionCvLayout
+                              :section-key="s.type"
+                              :section-models="sectionModels"
+                              :model-value="selected[s.type] ?? null"
+                              @update:modelValue="val => { selected[s.type] = val; onAction(s.type, val) }"
+                            />
+
+                            <v-btn icon density="comfortable" variant="text" @click="move(index,-1)" :title="'move up'">
+                              <v-icon icon="mdi-arrow-up" />
+                            </v-btn>
+                            <v-btn icon density="comfortable" variant="text" @click="move(index, 1)" :title="'move down'">
+                              <v-icon icon="mdi-arrow-down"/>
+                            </v-btn>
+                            <v-btn icon density="comfortable" variant="text" @click.stop="removeSection(index)" :title="'delete'">
+                              <v-icon icon="mdi-delete" color="error" />
+                            </v-btn>
+                            <v-btn icon density="comfortable" variant="text" class="drag-handle" :title="'drag'">
+                              <v-icon icon="mdi-dots-grid" />
+                            </v-btn>
+                          </div>
+
+                          <SectionHeaderEditable
+                            v-model:title="s.title"
+                            v-model:icon="s.icon"
+                            class="mb-3"
+                            @remove="removeSection(index)"
+                          />
+
+                          <component
+                            :is="resolveComp(s)"
+                            :model-value="s.type === 'custom' ? (s.props?.content ?? '') : getModelValue(s.type)"
+                            @update:modelValue="val => {
+                              if (s.type === 'custom') s.props = { ...(s.props||{}), content: val }
+                              else setModelValue(s.type, val)
+                            }"
+                            v-bind="resolveProps(s)"
+                          />
+                        </div>
                       </div>
-                      <SectionHeaderEditable
-                        v-model:title="s.title"
-                        v-model:icon="s.icon"
-                        class="mb-3"
-                        @remove="removeSection(index)"
-                      />
-
-                      <!-- ✅ v-model explicite par type -->
-                      <component
-                        :is="resolveComp(s)"
-                        :model-value="s.type === 'custom' ? (s.props?.content ?? '') : getModelValue(s.type)"
-                        @update:modelValue="val => {
-        if (s.type === 'custom') {
-          s.props = { ...(s.props||{}), content: val }
-        } else {
-          setModelValue(s.type, val)
-        }
-      }"
-                        v-bind="resolveProps(s)"
-                      />
-                    </div>
-                  </template>
-                </draggable>
-
-                <!-- Pied de page : ajouter une section -->
-                <div class="add-section-fab" :class="{ show: hoverCanvas }">
-                  <v-menu>
-                    <template #activator="{ props }">
-                      <v-btn v-bind="props" variant="outlined" color="primary" prepend-icon="mdi-plus">
-                        Add section
-                      </v-btn>
                     </template>
-                    <v-list>
-                      <v-list-item v-for="t in Object.keys(SECTION_DEFS)" :key="t" @click="addSection(t as any)">
-                        <template #prepend>
-                          <v-icon :icon="({experience:'mdi-briefcase',education:'mdi-school',skills:'mdi-lightbulb',languages:'mdi-translate',interests:'mdi-heart',custom:'mdi-shape-outline'} as any)[t]" />
-                        </template>
-                        <v-list-item-title>{{ (SECTION_DEFS as any)[t].label }}</v-list-item-title>
-                      </v-list-item>
-                    </v-list>
-                  </v-menu>
-                </div>
-              </template>
+                  </draggable>
 
+                  <!-- Pied de page : ajouter une section -->
+                  <div class="add-section-fab" :class="{ show: hoverCanvas }">
+                    <v-menu>
+                      <template #activator="{ props }">
+                        <v-btn v-bind="props" variant="outlined" color="primary" prepend-icon="mdi-plus">
+                          Add section
+                        </v-btn>
+                      </template>
+                      <v-list>
+                        <v-list-item v-for="t in Object.keys(SECTION_DEFS)" :key="t" @click="addSection(t as any)">
+                          <template #prepend>
+                            <v-icon :icon="({experience:'mdi-briefcase',education:'mdi-school',skills:'mdi-lightbulb',languages:'mdi-translate',interests:'mdi-heart',custom:'mdi-shape-outline'} as any)[t]" />
+                          </template>
+                          <v-list-item-title>{{ (SECTION_DEFS as any)[t].label }}</v-list-item-title>
+                        </v-list-item>
+                      </v-list>
+                    </v-menu>
+                  </div>
+                </template>
 
-              <template #sidebar>
-                <PersonalGrid v-model="model.personal" @update-name="model.identity.name = $event" in-sidebar />
-              </template>
+                <template #sidebar>
+                  <PersonalGrid v-model="model.personal" @update-name="model.identity.name = $event" in-sidebar />
+                </template>
 
-              <template #footer>
-                <img v-if="model.signature" class="signature" :src="model.signature" style="max-height:18mm" />
-                <div class="name">{{ model.identity.name }}</div>
-              </template>
-            </CvA4>
+                <template #footer>
+                  <img v-if="model.signature" class="signature" :src="model.signature" style="max-height:18mm" />
+                  <div class="name">{{ model.identity.name }}</div>
+                </template>
+              </CvA4>
+            </div>
           </div>
-
-        </div>
+        </v-card>
       </v-col>
     </v-row>
 
+    <!-- ✅ Menu global unique — on lui passe l’activator et la source (1 ou plusieurs sections) -->
+    <SectionSettingsMenu
+      v-model="panelOpen"
+      :hide-activator="true"
+      :active="panelActive"
+      :sections="panelSource"
+      :bindings="bindings"
+      :swatches="flatSwatches"
+      :activator="panelActivator"
+      @action="handlePanelAction"
+      @changed="handlePanelChanged"
+    />
 
     <DrawerCVManager :drawer="drawer" :ui="ui" />
   </v-container>
@@ -827,66 +834,21 @@ onMounted(async () => {
 .custom-item:hover { background-color: rgba(0,0,0,.04); box-shadow: 0 3px 9px rgb(var(--v-theme-primary)); transform: translateX(2px); }
 .router-link-exact-active { background-color: #e3f2fd; font-weight: 700; }
 
-.cv-section {
-  position: relative;
-}
-
-/* Barre d’actions en haut à droite, masquée par défaut */
+.cv-section { position: relative; }
 .section-actions {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .15s ease;
-  z-index: 5; /* au-dessus du header */
+  position: absolute; top: 4px; right: 4px;
+  display: flex; gap: 6px; align-items: center;
+  opacity: 0; pointer-events: none; transition: opacity .15s ease; z-index: 5;
 }
+.section-actions.show { opacity: 1; pointer-events: auto; }
+.drag-handle { cursor: grab; } .drag-handle:active { cursor: grabbing; }
 
-/* Afficher uniquement quand on survole la section */
-.section-actions.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Curseur de drag explicite */
-.drag-handle {
-  cursor: grab;
-}
-.drag-handle:active {
-  cursor: grabbing;
-}
-.cv-page-wrap {
-  position: relative;           /* pour positionner le bouton flottant */
-}
-
-/* Bouton flottant bas-centre, masqué par défaut */
+.cv-page-wrap { position: relative; }
 .add-section-fab {
-  position: absolute;
-  left: 50%;
-  bottom: 8px;
-  transform: translateX(-50%);
-  opacity: 0;
-  pointer-events: none;         /* évite les clics quand caché */
-  transition: opacity .15s ease;
-  z-index: 10;
+  position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%);
+  opacity: 0; pointer-events: none; transition: opacity .15s ease; z-index: 10;
 }
+.add-section-fab.show { opacity: 1; pointer-events: auto; }
 
-/* Visible quand on survole le CV */
-.add-section-fab.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-.chip-stack {
-  display: flex;
-  flex-direction: column;   /* empile verticalement */
-  align-items: flex-end;     /* aligne à droite de la ligne */
-}
-.chip-stack > *:last-child { margin-bottom: 0; }
-/* Ne pas l’imprimer */
-@media print {
-  .add-section-fab { display: none !important; }
-}
+@media print { .add-section-fab { display: none !important; } }
 </style>
