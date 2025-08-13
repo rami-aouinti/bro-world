@@ -1,142 +1,155 @@
 <!-- components/cv/CvA4.vue -->
 <template>
-  <div class="a4" :style="pageStyle" :class="[`layout--${ui.layout}`]">
-    <!-- Fond de sidebar est peint par ::before -->
+  <client-only>
+    <!-- Le wrapper qui va contenir toutes les pages générées -->
+    <div
+      v-a4-paginate="{
+        itemSelector: '.cv-section',   // ce qu’on découpe en pages
+        areaSelector: '.main',         // où se trouvent ces items
+        moveFooterToLast: true,        // foot sur la dernière page
+        fudgePx: 2                     // petite tolérance
+      }"
+    >
+      <!-- ⚠️ La 1re page : on garde ton marquage exact -->
+      <div class="a4" :style="pageStyle" :class="[`layout--${ui.layout}`]">
+        <div class="page-tiles" aria-hidden="true"></div>
+        <!-- VBar décorative -->
+        <div v-if="vbar.show" class="vbar" :class="`vbar--${vbar.side}`" />
+        <div id="cv-corner" style="position:absolute; inset-block-start:0; inset-inline-start:0; width:1px; height:1px;"></div>
 
-    <!-- VBar décorative -->
-    <div v-if="vbar.show" class="vbar" :class="`vbar--${vbar.side}`" />
-    <div id="cv-corner" style="position:absolute; inset-block-start:0; inset-inline-start:0; width:1px; height:1px;"></div>
+        <!-- Corner -->
+        <CornerDecoration
+          v-if="cornerForDecoration"
+          class="corner-layer"
+          :key="cornerKey"
+          :corner="cornerForDecoration"
+          :default-accent="ui.accent"
+          :default-primary="ui.primary"
+        />
 
-    <!-- Corner, au-dessus du fond mais sous le contenu -->
-    <CornerDecoration
-      v-if="cornerForDecoration"
-      class="corner-layer"
-      :key="cornerKey"
-      :corner="cornerForDecoration"
-      :default-accent="ui.accent"
-      :default-primary="ui.primary"
-    />
+        <div class="grid">
+          <!-- Identity -->
+          <div class="identity">
+            <!-- ... ton code identité + PhotoBlock tel quel ... -->
+            <div class="identity-left d-flex align-center justify-center">
+              <!-- left photo -->
+              <div
+                id="cv-photo"
+                v-if="ui.photo.show && ui.photo.position === 'left' && !usesSidebar && !vbar.show"
+                class="photo" :class="photoClass"
+                :style="{ width: ui.photo.widthMm + 'mm', height: ui.photo.heightMm + 'mm' }"
+              >
+                <PhotoBlock
+                  :key="`${ui.photo.widthMm}x${ui.photo.heightMm}`"
+                  :src="model.photo"
+                  @update:src="val => (model.photo = val)"
+                  @delete-section="ui.photo.show = false"
+                  :width="`${ui.photo.widthMm}mm`"
+                  :height="`${ui.photo.heightMm}mm`"
+                  :shape="ui.photo.shape"
+                  :variant="ui.photo.variant"
+                  :frame-width="ui.photo.frameWidth"
+                  :frame-padding="ui.photo.framePadding"
+                  :frame-color="ui.photo.frameColor || ui.primary"
+                  :frame-bg="ui.photo.frameBg || '#fff'"
+                  :shadow-enabled="ui.photo.shadow.enabled"
+                  :shadow-elevation="ui.photo.shadow.elevation"
+                  :shadow-color="ui.photo.shadow.color"
+                  :shadow-custom="ui.photo.shadow.custom"
+                />
+              </div>
 
-    <div class="grid">
-      <!-- Identity -->
-      <div class="identity">
-        <div class="identity-left d-flex align-center justify-center">
-          <!-- Photo à gauche (sans sidebar et sans vbar) -->
-          <div
-            id="cv-photo"
-            v-if="ui.photo.show && ui.photo.position === 'left' && !usesSidebar && !vbar.show"
-            class="photo" :class="photoClass"
-            :style="{ width: ui.photo.widthMm + 'mm', height: ui.photo.heightMm + 'mm' }"
-          >
-            <PhotoBlock
-              :key="`${ui.photo.widthMm}x${ui.photo.heightMm}`"
-              :src="model.photo"
-              @update:src="val => (model.photo = val)"
-              @delete-section="ui.photo.show = false"
-              :width="`${ui.photo.widthMm}mm`"
-              :height="`${ui.photo.heightMm}mm`"
-              :shape="ui.photo.shape"
-              :variant="ui.photo.variant"
-              :frame-width="ui.photo.frameWidth"
-              :frame-padding="ui.photo.framePadding"
-              :frame-color="ui.photo.frameColor || ui.primary"
-              :frame-bg="ui.photo.frameBg || '#fff'"
-              :shadow-enabled="ui.photo.shadow.enabled"
-              :shadow-elevation="ui.photo.shadow.elevation"
-              :shadow-color="ui.photo.shadow.color"
-              :shadow-custom="ui.photo.shadow.custom"
-            />
+              <div class="mx-4">
+                <EditableText v-model="model.identity.name" class="cv-title" placeholder="Name eingeben" />
+                <EditableText v-model="model.identity.headline" class="subtitle" placeholder="Berufsbezeichnung eingeben" />
+                <slot v-if="!usesSidebar && ui.photo.heightMm >= 60" name="personal" />
+              </div>
 
+              <v-spacer />
+
+              <!-- right photo -->
+              <div
+                id="cv-photo"
+                v-if="ui.photo.show && ui.photo.position === 'right' && !usesSidebar && !vbar.show"
+                class="photo" :class="photoClass"
+                :style="{ width: ui.photo.widthMm + 'mm', height: ui.photo.heightMm + 'mm' }"
+              >
+                <PhotoBlock
+                  :key="`${ui.photo.widthMm}x${ui.photo.heightMm}`"
+                  :src="model.photo"
+                  @update:src="val => (model.photo = val)"
+                  @delete-section="ui.photo.show = false"
+                  :width="`${ui.photo.widthMm}mm`"
+                  :height="`${ui.photo.heightMm}mm`"
+                  :shape="ui.photo.shape"
+                  :variant="ui.photo.variant"
+                  :frame-width="ui.photo.frameWidth"
+                  :frame-padding="ui.photo.framePadding"
+                  :frame-color="ui.photo.frameColor || ui.primary"
+                  :frame-bg="ui.photo.frameBg || '#fff'"
+                  :shadow-enabled="ui.photo.shadow.enabled"
+                  :shadow-elevation="ui.photo.shadow.elevation"
+                  :shadow-color="ui.photo.shadow.color"
+                  :shadow-custom="ui.photo.shadow.custom"
+                />
+              </div>
+            </div>
+
+            <slot v-if="!usesSidebar && ui.photo.heightMm < 60" name="personal" />
           </div>
 
-          <div class="mx-4">
-            <EditableText v-model="model.identity.name" class="cv-title" placeholder="Name eingeben" />
-            <EditableText v-model="model.identity.headline" class="subtitle" placeholder="Berufsbezeichnung eingeben" />
-            <slot v-if="!usesSidebar && ui.photo.heightMm >= 60" name="personal" />
+          <!-- Main content — les .cv-section à paginer -->
+          <div class="main">
+            <slot name="experience" />
+            <slot name="education" />
+            <slot name="skills" />
+            <slot name="interests" />
           </div>
 
-          <v-spacer />
+          <!-- Sidebar -->
+          <div v-if="usesSidebar" class="sidebar me-5">
+            <!-- Photo dans sidebar -->
+            <div
+              id="cv-photo"
+              v-if="ui.photo.show"
+              class="photo d-flex align-center justify-center text-center my-1"
+              :class="photoClass"
+              :style="{ width: ui.photo.widthMm + 'mm', height: ui.photo.heightMm + 'mm' }"
+              style="justify-self: center;"
+            >
+              <PhotoBlock
+                :key="`${ui.photo.widthMm}x${ui.photo.heightMm}`"
+                :src="model.photo"
+                @update:src="val => (model.photo = val)"
+                @delete-section="ui.photo.show = false"
+                :width="`${ui.photo.widthMm}mm`"
+                :height="`${ui.photo.heightMm}mm`"
+                :shape="ui.photo.shape"
+                :variant="ui.photo.variant"
+                :frame-width="ui.photo.frameWidth"
+                :frame-padding="ui.photo.framePadding"
+                :frame-color="ui.photo.frameColor || ui.primary"
+                :frame-bg="ui.photo.frameBg || '#fff'"
+                :shadow-enabled="ui.photo.shadow.enabled"
+                :shadow-elevation="ui.photo.shadow.elevation"
+                :shadow-color="ui.photo.shadow.color"
+                :shadow-custom="ui.photo.shadow.custom"
+              />
+            </div>
+            <slot name="sidebar" />
+          </div>
 
-          <!-- Photo à droite (sans sidebar et sans vbar) -->
-          <div
-            id="cv-photo"
-            v-if="ui.photo.show && ui.photo.position === 'right' && !usesSidebar && !vbar.show"
-            class="photo" :class="photoClass"
-            :style="{ width: ui.photo.widthMm + 'mm', height: ui.photo.heightMm + 'mm' }"
-          >
-            <PhotoBlock
-              :key="`${ui.photo.widthMm}x${ui.photo.heightMm}`"
-              :src="model.photo"
-              @update:src="val => (model.photo = val)"
-              @delete-section="ui.photo.show = false"
-              :width="`${ui.photo.widthMm}mm`"
-              :height="`${ui.photo.heightMm}mm`"
-              :shape="ui.photo.shape"
-              :variant="ui.photo.variant"
-              :frame-width="ui.photo.frameWidth"
-              :frame-padding="ui.photo.framePadding"
-              :frame-color="ui.photo.frameColor || ui.primary"
-              :frame-bg="ui.photo.frameBg || '#fff'"
-              :shadow-enabled="ui.photo.shadow.enabled"
-              :shadow-elevation="ui.photo.shadow.elevation"
-              :shadow-color="ui.photo.shadow.color"
-              :shadow-custom="ui.photo.shadow.custom"
-            />
+          <!-- Footer (sera déplacé sur la dernière page par le plugin) -->
+          <div class="footer">
+            <div id="cv-signature"></div>
+            <slot name="footer" />
           </div>
         </div>
-
-        <!-- si pas de sidebar et petite photo -->
-        <slot v-if="!usesSidebar && ui.photo.heightMm < 60" name="personal" />
-      </div>
-
-      <!-- Main content -->
-      <div class="main">
-        <slot name="experience" />
-        <slot name="education" />
-        <slot name="skills" />
-        <slot name="interests" />
-      </div>
-
-      <!-- Sidebar (layout sidebar-left/right) -->
-      <div v-if="usesSidebar" class="sidebar me-5">
-        <div
-          id="cv-photo"
-          v-if="ui.photo.show"
-          class="photo d-flex align-center justify-center text-center my-1"
-          :class="photoClass"
-          :style="{ width: ui.photo.widthMm + 'mm', height: ui.photo.heightMm + 'mm' }"
-          style="justify-self: center;"
-        >
-          <PhotoBlock
-            :key="`${ui.photo.widthMm}x${ui.photo.heightMm}`"
-            :src="model.photo"
-            @update:src="val => (model.photo = val)"
-            @delete-section="ui.photo.show = false"
-            :width="`${ui.photo.widthMm}mm`"
-            :height="`${ui.photo.heightMm}mm`"
-            :shape="ui.photo.shape"
-            :variant="ui.photo.variant"
-            :frame-width="ui.photo.frameWidth"
-            :frame-padding="ui.photo.framePadding"
-            :frame-color="ui.photo.frameColor || ui.primary"
-            :frame-bg="ui.photo.frameBg || '#fff'"
-            :shadow-enabled="ui.photo.shadow.enabled"
-            :shadow-elevation="ui.photo.shadow.elevation"
-            :shadow-color="ui.photo.shadow.color"
-            :shadow-custom="ui.photo.shadow.custom"
-          />
-        </div>
-        <slot name="sidebar" />
-      </div>
-
-      <!-- Footer -->
-      <div class="footer">
-        <div id="cv-signature"></div>
-        <slot name="footer" />
       </div>
     </div>
-  </div>
+  </client-only>
 </template>
+
 
 <script setup lang="ts">
 import { computed, toRefs } from 'vue'
@@ -193,6 +206,7 @@ const cornerKey = computed(() => {
   return `${c.type}|${c.anchor}|${c.sizeMm}|${c.color}|${c.color2}|${c.offsetMmX}|${c.offsetMmY}|${c.rotateDeg}`
 })
 
+/** Variables CSS et paddings calculés */
 const pageStyle = computed(() => ({
   '--primary': ui.value.primary ?? preset.value.palette.primary,
   '--accent':  ui.value.accent  ?? preset.value.palette.accent,
@@ -221,6 +235,23 @@ const pageStyle = computed(() => ({
         : '14mm'),
 }))
 
+/** On convertit --a4-pad en top/bottom (mm) pour la directive */
+function parseMmTuple(pad: string | undefined): [number, number] {
+  // formats possibles: "14mm" | "T R B L"
+  const mm = (s:string) => Number(String(s).replace('mm','')) || 0
+  if (!pad) return [14,14]
+  const parts = String(pad).split(/\s+/)
+  if (parts.length === 1) {
+    const v = mm(parts[0]); return [v,v]
+  }
+  // T R B L
+  const t = mm(parts[0])
+  const b = mm(parts[2] ?? parts[0])
+  return [t,b]
+}
+const padTopMm = computed(() => parseMmTuple((pageStyle.value as any)['--a4-pad'])[0])
+const padBottomMm = computed(() => parseMmTuple((pageStyle.value as any)['--a4-pad'])[1])
+
 const photoClass = computed(() => ({
   'is-right':   ui.value.photo.position === 'right',
   'is-left':    ui.value.photo.position === 'left',
@@ -232,15 +263,23 @@ const photoClass = computed(() => ({
 </script>
 
 <style scoped>
+/* ---------- Carte page (ajout) ---------- */
+.a4--card{
+  background:#fff;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+  border-radius:12px;
+  margin: 0 auto 12mm;
+  width:210mm;
+  overflow: visible;
+  isolation: isolate;
+}
+
 /* ---------- Base page ---------- */
 .a4{
   position: relative;
   width:210mm; min-height:297mm;
   color:var(--text);
   padding: var(--a4-pad, 14mm);
-  box-shadow:0 2px 10px rgba(0,0,0,.08);
-  overflow: visible;
-  isolation: isolate;
   background-color: var(--paper);
   background-repeat: no-repeat;   /* pour la bande de sidebar */
 }
@@ -304,19 +343,7 @@ const photoClass = computed(() => ({
 /* ---------- Layouts ---------- */
 .grid{ display:grid; grid-auto-rows:min-content; }
 
-/* latest = 2 colonnes */
-.layout--latest .grid{
-  grid-template-columns: 1fr 1fr;
-  column-gap:12mm; row-gap:10mm;
-}
-.layout--latest .identity{
-  grid-column:1 / -1;
-  display:flex; justify-content:space-between; align-items:flex-start; gap:12mm;
-}
-.layout--latest .main{
-  grid-column:1 / -1;
-  display:grid; grid-template-columns:1fr 1fr; column-gap:12mm; row-gap:12mm;
-}
+/* stacked (une colonne) */
 .layout--stacked .grid{
   grid-template-columns: 1fr;
   row-gap:10mm;
@@ -326,6 +353,7 @@ const photoClass = computed(() => ({
   grid-column:1;
   display:grid; grid-template-columns:1fr; row-gap:12mm;
 }
+
 /* sidebar right */
 .layout--sidebar-right .grid{
   grid-template-columns: 1fr var(--sidebar-w, 170mm);
@@ -396,28 +424,37 @@ const photoClass = computed(() => ({
 
 /* Screen vs print */
 @media screen {
-  .a4 { margin: 0 auto; box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+  .a4--card { /* déjà défini plus haut */ }
+}
+.page-tiles{
+  position:absolute; inset:0; pointer-events:none; z-index:999;
+
+  /* 1) Ligne horizontale en haut de chaque “page” (se répète tous les 297mm) */
+  /* 2) Lignes verticales gauche/droite dans chaque tuile via repeating-linear-gradient */
+  background-image:
+    linear-gradient(
+      to bottom,
+      var(--pdf-frame-color, rgba(0,0,0,.28)) 0 var(--pdf-frame-width, 1px),
+      transparent var(--pdf-frame-width, 1px)
+    ),
+    repeating-linear-gradient(
+      to right,
+      var(--pdf-frame-color, rgba(0,0,0,.28)) 0 var(--pdf-frame-width, 1px),
+      transparent var(--pdf-frame-width, 1px) calc(210mm - var(--pdf-frame-width, 1px)),
+      var(--pdf-frame-color, rgba(0,0,0,.28)) calc(210mm - var(--pdf-frame-width, 1px)) 210mm,
+      transparent 210mm
+    );
+
+  /* Taille de tuile = A4 */
+  background-size:
+    100% 297mm,    /* horizontale: couvre toute la largeur, répète en hauteur */
+    210mm 297mm;   /* verticale: tuile 210×297mm, répète en Y aussi */
+
+  background-repeat: repeat-y, repeat-y;
+  mix-blend-mode: multiply; /* discret sur fonds colorés */
 }
 
 @media print {
-  html, body { margin:0 !important; padding:0 !important; background:#fff !important; }
-  .a4{
-    width:210mm !important; min-height:297mm !important;
-    margin:0 !important; box-shadow:none !important;
-    -webkit-print-color-adjust: exact; print-color-adjust: exact;
-    page-break-after: always;
-  }
-  .a4:last-child{ page-break-after:auto; }
-  /* forcer l’impression des backgrounds */
-  .layout--sidebar-left.a4,
-  .layout--sidebar-right.a4{
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-  .section-header, .exp-item, .edu-item, .skill-group, .interests, .personal-grid-wrapper{
-    page-break-inside: avoid; break-inside: avoid;
-  }
+  .page-tiles{ display:none !important; } /* guides écran seulement */
 }
 </style>
-
-
