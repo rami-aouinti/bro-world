@@ -5,7 +5,7 @@
     direction="vertical"
     center-active
     :show-arrows="false"
-    style="max-height: 530px; max-width: 95px; overflow-x: hidden; position: absolute; top: 75px; margin-left: -20px"
+    style="max-height: 530px; max-width: 95px; overflow-x: hidden; position: absolute; top: 75px; margin-left: -40px"
     class="template-picker d-flex justify-center align-center"
   >
   <v-slide-group-item

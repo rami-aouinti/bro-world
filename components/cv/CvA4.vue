@@ -9,9 +9,10 @@
 
     <!-- Corner, au-dessus du fond mais sous le contenu -->
     <CornerDecoration
-      v-if="normalizedCorner?.enabled"
+      v-if="cornerForDecoration"
       class="corner-layer"
-      :corner="normalizedCorner"
+      :key="cornerKey"
+      :corner="cornerForDecoration"
       :default-accent="ui.accent"
       :default-primary="ui.primary"
     />
@@ -35,11 +36,17 @@
               :width="`${ui.photo.widthMm}mm`"
               :height="`${ui.photo.heightMm}mm`"
               :shape="ui.photo.shape"
+              :variant="ui.photo.variant"
+              :frame-width="ui.photo.frameWidth"
+              :frame-padding="ui.photo.framePadding"
+              :frame-color="ui.photo.frameColor || ui.primary"
+              :frame-bg="ui.photo.frameBg || '#fff'"
               :shadow-enabled="ui.photo.shadow.enabled"
               :shadow-elevation="ui.photo.shadow.elevation"
               :shadow-color="ui.photo.shadow.color"
               :shadow-custom="ui.photo.shadow.custom"
             />
+
           </div>
 
           <div class="mx-4">
@@ -65,6 +72,11 @@
               :width="`${ui.photo.widthMm}mm`"
               :height="`${ui.photo.heightMm}mm`"
               :shape="ui.photo.shape"
+              :variant="ui.photo.variant"
+              :frame-width="ui.photo.frameWidth"
+              :frame-padding="ui.photo.framePadding"
+              :frame-color="ui.photo.frameColor || ui.primary"
+              :frame-bg="ui.photo.frameBg || '#fff'"
               :shadow-enabled="ui.photo.shadow.enabled"
               :shadow-elevation="ui.photo.shadow.elevation"
               :shadow-color="ui.photo.shadow.color"
@@ -103,6 +115,11 @@
             :width="`${ui.photo.widthMm}mm`"
             :height="`${ui.photo.heightMm}mm`"
             :shape="ui.photo.shape"
+            :variant="ui.photo.variant"
+            :frame-width="ui.photo.frameWidth"
+            :frame-padding="ui.photo.framePadding"
+            :frame-color="ui.photo.frameColor || ui.primary"
+            :frame-bg="ui.photo.frameBg || '#fff'"
             :shadow-enabled="ui.photo.shadow.enabled"
             :shadow-elevation="ui.photo.shadow.elevation"
             :shadow-color="ui.photo.shadow.color"
@@ -151,17 +168,29 @@ const vbar = computed(() => {
 const normalizedCorner = computed(() => {
   const c = ui.value?.corner ?? preset.value?.corner ?? null
   if (!c) return null
+  const type = (c as any).type ?? (c as any).style ?? 'quarter'
   return {
-    enabled: c.enabled ?? true,
-    type: c.type,
-    anchor: c.anchor ?? 'top-left',
-    sizeMm: c.sizeMm ?? 30,
-    color: c.color ?? (ui.value.accent ?? preset.value.palette.accent),
-    color2: c.color2,
-    offsetMmX: c.offsetMmX ?? 0,
-    offsetMmY: c.offsetMmY ?? 0,
-    rotateDeg: c.rotateDeg ?? 0,
+    enabled:  (c as any).enabled ?? true,
+    type,
+    anchor:   (c as any).anchor ?? 'top-left',
+    sizeMm:   (c as any).sizeMm ?? 30,
+    color:    (c as any).color  ?? (ui.value.accent ?? preset.value.palette.accent),
+    color2:   (c as any).color2,
+    offsetMmX:(c as any).offsetMmX ?? 0,
+    offsetMmY:(c as any).offsetMmY ?? 0,
+    rotateDeg:(c as any).rotateDeg ?? 0,
   }
+})
+const cornerForDecoration = computed(() => {
+  const n = normalizedCorner.value
+  return !n || !n.enabled ? null : { ...n, style: n.type } // compat éventuelle
+})
+
+/** Forcer un remount quand un réglage clé change */
+const cornerKey = computed(() => {
+  const c = cornerForDecoration.value
+  if (!c) return 'corner-none'
+  return `${c.type}|${c.anchor}|${c.sizeMm}|${c.color}|${c.color2}|${c.offsetMmX}|${c.offsetMmY}|${c.rotateDeg}`
 })
 
 const pageStyle = computed(() => ({
@@ -252,8 +281,12 @@ const photoClass = computed(() => ({
 }
 
 /* Corner sous le contenu, au-dessus du fond */
-.corner-layer{ position:absolute; inset:0; z-index:1; pointer-events:none; }
-
+.corner-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1; /* grid doit être au-dessus si nécessaire */
+}
 /* VBar décorative */
 .vbar{
   position:absolute; top:0; bottom:0;
@@ -284,7 +317,15 @@ const photoClass = computed(() => ({
   grid-column:1 / -1;
   display:grid; grid-template-columns:1fr 1fr; column-gap:12mm; row-gap:12mm;
 }
-
+.layout--stacked .grid{
+  grid-template-columns: 1fr;
+  row-gap:10mm;
+}
+.layout--stacked .identity{ grid-column:1; }
+.layout--stacked .main{
+  grid-column:1;
+  display:grid; grid-template-columns:1fr; row-gap:12mm;
+}
 /* sidebar right */
 .layout--sidebar-right .grid{
   grid-template-columns: 1fr var(--sidebar-w, 170mm);
@@ -336,8 +377,10 @@ const photoClass = computed(() => ({
 .photo:empty{ display:none; }
 .photo img{
   display:block; width:100%; height:100%; object-fit:cover;
-  background:#fff; border:3px solid var(--primary);
-  padding:2mm; box-sizing:content-box;
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-sizing: border-box;
 }
 .photo.is-rounded img{ border-radius:10mm; }
 

@@ -6,10 +6,19 @@ const props = defineProps<{
   width?: string
   height?: string
   shape?: 'square' | 'circle'
+
+  /* NEW: variantes d’habillage */
+  variant?: 'plain' | 'frame' | 'elevated' | 'elevated-frame'
+  frameColor?: string
+  frameWidth?: number        // px
+  framePadding?: number      // px
+  frameBg?: string
+
+  /* Ombres existantes */
   shadowEnabled?: boolean
   shadowElevation?: number   // 0–24
-  shadowColor?: string       // e.g. 'rgba(0,0,0,.22)'
-  shadowCustom?: string      // e.g. '0 10px 20px rgba(0,0,0,.18)'
+  shadowColor?: string       // ex: 'rgba(0,0,0,.22)'
+  shadowCustom?: string      // ex: '0 10px 20px rgba(0,0,0,.18)'
 }>()
 
 const emit = defineEmits<{
@@ -17,16 +26,17 @@ const emit = defineEmits<{
   (e: 'delete-section'): void
 }>()
 
-const hover = ref(false)
+const hover  = ref(false)
 const fileEl = ref<HTMLInputElement | null>(null)
 
 const width  = props.width  ?? '48mm'
 const height = props.height ?? '48mm'
 const shapeClass = computed(() => (props.shape === 'circle' ? 'circle' : 'square'))
 
-// box-shadow presets
+/* ===== Ombres (présets) ===== */
 const ELEVATION: Record<number, string> = {
-  0:'none', 1:'0 1px 2px rgba(0,0,0,.12), 0 1px 1px rgba(0,0,0,.10)',
+  0:'none',
+  1:'0 1px 2px rgba(0,0,0,.12), 0 1px 1px rgba(0,0,0,.10)',
   2:'0 2px 4px rgba(0,0,0,.12), 0 2px 2px rgba(0,0,0,.10)',
   3:'0 4px 8px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.10)',
   4:'0 6px 12px rgba(0,0,0,.14), 0 3px 6px rgba(0,0,0,.10)',
@@ -37,12 +47,18 @@ const ELEVATION: Record<number, string> = {
   24:'0 24px 48px rgba(0,0,0,.24), 0 16px 16px rgba(0,0,0,.12)',
 }
 
-// Build a shadow style that is circular with drop-shadow for circles,
-// and classic box-shadow for squares.
-const shadowStyle = computed(() => {
-  if (!props.shadowEnabled) return {}
+/** Appliquer l’ombre si:
+ *  - shadowEnabled = true, ou
+ *  - variant contient 'elevated'
+ */
+const applyShadow = computed(() =>
+  !!(props.shadowEnabled || (props.variant && props.variant.includes('elevated')))
+)
 
-  // choose base shadow
+function buildShadow(): { boxShadow?: string; filter?: string } {
+  if (!applyShadow.value) return {}
+
+  // base (custom > elevation preset)
   let base = props.shadowCustom
   if (!base) {
     const elevs = Object.keys(ELEVATION).map(Number).sort((a,b)=>a-b)
@@ -53,11 +69,28 @@ const shadowStyle = computed(() => {
     if (props.shadowColor) base = base.replaceAll(/rgba?\([^)]+\)/g, props.shadowColor)
   }
 
-  // circle => drop-shadow, square => box-shadow
+  // cercle => drop-shadow (première couche), carré => box-shadow
   return props.shape === 'circle'
-    ? { filter: `drop-shadow(${base.split(',')[0].trim()})` } // use first layer for a clean ring
+    ? { filter: `drop-shadow(${base.split(',')[0].trim()})` }
     : { boxShadow: base }
-})
+}
+
+/* ===== Style du cadre (variant 'frame' / 'elevated-frame') ===== */
+function buildFrame(): Record<string,string> {
+  const wantsFrame = props.variant === 'frame' || props.variant === 'elevated-frame'
+  if (!wantsFrame) return {}
+
+  const border = `${props.frameWidth ?? 3}px solid ${props.frameColor ?? 'var(--primary)'}`
+  const padding = `${props.framePadding ?? 2}px`
+  const bg = props.frameBg ?? '#fafafa'  // ou 'var(--paper)'
+  return { border, padding, background: bg }
+}
+
+/* style final de la frame */
+const frameStyle = computed(() => ({
+  ...buildFrame(),
+  ...buildShadow(),
+}))
 
 function triggerFile(){ fileEl.value?.click() }
 function onFile(e: Event){
@@ -77,8 +110,8 @@ function onFile(e: Event){
     @mouseenter="hover = true"
     @mouseleave="hover = false"
   >
-    <!-- element with the radius and the shadow -->
-    <div class="frame" :class="{ placeholder: !src }" :style="shadowStyle">
+    <!-- conteneur avec arrondi + shadow/cadre -->
+    <div class="frame" :class="{ placeholder: !src }" :style="frameStyle">
       <img v-if="src" :src="src" alt="photo" />
       <div v-else class="ph">📷</div>
     </div>
@@ -106,10 +139,10 @@ function onFile(e: Event){
 .frame{
   width:100%; height:100%;
   display:flex; align-items:center; justify-content:center;
-  border-radius: inherit;      /* keeps the same rounding */
-  overflow:hidden;             /* clip the image */
+  border-radius: inherit;      /* même arrondi que le parent */
+  overflow:hidden;             /* masque l’image */
   background:#fafafa;
-  transition: box-shadow .2s ease, filter .2s ease;
+  transition: box-shadow .2s ease, filter .2s ease, border-color .2s ease;
 }
 
 .frame img{ width:100%; height:100%; object-fit:cover; }

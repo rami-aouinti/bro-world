@@ -24,8 +24,7 @@
             rounded="lg"
             @click="toggle"
           >
-            <v-icon v-if="a.icon" start :icon="a.icon" />
-            {{ a.label ?? a.key }}
+            <v-icon v-if="a.icon" :icon="a.icon" />
           </v-btn>
         </v-item>
       </div>

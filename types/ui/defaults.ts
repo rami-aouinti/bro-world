@@ -10,20 +10,25 @@ export const defaultUi: UiState = {
   primary: '#0b5cab',
   a4Padding: undefined, // laissé au layout/CvA4 si non défini
 
-  photo: {
-    show: true,
-    shape: 'square',
-    widthMm: 42,
-    heightMm: 54,
-    position: 'right',
-    rounded: false,
-    shadow: {
-      enabled: false,
-      elevation: 0,
-      color: undefined,
-      custom: undefined,
-    }
-  },
+    photo: {
+      show: true,
+      position: 'right',
+      widthMm: 30,
+      heightMm: 30,
+      shape: 'square',
+      // NEW
+      variant: 'plain',          // 'plain' | 'frame' | 'elevated' | 'elevated-frame'
+      frameWidth: 0,             // px
+      framePadding: 2,           // px
+      frameColor: undefined,     // par défaut: hérite du primary si tu veux
+      frameBg: undefined,
+      shadow: {
+        enabled: false,
+        elevation: 8,
+        color: 'rgba(0,0,0,.22)',
+        custom: '',
+      },
+    },
 
   sidebar: {
     enabled: false,
