@@ -86,7 +86,10 @@ export const usePostStore = defineStore('post', {
       await deleteCachedKey(`giUbFlBbPL:posts_page_1_limit_10_user_${userId}`)
       await deleteCachedKey(`giUbFlBbPL:posts_page_1_limit_10`)
     },
-
+    async invalidateMyPostCache(userId) {
+      await deleteCachedKey(`giUbFlBbPL:my_posts_page_1_limit_10_user_${userId}`)
+      await deleteCachedKey(`giUbFlBbPL:my_posts_page_1_limit_10`)
+    },
     async invalidateReactCache(id: string | number) {
       await deleteCachedKey(`giUbFlBbPL:public_post_${id}_reacts`)
       await deleteCachedKey(`giUbFlBbPL:private_post_${id}_reacts`)
@@ -114,6 +117,35 @@ export const usePostStore = defineStore('post', {
             300
           )
         }
+
+        if (response?.data && Array.isArray(response.data)) {
+          this.total = response.count ?? 0
+          this.page = page
+          this.limit = limit
+          return response.data
+        }
+
+        return []
+      } catch (e) {
+        console.error('Failed to fetch posts', e)
+        return []
+      }
+    },
+
+    async fetchMyPosts(page = 1, limit = 10, userId?): Promise<any[]> {
+      try {
+        const query = new URLSearchParams({
+          page: page.toString(),
+          limit: limit.toString(),
+        })
+
+        let response: any
+
+        response = await useCachedFetch(
+          `giUbFlBbPL:my_posts_page_${page}_limit_${limit}_user_${userId}`,
+          async () => await $fetch(`/api/profile/posts?${query.toString()}`),
+          300
+        )
 
         if (response?.data && Array.isArray(response.data)) {
           this.total = response.count ?? 0

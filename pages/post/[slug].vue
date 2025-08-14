@@ -17,6 +17,7 @@ import AuthorPost from "~/pages/home/post/AuthorPost.vue";
 import { usePostStore } from "~/stores/usePostStore"
 import BasisMinibar from "~/components/App/BasisMinibar.vue";
 import PostCard from "~/components/Blog/PostCard.vue";
+import PostCompletCard from "~/components/Blog/PostCompletCard.vue";
 
 const postStore = usePostStore()
 
@@ -55,8 +56,7 @@ const { data: post, pending, error, refresh } = await useAsyncData(
     <v-row v-else justify="center">
       <v-col cols="12">
         <v-card rounded="xl" class="mx-3" variant="text" elevation="10">
-          <AuthorPost :post="post" />
-          <PostCard :post="post" />
+          <PostCompletCard :post="post" />
         </v-card>
       </v-col>
     </v-row>

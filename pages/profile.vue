@@ -26,12 +26,15 @@ const { data: profile, pending, error, refresh } = await useAsyncData(
 )
 
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
-
+const isLoading = ref(false)
 const active = ref([])
 const avatar = ref(null)
 const open = ref([])
 const users = ref([])
-
+const loading = ref({
+  user: true,
+  post: true,
+})
 const items = computed(() => [
   {
     name: 'Friends',
@@ -39,7 +42,7 @@ const items = computed(() => [
     id: 'user',
   },
 ])
-
+const currentPage = ref(1)
 const selected = computed(() => {
   if (!active.value.length) return undefined
 
@@ -47,7 +50,6 @@ const selected = computed(() => {
 
   return users.value.find(user => user.id === id)
 })
-const activeConversation = ref<any | null>(null)
 const conversations = ref<any[]>([])
 const search = ref('')
 
@@ -68,10 +70,8 @@ const isDark = computed({
     theme.global.name.value = v ? 'dark' : 'light'
   },
 })
-
-const userPosts = ref<any[]>([])
-const postsLoading = ref(true)
-
+const totalPages = computed(() => Math.ceil(postStore.total / postStore.limit))
+const hasMore = ref(true)
 const events = ref<any[]>([])
 const calendarConfig = ref({
   week: { startsOn: 'monday', nDays: 7, scrollToHour: 5 },
@@ -80,18 +80,6 @@ const calendarConfig = ref({
   isSilent: true,
   showCurrentTime: true,
 })
-
-const loadUserPosts = async () => {
-  try {
-    if (user.value?.id) {
-      userPosts.value = await postStore.fetchPosts(1, 5, user.value.id) ?? []
-    }
-  } catch (e) {
-    console.error('Error fetch posts:', e)
-  } finally {
-    postsLoading.value = false
-  }
-}
 
 const fetchEvents = async () => {
   try {
@@ -111,8 +99,62 @@ const fetchEvents = async () => {
     console.error('Erreur fetch events:', e)
   }
 }
+const checkFollowStatus = async (userId: string): Promise<number> => {
+  try {
+    const friends = profile.value?.friends
+    if (!friends || typeof friends !== 'object') return 0
+    for (const friend of Object.values(friends)) {
+      if (friend.user === userId) return friend.status
+    }
+    return 0
+  } catch (e) {
+    console.error("Error checking follow status:", e)
+    return 0
+  }
+}
+const loadInitialPosts = async () => {
+  try {
+    let newPosts: any[] = []
+    newPosts = await postStore.fetchMyPosts(1, postStore.limit, user.value.id)
+
+    if (Array.isArray(newPosts)) {
+      const postsWithStatus = await Promise.all(
+        newPosts.map(async (post: any) => {
+          post.status = (post.user?.id !== user.value?.id)
+            ? await checkFollowStatus(post.user.id)
+            : 0
+          return post
+        })
+      )
+
+      postStore.setPosts({
+        data: postsWithStatus,
+        page: 1,
+        limit: postStore.limit,
+        count: postStore.total,
+      })
+
+      hasMore.value = totalPages.value >= currentPage.value
+    }
+  } catch (e) {
+    console.error('Erreur fetch posts:', e)
+  } finally {
+    loading.value.post = false
+  }
+}
 
 
+const reloadPosts = async () => {
+  await postStore.invalidateMyPostCache(user.value?.id)
+  await loadInitialPosts()
+}
+
+const editPost = (post: any) => {
+  if (!post?.id) return
+  const index = postStore.posts.findIndex((p: any) => p.id === post.id)
+  index !== -1 ? (postStore.posts[index] = post) : postStore.appendPost({ data: post })
+  reloadPosts()
+}
 watch(selected, async () => {
   await fetchConversations()
 })
@@ -120,13 +162,43 @@ onMounted(async () => {
   window.scrollTo({ top: 0 })
   await nextTick()
   await fetchConversations()
-  await loadUserPosts()
+  await loadInitialPosts()
   await fetchEvents()
   setTimeout(() => {
     canTeleport.value = !!document.getElementById('menu-bar-world')
   }, 200)
 })
+const deletePost = (postId: string | number) => {
+  if (!postId) return
+  postStore.posts = postStore.posts.filter((p: any) => p.id !== postId)
+  reloadPosts()
+}
+const loadMore = async ({ done }) => {
+  if (isLoading.value || !hasMore.value) return
+  isLoading.value = true
 
+  const nextPage = currentPage.value + 1
+  const newPosts = await postStore.fetchPosts(nextPage, postStore.limit, user.value?.id)
+  const postsWithStatus = await Promise.all(
+    newPosts.map(async (post: any) => {
+      post.status = (post.user?.id !== user.value?.id)
+        ? await checkFollowStatus(post.user.id)
+        : 0
+      return post
+    })
+  )
+
+  if (postsWithStatus?.length) {
+    postStore.appendPosts(postsWithStatus)
+    currentPage.value = nextPage
+    done('ok')
+  } else {
+    done('empty')
+  }
+
+  hasMore.value = totalPages.value > nextPage
+  isLoading.value = false
+}
 const accountSettings = ref([
   { text: 'emailWhenFollow', switchState: true },
   { text: 'emailWhenAnswer', switchState: false },
@@ -245,17 +317,32 @@ definePageMeta({
             </v-card-text>
           </v-card>
           <h2 class="text-h6 font-weight-bold mb-4" :class="isDark ? 'text-white' : 'text-default'">{{ t('profile.myPosts') }}</h2>
-          <template v-if="postsLoading">
+          <template v-if="loading.post">
             <v-skeleton-loader type="card" class="mb-4" v-for="n in 3" :key="n" />
           </template>
           <template v-else>
-            <PostCard
-              v-for="(post, index) in userPosts"
-              :key="post.id"
-              :post="post"
-              :index="index"
-              :friends="profile?.friends"
-            />
+            <v-infinite-scroll :items="postStore.posts" mode="manual" @load="loadMore">
+              <PostCard
+                v-for="(item, index) in postStore.posts"
+                :key="item.id"
+                :post="item"
+                :friends="profile?.friends"
+                :index="index"
+                @post-reload="reloadPosts"
+                @post-updated="(post) => editPost(post)"
+                @post-deleted="(post) => deletePost(post)"
+              />
+              <template #load-more="{ props }">
+                <v-btn
+                  v-if="hasMore"
+                  icon="mdi-refresh"
+                  class="text-primary"
+                  variant="text"
+                  v-bind="props"
+                  aria-label="Load more posts"
+                />
+              </template>
+            </v-infinite-scroll>
           </template>
         </v-col>
         <v-col cols="12" md="6">
