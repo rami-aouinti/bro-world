@@ -9,15 +9,6 @@
       hover
       max-width="360"
     >
-      <!-- Image avec ouverture plein écran -->
-      <v-img
-        :src="plugin.logo"
-        height="200"
-        cover
-        class="rounded-t-2xl cursor-pointer"
-        @click="dialog = true"
-      />
-
       <v-card-title class="text-h6 font-weight-bold">
         <v-icon class="mr-2" :icon="plugin.icon" />
         {{ plugin.name }}

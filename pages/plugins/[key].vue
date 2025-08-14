@@ -3,8 +3,11 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ref, onMounted, nextTick } from 'vue'
-import BasisMinibar from "~/components/App/BasisMinibar.vue";
-
+const theme = useTheme()
+const isDark = computed({
+  get: () => theme.global.name.value === 'dark',
+  set: v => { theme.global.name.value = v ? 'dark' : 'light' },
+})
 const route = useRoute()
 const { t } = useI18n()
 const canTeleport = ref(false)
@@ -62,27 +65,24 @@ definePageMeta({
       <teleport v-if="canTeleport" to="#menu-bar-world">
         <v-list class="custom-list" nav :lines="false">
           <MotionGroup preset="slideVisibleLeft" :duration="600">
-            <div class="text-default"><b>ID:</b> {{ plugin.id }}</div>
-            <div class="text-default"><b>Key:</b> {{ plugin.key }}</div>
-            <div class="text-default" v-if="plugin.pricing"><b>Pricing:</b> {{ plugin.pricing }}</div>
-            <div class="text-default"><b>Installed:</b> {{ plugin.installed ? 'Yes' : 'No' }}</div>
-            <div  class="text-default" v-if="plugin.link">
-              <b>Link:</b>
-              <NuxtLink :to="plugin.link" class="text-primary text-decoration-none">
-                {{ plugin.link }}
-              </NuxtLink>
-            </div>
-            <!-- Placeholders (non fournis par ton API actuelle) :
-            <div v-if="plugin.version"><b>Version:</b> {{ plugin.version }}</div>
-            <div v-if="plugin.author"><b>Author:</b> {{ plugin.author }}</div>
-            <div v-if="plugin.updatedAt"><b>Updated:</b> {{ plugin.updatedAt }}</div>
-            <div v-if="plugin.homepage">
-              <b>Homepage:</b>
-              <a :href="plugin.homepage" target="_blank" rel="noopener" class="text-primary">
-                {{ plugin.homepage }}
-              </a>
-            </div>
-            -->
+            <v-list-item-title
+              class="text-subtitle-2 text-uppercase font-weight-bold"
+              :class="isDark ? 'text-white' : 'text-default'"
+            >
+              <div class="text-default"><b>Plugin </b> {{ plugin.key }}</div>
+            </v-list-item-title>
+            <v-list-item-title
+              class="text-subtitle-2 text-uppercase font-weight-bold"
+              :class="isDark ? 'text-white' : 'text-default'"
+            >
+              <div class="text-default" v-if="plugin.pricing"><b>Pricing : </b> {{ plugin.pricing }}</div>
+            </v-list-item-title>
+            <v-list-item-title
+              class="text-subtitle-2 text-uppercase font-weight-bold"
+              :class="isDark ? 'text-white' : 'text-default'"
+            >
+              <div class="text-default"><b>Installed : </b> {{ plugin.installed ? 'Yes' : 'No' }}</div>
+            </v-list-item-title>
           </MotionGroup>
         </v-list>
       </teleport>
