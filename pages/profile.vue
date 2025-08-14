@@ -224,6 +224,26 @@ definePageMeta({
     <div v-else>
       <v-row>
         <v-col cols="12" md="6">
+          <v-card
+            class="plugin-card d-flex flex-column mb-4"
+            elevation="10"
+            rounded="xl"
+            variant="text"
+            hover
+            max-width="360"
+          >
+            <v-card-title class="text-h6 text-default font-weight-bold">
+              Blogs
+            </v-card-title>
+
+            <v-card-subtitle class="text-grey-darken-1 px-4">
+              Sub
+            </v-card-subtitle>
+
+            <v-card-text class="text-body-2 px-6 py-2">
+              Content
+            </v-card-text>
+          </v-card>
           <h2 class="text-h6 font-weight-bold mb-4" :class="isDark ? 'text-white' : 'text-default'">{{ t('profile.myPosts') }}</h2>
           <template v-if="postsLoading">
             <v-skeleton-loader type="card" class="mb-4" v-for="n in 3" :key="n" />
@@ -239,6 +259,26 @@ definePageMeta({
           </template>
         </v-col>
         <v-col cols="12" md="6">
+          <v-card
+            class="plugin-card d-flex flex-column mb-4"
+            elevation="10"
+            rounded="xl"
+            variant="text"
+            hover
+            max-width="360"
+          >
+            <v-card-title class="text-h6 text-default font-weight-bold">
+              Blogs
+            </v-card-title>
+
+            <v-card-subtitle class="text-grey-darken-1 px-4">
+              Sub
+            </v-card-subtitle>
+
+            <v-card-text class="text-body-2 px-6 py-2">
+              Content
+            </v-card-text>
+          </v-card>
           <h2 class="text-h6 font-weight-bold mb-4" :class="isDark ? 'text-white' : 'text-default'">{{ t('profile.myEvents') }}</h2>
           <Qalendar :events="events" :config="calendarConfig" />
         </v-col>
@@ -314,6 +354,18 @@ code {
 
 ::v-deep(.v-label) {
   margin-left: 8px;
+}
+.plugin-card {
+  border-radius: 24px;
+  overflow: hidden;
+  padding-top: 0;
+  background-color: var(--v-theme-surface);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 10px rgba(220, 9, 160, 0.1);
+}
+.plugin-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 24px rgb(3, 32, 61);
 }
 </style>
 <style>
