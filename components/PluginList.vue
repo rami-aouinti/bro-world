@@ -2,13 +2,12 @@
   <transition name="fade-slide">
     <v-card
       v-show="visible"
-      class="plugin-card d-flex flex-column"
+      class="plugin-card d-flex flex-column mx-3 my-2"
       elevation="10"
       rounded="xl"
       variant="text"
       hover
       max-width="360"
-      height="550"
     >
       <!-- Image avec ouverture plein écran -->
       <v-img
@@ -29,13 +28,14 @@
       </v-card-subtitle>
 
       <v-card-text class="text-body-2 px-6 py-2">
-        {{ plugin.description }}
+        {{ truncate(plugin.description, 30) }}
       </v-card-text>
 
       <v-card-actions class="px-6 pb-4">
         <v-btn
           :color="plugin.installed ? 'primary' : 'success'"
           variant="tonal"
+          @click="emit('open')"
           block
         >
           {{ plugin.installed ? 'Open' : 'Install' }}
@@ -74,13 +74,15 @@
   </v-dialog>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 
 defineProps({
   plugin: Object
 })
-
+const emit = defineEmits<{
+(e: 'open'): void
+}>()
 const visible = ref(false)
 const dialog = ref(false)
 

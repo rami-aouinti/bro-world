@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import Preview from "~/components/Job/Resume/Preview.vue";
+import { ref, computed } from 'vue'
+import { CV_PRESETS, type CvPreset, getPresetByKey, addDownload } from '~/presets/cvPresets'
 
-// --- Types
 type TemplateItem = {
   id: string
   title: string
   subtitle?: string
-  category: 'Klassisch' | 'Kreativ' | 'Alle'
+  category: 'Classic' | 'Creative' | 'All'
+  template: 'CV' | 'Cover' | 'All'
   badge?: 'TOP' | 'NEU'
   previewImg: string
   pdfUrl: string
@@ -15,116 +15,39 @@ type TemplateItem = {
   tags?: string[]
 }
 
-// --- Données d’exemple (remplace par les tiennes ou passe en props)
-const templates = ref<TemplateItem[]>([
-  {
-    id: 'cv-2025',
-    title: 'Lebenslauf 2025',
-    subtitle: 'Moderne, sauber',
-    category: 'Kreativ',
-    badge: 'TOP',
-    previewImg: '/img/cv/cv-1.png',
-    pdfUrl: '/samples/cv-2025.pdf',
-    pages: 2,
-    tags: ['Modern']
-  },
-  {
-    id: 'kopfzeile',
-    title: 'Lebenslauf Kopfzeile',
-    subtitle: 'Seriös, schlicht',
-    category: 'Klassisch',
-    previewImg: '/img/cv/cv-4.png',
-    pdfUrl: '/samples/cv-kopfzeile.pdf',
-    pages: 1,
-    tags: ['Klassisch']
-  },
-  {
-    id: 'cv-2024',
-    title: 'Lebenslauf 2024',
-    subtitle: 'Kompakt, klar',
-    category: 'Klassisch',
-    badge: 'NEU',
-    previewImg: '/img/cv/cv-2.png',
-    pdfUrl: '/samples/cv-2024.pdf',
-    pages: 1,
-    tags: ['Einseitig']
-  },
-  {
-    id: 'cv-2026',
-    title: 'Lebenslauf 2026',
-    subtitle: 'Moderne, sauber',
-    category: 'Kreativ',
-    badge: 'TOP',
-    previewImg: '/img/cv/cv-5.png',
-    pdfUrl: '/samples/cv-2026.pdf',
-    pages: 2,
-    tags: ['Modern']
-  },
-  {
-    id: 'kopfzeile5',
-    title: 'Lebenslauf Kopfzeile',
-    subtitle: 'Seriös, schlicht',
-    category: 'Klassisch',
-    previewImg: '/img/cv/cv-1.png',
-    pdfUrl: '/samples/cv-kopfzeile.pdf',
-    pages: 1,
-    tags: ['Klassisch']
-  },
-  {
-    id: 'cv-2026',
-    title: 'Lebenslauf 2024',
-    subtitle: 'Kompakt, klar',
-    category: 'Klassisch',
-    badge: 'NEU',
-    previewImg: '/img/cv/cv-3.png',
-    pdfUrl: '/samples/cv-2024.pdf',
-    pages: 1,
-    tags: ['Einseitig']
-  },
-])
+const presets = ref<CvPreset[]>(CV_PRESETS)
 
-// --- Filtre
-const filter = ref<'Alle' | 'Klassisch' | 'Kreativ'>('Alle')
+/** Filtres (pour la grille "templates" démo) */
+
+const filter = ref<'All' | 'Classic' | 'Creative' | 'CV' | 'Cover'>('All')
 const filtered = computed(() =>
-  filter.value === 'Alle' ? templates.value : templates.value.filter(t => t.category === filter.value)
+  filter.value === 'All' ? presets.value : presets.value.filter(t => t.category === filter.value || t.template === filter.value)
 )
 
-// --- Aperçu
+/** Preview modal (utilise des infos du preset) */
 const previewOpen = ref(false)
-const previewItem = ref<TemplateItem | null>(null)
-function openPreview(item: TemplateItem) {
-  previewItem.value = item
+const previewTitle = ref<string>('')
+const previewSrc = ref<string>('')
+
+function openPresetPreview(p: CvPreset) {
+  previewTitle.value = p.label
+  previewSrc.value = p.src
   previewOpen.value = true
 }
-const data = ref({
-  n: "",
-  d: "",
-  i: "",
-  f: "",
-  t: "",
-  ig: "",
-  gh: "",
-  tg: "",
-  l: "",
-  e: "",
-  w: "",
-  y: "",
-  ls: [],
-});
-// --- Actions
-function useTemplate(item: TemplateItem) {
-  // branche ce que tu veux (naviguer vers un éditeur, etc.)
-  // e.g. navigateTo(`/builder/${item.id}`)
-  console.log('Use template:', item.id)
-}
 
-function downloadPdf(item: TemplateItem) {
+function downloadPdfFromPreset(p: CvPreset) {
+  addDownload(p) // compteur local
   const a = document.createElement('a')
-  a.href = item.pdfUrl
-  a.download = `${item.id}.pdf`
+  a.href = p.src
+  a.download = `${p.key}.pdf`
   a.target = '_blank'
   a.rel = 'noopener'
   a.click()
+}
+
+/** Navigation (Nuxt 3) */
+function selectPreset(p: CvPreset) {
+  navigateTo(`/cv/template/${p.key}`)
 }
 </script>
 
@@ -132,87 +55,120 @@ function downloadPdf(item: TemplateItem) {
   <div class="px-4 py-6">
     <!-- Filtres -->
     <div class="d-flex justify-center mb-6 ga-3">
-      <v-btn :color="filter==='Alle' ? 'primary' : undefined" variant="elevated" rounded="xl" @click="filter='Alle'">
-        Alle
+      <v-btn density="compact" :color="filter==='All' ? 'primary' : undefined" variant="elevated" rounded="xl" @click="filter='All'">
+        All
       </v-btn>
-      <v-btn :color="filter==='Klassisch' ? 'primary' : undefined" variant="tonal" rounded="xl" @click="filter='Klassisch'">
-        Klassisch
+      <v-btn density="compact" :color="filter==='CV' ? 'primary' : undefined" variant="elevated" rounded="xl" @click="filter='CV'">
+        CV
       </v-btn>
-      <v-btn :color="filter==='Kreativ' ? 'primary' : undefined" variant="tonal" rounded="xl" @click="filter='Kreativ'">
-        Kreativ
+      <v-btn density="compact" :color="filter==='Cover' ? 'primary' : undefined" variant="elevated" rounded="xl" @click="filter='Cover'">
+        Cover Letter
+      </v-btn>
+      <v-btn density="compact" :color="filter==='Classic' ? 'primary' : undefined" variant="elevated" rounded="xl" @click="filter='Classic'">
+        Classic
+      </v-btn>
+      <v-btn density="compact" :color="filter==='Creative' ? 'primary' : undefined" variant="elevated" rounded="xl" @click="filter='Creative'">
+        Creative
       </v-btn>
     </div>
 
-    <!-- Grille -->
+    <!-- PRESETS -->
     <v-row dense>
       <v-col
-        v-for="item in filtered"
-        :key="item.id"
-        cols="12" sm="6" md="3"
+        v-for="p in filtered"
+        :key="p.key"
+        class="d-flex"
       >
-        <v-card class="template-card" rounded="xl" elevation="4" hover>
-          <v-img
-            :src="item.previewImg"
-            height="250"
-            cover
-            class="rounded-t-xl"
+        <v-hover v-slot="{ isHovering, props: hoverProps }">
+          <v-card
+            v-bind="hoverProps"
+            class="preset-card my-2 cursor-pointer"
+            :class="isHovering ? 'border border-radius-xl border-secondary border-md shadow-2xl shadow-primary' : ''"
+            :elevation="isHovering ? 20 : 4"
+            role="button"
+            tabindex="0"
+            width="220"
+            @click="selectPreset(p)"
+            @keydown.enter.prevent="selectPreset(p)"
+            @keydown.space.prevent="selectPreset(p)"
           >
-            <!-- Badge -->
-            <template #sources></template>
-            <div v-if="item.badge" class="badge-chip">
-              <v-chip color="red" label size="small" class="text-white">
-                {{ item.badge }}
-              </v-chip>
-            </div>
+            <v-img
+              :src="p.previewImg"
+              :alt="p.label"
+              height="220"
+              cover
+              class="rounded-t"
+            >
 
-            <!-- Gradient overlay -->
-            <div class="overlay"></div>
-          </v-img>
+              <template #placeholder>
+                <div class="d-flex align-center justify-center fill-height text-medium-emphasis">
+                  Loading…
+                </div>
+              </template>
+            </v-img>
 
-          <v-card-item>
-            <div class="text-h7">{{ item.title }}</div>
-            <div class="text-caption text-medium-emphasis">{{ item.subtitle }}</div>
+            <v-divider />
 
-            <div class="mt-2 d-flex flex-wrap ga-2">
-              <v-chip v-for="tag in (item.tags ?? [])" :key="tag" size="x-small" variant="tonal">{{ tag }}</v-chip>
-              <v-chip v-if="item.pages" size="x-small" variant="flat" color="primary">{{ item.pages }} Seite(n)</v-chip>
-            </div>
-          </v-card-item>
+            <v-card-text class="py-1 text-default text-center font-weight-600 text-body-2">
+              {{ p.label }}
+            </v-card-text>
 
-          <v-card-actions class="px-4 pb-4 pt-0">
-            <v-btn prepend-icon="mdi-eye-outline" color="primary"  variant="text" @click="openPreview(item)">
+            <v-card-actions class="py-0 d-flex justify-space-between">
+              <!-- Preview -->
+              <v-tooltip text="Preview">
+                <template #activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    density="comfortable"
+                    color="primary"
+                    variant="text"
+                    prepend-icon="mdi-eye-outline"
+                    @click.stop="openPresetPreview(p)"
+                  >{{ p.views }}</v-btn>
+                </template>
+              </v-tooltip>
 
-            </v-btn>
-            <v-btn prepend-icon="mdi-download" color="primary"  variant="text" @click="downloadPdf(item)">
-
-            </v-btn>
-            <v-btn prepend-icon="mdi-thumb-up" color="primary" variant="text"  rounded="lg" @click="useTemplate(item)">
-            </v-btn>
-          </v-card-actions>
-        </v-card>
+              <!-- Download -->
+              <v-tooltip text="Download">
+                <template #activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    density="comfortable"
+                    color="default"
+                    variant="text"
+                    prepend-icon="mdi-download"
+                    @click.stop="downloadPdfFromPreset(p)"
+                  >{{ p.downloads }}</v-btn>
+                </template>
+              </v-tooltip>
+            </v-card-actions>
+          </v-card>
+        </v-hover>
       </v-col>
     </v-row>
 
-    <!-- Dialog d’aperçu PDF -->
+    <!-- Dialog Preview PDF -->
     <v-dialog v-model="previewOpen" max-width="960">
       <v-card rounded="xl">
         <v-card-title class="d-flex align-center">
-          <span class="text-h6">{{ previewItem?.title }}</span>
+          <span class="text-h6">{{ previewTitle }}</span>
           <v-spacer />
-          <v-btn icon variant="text" @click="previewOpen=false"><v-icon>mdi-close</v-icon></v-btn>
+          <v-btn icon variant="text" @click="previewOpen=false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
         </v-card-title>
         <v-divider />
-
         <v-card-text class="pa-0">
-          <Preview :data="data" />
+          <div style="height:70vh;">
+            <iframe
+              v-if="previewSrc"
+              :src="previewSrc"
+              title="Preview PDF"
+              style="width:100%; height:100%; border:0;"
+            ></iframe>
+            <div v-else class="pa-6 text-medium-emphasis">Aucun PDF disponible.</div>
+          </div>
         </v-card-text>
-
-        <v-divider />
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" @click="previewItem && useTemplate(previewItem)">Use</v-btn>
-          <v-btn variant="tonal" @click="previewItem && downloadPdf(previewItem)">Download</v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -222,14 +178,12 @@ function downloadPdf(item: TemplateItem) {
 .template-card {
   transition: transform .15s ease, box-shadow .15s ease;
 }
-.template-card:hover {
-  transform: translateY(-2px);
-}
+.template-card:hover { transform: translateY(-2px); }
 
-.badge-chip {
+.preset-badges {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  left: 10px;
   z-index: 2;
 }
 

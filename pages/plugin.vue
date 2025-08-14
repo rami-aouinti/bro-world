@@ -1,5 +1,10 @@
 <template>
   <v-container fluid>
+    <client-only>
+      <teleport v-if="canTeleport" to="#menu-bar-world">
+        <BasisMinibar></BasisMinibar>
+      </teleport>
+    </client-only>
     <template v-if="loadingUser">
       <LoaderPlugin  />
     </template>
@@ -13,7 +18,7 @@
           sm="6"
           md="4"
         >
-          <PluginList :plugin="plugin" />
+          <PluginList :plugin="plugin" @open="openPlugin(plugin)" />
         </v-col>
       </v-row>
     </template>
@@ -24,10 +29,12 @@
 import { useI18n } from 'vue-i18n'
 import PluginList from "~/components/PluginList.vue"
 import LoaderPlugin from "~/components/App/Loader/Plugin/LoaderPlugin.vue";
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick, watch } from 'vue'
+import BasisMinibar from "~/components/App/BasisMinibar.vue";
 const { t, locale } = useI18n()
 
 const loadingUser = ref(true)
+const canTeleport = ref(false)
 
 definePageMeta({
   layout: 'default',
@@ -60,8 +67,16 @@ watch(!plugins.value, () => {
   fetchPlugins()
 }, { immediate: true })
 
+function openPlugin(plugin: any) {
+  // on suppose plugin.key (ou plugin.slug)
+  navigateTo(`/plugins/${plugin.key}`)
+}
 onMounted(async () => {
   window.scrollTo({ top: 0 })
+  await nextTick()
   await fetchPlugins
+  setTimeout(() => {
+    canTeleport.value = !!document.getElementById('menu-bar-world')
+  }, 200)
 })
 </script>

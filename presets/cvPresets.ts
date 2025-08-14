@@ -6,6 +6,8 @@ export type CvPresetKey =
 
 export type CornerType   = 'quarter' | 'diagonal' | 'notch' | 'ribbon' | 'dual-slope'
 export type CornerAnchor = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+export type Category     = 'Classic' | 'Creative' | 'Premium' | 'All'
+export type Template     = 'CV' | 'Cover' | 'All'
 
 export type SkillChipVariant     = 'text' | 'elevated' | 'outlined' | 'flat' | 'tonal' | 'plain'
 export type InterestChipVariant  = 'text' | 'elevated' | 'outlined' | 'flat' | 'tonal' | 'plain'
@@ -37,7 +39,7 @@ export type CvPreset = {
   palette: { primary: string; accent: string; paper: string; text: string }
   photo: { show: boolean; position: 'left'|'right'|'top'; widthMm: number; heightMm: number; rounded: boolean }
   photoShadow?: { enabled?: boolean; elevation?: number; color?: string; custom?: string }
-  /** ➜ layouts gérés par CvA4.vue (voir CSS ci-dessous) */
+  /** ➜ layouts gérés par CvA4.vue (voir CSS) */
   layout: 'stylish' | 'sidebar-left' | 'sidebar-right' | 'stacked' | 'photo-left'
   sidebar?: SidebarConfig
   corner?: {
@@ -55,6 +57,13 @@ export type CvPreset = {
   skills?: { chipVariant: SkillChipVariant; chipColor?: string; chipDensity?: 'comfortable'|'compact'|'default'; editable?: boolean; draggable?: boolean }
   interests?: { chipVariant: InterestChipVariant; chipColor?: string; chipDensity?: 'comfortable'|'compact'|'default'; editable?: boolean; draggable?: boolean }
   languages?: { variant: LanguagesVariant; maxLevel?: number; showNote?: boolean; sizePx?: number; accent?: string }
+
+  /** 🔥 Nouveaux champs */
+  template: Template              // ex: 'Klassisch' | 'Kreativ' | 'Alle'
+  category: Category              // ex: 'Klassisch' | 'Kreativ' | 'Alle'
+  src: string                     // URL PDF/source
+  downloads: number               // compteur downloads
+  views: number                   // compteur vues
 }
 
 /* ------------------ MODELS (layouts) d’exemple ------------------ */
@@ -72,7 +81,12 @@ const BASE_PRESETS: CvPreset[] = [
     layout: 'stylish',
     corner: { type: 'quarter', anchor: 'top-left', color: '#09143d', sizeMm: 30, enabled: true },
     skills:    { chipVariant: 'tonal', chipColor: '#03203d', chipDensity: 'compact', editable: true, draggable: true },
-    languages: { variant: 'bars', maxLevel: 5, showNote: true, sizePx: 8, accent: '#03203d' }
+    languages: { variant: 'bars', maxLevel: 5, showNote: true, sizePx: 8, accent: '#03203d' },
+    category: 'Creative',
+    template: 'CV',
+    src: '/samples/stylish.pdf',
+    downloads: 0,
+    views: 0,
   },
   {
     key: 'sidebarRight',
@@ -86,7 +100,12 @@ const BASE_PRESETS: CvPreset[] = [
     sidebar: { enabled: true, widthMm: 70, background: '#3e61a6', text: '#0f172a', borderColor: '#0b0c0e' },
     corner: { type: 'quarter', anchor: 'top-left', color: '#59533a', sizeMm: 28, enabled: true },
     skills:    { chipVariant: 'outlined', chipColor: '#f29f05', chipDensity: 'compact', editable: true, draggable: true },
-    languages: { variant: 'stars', maxLevel: 5, showNote: true, sizePx: 18, accent: '#f29f05' }
+    languages: { variant: 'stars', maxLevel: 5, showNote: true, sizePx: 18, accent: '#f29f05' },
+    category: 'Classic',
+    template: 'CV',
+    src: '/samples/sidebar-right.pdf',
+    downloads: 0,
+    views: 0,
   },
   {
     key: 'sidebarLeft',
@@ -100,7 +119,12 @@ const BASE_PRESETS: CvPreset[] = [
     sidebar: { enabled: true, widthMm: 70, background: '#3e61a6', text: '#0f172a', borderColor: '#0b0c0e' },
     corner: { type: 'quarter', anchor: 'top-left', color: '#59533a', sizeMm: 28, enabled: true },
     skills:    { chipVariant: 'outlined', chipColor: '#f29f05', chipDensity: 'compact', editable: true, draggable: true },
-    languages: { variant: 'stars', maxLevel: 5, showNote: true, sizePx: 18, accent: '#f29f05' }
+    languages: { variant: 'stars', maxLevel: 5, showNote: true, sizePx: 18, accent: '#f29f05' },
+    category: 'Creative',
+    template: 'Cover',
+    src: '/samples/sidebar-left.pdf',
+    downloads: 0,
+    views: 0,
   },
   {
     key: 'stacked',
@@ -114,7 +138,12 @@ const BASE_PRESETS: CvPreset[] = [
     layout: 'stacked',
     corner: { type: 'diagonal', anchor: 'top-left', color: '#26a4d3', sizeMm: 34, enabled: true },
     skills:    { chipVariant: 'elevated', chipColor: '#ff9e1a', chipDensity: 'comfortable', editable: true, draggable: true },
-    languages: { variant: 'stars', maxLevel: 5, showNote: true, sizePx: 18, accent: '#ff9e1a' }
+    languages: { variant: 'stars', maxLevel: 5, showNote: true, sizePx: 18, accent: '#ff9e1a' },
+    category: 'Classic',
+    template: 'CV',
+    src: '/samples/stacked.pdf',
+    downloads: 0,
+    views: 0,
   },
   {
     key: 'photoLeft',
@@ -124,12 +153,17 @@ const BASE_PRESETS: CvPreset[] = [
     palette: { primary: '#26a4d3', accent: '#ce2626', paper: '#ffffff', text: '#0e0e0e' },
     previewImg: '/img/cv/cv-4.png',
     photo: { show: true, position: 'left', widthMm: 38, heightMm: 48, rounded: false },
-    layout: 'photo-left', // ➜ CSS alias de 'sidebar-left'
+    layout: 'photo-left',
     sidebar: { enabled: true, widthMm: 70, background: '#f3f7ff', text: '#0f172a', borderColor: '#e6e8ec' },
     corner: { type: 'diagonal', anchor: 'top-right', color: '#26a4d3', sizeMm: 34, enabled: true },
     vbar:   { show: true, side: 'left', color: '#c23d3d', widthMm: 3, offsetMm: 0 },
     skills:    { chipVariant: 'text', chipColor: '#ce2626', chipDensity: 'compact', editable: true, draggable: true },
-    languages: { variant: 'stars', maxLevel: 5, showNote: true, sizePx: 18, accent: '#ce2626' }
+    languages: { variant: 'stars', maxLevel: 5, showNote: true, sizePx: 18, accent: '#ce2626' },
+    category: 'Premium',
+    template: 'Cover',
+    src: '/samples/photo-left.pdf',
+    downloads: 0,
+    views: 0,
   },
 ]
 
@@ -168,10 +202,15 @@ function createCornerPreset(type: CornerType, anchor: CornerAnchor): CvPreset {
     previewImg: '/img/cv/cv-1.png',
     palette: { primary, accent, paper: PAPER, text: TEXT },
     photo: { show: false, position: 'left', widthMm: 30, heightMm: 30, rounded: false },
-    layout: 'stylish', // ➜ on reste sur stylish comme base
+    layout: 'stylish',
     corner,
     skills:    { chipVariant: 'text', chipColor: accent, chipDensity: 'compact', editable: true, draggable: true },
-    languages: { variant: 'stars', maxLevel: 5, showNote: true, sizePx: 18, accent }
+    languages: { variant: 'stars', maxLevel: 5, showNote: true, sizePx: 18, accent },
+    category: 'Creative',                 // défaut pour corner-*
+    template: 'CV',                 // défaut pour corner-*
+    src: `/samples/${key}.pdf`,          // ex: /samples/corner-diagonal-tr.pdf
+    downloads: 0,
+    views: 0,
   }
 }
 
@@ -187,3 +226,8 @@ export const CV_PRESETS: CvPreset[] = [
   ...BASE_PRESETS,
   ...CORNER_PRESETS,
 ]
+
+/** Helpers */
+export const getPresetByKey = (key: string) => CV_PRESETS.find(p => p.key === key)
+export const addView      = (p: CvPreset) => { p.views++ }
+export const addDownload  = (p: CvPreset) => { p.downloads++ }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch, computed, nextTick } from 'vue'
 import PdfTemplateGrid from "~/components/Resume/PdfTemplateGrid.vue";
+import {CV_PRESETS} from "~/presets/cvPresets";
 
 definePageMeta({
   layout: 'default',
@@ -23,46 +24,38 @@ definePageMeta({
 const items = [
   {
     title: "Template Gallery",
-    icon: "mdi-windows", // Icône de CV/profil
+    icon: "mdi-windows",
     color: "default",
     path: "/resume"
   },
   {
+    title: "My Templates",
+    icon: "mdi-note",
+    color: "default",
+    path: "/cv/my-templates"
+  },
+  {
+    title: "Create New Template",
+    icon: "mdi-mouse",
+    color: "default",
+    path: "/cv/cv/new"
+  },
+  {
     title: "Create New CV",
-    icon: "mdi-file-account", // Icône de CV/profil
+    icon: "mdi-file-account",
     color: "default",
     path: "/cv/cv/new"
   },
   {
     title: "New Cover Letter",
-    icon: "mdi-file-document-edit", // Document avec crayon (édition)
+    icon: "mdi-file-document-edit",
     color: "default",
     path: "/cv/cover/new"
-  },
-  {
-    title: "My Cvs",
-    icon: "mdi-briefcase", // Valise → carrière/emploi
-    color: "default",
-    path: "/resume-test"
-  },
+  }
 ]
+const presets = CV_PRESETS
 
 const canTeleport = ref(false)
-const data = ref({
-  n: "",
-  d: "",
-  i: "",
-  f: "",
-  t: "",
-  ig: "",
-  gh: "",
-  tg: "",
-  l: "",
-  e: "",
-  w: "",
-  y: "",
-  ls: [],
-});
 const theme = useTheme()
 const isDark = computed({
   get() {
@@ -114,7 +107,7 @@ onMounted(async () => {
     </client-only>
     <v-row>
       <v-col cols="12" md="12">
-        <PdfTemplateGrid />
+        <PdfTemplateGrid :presets="presets" />
       </v-col>
     </v-row>
   </v-container>

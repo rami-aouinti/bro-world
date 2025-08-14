@@ -24,6 +24,7 @@ import { exportCvAsPdf } from '~/utils/pdf'
 import ListCVManager from '~/components/cv/ListCVManager.vue'
 import SectionCvLayout from '~/components/cv/SectionCvLayout.vue'
 import SectionSettingsMenu from '~/components/cv/SectionSettingsMenu.vue'
+import SectionSpacer from "~/components/common/SectionSpacer.vue";
 
 /* ---------------- Presets & sélection ---------------- */
 const presets = CV_PRESETS
@@ -196,15 +197,23 @@ function defaultIconFor(type: SectionType) {
     custom:     'mdi-shape-outline',
   }[type])
 }
+function ensureProps(s: CvSection) {
+  if (!s.props) s.props = {}
+  if (typeof s.props.spacerMm !== 'number') s.props.spacerMm = 0
+}
 
+function bumpSpacer(s: CvSection, delta = 4) {
+  ensureProps(s)
+  const next = (Number(s.props!.spacerMm) || 0) + delta
+  s.props!.spacerMm = Math.max(0, Math.min(60, next))
+}
 const sections = ref<CvSection[]>([
-  { id: nanoid(), type:'experience', title: SECTION_DEFS.experience.label, icon: defaultIconFor('experience'), enabled:true },
-  { id: nanoid(), type:'education',  title: SECTION_DEFS.education.label,  icon: defaultIconFor('education'),  enabled:true },
-  { id: nanoid(), type:'skills',     title: 'Skills',          icon: defaultIconFor('skills'),     enabled:true },
-  { id: nanoid(), type:'languages',  title: SECTION_DEFS.languages.label,  icon: defaultIconFor('languages'),  enabled:true },
-  { id: nanoid(), type:'interests',  title: SECTION_DEFS.interests.label,  icon: defaultIconFor('interests'),  enabled:true },
+  { id: nanoid(), type:'experience', title: SECTION_DEFS.experience.label, icon: defaultIconFor('experience'), enabled:true, props:{ spacerMm: 0 } },
+  { id: nanoid(), type:'education',  title: SECTION_DEFS.education.label,  icon: defaultIconFor('education'),  enabled:true, props:{ spacerMm: 0 } },
+  { id: nanoid(), type:'skills',     title: 'Skills',          icon: defaultIconFor('skills'),     enabled:true, props:{ spacerMm: 0 } },
+  { id: nanoid(), type:'languages',  title: SECTION_DEFS.languages.label,  icon: defaultIconFor('languages'),  enabled:true, props:{ spacerMm: 0 } },
+  { id: nanoid(), type:'interests',  title: SECTION_DEFS.interests.label,  icon: defaultIconFor('interests'),  enabled:true, props:{ spacerMm: 0 } },
 ])
-
 function resolveComp(s: CvSection) {
   switch (s.type) {
     case 'experience': return ExperienceList
@@ -303,7 +312,7 @@ function addSection(type: SectionType) {
     title: SECTION_DEFS[type].label,
     icon: defaultIconFor(type),
     enabled: true,
-    props: {},
+    props: { spacerMm: 0 },
   })
 }
 
@@ -877,6 +886,10 @@ watch(chosenKey, (k) => {
 onMounted(async () => {
   seedDemoContent()
   await nextTick()
+  sections.value = sections.value.map(s => ({
+    ...s,
+    props: { spacerMm: 0, ...(s.props || {}) },
+  }))
   syncSelectedFromUi()
 })
 </script>
@@ -1024,8 +1037,29 @@ onMounted(async () => {
                   <draggable v-model="sections" item-key="id" handle=".drag-handle" animation="150" :force-fallback="true">
                     <template #item="{ element: s, index }">
                       <div :ref="setAnchorIfEmpty(s.type as any)">
-                        <div v-if="s.enabled" class="cv-section mb-8"
+                        <div v-if="s.enabled" class="cv-section mb-8 my-4"
                              @mouseenter="hoverSection = index" @mouseleave="hoverSection = null">
+                          <div class="spacer-controls" :class="{ show: hoverSection === index }">
+                            <v-btn
+                              icon density="compact" variant="text"
+                              :title="'Réduire l’espace'"
+                              @click.stop="bumpSpacer(s, -4)"
+                            >
+                              <v-icon icon="mdi-minus" />
+                            </v-btn>
+
+                            <v-chip size="x-small" class="mx-1" variant="elevated">
+                              Space
+                            </v-chip>
+
+                            <v-btn
+                              icon density="compact" variant="text"
+                              :title="'Augmenter l’espace'"
+                              @click.stop="bumpSpacer(s, +4)"
+                            >
+                              <v-icon icon="mdi-plus" />
+                            </v-btn>
+                          </div>
 
                           <div class="section-actions" :class="{ show: hoverSection === index }">
 
@@ -1078,6 +1112,10 @@ onMounted(async () => {
                             }"
                             v-bind="resolveProps(s)"
                           />
+
+                          <!-- le spacer réel inséré après le contenu de la section -->
+                          <SectionSpacer v-if="(s.props?.spacerMm ?? 0) > 0" :mm="s.props!.spacerMm" />
+
                         </div>
                       </div>
                     </template>
@@ -1167,5 +1205,22 @@ onMounted(async () => {
   align-items: stretch;
 }
 .model-btn{ width: 100%; }
+.spacer-controls{
+  position: absolute;
+  left: 50%;
+  bottom: -14px;             /* sort légèrement de la section */
+  transform: translateX(-50%);
+  background: rgba(0,0,0,.06);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 999px;
+  padding: 4px 6px;
+  display: flex; align-items: center;
+  gap: 4px;
+
+  opacity: 0; pointer-events: none; transition: opacity .15s ease;
+  z-index: 6;
+}
+.spacer-controls.show{ opacity: 1; pointer-events: auto; }
 @media print { .add-section-fab { display: none !important; } }
 </style>
