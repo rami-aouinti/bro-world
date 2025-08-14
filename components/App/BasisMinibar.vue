@@ -51,11 +51,8 @@ function back() {
   window.history.back()
 }
 router.afterEach(() => {
-  canGoBack.value = window.navigation?.canGoBack ?? false
+  canGoBack.value = window.navigation.canGoBack
 })
-
-
-
 </script>
 
 <template>

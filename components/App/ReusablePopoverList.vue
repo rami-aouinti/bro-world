@@ -51,7 +51,7 @@ watch(isOpen, (opened) => {
 <template>
   <v-menu v-model="isOpen" location="bottom">
     <template #activator="{ props: menuProps }">
-      <v-btn icon :title="title" v-bind="menuProps" class="ml-0 opacity-80" color="primary">
+      <v-btn icon :title="title" v-bind="menuProps" class="ml-0" color="primary">
         <v-badge
           v-if="badgeCount && badgeCount > 0"
           :content="badgeCount"

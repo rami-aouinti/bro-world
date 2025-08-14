@@ -7,6 +7,11 @@ function back() {
 function refresh() {
   window.location.reload()
 }
+const theme = useTheme()
+const isDark = computed({
+  get: () => theme.global.name.value === 'dark',
+  set: v => { theme.global.name.value = v ? 'dark' : 'light' },
+})
 const router = useRouter()
 const canGoBack = ref(false)
 router.afterEach(() => {
@@ -19,7 +24,7 @@ router.afterEach(() => {
       icon
       aria-label="can Go Back"
       title="can Go Back"
-      color="default"
+      :color="isDark ? 'white' : 'default'"
       :disabled="!canGoBack"
       @click="back()"
     >
@@ -28,7 +33,7 @@ router.afterEach(() => {
     <v-btn
       icon
       aria-label="refresh"
-      color="default"
+      :color="isDark ? 'white' : 'default'"
       title="refresh"
       @click="refresh()">
       <v-icon>mdi-refresh</v-icon>

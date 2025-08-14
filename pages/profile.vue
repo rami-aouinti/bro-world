@@ -7,7 +7,6 @@ const userStore = useUserStore()
 const canTeleport = ref(false)
 const { t } = useI18n()
 const { user } = await useUserSession()
-const avatarUrl = ref('')
 
 const { data: profile, pending, error, refresh } = await useAsyncData(
   'profile-' + user.value.id,

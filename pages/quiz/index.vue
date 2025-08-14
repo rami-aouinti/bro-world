@@ -54,8 +54,8 @@
     </client-only>
 
     <v-card rounded="xl" class="bg-gradient-primary shadow-primary mx-3 mb-3 py-1" variant="text" elevation="10" mx-auto style="min-height: 480px;">
-      <v-card-title class="text-h5 mb-2 d-flex align-center">
-        🎓 Quiz
+      <v-card-title class="text-h5 mb-2 d-flex align-center justify-center" :class="isDark ? 'text-white' : 'text-default'">
+        Category
         <v-spacer />
         <v-btn variant="text" v-if="selectedCategory && !quizStarted" icon @click="selectedCategory = null" class="mb-2" aria-label="Back to categories">
           <v-icon color="primary">mdi-arrow-left</v-icon>
@@ -69,8 +69,8 @@
             v-for="(cat, index) in categories"
             :key="cat.id"
           >
-            <v-card :style="`background-color: ${getRandomColor(index)};`" rounded="xl" class="hover-card bg-gradient-primary shadow-primary mx-3" variant="text" elevation="10" @click="selectCategory(cat)">
-              <v-card-title class="text-sm">{{ cat.name }}</v-card-title>
+            <v-card :style="`background-color: ${getRandomColor(index)};`" rounded="xl" class="hover-card bg-gradient-primary shadow-primary mx-2" variant="text" elevation="10" @click="selectCategory(cat)">
+              <v-card-title density="compact" class="text-sm">{{ cat.name }}</v-card-title>
             </v-card>
           </v-col>
         </v-row>
@@ -276,7 +276,15 @@ const expiredQuestions = ref<Record<string, boolean>>({})
 const isLast = computed(() => currentIndex.value === questions.value.length - 1)
 const currentQuestion = computed(() => questions.value[currentIndex.value])
 const progress = computed(() => ((currentIndex.value + 1) / questions.value.length) * 100)
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 const levelColors = [
   // Coral Red
   '#D7CCC8','#FFCCBC', '#FF6F61',
