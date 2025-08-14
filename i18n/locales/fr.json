@@ -24,6 +24,7 @@
       "news": "Liste les 5 principaux titres de l'actualité mondiale aujourd'hui. Fournis une simple liste, un par ligne. Pas d’introduction, de texte supplémentaire ni de numérotation."
     }
   },
+
   "navbar": {
     "login": "Connexion",
     "register": "Inscription",
@@ -85,6 +86,8 @@
     "social": "Réseaux sociaux",
     "reply": "Répondre",
     "notProvided": "Non fourni",
+    "myPosts": "Mes publications",
+    "myEvents": "Mes événements",
     "settings": {
       "title": "Paramètres de la plateforme",
       "account": "Compte",

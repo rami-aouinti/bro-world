@@ -2,7 +2,15 @@
 import { onMounted, ref, watch, computed, nextTick } from 'vue'
 import {useI18n} from 'vue-i18n'
 import LoaderProfile from '~/components/App/Loader/Profile/LoaderProfile.vue'
-import {useUserStore} from '~/stores/useUserStore'
+import { useUserStore } from '~/stores/useUserStore'
+import { usePostStore } from '~/stores/usePostStore'
+import PostCard from '~/components/Blog/PostCard.vue'
+import { useEventStore } from '~/stores/useEventStore'
+import { Qalendar } from 'qalendar'
+import dayjs from 'dayjs'
+
+const postStore = usePostStore()
+const eventStore = useEventStore()
 const userStore = useUserStore()
 const canTeleport = ref(false)
 const { t } = useI18n()
@@ -61,6 +69,50 @@ const isDark = computed({
   },
 })
 
+const userPosts = ref<any[]>([])
+const postsLoading = ref(true)
+
+const events = ref<any[]>([])
+const calendarConfig = ref({
+  week: { startsOn: 'monday', nDays: 7, scrollToHour: 5 },
+  month: { showTrailingAndLeadingDates: false },
+  defaultMode: 'month',
+  isSilent: true,
+  showCurrentTime: true,
+})
+
+const loadUserPosts = async () => {
+  try {
+    if (user.value?.id) {
+      userPosts.value = await postStore.fetchPosts(1, 5, user.value.id) ?? []
+    }
+  } catch (e) {
+    console.error('Error fetch posts:', e)
+  } finally {
+    postsLoading.value = false
+  }
+}
+
+const fetchEvents = async () => {
+  try {
+    const data = await eventStore.fetchEventsFromApi()
+    if (Array.isArray(data)) {
+      events.value = data.map((e: any) => ({
+        id: e.id,
+        title: e.title,
+        time: {
+          start: dayjs(e.start).format('YYYY-MM-DD HH:mm'),
+          end: dayjs(e.end).format('YYYY-MM-DD HH:mm'),
+        },
+        colorScheme: e.color || 'meetings',
+      }))
+    }
+  } catch (e) {
+    console.error('Erreur fetch events:', e)
+  }
+}
+
+
 watch(selected, async () => {
   await fetchConversations()
 })
@@ -68,6 +120,8 @@ onMounted(async () => {
   window.scrollTo({ top: 0 })
   await nextTick()
   await fetchConversations()
+  await loadUserPosts()
+  await fetchEvents()
   setTimeout(() => {
     canTeleport.value = !!document.getElementById('menu-bar-world')
   }, 200)
@@ -169,10 +223,26 @@ definePageMeta({
     </div>
     <div v-else>
       <v-row>
+        <v-col cols="12" md="6">
+          <h2 class="text-h6 font-weight-bold mb-4" :class="isDark ? 'text-white' : 'text-default'">{{ t('profile.myPosts') }}</h2>
+          <template v-if="postsLoading">
+            <v-skeleton-loader type="card" class="mb-4" v-for="n in 3" :key="n" />
+          </template>
+          <template v-else>
+            <PostCard
+              v-for="(post, index) in userPosts"
+              :key="post.id"
+              :post="post"
+              :index="index"
+              :friends="profile?.friends"
+            />
+          </template>
+        </v-col>
+        <v-col cols="12" md="6">
+          <h2 class="text-h6 font-weight-bold mb-4" :class="isDark ? 'text-white' : 'text-default'">{{ t('profile.myEvents') }}</h2>
+          <Qalendar :events="events" :config="calendarConfig" />
+        </v-col>
       </v-row>
-      <v-row>
-      </v-row>
-
     </div>
   </v-container>
 </template>
@@ -245,4 +315,7 @@ code {
 ::v-deep(.v-label) {
   margin-left: 8px;
 }
+</style>
+<style>
+@import "qalendar/dist/style.css";
 </style>

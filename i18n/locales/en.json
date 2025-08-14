@@ -88,6 +88,8 @@
     "social": "Social",
     "reply": "Reply",
     "notProvided": "Not provided",
+    "myPosts": "My Posts",
+    "myEvents": "My Events",
     "settings": {
       "title": "Platform Settings",
       "account": "Account",

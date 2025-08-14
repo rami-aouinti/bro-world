@@ -2,52 +2,57 @@
   <v-container fluid>
     <client-only>
       <teleport v-if="canTeleport" to="#menu-bar-world">
-        <div class="d-flex align-center justify-space-between px-4 pt-4">
-          <h6 class="text-h6 font-weight-bold text-typo">
-            Today's Events
-          </h6>
-          <v-btn
-            variant="text"
-            @click="openNewEventDialog"
-            color="primary"
-            prepend-icon="mdi-plus"
-          >
-            Event
-          </v-btn>
-        </div>
-        <div class="px-4 pt-3 pb-3">
-          <v-list style="background-color: transparent; height: 300px;" density="compact" v-if="todayEvents.length">
-            <v-list-item-group class="border-radius-sm">
-              <v-list-item
-                v-for="(item, i) in todayEvents"
-                :key="item.id"
-                class="px-0 border-radius-sm"
-                :class="i < events.length - 1 ? 'mb-6' : ''"
-                :ripple="false"
-              >
-                <v-list-item-content class="py-0">
-                  <div class="d-flex align-center">
-                    <v-avatar
-                      size="50"
-                      class="text-white px-2 py-2 me-4 bg-gradient-default shadow"
-                    >
-                      <v-icon class="text-white" size="20">mdi-calendar</v-icon>
-                    </v-avatar>
+        <div v-if="loggedIn">
+          <div class="d-flex align-center justify-space-between px-4 pt-4">
+            <h6 class="text-h6 font-weight-bold text-typo">
+              Today's Events
+            </h6>
+            <v-btn
+              variant="text"
+              @click="openNewEventDialog"
+              color="primary"
+              prepend-icon="mdi-plus"
+            >
+              Event
+            </v-btn>
+          </div>
+          <div class="px-4 pt-3 pb-3">
+            <v-list style="background-color: transparent; height: 300px;" density="compact" v-if="todayEvents.length">
+              <v-list-item-group class="border-radius-sm">
+                <v-list-item
+                  v-for="(item, i) in todayEvents"
+                  :key="item.id"
+                  class="px-0 border-radius-sm"
+                  :class="i < events.length - 1 ? 'mb-6' : ''"
+                  :ripple="false"
+                >
+                  <v-list-item-content class="py-0">
+                    <div class="d-flex align-center">
+                      <v-avatar
+                        size="50"
+                        class="text-white px-2 py-2 me-4 bg-gradient-default shadow"
+                      >
+                        <v-icon class="text-white" size="20">mdi-calendar</v-icon>
+                      </v-avatar>
 
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark text-sm font-weight-bold">
-                        {{ item.title }}
-                      </h6>
-                      <span class="text-sm text-body font-weight-light">
+                      <div class="d-flex flex-column">
+                        <h6 class="mb-1 text-dark text-sm font-weight-bold">
+                          {{ item.title }}
+                        </h6>
+                        <span class="text-sm text-body font-weight-light">
                           {{ formatTime(item.time.start) + ' - ' + formatTime(item.time.end) }}
                         </span>
+                      </div>
                     </div>
-                  </div>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-          <v-alert v-else type="primary" density="compact">No events today</v-alert>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+            <v-alert v-else type="primary" density="compact">No events today</v-alert>
+          </div>
+        </div>
+        <div v-else>
+          <BasisMinibar />
         </div>
       </teleport>
     </client-only>
@@ -176,6 +181,7 @@ import dayjs from 'dayjs'
 import type { EventItem } from '~/types/EventItem'
 import {useEventStore} from "~/stores/useEventStore";
 import EventDialog from "~/components/EventDialog.vue";
+import BasisMinibar from "~/components/App/BasisMinibar.vue";
 const eventStore = useEventStore()
 const storeEvents = computed(() => eventStore.events)
 const events = ref<EventItem[]>([])
