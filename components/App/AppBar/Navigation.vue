@@ -16,19 +16,22 @@ router.afterEach(() => {
 <template>
   <div class="d-none d-sm-flex align-center">
     <v-btn
+      icon
       aria-label="can Go Back"
       title="can Go Back"
-      color="primary"
+      color="default"
       :disabled="!canGoBack"
-      icon="ph:arrow-left"
-      class="opacity-80 ml-2"
       @click="back()"
-    />
+    >
+      <v-icon>mdi-arrow-left</v-icon>
+    </v-btn>
     <v-btn
+      icon
       aria-label="refresh"
-      color="primary"
-      class="opacity-80 ml-0"
+      color="default"
       title="refresh"
-      icon="ph:arrow-clockwise" @click="refresh()" />
+      @click="refresh()">
+      <v-icon>mdi-refresh</v-icon>
+    </v-btn>
   </div>
 </template>

@@ -22,9 +22,7 @@
         <v-toolbar
           color="transparent"
         >
-          <v-app-bar-nav-icon color="primary">❤️</v-app-bar-nav-icon>
-          <v-toolbar-title :class="isDark ? 'text-white' : 'text-default'"
-                           style="text-shadow: 1px 1px 2px rgb(var(--v-theme-primary));">
+          <v-toolbar-title class="d-flex align-center justify-center font-weight-bold" :class="isDark ? 'text-white' : 'text-default'">
             {{ t('dashboard.rating.title') }}
           </v-toolbar-title>
         </v-toolbar>

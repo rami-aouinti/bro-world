@@ -1,6 +1,7 @@
 <template>
   <transition name="fade-slide">
     <v-card
+      @click="emit('open')"
       v-show="visible"
       class="plugin-card d-flex flex-column mx-3 my-2"
       elevation="10"
@@ -9,7 +10,7 @@
       hover
       max-width="360"
     >
-      <v-card-title class="text-h6 font-weight-bold">
+      <v-card-title class="text-h6 text-default font-weight-bold">
         <v-icon class="mr-2" :icon="plugin.icon" />
         {{ plugin.name }}
       </v-card-title>
@@ -21,17 +22,6 @@
       <v-card-text class="text-body-2 px-6 py-2">
         {{ truncate(plugin.description, 30) }}
       </v-card-text>
-
-      <v-card-actions class="px-6 pb-4">
-        <v-btn
-          :color="plugin.installed ? 'primary' : 'success'"
-          variant="tonal"
-          @click="emit('open')"
-          block
-        >
-          {{ plugin.installed ? 'Open' : 'Install' }}
-        </v-btn>
-      </v-card-actions>
 
       <v-divider class="mx-4" />
 

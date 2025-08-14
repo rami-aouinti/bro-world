@@ -24,7 +24,6 @@
             <h6
               class="text-h6 font-weight-bolder mb-0"
               :class="isDark ? 'text-white' : 'text-default'"
-              style="text-shadow: 1px 1px 2px rgb(var(--v-theme-primary));"
             >
               {{ city }} {{ weatherInfo }}°C
             </h6>

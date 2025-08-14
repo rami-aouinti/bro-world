@@ -8,7 +8,11 @@ const { t, locale } = useI18n()
 const isRtl = computed(() => locale.value === 'ar')
 const { loggedIn, clear, user, pending } = useUserSession()
 const localePath = useLocalePath()
-
+const theme = useTheme()
+const isDark = computed({
+  get: () => theme.global.name.value === 'dark',
+  set: v => { theme.global.name.value = v ? 'dark' : 'light' },
+})
 const loggedUser = ref([
   { icon: "mdi-account-settings-variant", color: 'default', path: "/setting", title: "setting" },
   { icon: "mdi-network", color: 'info', path: "/plugin", title: "apps" },
@@ -68,10 +72,10 @@ const notLoggedUser = ref([
         <v-list-item-title class="text-body-2 font-weight-600 mb-0">
           <v-row>
             <v-col>
-              <v-icon :color="item.color || 'primary'" class="me-2">{{ item.icon }}</v-icon>
+              <v-icon :color="isDark ? 'white' : 'default'" class="me-2">{{ item.icon }}</v-icon>
             </v-col>
             <v-col>
-              <h6 class="text-sm font-weight-normal ms-2 text-typo">
+              <h6 class="text-sm font-weight-normal ms-2" :class="isDark ? 'text-white' : 'text-default'">
                 {{ t(`navbar.${item.title}`) }}
               </h6>
             </v-col>

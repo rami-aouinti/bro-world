@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useTheme } from 'vuetify'
 import { useLocalePath } from '#i18n'
+import { useRouter } from 'vue-router'
 
 const localePath = useLocalePath()
-
-// Session (loggedIn est un ref -> utiliser .value)
 const session = await useUserSession()
-const { loggedIn } = session // si besoin, toRefs(session)
+const { loggedIn } = session
 
-// Tous tes items
 type MenuItem = {
   title: string
   icon: string
   color?: string
   path: string
-  requiresAuth?: boolean   // visible UNIQUEMENT quand connecté
-  guestOnly?: boolean      // visible UNIQUEMENT quand NON connecté
+  requiresAuth?: boolean
+  guestOnly?: boolean
 }
 
 const allItems: MenuItem[] = [
@@ -34,21 +32,30 @@ const allItems: MenuItem[] = [
   { title: "Contact",    icon: "mdi-message", color: "default", path: "/contact",        guestOnly: true },
 ]
 
-// Filtre selon l’état de connexion
 const items = computed(() => {
   return allItems.filter((item) => {
-    if (item.requiresAuth) return !!loggedIn.value        // montrer si connecté
-    if (item.guestOnly)   return !loggedIn.value          // montrer si déconnecté
-    return true                                             // sinon, toujours visible
+    if (item.requiresAuth) return !!loggedIn.value
+    if (item.guestOnly)   return !loggedIn.value
+    return true
   })
 })
 
-// Thème (inchangé)
 const theme = useTheme()
 const isDark = computed({
   get: () => theme.global.name.value === 'dark',
   set: v => { theme.global.name.value = v ? 'dark' : 'light' },
 })
+const router = useRouter()
+const canGoBack = ref(false)
+function back() {
+  window.history.back()
+}
+router.afterEach(() => {
+  canGoBack.value = window.navigation?.canGoBack ?? false
+})
+
+
+
 </script>
 
 <template>
@@ -62,7 +69,7 @@ const isDark = computed({
         color="primary"
       >
         <template #prepend>
-          <v-icon :icon="item.icon" :color="item.color || 'default'" class="me-1" />
+          <v-icon :icon="item.icon" :color="isDark ? 'white' : 'default'" class="me-1" />
         </template>
 
         <v-list-item-title
@@ -70,6 +77,22 @@ const isDark = computed({
           :class="isDark ? 'text-white' : 'text-default'"
         >
           {{ item.title }}
+        </v-list-item-title>
+      </v-list-item>
+      <v-list-item
+        v-if="canGoBack"
+        class="custom-item pa-3"
+        color="primary"
+        @click="back"
+      >
+        <template #prepend>
+          <v-icon icon="ph:arrow-left" class="me-1" />
+        </template>
+        <v-list-item-title
+          class="text-subtitle-2 text-uppercase font-weight-bold"
+          :class="isDark ? 'text-white' : 'text-default'"
+        >
+          Return
         </v-list-item-title>
       </v-list-item>
     </MotionGroup>
