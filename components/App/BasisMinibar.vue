@@ -76,22 +76,6 @@ router.afterEach(() => {
           {{ item.title }}
         </v-list-item-title>
       </v-list-item>
-      <v-list-item
-        v-if="canGoBack"
-        class="custom-item pa-3"
-        color="primary"
-        @click="back"
-      >
-        <template #prepend>
-          <v-icon icon="ph:arrow-left" class="me-1" />
-        </template>
-        <v-list-item-title
-          class="text-subtitle-2 text-uppercase font-weight-bold"
-          :class="isDark ? 'text-white' : 'text-default'"
-        >
-          Return
-        </v-list-item-title>
-      </v-list-item>
     </MotionGroup>
   </v-list>
 </template>
