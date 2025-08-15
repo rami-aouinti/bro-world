@@ -13,7 +13,7 @@
       >
         <v-app-bar-nav-icon color="primary"></v-app-bar-nav-icon>
         <v-toolbar-title>
-          <NuxtLink to="/user/channel/media" class="text-decoration-none text-default">
+          <NuxtLink to="/user/channel/media" class="text-decoration-none" :class="isDark ? 'text-white' : 'text-default'">
             Media
           </NuxtLink>
         </v-toolbar-title>
@@ -109,7 +109,15 @@ import { useRouter } from 'vue-router'
 const search = shallowRef(null)
 const dialogCreateFolder = ref(false)
 const dialogUploadFile = ref(false)
-
+const theme = useTheme()
+const isDark = computed({
+  get() {
+    return theme.global.name.value === 'dark'
+  },
+  set(v) {
+    theme.global.name.value = v ? 'dark' : 'light'
+  },
+})
 function filter (value, search, item) {
   return value.toLowerCase().indexOf(search.toLowerCase())
 }

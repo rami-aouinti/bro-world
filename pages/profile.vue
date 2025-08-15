@@ -10,8 +10,8 @@ import dayjs from 'dayjs'
 import CreateWorldDialog from "~/components/App/Home/CreateWorldDialog.vue";
 import NewPost from "~/pages/home/post/NewPost.vue";
 import UserList from "~/components/Profile/UserList.vue";
-import Media from "~/pages/user/channel/media.vue";
 import MediaProfile from "~/pages/home/dashboard/MediaProfile.vue";
+import QuizProfile from "~/pages/home/dashboard/QuizProfile.vue";
 const Blogs = defineAsyncComponent(() => import('~/pages/home/dashboard/Blogs.vue'))
 
 const postStore = usePostStore()
@@ -383,8 +383,8 @@ definePageMeta({
             >
             </v-btn>
 
-            <v-card-title class="text-h6 text-default font-weight-bold">
-              Blogs
+            <v-card-title class="text-h6 text-default font-weight-bold" :class="isDark ? 'text-white' : 'text-default'">
+              Worlds
             </v-card-title>
 
             <v-card-text class="text-body-2 px-6 py-2">
@@ -401,7 +401,7 @@ definePageMeta({
             elevation="10"
             hover
           >
-            <v-card-title class="text-h6 text-default font-weight-bold">
+            <v-card-title class="text-h6 text-default font-weight-bold" :class="isDark ? 'text-white' : 'text-default'">
               Friends
             </v-card-title>
 
@@ -430,7 +430,7 @@ definePageMeta({
             >
             </v-btn>
 
-            <v-card-title class="text-h6 text-default font-weight-bold">
+            <v-card-title class="text-h6 text-default font-weight-bold" :class="isDark ? 'text-white' : 'text-default'">
               Resume
             </v-card-title>
 
@@ -454,7 +454,7 @@ definePageMeta({
           >
 
 
-            <v-card-title class="text-h6 text-default font-weight-bold">
+            <v-card-title class="text-h6 text-default font-weight-bold" :class="isDark ? 'text-white' : 'text-default'">
               Order
             </v-card-title>
 
@@ -477,32 +477,8 @@ definePageMeta({
             hover
           >
             <v-card-title class="text-h6 text-default font-weight-bold">
-              <NuxtLink to="/course" class="text-decoration-none text-default">
+              <NuxtLink to="/course" class="text-decoration-non"  :class="isDark ? 'text-white' : 'text-default'">
                 Course
-              </NuxtLink>
-            </v-card-title>
-
-            <v-card-subtitle class="text-grey-darken-1 px-4">
-              Sub
-            </v-card-subtitle>
-
-            <v-card-text class="text-body-2 px-6 py-2">
-              Content
-            </v-card-text>
-          </v-card>
-        </div>
-        <div class="d-flex align-center justify-center mx-auto my-2" style="max-width: 100%">
-          <v-card
-            rounded="xl"
-            variant="text"
-            class="plugin-card bg-gradient-primary position-relative"
-            width="100%"
-            elevation="10"
-            hover
-          >
-            <v-card-title class="text-h6 text-default font-weight-bold">
-              <NuxtLink to="/quiz" class="text-decoration-none text-default">
-                Quiz
               </NuxtLink>
             </v-card-title>
 
@@ -523,7 +499,7 @@ definePageMeta({
                   hover
           >
             <v-card-title class="text-h6 text-default font-weight-bold">
-              <NuxtLink to="/calendar" class="text-decoration-none text-default">
+              <NuxtLink to="/calendar" class="text-decoration-none" :class="isDark ? 'text-white' : 'text-default'">
                 Calendar
               </NuxtLink>
             </v-card-title>
@@ -541,6 +517,9 @@ definePageMeta({
           >
             <MediaProfile></MediaProfile>
           </v-card>
+        </div>
+        <div class="d-flex align-center justify-center mx-auto my-2" style="width: 100%">
+          <QuizProfile></QuizProfile>
         </div>
       </ClientOnly>
     </div>
