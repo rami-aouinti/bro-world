@@ -12,7 +12,11 @@
         color="transparent"
       >
         <v-app-bar-nav-icon color="primary"></v-app-bar-nav-icon>
-        <v-toolbar-title text="My files"></v-toolbar-title>
+        <v-toolbar-title>
+          <NuxtLink to="/user/channel/media" class="text-decoration-none text-default">
+            Media
+          </NuxtLink>
+        </v-toolbar-title>
         <v-btn @click="dialogCreateFolder = true" color="primary" icon="mdi-plus"></v-btn>
         <v-btn @click="dialogUploadFile = true" color="primary" icon="mdi-upload"></v-btn>
         <template v-slot:extension>

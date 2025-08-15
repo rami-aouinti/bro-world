@@ -10,6 +10,8 @@ import dayjs from 'dayjs'
 import CreateWorldDialog from "~/components/App/Home/CreateWorldDialog.vue";
 import NewPost from "~/pages/home/post/NewPost.vue";
 import UserList from "~/components/Profile/UserList.vue";
+import Media from "~/pages/user/channel/media.vue";
+import MediaProfile from "~/pages/home/dashboard/MediaProfile.vue";
 const Blogs = defineAsyncComponent(() => import('~/pages/home/dashboard/Blogs.vue'))
 
 const postStore = usePostStore()
@@ -27,7 +29,14 @@ const { data: profile, pending, error, refresh } = await useAsyncData(
     server: true
   }
 )
-
+const { data: friends } = await useAsyncData(
+  'profile-friends-' + user.value.id,
+  async () => await userStore.fetchFriends(user.value.username),
+  {
+    watch: [() => user.value.id],
+    server: true
+  }
+)
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
 const isLoading = ref(false)
 const active = ref([])
@@ -397,7 +406,7 @@ definePageMeta({
             </v-card-title>
 
             <v-card-text class="text-body-2 px-6 py-2">
-              <UserList :users="profile.friends" :loading="isLoading" />
+              <UserList :users="friends" :loading="isLoading" />
             </v-card-text>
           </v-card>
         </div>
@@ -519,6 +528,18 @@ definePageMeta({
               </NuxtLink>
             </v-card-title>
             <Qalendar :events="events" :config="calendarConfig" />
+          </v-card>
+        </div>
+        <div class="d-flex align-center justify-center mx-auto my-2" style="max-width: 100%">
+          <v-card
+            rounded="xl"
+            variant="text"
+            class="plugin-card bg-gradient-primary position-relative"
+            width="100%"
+            elevation="10"
+            hover
+          >
+            <MediaProfile></MediaProfile>
           </v-card>
         </div>
       </ClientOnly>

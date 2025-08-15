@@ -80,13 +80,13 @@
 
       <!-- État vide -->
       <v-alert
-        v-if="!users?.length"
-        type="info"
+        v-if="!props.users?.length"
+        type="primary"
         variant="tonal"
-        class="mx-3 mt-2"
+        class="mx-3 my-2"
         density="comfortable"
       >
-        Aucun utilisateur à afficher.
+        No friends.
       </v-alert>
     </div>
   </div>
