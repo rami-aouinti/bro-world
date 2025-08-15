@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { onMounted, ref, watch, computed, nextTick } from 'vue'
 import {useI18n} from 'vue-i18n'
-import LoaderProfile from '~/components/App/Loader/Profile/LoaderProfile.vue'
 import { useUserStore } from '~/stores/useUserStore'
 import { usePostStore } from '~/stores/usePostStore'
 import PostCard from '~/components/Blog/PostCard.vue'
 import { useEventStore } from '~/stores/useEventStore'
 import { Qalendar } from 'qalendar'
 import dayjs from 'dayjs'
+import CreateWorldDialog from "~/components/App/Home/CreateWorldDialog.vue";
+import NewPost from "~/pages/home/post/NewPost.vue";
+import UserList from "~/components/Profile/UserList.vue";
+const Blogs = defineAsyncComponent(() => import('~/pages/home/dashboard/Blogs.vue'))
 
 const postStore = usePostStore()
 const eventStore = useEventStore()
@@ -142,10 +145,22 @@ const loadInitialPosts = async () => {
     loading.value.post = false
   }
 }
-
+const plugins = ref<any[]>([])
+const dialogCreateWorld = ref(false)
+const fetchPlugins = async () => {
+  try {
+    const data = await $fetch('/api/plugin/profile/get')
+    if (data) plugins.value = data
+  } catch (e) {
+    console.error('Erreur fetch plugins:', e)
+  } finally {
+    loading.value.plugin = false
+  }
+}
 
 const reloadPosts = async () => {
   await postStore.invalidateMyPostCache(user.value?.id)
+  await postStore.invalidatePostCache(user.value?.id)
   await loadInitialPosts()
 }
 
@@ -164,6 +179,7 @@ onMounted(async () => {
   await fetchConversations()
   await loadInitialPosts()
   await fetchEvents()
+  await fetchPlugins()
   setTimeout(() => {
     canTeleport.value = !!document.getElementById('menu-bar-world')
   }, 200)
@@ -208,7 +224,11 @@ const applicationSettings = ref([
   { text: 'newProjects', switchState: true },
   { text: 'monthlyUpdates', switchState: false },
 ])
-
+const addPost = (post: any) => {
+  if (!post?.id) return
+  postStore.appendPost({ data: post })
+  reloadPosts()
+}
 definePageMeta({
   layout: 'default',
   description: 'Profile page',
@@ -290,33 +310,14 @@ definePageMeta({
         </div>
       </teleport>
     </client-only>
-    <div v-if="pending">
-      <LoaderProfile />
-    </div>
-    <div v-else>
-      <v-row>
-        <v-col cols="12" md="6">
-          <v-card
-            class="plugin-card d-flex flex-column mb-4"
-            elevation="10"
-            rounded="xl"
-            variant="text"
-            hover
-            max-width="360"
-          >
-            <v-card-title class="text-h6 text-default font-weight-bold">
-              Blogs
-            </v-card-title>
-
-            <v-card-subtitle class="text-grey-darken-1 px-4">
-              Sub
-            </v-card-subtitle>
-
-            <v-card-text class="text-body-2 px-6 py-2">
-              Content
-            </v-card-text>
-          </v-card>
-          <h2 class="text-h6 font-weight-bold mb-4" :class="isDark ? 'text-white' : 'text-default'">{{ t('profile.myPosts') }}</h2>
+    <div
+      class="flex-grow-1"
+      style="max-width: 100%"
+      :style="$vuetify.display.lgAndUp ? 'padding-right: 360px;' : ''"
+    >
+      <v-row justify="center" class="align-center justify-center" style="max-width: 100%;">
+        <v-col cols="12">
+          <NewPost @post-created="(post) => addPost(post)" />
           <template v-if="loading.post">
             <v-skeleton-loader type="card" class="mb-4" v-for="n in 3" :key="n" />
           </template>
@@ -345,17 +346,83 @@ definePageMeta({
             </v-infinite-scroll>
           </template>
         </v-col>
-        <v-col cols="12" md="6">
+      </v-row>
+    </div>
+    <div
+      class="d-none d-lg-block"
+      style="position: fixed; top: 76px; right: 0; width: 400px; padding: 0 8px; overflow-y: auto; max-height: calc(100vh - 76px);"
+    >
+
+      <ClientOnly>
+        <div class="d-flex align-center justify-center mx-auto my-2" style="max-width: 100%">
           <v-card
-            class="plugin-card d-flex flex-column mb-4"
-            elevation="10"
             rounded="xl"
             variant="text"
+            class="plugin-card bg-gradient-primary position-relative"
+            width="100%"
+            elevation="10"
             hover
-            max-width="360"
           >
+            <v-btn
+              icon="mdi-plus"
+              color="primary"
+              variant="text"
+              size="small"
+              class="position-absolute"
+              style="top: 8px; right: 8px;"
+              @click="dialogCreateWorld = true"
+            >
+            </v-btn>
+
             <v-card-title class="text-h6 text-default font-weight-bold">
               Blogs
+            </v-card-title>
+
+            <v-card-text class="text-body-2 px-6 py-2">
+              <Blogs />
+            </v-card-text>
+          </v-card>
+        </div>
+        <div class="d-flex align-center justify-center mx-auto my-4" style="max-width: 100%">
+          <v-card
+            rounded="xl"
+            variant="text"
+            class="plugin-card bg-gradient-primary position-relative"
+            width="100%"
+            elevation="10"
+            hover
+          >
+            <v-card-title class="text-h6 text-default font-weight-bold">
+              Friends
+            </v-card-title>
+
+            <v-card-text class="text-body-2 px-6 py-2">
+              <UserList :users="profile.friends" :loading="isLoading" />
+            </v-card-text>
+          </v-card>
+        </div>
+        <div class="d-flex align-center justify-center mx-auto my-2" style="max-width: 100%">
+          <v-card
+            rounded="xl"
+            variant="text"
+            class="plugin-card bg-gradient-primary position-relative"
+            width="100%"
+            elevation="10"
+            hover
+          >
+            <v-btn
+              icon="mdi-plus"
+              color="primary"
+              variant="text"
+              size="small"
+              class="position-absolute"
+              style="top: 8px; right: 8px;"
+              @click="dialogCreateWorld = true"
+            >
+            </v-btn>
+
+            <v-card-title class="text-h6 text-default font-weight-bold">
+              Resume
             </v-card-title>
 
             <v-card-subtitle class="text-grey-darken-1 px-4">
@@ -366,11 +433,97 @@ definePageMeta({
               Content
             </v-card-text>
           </v-card>
-          <h2 class="text-h6 font-weight-bold mb-4" :class="isDark ? 'text-white' : 'text-default'">{{ t('profile.myEvents') }}</h2>
-          <Qalendar :events="events" :config="calendarConfig" />
-        </v-col>
-      </v-row>
+        </div>
+        <div class="d-flex align-center justify-center mx-auto my-2" style="max-width: 100%">
+          <v-card
+            rounded="xl"
+            variant="text"
+            class="plugin-card bg-gradient-primary position-relative"
+            width="100%"
+            elevation="10"
+            hover
+          >
+
+
+            <v-card-title class="text-h6 text-default font-weight-bold">
+              Order
+            </v-card-title>
+
+            <v-card-subtitle class="text-grey-darken-1 px-4">
+              Sub
+            </v-card-subtitle>
+
+            <v-card-text class="text-body-2 px-6 py-2">
+              Content
+            </v-card-text>
+          </v-card>
+        </div>
+        <div class="d-flex align-center justify-center mx-auto my-2" style="max-width: 100%">
+          <v-card
+            rounded="xl"
+            variant="text"
+            class="plugin-card bg-gradient-primary position-relative"
+            width="100%"
+            elevation="10"
+            hover
+          >
+            <v-card-title class="text-h6 text-default font-weight-bold">
+              <NuxtLink to="/course" class="text-decoration-none text-default">
+                Course
+              </NuxtLink>
+            </v-card-title>
+
+            <v-card-subtitle class="text-grey-darken-1 px-4">
+              Sub
+            </v-card-subtitle>
+
+            <v-card-text class="text-body-2 px-6 py-2">
+              Content
+            </v-card-text>
+          </v-card>
+        </div>
+        <div class="d-flex align-center justify-center mx-auto my-2" style="max-width: 100%">
+          <v-card
+            rounded="xl"
+            variant="text"
+            class="plugin-card bg-gradient-primary position-relative"
+            width="100%"
+            elevation="10"
+            hover
+          >
+            <v-card-title class="text-h6 text-default font-weight-bold">
+              <NuxtLink to="/quiz" class="text-decoration-none text-default">
+                Quiz
+              </NuxtLink>
+            </v-card-title>
+
+            <v-card-subtitle class="text-grey-darken-1 px-4">
+              Sub
+            </v-card-subtitle>
+
+            <v-card-text class="text-body-2 px-6 py-2">
+              Content
+            </v-card-text>
+          </v-card>
+        </div>
+        <div class="d-flex align-center justify-center mx-auto" style="max-width: 100%">
+          <v-card rounded="xl" variant="text"
+                  class="plugin-card bg-gradient-primary my-5"
+                  width="100%"
+                  elevation="10"
+                  hover
+          >
+            <v-card-title class="text-h6 text-default font-weight-bold">
+              <NuxtLink to="/calendar" class="text-decoration-none text-default">
+                Calendar
+              </NuxtLink>
+            </v-card-title>
+            <Qalendar :events="events" :config="calendarConfig" />
+          </v-card>
+        </div>
+      </ClientOnly>
     </div>
+    <CreateWorldDialog v-model="dialogCreateWorld" :plugins="plugins" />
   </v-container>
 </template>
 <style scoped>
@@ -448,7 +601,7 @@ code {
   padding-top: 0;
   background-color: var(--v-theme-surface);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 2px 10px rgba(220, 9, 160, 0.1);
+  box-shadow: 0 2px 10px var(--v-theme-primary);
 }
 .plugin-card:hover {
   transform: scale(1.03);

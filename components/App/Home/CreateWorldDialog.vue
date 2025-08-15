@@ -1,6 +1,16 @@
 <template>
-  <v-dialog v-model="dialog">
-    <v-card rounded="xl">
+  <v-dialog v-model="open" max-width="800" persistent>
+    <v-card rounded="xl" max-width="800" class="mx-3 position-relative">
+      <!-- Close -->
+      <v-btn
+        icon="mdi-close"
+        variant="text"
+        color="primary"
+        size="small"
+        class="position-absolute"
+        style="top: 4px; right: 8px;"
+        @click="close"
+      />
       <v-stepper v-model="step" class="mt-1">
         <v-stepper-header>
           <v-stepper-item :value="1" title="Name & Logo" />
@@ -68,8 +78,9 @@
                   v-for="plugin in plugins"
                   :key="plugin.name"
                   cols="6"
-                  sm="3"
-                  md="3"
+                  sm="4"
+                  md="4"
+                  dense
                 >
                   <PluginInstall :plugin="plugin"/>
                 </v-col>
@@ -128,23 +139,29 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted, defineProps, defineEmits} from 'vue'
+import { ref, computed, onMounted, defineProps, defineEmits, watch} from 'vue'
 import { useRouter } from 'vue-router'
 import RealTimeText from '~/components/App/RealTimeText.vue'
 import LoaderPlugin from "~/components/App/Loader/Plugin/LoaderPlugin.vue";
 import PluginInstall from "~/components/PluginInstall.vue";
 
-const props = defineProps({ modelValue: Boolean, plugins: Array })
-const emit = defineEmits(['update:modelValue'])
+
+const props = defineProps<{ modelValue: boolean; plugins: any[] }>()
+const emit  = defineEmits<{ (e:'update:modelValue', v:boolean): void }>()
+
+const open = ref(props.modelValue)
+watch(() => props.modelValue, v => { open.value = v })
+watch(open, v => emit('update:modelValue', v))
+
+function close () { open.value = false }
+
+
 const files = ref<File[]>([])
-const dialog = computed({
-  get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val),
-})
+
 const loadingUser = ref(true)
 
 // Auth
-const { user, loggedIn } = useUserSession()
+const { user, loggedIn } = await useUserSession()
 
 
 // Form & Stepper
@@ -173,26 +190,25 @@ async function nextStep() {
   } else {
     try {
       const formData = new FormData()
-
       if (Array.isArray(files.value)) {
-        files.value.forEach(file => {
-          formData.append('files[]', file)
-        })
+        files.value.forEach(file => formData.append('files[]', file))
       }
-
       formData.append('title', title.value)
       formData.append('description', description.value)
 
-      const {data, error} = await useFetch('/api/posts/blog/blogs', {
+      const { data, error } = await useFetch('/api/posts/blog/blogs', {
         method: 'POST',
         body: formData,
       })
+
       const slug = data?.value.slug
       if (slug) {
-        dialog.value = false
+        // ❌ dialog.value = false
+        // ✅ ferme correctement :
+        open.value = false
+        // ou: close()
         redirectToWorld(slug)
       }
-
     } catch (err) {
       console.error('Unexpected error:', err)
     }

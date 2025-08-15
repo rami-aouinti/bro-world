@@ -39,7 +39,7 @@ onMounted(async () => {
           <div class="px-5">
             <v-row align="center" class="pa-0 ma-0">
               <v-col cols="auto">
-                <v-avatar size="50" class="border-primary border-lg rounded-circle">
+                <v-avatar size="50" class="border-default border-lg rounded-circle">
                   <NuxtImg :lazy-src="'/img/person.png'" format="webp" loading="lazy" cover width="50" height="50" :src="blog.logo" alt="Avatar" />
                 </v-avatar>
               </v-col>

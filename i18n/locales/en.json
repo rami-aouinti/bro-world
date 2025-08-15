@@ -22,6 +22,9 @@
       "place": "Based on these coordinates: latitude {lat}, longitude {lng}, return only the name of the nearest city or place. Just one word or name, no sentence.",
       "weather": "Based on these coordinates: latitude {lat}, longitude {lng}, return only the current temperature (e.g., \"7°C\"). Do not write a sentence or explanation, just one value.",
       "news": "List 5 key global news headlines today. Just output a plain list, one per line. No introduction or extra text. No markdown or asterisks. No numbers."
+    },
+    "blog": {
+      "open": "Open"
     }
   },
   "navbar": {

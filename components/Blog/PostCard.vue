@@ -16,7 +16,7 @@ const cardSpacing = computed(() => (props.index === 0 ? 'mb-2' : 'my-2'));
 
 <template>
   <div :class="cardSpacing">
-    <v-card rounded="xl" class="bg-gradient-primary mx-3" variant="outlined">
+    <v-card rounded="xl" class="bg-gradient-primary mx-3" variant="text">
       <div class="px-4 py-2">
         <AuthorPost :post="props.post"
                     :friends="props.friends"
