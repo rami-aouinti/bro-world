@@ -6,17 +6,17 @@ import AsyncNavBarUserInfo from "./AsyncNavBarUserInfo.vue";
 <template>
   <nav class="navbar navbar-dark bg-dark px-4 navbar-expand-md sticky-top">
     <div class="container">
-      <RouterLink class="navbar-brand" :to="{name: 'main'}">Task Manager</RouterLink>
+      <NuxtLink class="navbar-brand" :to="{name: 'main'}">Task Manager</NuxtLink>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBar" aria-controls="navBar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navBar">
         <ul class="navbar-nav mr-auto mb-2 mb-md-0">
           <li class="nav-item dropdown">
-            <li><RouterLink :to="{name: 'user_projects'}" class="nav-link">My projects</RouterLink></li>
+            <li><NuxtLink :to="{name: 'user_projects'}" class="nav-link">My projects</NuxtLink></li>
           </li>
           <li class="nav-item dropdown">
-            <li><RouterLink :to="{name: 'user_requests'}" class="nav-link">My requests</RouterLink></li>
+            <li><NuxtLink :to="{name: 'user_requests'}" class="nav-link">My requests</NuxtLink></li>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-md-0">
@@ -32,7 +32,7 @@ import AsyncNavBarUserInfo from "./AsyncNavBarUserInfo.vue";
               </Suspense>
             </a>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-              <li><RouterLink class="dropdown-item" :to="{name: 'profile'}">Profile</RouterLink></li>
+              <li><NuxtLink class="dropdown-item" :to="{name: 'profile'}">Profile</NuxtLink></li>
               <li><hr class="dropdown-divider"></li>
               <li><a @click.prevent="authStore.logout()" href="#" class="dropdown-item">Logout</a></li>
             </ul>

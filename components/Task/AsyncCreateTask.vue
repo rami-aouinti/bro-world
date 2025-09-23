@@ -57,7 +57,7 @@ async function onSubmit() {
       <fieldset class="row mt-4" :disabled="isLocked">
         <FormError :error="tasksStore.error(id)" />
         <FormSuccess v-if="taskId">
-          Successfully saved. <RouterLink :to="{name: 'edit_task', params: { id: id, taskId: taskId }}">Edit</RouterLink> this task.
+          Successfully saved. <NuxtLink :to="{name: 'edit_task', params: { id: id, taskId: taskId }}">Edit</NuxtLink> this task.
         </FormSuccess>
         <CommonTaskFormFields :project="project" :task="task" />
         <div class="mb-3 text-end">

@@ -40,16 +40,16 @@ async function onLeave(id) {
       <div class="col">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <RouterLink :to="{name: 'project_info'}" class="nav-link">Project info</RouterLink>
+            <NuxtLink :to="{name: 'project_info'}" class="nav-link">Project info</NuxtLink>
           </li>
           <li class="nav-item">
-            <RouterLink :to="{name: 'project_requests'}" class="nav-link" v-if="project.isOwner">Requests</RouterLink>
+            <NuxtLink :to="{name: 'project_requests'}" class="nav-link" v-if="project.isOwner">Requests</NuxtLink>
           </li>
           <li class="nav-item">
-            <RouterLink :to="{name: 'project_tasks'}" class="nav-link">Tasks</RouterLink>
+            <NuxtLink :to="{name: 'project_tasks'}" class="nav-link">Tasks</NuxtLink>
           </li>
           <li class="nav-item">
-            <RouterLink :to="{name: 'project_participants'}" class="nav-link">Participants</RouterLink>
+            <NuxtLink :to="{name: 'project_participants'}" class="nav-link">Participants</NuxtLink>
           </li>
         </ul>
         <LockableButton

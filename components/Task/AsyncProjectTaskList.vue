@@ -19,9 +19,9 @@ const tasks = tasksStore.getTasks(id);
 </script>
 
 <template>
-  <RouterLink :to="{name: 'create_task'}" custom v-slot="{navigate}" v-if="project.status !== 0">
+  <NuxtLink :to="{name: 'create_task'}" custom v-slot="{navigate}" v-if="project.status !== 0">
     <button @click="navigate" class="btn btn-primary mb-4">Create task</button>
-  </RouterLink>
+  </NuxtLink>
   <FormError :error="tasksStore.error(id)" />
   <table class="table" :class="{'loading-content': tasksStore.isLoading(id)}">
     <thead>
@@ -39,7 +39,7 @@ const tasks = tasksStore.getTasks(id);
     <tr v-for="(task, key, index) in tasks">
       <th scope="row">{{ index + 1 }}</th>
       <td>
-        <RouterLink :to="{name: 'edit_task', params: { id: project.id, taskId: task.id }}">{{ task.name }}</RouterLink>
+        <NuxtLink :to="{name: 'edit_task', params: { id: project.id, taskId: task.id }}">{{ task.name }}</NuxtLink>
       </td>
       <td><TaskStatus :status="task.status" /></td>
       <td><Datetime :value="task.startDate" /></td>

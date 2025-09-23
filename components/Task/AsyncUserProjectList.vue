@@ -39,7 +39,7 @@ const projects = userProjectsStore.projects;
     <tr v-for="(project, key, index) in projects">
       <th scope="row">{{ index + 1 }}</th>
       <td>
-        <RouterLink :to="{name: 'project', params: { id: project.id }}">{{ project.name }}</RouterLink>
+        <NuxtLink :to="{name: 'project', params: { id: project.id }}">{{ project.name }}</NuxtLink>
       </td>
       <td><Datetime :value="project.finishDate" /></td>
       <td>{{ project.ownerFullName }}</td>

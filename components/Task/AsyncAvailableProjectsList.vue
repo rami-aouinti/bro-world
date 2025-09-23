@@ -50,7 +50,7 @@ async function onJoin(projectId) {
       <tr v-for="(project, key, index) in projects">
         <th scope="row">{{ index + 1 }}</th>
         <td>
-          <RouterLink :to="{name: 'project', params: { id: project.id }}" v-if="project.isInvolved">{{ project.name }}</RouterLink>
+          <NuxtLink :to="{name: 'project', params: { id: project.id }}" v-if="project.isInvolved">{{ project.name }}</NuxtLink>
           <span v-else>{{ project.name }}</span>
         </td>
         <td><Datetime :value="project.finishDate" /></td>

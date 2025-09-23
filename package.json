@@ -16,7 +16,11 @@
     "format": "prettier . --write",
     "prisma:reset": "dotenv -e .env -- npx prisma migrate reset",
     "prisma:generate": "dotenv -e .env -- npx prisma generate",
-    "prisma:migrate": "dotenv -e .env -- npx prisma migrate dev --name init"
+    "prisma:migrate": "dotenv -e .env -- npx prisma migrate dev --name init",
+    "prisma:crm": "prisma --schema prisma/schema.prisma",
+    "db:generate": "pnpm prisma:crm generate",
+    "db:migrate": "pnpm prisma:crm migrate dev",
+    "db:seed": "node prisma/seed.js"
   },
   "devDependencies": {
     "@iconify-json/mdi": "^1.2.3",
@@ -41,6 +45,7 @@
   },
   "dependencies": {
     "@date-io/date-fns": "^3.2.1",
+    "@faker-js/faker": "^9.9.0",
     "@fireworks-js/vue": "^2.10.8",
     "@formkit/auto-animate": "^0.8.2",
     "@googlemaps/js-api-loader": "^1.16.10",
@@ -49,9 +54,9 @@
     "@morev/vue-transitions": "^3.0.5",
     "@nuxt/content": "^2.13.4",
     "@nuxt/image": "^1.10.0",
-    "@nuxt/kit": "^3.17.6",
     "@nuxt/scripts": "^0.11.8",
     "@nuxt/ui": "^3.2.0",
+    "@nuxt/ui-pro": "^3.3.2",
     "@nuxt/ui-templates": "^1.3.4",
     "@nuxthq/studio": "^2.2.1",
     "@nuxtjs/fontaine": "^0.5.0",
@@ -60,6 +65,7 @@
     "@nuxtjs/sitemap": "^7.4.3",
     "@pinia/nuxt": "^0.11.1",
     "@prisma/client": "^6.11.1",
+    "@supabase/supabase-js": "^2.55.0",
     "@tinymce/tinymce-vue": "^6.2.0",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",

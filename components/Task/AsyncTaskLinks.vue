@@ -68,7 +68,7 @@ async function removeLink(linkedTaskId) {
     <tbody>
     <tr v-for="(link, key, index) in linksStore.getLinks(taskId)">
       <th scope="row">{{ index + 1 }}</th>
-      <td><RouterLink :to="{name: 'edit_task', params: { id: id, taskId: link.linkedTaskId }}">{{ link.linkedTaskName }}</RouterLink></td>
+      <td><NuxtLink :to="{name: 'edit_task', params: { id: id, taskId: link.linkedTaskId }}">{{ link.linkedTaskName }}</NuxtLink></td>
       <td>
         <TaskStatus :status="link.linkedTaskStatus" />
       </td>

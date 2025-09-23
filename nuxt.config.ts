@@ -34,11 +34,17 @@ export default defineNuxtConfig({
     'nuxt-og-image',
     'nuxt-lazy-hydrate',
   ],
-
+  extends: ['@nuxt/ui-pro'],
   plugins: [
     '~/plugins/vuetify-i18n.ts'
   ],
 
+  imports: {
+    dirs: ['constants'],
+  },
+  colorMode: {
+    disableTransition: true,
+  },
   sitemap: {
     siteUrl: 'https://bro-world-space.com',
     trailingSlash: false,
@@ -52,8 +58,8 @@ export default defineNuxtConfig({
 
   ui: {
     icons: ["heroicons", "lucide"],
+    safelistColors: ['primary', 'red', 'orange', 'green'],
   },
-
   css: ['~/assets/styles/index.css'],
 
   experimental: {
