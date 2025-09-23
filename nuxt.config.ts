@@ -16,7 +16,6 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/sitemap',
-    '@nuxt/scripts',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
     '@vueuse/motion/nuxt',
